@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letters on the Universal Machine</title>
+<meta name="description" content="A Treatise on WebAssembly, from Transistors to Transcendence — in the manner of Euler's Letters to a German Princess">
+<meta name="theme-color" content="#0a0a14">
+<meta property="og:title" content="Letters on the Universal Machine">
+<meta property="og:description" content="A Treatise on WebAssembly, from Transistors to Transcendence">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   SACRED GEOMETRY PALETTE
+   Midnight space, antique gold, warm parchment
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  --bg-deep: #06060e;
+  --bg: #0a0a14;
+  --bg-elevated: #0f0f1e;
+  --bg-code: #0c0c18;
+  --text: #ddd5c4;
+  --text-dim: #9e9684;
+  --text-bright: #f0e8d8;
+  --gold: #c9a96e;
+  --gold-bright: #e4c98a;
+  --gold-dim: #8b6914;
+  --gold-glow: rgba(201, 169, 110, 0.12);
+  --sacred: rgba(201, 169, 110, 0.08);
+  --border: #1e1e30;
+  --border-subtle: #16162a;
+  --accent-blue: #4a6fa5;
+  --accent-crimson: #8b3a3a;
+  --sidebar-w: 320px;
+  --content-max: 72ch;
+  --line-height: 1.85;
+  --font-body: 'Crimson Pro', 'Georgia', serif;
+  --font-heading: 'Cormorant Garamond', 'Palatino', serif;
+  --font-code: 'JetBrains Mono', 'Consolas', monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dim) var(--bg);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: var(--line-height);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO — THE GATEWAY
+   Sacred geometry portal that draws the reader in
+   ═══════════════════════════════════════════════════════════ */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #0f0f20 0%, var(--bg-deep) 70%);
+}
+
+#hero-geometry {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+#hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  padding: 2rem;
+}
+
+#hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  font-weight: 700;
+  color: var(--gold-bright);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 60px rgba(201, 169, 110, 0.3);
+}
+
+#hero .subtitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-dim);
+  margin-bottom: 0.4rem;
+}
+
+#hero .manner {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--gold-dim);
+  font-style: italic;
+  margin-bottom: 3rem;
+}
+
+#hero .enter-scroll {
+  display: inline-block;
+  padding: 0.8rem 2.4rem;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  background: transparent;
+}
+
+#hero .enter-scroll:hover {
+  background: var(--gold-glow);
+  border-color: var(--gold);
+  box-shadow: 0 0 30px rgba(201, 169, 110, 0.15);
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: float 2.5s ease-in-out infinite;
+  color: var(--gold-dim);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: var(--font-heading);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+  50% { transform: translateX(-50%) translateY(-8px); opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT — SIDEBAR + CONTENT
+   ═══════════════════════════════════════════════════════════ */
+#app {
+  display: none; /* shown after hero */
+}
+
+#app.visible {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SIDEBAR NAVIGATION
+   ═══════════════════════════════════════════════════════════ */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--bg-deep);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  z-index: 100;
+  padding: 1.5rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  transition: transform 0.35s ease;
+}
+
+#sidebar-header {
+  padding: 0.5rem 1.4rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.8rem;
+}
+
+#sidebar-header h2 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+#reading-progress {
+  margin-top: 0.8rem;
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+#reading-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
+  transition: width 0.3s ease;
+}
+
+.nav-part {
+  margin-bottom: 0.2rem;
+}
+
+.nav-part-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.4rem;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gold-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.nav-part-title:hover { color: var(--gold); }
+
+.nav-part-title .chevron {
+  font-size: 0.6rem;
+  transition: transform 0.2s;
+}
+
+.nav-part.collapsed .chevron { transform: rotate(-90deg); }
+.nav-part.collapsed .nav-letters { display: none; }
+
+.nav-letters { padding: 0.15rem 0; }
+
+.nav-letter {
+  display: block;
+  padding: 0.35rem 1.4rem 0.35rem 2rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 2px solid transparent;
+  line-height: 1.4;
+}
+
+.nav-letter:hover {
+  color: var(--text);
+  background: var(--sacred);
+}
+
+.nav-letter.active {
+  color: var(--gold);
+  border-left-color: var(--gold);
+  background: var(--gold-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTENT AREA
+   ═══════════════════════════════════════════════════════════ */
+#content {
+  grid-column: 2;
+  padding: 3rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chapter {
+  max-width: var(--content-max);
+  width: 100%;
+  padding: 2.5rem 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.chapter.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SACRED DIVIDERS — Geometry between chapters
+   ═══════════════════════════════════════════════════════════ */
+.sacred-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+  gap: 1.5rem;
+  opacity: 0.4;
+}
+
+.sacred-divider .line {
+  flex: 1;
+  max-width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+
+.sacred-divider svg {
+  width: 36px;
+  height: 36px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY — The soul of reading
+   ═══════════════════════════════════════════════════════════ */
+.chapter h2 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin: 2.5rem 0 0.8rem;
+  letter-spacing: 0.02em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.chapter h3 {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  margin: 0 0 1.2rem;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  text-shadow: 0 0 40px rgba(201, 169, 110, 0.15);
+}
+
+.chapter h4 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin: 2rem 0 0.6rem;
+}
+
+.chapter p {
+  margin-bottom: 1.2rem;
+  font-weight: 300;
+  color: var(--text);
+}
+
+.chapter p strong {
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.chapter p em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.chapter blockquote {
+  border-left: 3px solid var(--gold-dim);
+  margin: 1.5rem 0;
+  padding: 0.8rem 1.5rem;
+  background: var(--sacred);
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
+  color: var(--text-dim);
+}
+
+.chapter blockquote p { margin-bottom: 0.5rem; }
+.chapter blockquote p:last-child { margin-bottom: 0; }
+
+.chapter ul, .chapter ol {
+  margin: 1rem 0 1.2rem;
+  padding-left: 1.5rem;
+}
+
+.chapter li {
+  margin-bottom: 0.4rem;
+  font-weight: 300;
+}
+
+.chapter li strong {
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.chapter hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 2.5rem 0;
+}
+
+/* Code — the incantations */
+.chapter code {
+  font-family: var(--font-code);
+  font-size: 0.82em;
+  background: var(--bg-code);
+  color: var(--gold);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  border: 1px solid var(--border-subtle);
+}
+
+.chapter pre {
+  margin: 1.5rem 0;
+  padding: 1.2rem 1.5rem;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow-x: auto;
+  position: relative;
+}
+
+.chapter pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text);
+  white-space: pre;
+  display: block;
+}
+
+/* ASCII art diagrams — preserve exactly */
+.chapter pre code {
+  font-variant-ligatures: none;
+  tab-size: 4;
+}
+
+/* Links */
+.chapter a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-decoration-color: var(--gold-dim);
+  text-underline-offset: 3px;
+  transition: all 0.2s;
+}
+
+.chapter a:hover {
+  color: var(--gold-bright);
+  text-decoration-color: var(--gold);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GEOMETRY CANVAS — Background sacred patterns
+   ═══════════════════════════════════════════════════════════ */
+#geometry-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.03;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE NAVIGATION
+   ═══════════════════════════════════════════════════════════ */
+#mobile-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  background: var(--bg-deep);
+  color: var(--gold);
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+#mobile-toggle:hover {
+  border-color: var(--gold-dim);
+}
+
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 90;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BACK TO TOP
+   ═══════════════════════════════════════════════════════════ */
+#back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  background: var(--bg-deep);
+  color: var(--gold-dim);
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+  z-index: 50;
+}
+
+#back-to-top.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#back-to-top:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ADINKRA CHAPTER MARKERS
+   ═══════════════════════════════════════════════════════════ */
+.chapter-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.chapter-marker svg {
+  width: 28px;
+  height: 28px;
+  opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 960px) {
+  :root {
+    --sidebar-w: 280px;
+  }
+
+  #app.visible {
+    grid-template-columns: 1fr;
+  }
+
+  #sidebar {
+    transform: translateX(-100%);
+  }
+
+  #sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+  }
+
+  #sidebar-overlay.open {
+    display: block;
+  }
+
+  #mobile-toggle {
+    display: flex;
+  }
+
+  #content {
+    grid-column: 1;
+    padding: 3.5rem 1.2rem 4rem;
+  }
+
+  body { font-size: 17px; }
+
+  .chapter h3 { font-size: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 16px; }
+  #hero h1 { font-size: 1.8rem; }
+  .chapter pre { padding: 0.8rem; font-size: 0.72rem; }
+  .chapter pre code { font-size: 0.72rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOADING STATE
+   ═══════════════════════════════════════════════════════════ */
+#loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: var(--text-dim);
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 1rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════════════════════════════════════════════════════
+   PRINT
+   ═══════════════════════════════════════════════════════════ */
+@media print {
+  #sidebar, #mobile-toggle, #back-to-top, #hero, #geometry-bg,
+  .sacred-divider, .chapter-marker { display: none !important; }
+  #app.visible { display: block !important; }
+  #content { padding: 0 !important; }
+  .chapter { opacity: 1 !important; transform: none !important; max-width: 100%; }
+  body { color: #000; background: #fff; font-size: 11pt; }
+  .chapter h3 { color: #000; }
+  .chapter pre { border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     THE GATEWAY — Hero with sacred geometry
+     ═══════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <canvas id="hero-geometry"></canvas>
+  <div id="hero-content">
+    <h1>Letters on the Universal Machine</h1>
+    <p class="subtitle">A Treatise on WebAssembly, from Transistors to Transcendence</p>
+    <p class="manner">In the manner of Euler's Letters to a German Princess</p>
+    <button class="enter-scroll" onclick="enterScroll()">Begin the Initiation</button>
+  </div>
+  <div class="scroll-hint">scroll to enter</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     THE READING CHAMBER
+     ═══════════════════════════════════════════════════════════ -->
+<div id="app">
+  <button id="mobile-toggle" onclick="toggleSidebar()" aria-label="Toggle navigation">&#9776;</button>
+  <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <nav id="sidebar">
+    <div id="sidebar-header">
+      <h2>Table of Scrolls</h2>
+      <div id="reading-progress"><div id="reading-progress-bar"></div></div>
+    </div>
+    <div id="nav-tree"></div>
+  </nav>
+
+  <main id="content">
+    <div id="loading"><div class="spinner"></div>Unrolling the scroll...</div>
+  </main>
+</div>
+
+<canvas id="geometry-bg"></canvas>
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   SACRED GEOMETRY — Hero canvas animation
+   Flower of Life + rotating Metatron's Cube
+   ═══════════════════════════════════════════════════════════ */
+(function initHeroGeometry() {
+  const canvas = document.getElementById('hero-geometry');
+  const ctx = canvas.getContext('2d');
+  let w, h, frame = 0;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Flower of Life parameters
+  const flowerR = Math.min(w, h) * 0.22;
+
+  function drawCircle(cx, cy, r, alpha) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(201, 169, 110, ${alpha})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  }
+
+  // Seed of Life: 7 circles
+  function drawSeedOfLife(cx, cy, r, alpha, rotation) {
+    drawCircle(cx, cy, r, alpha);
+    for (let i = 0; i < 6; i++) {
+      const a = (i * Math.PI / 3) + rotation;
+      drawCircle(cx + r * Math.cos(a), cy + r * Math.sin(a), r, alpha);
+    }
+  }
+
+  // Flower of Life: 2 rings
+  function drawFlowerOfLife(cx, cy, r, alpha, rotation) {
+    drawSeedOfLife(cx, cy, r, alpha, rotation);
+    for (let i = 0; i < 6; i++) {
+      const a = (i * Math.PI / 3) + rotation;
+      const bx = cx + r * Math.cos(a);
+      const by = cy + r * Math.sin(a);
+      for (let j = -1; j <= 1; j += 2) {
+        const a2 = a + j * Math.PI / 3;
+        drawCircle(bx + r * Math.cos(a2), by + r * Math.sin(a2), r, alpha * 0.6);
+      }
+    }
+  }
+
+  // Metatron's Cube: connect 13 vertices
+  function drawMetatronsCube(cx, cy, r, alpha, rotation) {
+    const pts = [[cx, cy]];
+    for (let ring = 1; ring <= 2; ring++) {
+      for (let i = 0; i < 6; i++) {
+        const a = (i * Math.PI / 3) + rotation;
+        pts.push([cx + r * ring * Math.cos(a), cy + r * ring * Math.sin(a)]);
+      }
+    }
+    ctx.strokeStyle = `rgba(201, 169, 110, ${alpha * 0.3})`;
+    ctx.lineWidth = 0.4;
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        ctx.beginPath();
+        ctx.moveTo(pts[i][0], pts[i][1]);
+        ctx.lineTo(pts[j][0], pts[j][1]);
+        ctx.stroke();
+      }
+    }
+    // Vertices
+    pts.forEach(([x, y]) => {
+      ctx.beginPath();
+      ctx.arc(x, y, 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(201, 169, 110, ${alpha * 0.6})`;
+      ctx.fill();
+    });
+  }
+
+  // African fractal pattern — recursive triangles (Ethiopian cross inspired)
+  function drawFractalTriangle(cx, cy, size, depth, alpha, rotation) {
+    if (depth <= 0 || size < 4) return;
+    const pts = [];
+    for (let i = 0; i < 3; i++) {
+      const a = (i * 2 * Math.PI / 3) - Math.PI / 2 + rotation;
+      pts.push([cx + size * Math.cos(a), cy + size * Math.sin(a)]);
+    }
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    pts.forEach(p => ctx.lineTo(p[0], p[1]));
+    ctx.closePath();
+    ctx.strokeStyle = `rgba(201, 169, 110, ${alpha})`;
+    ctx.lineWidth = 0.6;
+    ctx.stroke();
+
+    // Recurse at midpoints
+    for (let i = 0; i < 3; i++) {
+      const mx = (pts[i][0] + pts[(i + 1) % 3][0]) / 2;
+      const my = (pts[i][1] + pts[(i + 1) % 3][1]) / 2;
+      drawFractalTriangle(mx, my, size * 0.45, depth - 1, alpha * 0.7, rotation + 0.1);
+    }
+  }
+
+  function animate() {
+    frame++;
+    ctx.clearRect(0, 0, w, h);
+
+    const t = frame * 0.003;
+    const cx = w / 2;
+    const cy = h / 2;
+    const r = Math.min(w, h) * 0.08;
+
+    // Central Flower of Life
+    drawFlowerOfLife(cx, cy, r, 0.15, t * 0.2);
+
+    // Metatron's Cube overlay
+    drawMetatronsCube(cx, cy, r * 0.9, 0.12, -t * 0.15);
+
+    // Fractal triangles in corners
+    const cornerSize = Math.min(w, h) * 0.12;
+    drawFractalTriangle(w * 0.12, h * 0.15, cornerSize, 3, 0.06, t * 0.1);
+    drawFractalTriangle(w * 0.88, h * 0.15, cornerSize, 3, 0.06, -t * 0.1);
+    drawFractalTriangle(w * 0.12, h * 0.85, cornerSize, 3, 0.06, -t * 0.08);
+    drawFractalTriangle(w * 0.88, h * 0.85, cornerSize, 3, 0.06, t * 0.08);
+
+    // Orbiting dots
+    for (let i = 0; i < 12; i++) {
+      const a = (i * Math.PI / 6) + t * 0.4;
+      const orbitR = r * 2.8 + Math.sin(t + i) * 15;
+      const x = cx + orbitR * Math.cos(a);
+      const y = cy + orbitR * Math.sin(a);
+      ctx.beginPath();
+      ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(201, 169, 110, ${0.2 + 0.1 * Math.sin(t * 2 + i)})`;
+      ctx.fill();
+    }
+
+    if (document.getElementById('hero').style.display !== 'none') {
+      requestAnimationFrame(animate);
+    }
+  }
+  animate();
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   BACKGROUND GEOMETRY — Subtle patterns while reading
+   ═══════════════════════════════════════════════════════════ */
+(function initBgGeometry() {
+  const canvas = document.getElementById('geometry-bg');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    draw();
+  }
+
+  function draw() {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(201, 169, 110, 0.4)';
+    ctx.lineWidth = 0.5;
+
+    // Subtle grid of Seed of Life patterns
+    const spacing = 300;
+    const r = 20;
+    for (let x = spacing / 2; x < w; x += spacing) {
+      for (let y = spacing / 2; y < h; y += spacing) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.stroke();
+        for (let i = 0; i < 6; i++) {
+          const a = i * Math.PI / 3;
+          ctx.beginPath();
+          ctx.arc(x + r * Math.cos(a), y + r * Math.sin(a), r, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   ADINKRA SYMBOLS — SVG generators
+   West African sacred geometry
+   ═══════════════════════════════════════════════════════════ */
+const adinkra = {
+  // Nsoromma — child of the heavens (star)
+  nsoromma: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+    <circle cx="20" cy="20" r="8"/>
+    <line x1="20" y1="4" x2="20" y2="12"/><line x1="20" y1="28" x2="20" y2="36"/>
+    <line x1="4" y1="20" x2="12" y2="20"/><line x1="28" y1="20" x2="36" y2="20"/>
+    <line x1="8.7" y1="8.7" x2="14.3" y2="14.3"/><line x1="25.7" y1="25.7" x2="31.3" y2="31.3"/>
+    <line x1="31.3" y1="8.7" x2="25.7" y2="14.3"/><line x1="14.3" y1="25.7" x2="8.7" y2="31.3"/>
+  </svg>`,
+  // Sankofa — go back and learn
+  sankofa: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+    <path d="M20 6 C30 6 34 14 34 20 C34 28 28 34 20 34 C12 34 6 28 6 20"/>
+    <path d="M6 20 C6 14 10 10 14 10"/>
+    <circle cx="14" cy="10" r="2.5" fill="currentColor"/>
+  </svg>`,
+  // Dwennimmen — strength of mind (ram's horns)
+  dwennimmen: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+    <path d="M20 8 C14 8 8 12 8 20 C8 24 10 26 14 26"/>
+    <path d="M20 8 C26 8 32 12 32 20 C32 24 30 26 26 26"/>
+    <path d="M20 32 C14 32 8 28 8 20"/><path d="M20 32 C26 32 32 28 32 20"/>
+    <line x1="20" y1="6" x2="20" y2="34"/>
+  </svg>`,
+  // Ananse Ntontan — spider's web (wisdom)
+  ananse: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+    <circle cx="20" cy="20" r="4"/><circle cx="20" cy="20" r="10"/><circle cx="20" cy="20" r="16"/>
+    <line x1="20" y1="4" x2="20" y2="36"/><line x1="4" y1="20" x2="36" y2="20"/>
+    <line x1="8.7" y1="8.7" x2="31.3" y2="31.3"/><line x1="31.3" y1="8.7" x2="8.7" y2="31.3"/>
+  </svg>`,
+  // Funtunfunefu — unity in diversity
+  funtun: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+    <path d="M20 6 A14 14 0 0 1 20 34"/><path d="M20 6 A14 14 0 0 0 20 34"/>
+    <circle cx="20" cy="13" r="3"/><circle cx="20" cy="27" r="3"/>
+  </svg>`,
+};
+
+const adinkraKeys = Object.keys(adinkra);
+
+function getAdinkraSVG(index) {
+  return adinkra[adinkraKeys[index % adinkraKeys.length]];
+}
+
+function makeSacredDivider(index) {
+  return `<div class="sacred-divider">
+    <span class="line"></span>
+    <span style="color:var(--gold-dim)">${getAdinkraSVG(index)}</span>
+    <span class="line"></span>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TREATISE PARSER — Split markdown into chapters
+   ═══════════════════════════════════════════════════════════ */
+function parseTreatise(md) {
+  const lines = md.split('\n');
+  const chapters = [];
+  let current = null;
+  let partName = '';
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Part headings
+    if (/^## Part \w+:/.test(line)) {
+      partName = line.replace(/^## /, '');
+    }
+
+    // Chapter headings (### Letter N or ## Preface or ## Epilogue)
+    if (/^### Letter \d+/.test(line) || /^## Preface/.test(line) || /^## Epilogue/.test(line)) {
+      if (current) chapters.push(current);
+      const title = line.replace(/^#{2,3}\s+/, '');
+      const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+      current = { title, id, part: partName, lines: [line] };
+    } else if (current) {
+      current.lines.push(line);
+    }
+  }
+  if (current) chapters.push(current);
+  return chapters;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAVIGATION BUILDER
+   ═══════════════════════════════════════════════════════════ */
+function buildNavigation(chapters) {
+  const tree = document.getElementById('nav-tree');
+  const parts = new Map();
+
+  chapters.forEach((ch, i) => {
+    const partKey = ch.part || 'Introduction';
+    if (!parts.has(partKey)) parts.set(partKey, []);
+    parts.get(partKey).push({ ...ch, index: i });
+  });
+
+  let html = '';
+  let partIdx = 0;
+  parts.forEach((letters, partName) => {
+    const symbol = getAdinkraSVG(partIdx);
+    html += `<div class="nav-part" data-part="${partIdx}">
+      <div class="nav-part-title" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span class="chevron">&#9660;</span>
+        <span>${partName === 'Introduction' ? 'Preface' : partName}</span>
+      </div>
+      <div class="nav-letters">`;
+
+    letters.forEach(ch => {
+      const short = ch.title.length > 40 ? ch.title.substring(0, 38) + '...' : ch.title;
+      html += `<a class="nav-letter" data-target="${ch.id}" onclick="scrollToChapter('${ch.id}')">${short}</a>`;
+    });
+
+    html += `</div></div>`;
+    partIdx++;
+  });
+
+  tree.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER — Convert chapters to HTML
+   ═══════════════════════════════════════════════════════════ */
+function renderChapters(chapters) {
+  const content = document.getElementById('content');
+
+  // Configure marked
+  marked.setOptions({
+    breaks: false,
+    gfm: true,
+  });
+
+  let html = '';
+  chapters.forEach((ch, i) => {
+    const mdContent = ch.lines.join('\n');
+    const rendered = marked.parse(mdContent);
+
+    html += `<article class="chapter" id="${ch.id}">
+      <div class="chapter-marker">${getAdinkraSVG(i)}</div>
+      ${rendered}
+    </article>`;
+
+    if (i < chapters.length - 1) {
+      html += makeSacredDivider(i);
+    }
+  });
+
+  content.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLSPY — Track reading position
+   ═══════════════════════════════════════════════════════════ */
+function initScrollspy(chapters) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Update nav
+        document.querySelectorAll('.nav-letter').forEach(el => el.classList.remove('active'));
+        const navItem = document.querySelector(`.nav-letter[data-target="${entry.target.id}"]`);
+        if (navItem) {
+          navItem.classList.add('active');
+          // Scroll nav into view
+          navItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          // Expand parent part
+          const part = navItem.closest('.nav-part');
+          if (part) part.classList.remove('collapsed');
+        }
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+
+  document.querySelectorAll('.chapter').forEach(el => observer.observe(el));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REVEAL ON SCROLL — Fade in chapters
+   ═══════════════════════════════════════════════════════════ */
+function initRevealOnScroll() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { rootMargin: '0px 0px -80px 0px', threshold: 0.05 });
+
+  document.querySelectorAll('.chapter').forEach(el => observer.observe(el));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   READING PROGRESS
+   ═══════════════════════════════════════════════════════════ */
+function initReadingProgress() {
+  const bar = document.getElementById('reading-progress-bar');
+  const btn = document.getElementById('back-to-top');
+
+  function update() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    bar.style.width = progress + '%';
+
+    if (scrollTop > 600) {
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACTIONS
+   ═══════════════════════════════════════════════════════════ */
+function enterScroll() {
+  const hero = document.getElementById('hero');
+  const app = document.getElementById('app');
+  hero.style.display = 'none';
+  app.classList.add('visible');
+  window.scrollTo(0, 0);
+}
+
+function scrollToChapter(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Close mobile sidebar
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('open');
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   KEYBOARD NAVIGATION
+   ═══════════════════════════════════════════════════════════ */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('open');
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════
+   HERO SCROLL DETECTION — Auto-enter on scroll past hero
+   ═══════════════════════════════════════════════════════════ */
+let heroActive = true;
+window.addEventListener('scroll', () => {
+  if (!heroActive) return;
+  if (window.scrollY > window.innerHeight * 0.5) {
+    heroActive = false;
+    enterScroll();
+  }
+}, { passive: true });
+
+/* ═══════════════════════════════════════════════════════════
+   INIT — Load and render the treatise
+   ═══════════════════════════════════════════════════════════ */
+async function init() {
+  try {
+    const res = await fetch('TREATISE.md');
+    if (!res.ok) throw new Error('Failed to load treatise');
+    const md = await res.text();
+    const chapters = parseTreatise(md);
+
+    renderChapters(chapters);
+    buildNavigation(chapters);
+    initScrollspy(chapters);
+    initRevealOnScroll();
+    initReadingProgress();
+  } catch (err) {
+    document.getElementById('loading').innerHTML =
+      `<p style="color:var(--accent-crimson)">Could not load the treatise. ${err.message}</p>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
