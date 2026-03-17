@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "crates/compute-engine",
+    "crates/gpu-renderer",
+    "crates/wit-components",
+]
+resolver = "2"

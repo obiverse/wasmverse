@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>wasmverse — Path 3: WIT Component (Particle System)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 { font-size: 14px; opacity: 0.6; margin-bottom: 10px; }
+        h2 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.4;
+            margin-bottom: 8px;
+        }
+        canvas { border: 1px solid #222; cursor: none; }
+        .stats { font-size: 11px; opacity: 0.4; margin-top: 8px; }
+        .explainer {
+            max-width: 700px;
+            margin-top: 20px;
+            padding: 16px;
+            background: #111;
+            border: 1px solid #222;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .explainer h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            margin-bottom: 8px;
+        }
+        .explainer code {
+            background: #1a1a1a;
+            padding: 1px 4px;
+            border-radius: 2px;
+            color: #8f8;
+        }
+        .explainer .plan9 { color: #88f; }
+        .explainer .wasm { color: #f88; }
+    </style>
+</head>
+<body>
+    <h1>wasmverse / path 3 / wit component model</h1>
+    <h2>Particle System — Component Architecture Demo</h2>
+
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <div class="stats" id="stats"></div>
+
+    <div class="explainer">
+        <h3>What's happening</h3>
+        <p>
+            The particle simulation runs in <span class="wasm">Wasm</span> (Rust compiled to wasm32).
+            JS reads particle data via zero-copy pointer into linear memory.
+            Canvas2D renders particles with alpha blending.
+        </p>
+        <p style="margin-top: 8px;">
+            The <code>wit/canvas.wit</code> file defines the <em>interface contract</em>.
+            Today we use wasm-bindgen as the bridge (the "polyfill").
+            Tomorrow, with the Component Model, any language implementing the
+            <code>draw-app</code> world will Just Work — same interface, any language.
+        </p>
+        <h3 style="margin-top: 12px;">The Plan 9 parallel</h3>
+        <p>
+            <span class="plan9">Plan 9</span>: process mounts <code>/dev/draw</code> → draws pixels.
+            It doesn't know if /dev/draw is local GPU, remote display, or VNC.
+        </p>
+        <p>
+            <span class="wasm">Wasm</span>: component imports <code>wasmverse:canvas/surface</code> → draws pixels.
+            It doesn't know if the host is a browser, native window, or headless test.
+        </p>
+        <p style="margin-top: 8px; opacity: 0.6;">
+            Same pattern. Same power. Capability-based, namespace-scoped, transport-transparent.
+        </p>
+    </div>
+
+    <script type="module">
+// ============================================================================
+// PATH 3: WIT Component — Particle System
+// ============================================================================
+//
+// This demonstrates the component programming model:
+// - Wasm component owns ALL state + simulation logic
+// - JS acts as the "host" providing the canvas capability
+// - Communication through flat buffers in linear memory
+//
+// In a real Component Model setup:
+// - The WIT interface would be the contract
+// - cargo-component would generate bindings
+// - The host would provide surface/events implementations
+// - Components could compose (e.g., physics component + renderer component)
+
+import init, { WitDemo } from '../../crates/wit-components/pkg/wit_components.js';
+
+const wasm = await init();
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const statsEl = document.getElementById('stats');
+
+const demo = WitDemo.new(canvas.width, canvas.height);
+
+// Track mouse — in WIT terms, this is the "events" interface
+// The host (JS) captures events and feeds them to the component
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    demo.set_mouse(e.clientX - rect.left, e.clientY - rect.top);
+});
+
+let lastTime = performance.now();
+let frameCount = 0;
+let fps = 0;
+let lastFpsTime = lastTime;
+
+function frame() {
+    const now = performance.now();
+    const dt = (now - lastTime) / 1000.0;
+    lastTime = now;
+
+    // UPDATE: all simulation in Wasm
+    demo.update(dt);
+
+    // RENDER: read particle data via zero-copy pointer
+    const count = demo.particle_count();
+    const ptr = demo.particles_ptr();
+    // 8 floats per particle: [x, y, r, g, b, a, life, pad]
+    const data = new Float32Array(wasm.memory.buffer, ptr, count * 8);
+
+    // Clear with trail effect (semi-transparent black)
+    ctx.fillStyle = 'rgba(10, 10, 15, 0.15)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw particles
+    for (let i = 0; i < count; i++) {
+        const offset = i * 8;
+        const x = data[offset];
+        const y = data[offset + 1];
+        const r = data[offset + 2];
+        const g = data[offset + 3];
+        const b = data[offset + 4];
+        const a = data[offset + 5] / 255.0;
+        const life = data[offset + 6];
+
+        ctx.beginPath();
+        ctx.arc(x, y, 2 + life * 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r|0}, ${g|0}, ${b|0}, ${a.toFixed(2)})`;
+        ctx.fill();
+    }
+
+    // FPS
+    frameCount++;
+    if (now - lastFpsTime > 1000) {
+        fps = frameCount;
+        frameCount = 0;
+        lastFpsTime = now;
+    }
+    statsEl.textContent = `${fps} fps | ${count} particles | move mouse to spawn`;
+
+    requestAnimationFrame(frame);
+}
+
+frame();
+    </script>
+</body>
+</html>

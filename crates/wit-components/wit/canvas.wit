@@ -1,0 +1,255 @@
+// ============================================================================
+// PATH 3: WIT Interfaces — The "9P" of WebAssembly
+// ============================================================================
+//
+// MENTAL MODEL:
+//   WIT = the universal interface language for Wasm components
+//   Like 9P was the universal protocol for Plan 9 resources
+//
+// WHY THIS MATTERS:
+//   - Any language can implement these interfaces → compile to .wasm
+//   - Components compose by wiring exports to imports (like Plan 9 bind)
+//   - No shared memory between components (security boundary)
+//   - Typed contracts replace raw bytes (unlike core Wasm's i32/f64 only)
+//
+// THE ANALOGY:
+//   Plan 9: mount /srv/draw /dev/draw  →  process can now draw
+//   Wasm:   import wasmverse:canvas/surface  →  component can now draw
+//
+//   Plan 9: any program speaking 9P can be a file server
+//   Wasm:   any language compiling to Wasm can implement a WIT interface
+//
+// HOW TO READ THIS:
+//   package = namespace (like a Go module path)
+//   interface = a named collection of types + functions
+//   world = a complete contract (what a component imports + exports)
+//   resource = an opaque handle (like a file descriptor)
+
+package wasmverse:canvas@0.1.0;
+
+/// The core rendering surface — like /dev/draw in Plan 9.
+///
+/// Any component that imports this interface can draw.
+/// Any host (browser, native, headless) can implement it.
+/// The component doesn't know or care which.
+interface surface {
+    /// A 2D point — the atomic unit of geometry.
+    record point {
+        x: f32,
+        y: f32,
+    }
+
+    /// RGBA color — each channel 0-255.
+    record color {
+        r: u8,
+        g: u8,
+        b: u8,
+        a: u8,
+    }
+
+    /// A rectangle defined by origin + size.
+    record rect {
+        x: f32,
+        y: f32,
+        width: f32,
+        height: f32,
+    }
+
+    /// Text rendering parameters.
+    record text-style {
+        size: f32,
+        family: string,
+        weight: u16,
+    }
+
+    /// A drawing surface — opaque resource (like a file descriptor).
+    ///
+    /// In Plan 9 terms: this is /dev/draw opened for writing.
+    /// The host decides what it actually renders to:
+    ///   - Browser host → <canvas> element
+    ///   - Native host → window surface (Vulkan/Metal)
+    ///   - Test host → pixel buffer in memory
+    ///   - Headless host → PNG file
+    resource canvas {
+        /// Create a canvas of given dimensions.
+        /// Like: open("/dev/draw", OWRITE) in Plan 9
+        constructor(width: u32, height: u32);
+
+        /// Clear the entire surface.
+        clear: func(color: color);
+
+        /// Draw a filled rectangle.
+        fill-rect: func(rect: rect, color: color);
+
+        /// Draw a rectangle outline.
+        stroke-rect: func(rect: rect, color: color, width: f32);
+
+        /// Draw a line between two points.
+        draw-line: func(from: point, to: point, color: color, width: f32);
+
+        /// Draw a filled circle.
+        fill-circle: func(center: point, radius: f32, color: color);
+
+        /// Draw text at a position.
+        draw-text: func(text: string, pos: point, color: color, style: text-style);
+
+        /// Read back pixels as RGBA bytes.
+        /// Like: read() on /dev/draw in Plan 9
+        pixels: func() -> list<u8>;
+
+        /// Get canvas dimensions.
+        width: func() -> u32;
+        height: func() -> u32;
+    }
+}
+
+/// Input events — like /dev/mouse and /dev/keyboard in Plan 9.
+///
+/// Plan 9 gave you /dev/mouse (reads produce mouse events)
+/// and /dev/cons (reads produce keyboard events).
+/// This is the same idea: a stream of input events.
+interface events {
+    use surface.{point};
+
+    /// Mouse/touch button state.
+    enum button {
+        left,
+        right,
+        middle,
+    }
+
+    /// Keyboard modifier flags.
+    flags modifiers {
+        shift,
+        ctrl,
+        alt,
+        meta,
+    }
+
+    /// Input event — a variant (tagged union).
+    /// Like reading from /dev/mouse or /dev/cons — you get
+    /// different message types from the same "file".
+    variant event {
+        /// Pointer moved to position
+        pointer-move(point),
+        /// Pointer button pressed
+        pointer-down(tuple<point, button>),
+        /// Pointer button released
+        pointer-up(tuple<point, button>),
+        /// Key pressed (key name string)
+        key-down(tuple<string, modifiers>),
+        /// Key released
+        key-up(string),
+        /// Mouse wheel / scroll
+        scroll(tuple<f32, f32>),
+        /// Window/canvas resized
+        resize(tuple<u32, u32>),
+        /// Animation frame tick (delta time in seconds)
+        tick(f64),
+    }
+
+    /// Poll for next event. Returns none if no events pending.
+    /// Like a non-blocking read from /dev/mouse.
+    poll: func() -> option<event>;
+
+    /// Wait for next event. Blocks until available.
+    /// Like a blocking read from /dev/mouse.
+    next: func() -> event;
+}
+
+/// Persistence — like the filesystem in Plan 9.
+///
+/// Components can read/write named data without knowing
+/// the storage backend (localStorage, IndexedDB, filesystem, 9S).
+interface storage {
+    /// Read a value by key. Returns none if not found.
+    get: func(key: string) -> option<list<u8>>;
+
+    /// Write a value by key.
+    set: func(key: string, value: list<u8>);
+
+    /// Delete a key.
+    delete: func(key: string);
+
+    /// List keys matching a prefix.
+    /// Like: ls /path/prefix* in Plan 9
+    list: func(prefix: string) -> list<string>;
+}
+
+/// Network — like /net in Plan 9.
+///
+/// Plan 9's /net/tcp/clone gave you a new connection.
+/// This is the same capability pattern.
+interface net {
+    /// HTTP request
+    record request {
+        method: string,
+        url: string,
+        headers: list<tuple<string, string>>,
+        body: option<list<u8>>,
+    }
+
+    /// HTTP response
+    record response {
+        status: u16,
+        headers: list<tuple<string, string>>,
+        body: list<u8>,
+    }
+
+    /// Make an HTTP request.
+    fetch: func(req: request) -> result<response, string>;
+}
+
+// ============================================================================
+// WORLDS — Complete component contracts
+// ============================================================================
+
+/// A simple drawing app — imports surface + events, exports run.
+/// This is the "hello world" of wasmverse components.
+///
+/// Any language (Rust, Go, Python, C) can implement this world.
+/// The host provides canvas + events; the component draws.
+world draw-app {
+    import surface;
+    import events;
+
+    /// Entry point — the host calls this to start the app.
+    export run: func();
+}
+
+/// A full app — drawing + storage + network.
+/// This is the "Plan 9 process" — it has access to:
+///   - display (surface)
+///   - input (events)
+///   - filesystem (storage)
+///   - network (net)
+///
+/// All via capability-based imports. The component can only
+/// use what the host provides — sandboxed by construction.
+world full-app {
+    import surface;
+    import events;
+    import storage;
+    import net;
+
+    /// The app's entry point.
+    export run: func();
+
+    /// Called each frame with delta time.
+    export update: func(dt: f64);
+
+    /// Called when the app should save state (before unload).
+    export save: func();
+}
+
+/// A headless compute service — no UI, just data processing.
+/// Like a Plan 9 file server that transforms data.
+world service {
+    import storage;
+    import net;
+
+    /// Process a request and return a response.
+    /// The component IS the "file server" — it receives
+    /// reads (requests) and returns writes (responses).
+    export handle: func(input: list<u8>) -> list<u8>;
+}

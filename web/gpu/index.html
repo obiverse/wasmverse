@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>wasmverse — Path 2: GPU Renderer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 { font-size: 14px; opacity: 0.6; margin-bottom: 10px; }
+        h2 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.4;
+            margin-bottom: 8px;
+        }
+        canvas {
+            border: 1px solid #222;
+        }
+        .stats {
+            font-size: 11px;
+            opacity: 0.4;
+            margin-top: 8px;
+        }
+        .fallback {
+            color: #ff6b6b;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+        }
+        .fallback code {
+            background: #1a1a1a;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>wasmverse / path 2 / gpu renderer</h1>
+    <h2>WebGPU Plasma — Wasm Orchestrates, GPU Paints Millions of Pixels</h2>
+
+    <canvas id="gpu-canvas" width="800" height="600"></canvas>
+    <div class="stats" id="stats"></div>
+    <div id="error"></div>
+
+    <script type="module">
+// ============================================================================
+// PATH 2: GPU Rendering — Wasm as GPU Orchestrator
+// ============================================================================
+//
+// TEACHING NOTES:
+//
+// The rendering pipeline here is:
+//   Rust/Wasm  →  WebGPU API calls  →  GPU hardware  →  pixels on screen
+//
+// Wasm's role: create pipelines, write uniforms, encode commands, submit
+// GPU's role: execute shaders on ALL pixels in parallel (millions per frame)
+//
+// This is like Plan 9's /dev/draw but with programmable shaders.
+// The shader (WGSL) is a program that runs ON the GPU — think of it as
+// a "file server" that answers "what color is pixel (x,y)?" in parallel
+// for every pixel simultaneously.
+//
+// WebGPU is supported in Chrome, Edge, Firefox (nightly). Safari: partial.
+// Check: chrome://flags → #enable-unsafe-webgpu if needed.
+
+import init, { GpuRenderer } from '../../crates/gpu-renderer/pkg/gpu_renderer.js';
+
+const statsEl = document.getElementById('stats');
+const errorEl = document.getElementById('error');
+
+// Check WebGPU support
+if (!navigator.gpu) {
+    errorEl.innerHTML = `
+        <div class="fallback">
+            <p>WebGPU is not available in this browser.</p>
+            <p style="margin-top: 12px">Try:</p>
+            <ul style="text-align: left; margin-top: 8px; list-style: none;">
+                <li>• Chrome/Edge 113+ (enabled by default)</li>
+                <li>• Firefox Nightly with <code>dom.webgpu.enabled</code></li>
+                <li>• Safari Technology Preview</li>
+            </ul>
+            <p style="margin-top: 12px; opacity: 0.6">
+                Path 1 (compute-engine) works in all browsers — start there.
+            </p>
+        </div>
+    `;
+    throw new Error('WebGPU not supported');
+}
+
+// Initialize Wasm module
+await init();
+
+// Create GPU renderer (async — negotiates with GPU hardware)
+let renderer;
+try {
+    renderer = await GpuRenderer.new('gpu-canvas');
+} catch (e) {
+    errorEl.innerHTML = `<div class="fallback">GPU init failed: ${e}</div>`;
+    throw e;
+}
+
+// Animation loop
+let startTime = performance.now();
+let frameCount = 0;
+let fps = 0;
+let lastFpsTime = startTime;
+
+function frame() {
+    const now = performance.now();
+    const time = (now - startTime) / 1000.0; // seconds
+
+    // ONE call to Wasm → Wasm makes ~5 WebGPU calls → GPU renders entire frame
+    renderer.render_frame(time);
+
+    // FPS tracking
+    frameCount++;
+    if (now - lastFpsTime > 1000) {
+        fps = frameCount;
+        frameCount = 0;
+        lastFpsTime = now;
+    }
+    statsEl.textContent = `${fps} fps | time: ${time.toFixed(1)}s | 800×600 = 480,000 pixels computed in parallel per frame`;
+
+    requestAnimationFrame(frame);
+}
+
+frame();
+    </script>
+</body>
+</html>

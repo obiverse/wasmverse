@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>wasmverse — Path 1: Compute Engine</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 { font-size: 14px; opacity: 0.6; margin-bottom: 10px; }
+        .demo-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .demo-section h2 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.4;
+            margin-bottom: 8px;
+        }
+        canvas {
+            border: 1px solid #222;
+            cursor: crosshair;
+            image-rendering: pixelated;
+        }
+        .controls {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0;
+        }
+        button {
+            background: #1a1a1a;
+            color: #888;
+            border: 1px solid #333;
+            padding: 4px 12px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        button:hover { color: #fff; border-color: #555; }
+        .stats {
+            font-size: 11px;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+    <h1>wasmverse / path 1 / compute engine</h1>
+
+    <!-- DEMO 1: Game of Life -->
+    <div class="demo-section">
+        <h2>Conway's Game of Life — Wasm State, Canvas Paint</h2>
+        <canvas id="life" width="512" height="512"></canvas>
+        <div class="controls">
+            <button id="pause">pause</button>
+            <button id="step">step</button>
+            <button id="clear">clear</button>
+            <button id="random">random</button>
+            <button id="glider">+ glider</button>
+            <button id="pulsar">+ pulsar</button>
+        </div>
+        <div class="stats" id="life-stats"></div>
+    </div>
+
+    <!-- DEMO 2: Mandelbrot -->
+    <div class="demo-section">
+        <h2>Mandelbrot Set — Pure Wasm Compute, Zero-Copy Blit</h2>
+        <canvas id="mandelbrot" width="512" height="512"></canvas>
+        <div class="controls">
+            <button id="zoom-in">zoom in</button>
+            <button id="zoom-out">zoom out</button>
+            <button id="reset-view">reset</button>
+        </div>
+        <div class="stats" id="mandel-stats"></div>
+    </div>
+
+    <!-- WEB COMPONENT DEMO -->
+    <div class="demo-section">
+        <h2>Web Component — Works in Any Framework</h2>
+        <div id="webcomp-slot"></div>
+        <div class="stats">
+            &lt;wasm-life&gt; custom element — drop into React, Vue, Svelte, anything
+        </div>
+    </div>
+
+    <script type="module">
+// ============================================================================
+// PATH 1: JS side — thin presentation layer
+// ============================================================================
+//
+// TEACHING NOTES:
+// - init() loads and compiles the .wasm binary
+// - After init(), all exported Rust functions/structs are available
+// - Memory sharing: we read Wasm linear memory directly via typed arrays
+// - The animation loop is in JS (requestAnimationFrame is a browser API)
+// - ALL computation happens in Wasm — JS just paints pixels
+
+import init, { Universe, Cell, MandelbrotRenderer } from '../../crates/compute-engine/pkg/compute_engine.js';
+
+const wasm = await init();
+
+// ---- DEMO 1: Game of Life ----
+
+const CELL_SIZE = 2; // pixels per cell
+const GRID_W = 256;
+const GRID_H = 256;
+
+const universe = Universe.new(GRID_W, GRID_H);
+const lifeCanvas = document.getElementById('life');
+const lifeCtx = lifeCanvas.getContext('2d');
+const statsEl = document.getElementById('life-stats');
+
+let paused = false;
+let lastTime = performance.now();
+let frameCount = 0;
+let fps = 0;
+
+function renderLife() {
+    // KEY CONCEPT: Zero-copy memory access
+    // cells_ptr() returns a pointer (integer) into Wasm linear memory
+    // We create a Uint8Array VIEW over those bytes — not a copy!
+    const cellsPtr = universe.cells_ptr();
+    const cells = new Uint8Array(wasm.memory.buffer, cellsPtr, GRID_W * GRID_H);
+
+    // Paint to canvas — this is the ONLY work JS does
+    const imageData = lifeCtx.createImageData(GRID_W, GRID_H);
+    for (let i = 0; i < cells.length; i++) {
+        const base = i * 4;
+        if (cells[i] === 1) { // Cell::Alive = 1
+            imageData.data[base] = 0;
+            imageData.data[base + 1] = 255;
+            imageData.data[base + 2] = 100;
+            imageData.data[base + 3] = 255;
+        } else {
+            imageData.data[base] = 10;
+            imageData.data[base + 1] = 10;
+            imageData.data[base + 2] = 10;
+            imageData.data[base + 3] = 255;
+        }
+    }
+
+    // Scale up: draw small ImageData then scale via CSS or drawImage
+    lifeCtx.putImageData(imageData, 0, 0);
+    // Scale to fill canvas
+    lifeCtx.imageSmoothingEnabled = false;
+    lifeCtx.drawImage(lifeCanvas, 0, 0, GRID_W, GRID_H, 0, 0, 512, 512);
+
+    // FPS counter
+    frameCount++;
+    const now = performance.now();
+    if (now - lastTime > 1000) {
+        fps = frameCount;
+        frameCount = 0;
+        lastTime = now;
+    }
+    statsEl.textContent = `gen: ${universe.generation()} | ${fps} fps | ${GRID_W}×${GRID_H} cells`;
+}
+
+function animateLife() {
+    if (!paused) {
+        universe.tick();  // ALL computation in Wasm
+    }
+    renderLife();
+    requestAnimationFrame(animateLife);
+}
+
+// Controls
+document.getElementById('pause').onclick = () => {
+    paused = !paused;
+    document.getElementById('pause').textContent = paused ? 'play' : 'pause';
+};
+document.getElementById('step').onclick = () => { universe.tick(); renderLife(); };
+document.getElementById('clear').onclick = () => { universe.clear(); renderLife(); };
+document.getElementById('random').onclick = () => { universe.randomize(); renderLife(); };
+document.getElementById('glider').onclick = () => {
+    universe.insert_glider(10, 10);
+    renderLife();
+};
+document.getElementById('pulsar').onclick = () => {
+    universe.insert_pulsar(120, 120);
+    renderLife();
+};
+
+// Click to toggle cells
+lifeCanvas.addEventListener('click', (e) => {
+    const rect = lifeCanvas.getBoundingClientRect();
+    const scaleX = GRID_W / rect.width;
+    const scaleY = GRID_H / rect.height;
+    const col = Math.floor((e.clientX - rect.left) * scaleX);
+    const row = Math.floor((e.clientY - rect.top) * scaleY);
+    universe.toggle_cell(row, col);
+    renderLife();
+});
+
+animateLife();
+
+// ---- DEMO 2: Mandelbrot ----
+
+const mandelbrot = MandelbrotRenderer.new(512, 512);
+const mandelCanvas = document.getElementById('mandelbrot');
+const mandelCtx = mandelCanvas.getContext('2d');
+const mandelStats = document.getElementById('mandel-stats');
+
+let mandelCx = -0.5, mandelCy = 0.0, mandelZoom = 0.4, maxIter = 256;
+
+function renderMandelbrot() {
+    const t0 = performance.now();
+
+    // ALL computation in Wasm — millions of complex number iterations
+    mandelbrot.render(mandelCx, mandelCy, mandelZoom, maxIter);
+
+    // Zero-copy blit: read pixels directly from Wasm linear memory
+    const ptr = mandelbrot.pixels_ptr();
+    const pixels = new Uint8ClampedArray(wasm.memory.buffer, ptr, 512 * 512 * 4);
+    const imageData = new ImageData(pixels, 512, 512);
+    mandelCtx.putImageData(imageData, 0, 0);
+
+    const ms = (performance.now() - t0).toFixed(1);
+    mandelStats.textContent = `${ms}ms | zoom: ${mandelZoom.toFixed(1)}x | center: (${mandelCx.toFixed(6)}, ${mandelCy.toFixed(6)})`;
+}
+
+// Click to recenter
+mandelCanvas.addEventListener('click', (e) => {
+    const rect = mandelCanvas.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    mandelCx += (px - 256) / (512 * mandelZoom);
+    mandelCy += (py - 256) / (512 * mandelZoom);
+    mandelZoom *= 2;
+    maxIter = Math.min(maxIter + 64, 2048);
+    renderMandelbrot();
+});
+
+document.getElementById('zoom-in').onclick = () => { mandelZoom *= 2; maxIter = Math.min(maxIter + 64, 2048); renderMandelbrot(); };
+document.getElementById('zoom-out').onclick = () => { mandelZoom = Math.max(0.2, mandelZoom / 2); maxIter = Math.max(64, maxIter - 64); renderMandelbrot(); };
+document.getElementById('reset-view').onclick = () => { mandelCx = -0.5; mandelCy = 0; mandelZoom = 0.4; maxIter = 256; renderMandelbrot(); };
+
+renderMandelbrot();
+
+// ---- DEMO 3: Web Component ----
+// This wraps the Wasm engine as a Custom Element — framework-agnostic
+
+class WasmLife extends HTMLElement {
+    connectedCallback() {
+        const shadow = this.attachShadow({ mode: 'open' });
+        const w = parseInt(this.getAttribute('width') || '128');
+        const h = parseInt(this.getAttribute('height') || '128');
+        const scale = parseInt(this.getAttribute('scale') || '2');
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w * scale;
+        canvas.height = h * scale;
+        canvas.style.border = '1px solid #333';
+        canvas.style.imageRendering = 'pixelated';
+        shadow.appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+        const uni = Universe.new(w, h);
+
+        const animate = () => {
+            uni.tick();
+            const ptr = uni.cells_ptr();
+            const cells = new Uint8Array(wasm.memory.buffer, ptr, w * h);
+            const img = ctx.createImageData(w, h);
+            for (let i = 0; i < cells.length; i++) {
+                const b = i * 4;
+                const alive = cells[i] === 1;
+                img.data[b] = alive ? 120 : 5;
+                img.data[b+1] = alive ? 220 : 5;
+                img.data[b+2] = alive ? 180 : 10;
+                img.data[b+3] = 255;
+            }
+            ctx.putImageData(img, 0, 0);
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(canvas, 0, 0, w, h, 0, 0, w * scale, h * scale);
+            requestAnimationFrame(animate);
+        };
+        animate();
+    }
+}
+customElements.define('wasm-life', WasmLife);
+
+// Insert the web component
+document.getElementById('webcomp-slot').innerHTML = '<wasm-life width="64" height="64" scale="3"></wasm-life>';
+    </script>
+</body>
+</html>
