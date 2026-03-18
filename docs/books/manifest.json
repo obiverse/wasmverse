@@ -48,7 +48,7 @@
       "file": "books/pwa.md",
       "symbol": "nsoromma",
       "accent": "#6e9ec9",
-      "letters": 40,
+      "letters": 41,
       "parts": 10,
       "description": "From the humblest HTTP request to the service worker's interception, from the manifest's declaration to the cache's sovereignty. What a web app actually is, why Progressive Web Apps had to exist, and how a URL becomes an icon on your home screen."
     }

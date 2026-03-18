@@ -1332,6 +1332,116 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
 
 For our Epistolary Library, where the user may be deep in a treatise, the most graceful approach is to show a small toast at the top of the screen: "A new letter has arrived. Refresh to see it." This maintains the literary metaphor while communicating the technical reality. The user can refresh at their leisure or simply continue reading — the update will take effect naturally when they next navigate.
 
+### Letter 26b: On the Self-Healing Application and the Chicken-and-Egg Problem
+
+Dear Reader,
+
+There is a failure mode in Progressive Web Apps that no tutorial warns you about, because it only reveals itself in production, under pressure, when real users with real cached state encounter a new version of your service worker that is architecturally different from the old one. I call it the **chicken-and-egg problem**, and it taught me more about sovereign applications than any specification ever could.
+
+Here is the scenario. You ship version 1 of your service worker with a **cache-first** strategy: every request is served from the cache, and the network is only consulted if the cache misses. This is fast and works beautifully offline. But then you realize that cache-first means your users never see updates — they are forever stuck on the version they first cached.
+
+So you ship version 2 with a **network-first** strategy. You also add clever update detection code in your client-side JavaScript: listeners for `updatefound`, `controllerchange`, `postMessage` from the new worker. You deploy with confidence.
+
+But the old version 1 service worker is still active on every user's device. And version 1 cached your old JavaScript — the JavaScript that does *not* have the update detection code. The old service worker intercepts the request for the new JavaScript and serves the cached old version. The new update detection code never runs. The user is trapped in version 1 forever.
+
+**The old service worker serves the old code that does not know how to detect the new service worker. This is the chicken-and-egg.**
+
+```
+    THE CHICKEN-AND-EGG TRAP
+
+    ┌─────────────────────────────────────────────────────────┐
+    │ User's browser                                          │
+    │                                                         │
+    │  Old SW (v1) ──cache-first──► Old HTML ──► Old JS       │
+    │      │                            │            │        │
+    │      │ intercepts ALL requests    │  no update │        │
+    │      │ serves cached files        │  detection │        │
+    │      │                            │  code!     │        │
+    │      ▼                            ▼            ▼        │
+    │  New SW (v2) installs...    But old JS never             │
+    │  but old tab still runs     calls reload!                │
+    │  old cached HTML/JS         Trapped forever.             │
+    └─────────────────────────────────────────────────────────┘
+```
+
+**The solution is the self-healing inline script.** You embed a version check directly in the HTML `<head>` — not in an external JavaScript file that could be cached, but inline in the document itself. This script runs before any service worker can intercept anything, because it is part of the HTML response itself.
+
+```html
+<script>
+// Self-healing: this runs INSIDE the HTML, not in a cacheable external file
+(function(){
+  var V = 'v6'; // Must match your service worker version
+  var KEY = 'app_sw_version';
+  var stored = localStorage.getItem(KEY);
+  var purge = location.search.indexOf('purge') !== -1;
+
+  if (purge || (stored && stored !== V)) {
+    // Version mismatch — nuclear reset
+    localStorage.removeItem(KEY);
+    if ('caches' in window) {
+      caches.keys().then(function(keys) {
+        return Promise.all(keys.map(function(k) { return caches.delete(k); }));
+      });
+    }
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        regs.forEach(function(r) { r.unregister(); });
+      }).then(function() {
+        location.replace(purge ? location.pathname : location.href);
+      });
+    }
+  }
+  localStorage.setItem(KEY, V);
+})();
+</script>
+```
+
+When you deploy version 2, the HTML file contains `V = 'v2'`. The browser's native service worker update mechanism (which runs every 24 hours and on every navigation, regardless of your JavaScript) will eventually detect that `sw.js` has changed. When it does, the new service worker installs and activates with `skipWaiting()`. The next request for `index.html` gets the new HTML — either from the network (if your new SW is network-first) or from the new cache. That new HTML contains the inline script with `V = 'v2'`, which matches, so nothing happens. The transition is clean.
+
+But what if the old SW *still* serves the old HTML one more time? Then `V = 'v1'` in the inline script, and `stored` is also `'v1'`, so the check passes. No action is needed. The transition will happen naturally on the next service worker update cycle.
+
+And what if a user is truly stuck — old SW refuses to update, caches are corrupted, everything is broken? That is what the **`?purge` escape hatch** is for. You add this to your service worker:
+
+```javascript
+// In sw.js — let ?purge requests bypass the cache entirely
+if (url.search.includes('purge')) {
+  e.respondWith(fetch(e.request));
+  return;
+}
+```
+
+Now any user can navigate to `yoursite.com/?purge` and the service worker steps aside. The fresh HTML loads from the network, the inline script detects the `purge` parameter, nukes all caches and service workers, and redirects to the clean URL. The user gets a complete reset without touching browser settings.
+
+**Consider the analogy to sovereign governance.** A well-designed constitution includes mechanisms for its own amendment — not because the founders expected to be wrong, but because they knew that any system operating over time must be able to heal itself. The United States Constitution has Article V (the amendment process). The British system has parliamentary sovereignty. The French Republic has been on its fifth constitution since 1789.
+
+A Progressive Web App without a self-healing mechanism is like a constitution without an amendment process: it works perfectly until the first unforeseen crisis, at which point it becomes a trap. The self-healing inline script is your Article V — the mechanism by which the application can reconstitute itself without external intervention.
+
+The `?purge` escape hatch is your emergency powers clause — the mechanism of last resort when the normal amendment process has failed. No user should ever need to clear their browser data manually. That is not sovereignty — that is servitude to the machine. A sovereign application heals itself.
+
+**The three strategies together form a complete update architecture:**
+
+```
+    THE THREE LINES OF DEFENSE
+
+    1. Normal update:
+       Browser detects new sw.js → install → skipWaiting
+       → activate → purge old cache → postMessage → toast → reload
+
+    2. Self-healing inline script:
+       Version mismatch in HTML <head>
+       → nuke all caches → unregister all SWs → reload
+       (catches chicken-and-egg transitions)
+
+    3. ?purge escape hatch:
+       User navigates to ?purge → SW passes to network
+       → fresh HTML loads → inline script nukes everything → clean redirect
+       (catches everything else)
+```
+
+No user should ever be stranded on a stale version. No developer should ever tell a user to "clear your site data." The application must be sovereign over its own lifecycle — capable of healing, updating, and reconstituting itself without human intervention.
+
+This is what it means for a web application to feel native. Not animations. Not splash screens. Not home screen icons. **Self-sovereignty.** The application takes care of itself, the way a native app auto-updates from the App Store. The user simply opens it, and it works. Always current. Always correct. Always sovereign.
+
 ---
 
 ## Part VIII: Beyond Offline — The Powers of the Sovereign
