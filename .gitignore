@@ -1,1 +1,33 @@
+# Rust / Cargo
 /target
+**/target/
+
+# wasm-pack generated (rebuilt via build.sh)
+crates/*/pkg/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editor / IDE
+.vscode/
+.idea/
+*.iml
+
+# Claude Code
+.claude/
+
+# Node (if ever used)
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Logs
+*.log
