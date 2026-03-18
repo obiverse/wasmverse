@@ -87,9 +87,7 @@
    ═══════════════════════════════════════════════ */
 .book-card {
   position: relative;
-  background: rgba(14, 14, 28, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 0;
@@ -109,11 +107,10 @@
 }
 
 .book-card:hover {
-  border-color: rgba(201, 169, 110, 0.3);
+  border-color: var(--gold-dim);
   box-shadow:
-    0 20px 60px rgba(0,0,0,0.5),
-    0 0 60px var(--card-glow, rgba(201,169,110,0.08)),
-    inset 0 1px 0 rgba(255,255,255,0.03);
+    0 20px 60px rgba(0,0,0,0.15),
+    0 0 40px var(--card-glow, var(--gold-glow));
 }
 
 .book-card:active { transform: scale(0.98); }
@@ -151,7 +148,7 @@
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 50px;
-  background: linear-gradient(transparent, rgba(14, 14, 28, 0.95));
+  background: linear-gradient(transparent, var(--bg-elevated));
   pointer-events: none;
 }
 
@@ -288,14 +285,13 @@
   align-items: center;
   gap: 1.2rem;
   padding: 1.1rem 1.6rem;
-  background: linear-gradient(135deg, rgba(14,14,28,0.9), rgba(14,14,28,0.7));
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-left: 3px solid var(--continue-accent, var(--gold));
   border-radius: 12px;
   text-decoration: none;
   color: inherit;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(12px);
 }
 .continue-banner a:hover {
   border-color: var(--continue-accent, var(--gold));
@@ -348,7 +344,7 @@
   flex: 1;
   min-width: 180px;
   padding: 0.55rem 1rem;
-  background: rgba(14,14,28,0.7);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text);
@@ -356,7 +352,6 @@
   font-size: 0.85rem;
   outline: none;
   transition: border-color 0.3s;
-  backdrop-filter: blur(8px);
 }
 .lib-search:focus { border-color: var(--gold-dim); }
 .lib-search::placeholder { color: var(--text-dim); opacity: 0.6; }
@@ -367,7 +362,7 @@
 }
 .ctrl-btn {
   padding: 0.45rem 0.75rem;
-  background: rgba(14,14,28,0.6);
+  background: var(--bg);
   border: 1px solid var(--border-subtle);
   border-radius: 6px;
   color: var(--text-dim);

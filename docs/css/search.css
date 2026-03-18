@@ -29,7 +29,7 @@
 .search-modal {
   width: 90%;
   max-width: 580px;
-  background: rgba(14, 14, 28, 0.96);
+  background: var(--bg-elevated);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(201, 169, 110, 0.15);
