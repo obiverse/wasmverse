@@ -51,6 +51,18 @@
       "letters": 41,
       "parts": 10,
       "description": "From the humblest HTTP request to the service worker's interception, from the manifest's declaration to the cache's sovereignty. What a web app actually is, why Progressive Web Apps had to exist, and how a URL becomes an icon on your home screen."
+    },
+    {
+      "id": "making",
+      "title": "Letters on the Making of the Library",
+      "subtitle": "A Treatise on Software Engineering, through the Lens of the Epistolary Library Itself",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/making.md",
+      "symbol": "sankofa",
+      "accent": "#9b6ea5",
+      "letters": 43,
+      "parts": 8,
+      "description": "The system explaining itself. Every concept in software engineering — from files to deployment — taught through the actual code of this very library. The reader who finishes can fork the repo and build their own."
     }
   ]
 }
