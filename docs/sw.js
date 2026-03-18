@@ -1,4 +1,4 @@
-const VERSION = 'epistolary-v9';
+const VERSION = 'epistolary-v10';
 const BASE = '/wasmverse/';
 
 // Core shell — precached on install for offline support
@@ -6,12 +6,16 @@ const PRECACHE = [
   BASE,
   BASE + 'index.html',
   BASE + 'read.html',
+  BASE + 'css/base.css',
+  BASE + 'css/library.css',
+  BASE + 'css/reader.css',
+  BASE + 'js/library.js',
+  BASE + 'js/reader.js',
+  BASE + 'euler-shell.js',
+  BASE + 'pwa.js',
   BASE + 'books/manifest.json',
   BASE + 'icon.svg',
   BASE + 'manifest.webmanifest',
-  BASE + 'pwa.js',
-  BASE + 'euler-shell.js',
-  BASE + 'lib.js',
 ];
 
 // Books — cached on first access (stale-while-revalidate)
