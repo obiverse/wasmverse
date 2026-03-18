@@ -47,16 +47,14 @@
         // Check for updates every 30 minutes
         setInterval(() => reg.update(), 30 * 60 * 1000);
 
-        // Listen for new SW waiting
+        // Listen for new SW waiting — notify, don't force reload
         reg.addEventListener('updatefound', () => {
           const newSW = reg.installing;
           if (!newSW) return;
 
           newSW.addEventListener('statechange', () => {
-            // New SW activated — reload for fresh content
             if (newSW.state === 'activated' && navigator.serviceWorker.controller) {
-              showToast('Updated — loading latest content', 'online');
-              setTimeout(() => window.location.reload(), 1200);
+              showToast('New content available — refresh when ready', 'online');
             }
           });
         });
@@ -65,11 +63,10 @@
         console.warn('SW registration failed:', err);
       });
 
-    // Listen for SW_UPDATED message from service worker
+    // Listen for SW_UPDATED message — notify, don't reload
     navigator.serviceWorker.addEventListener('message', e => {
       if (e.data?.type === 'SW_UPDATED') {
-        showToast('New content available', 'online');
-        setTimeout(() => window.location.reload(), 1200);
+        showToast('Updated — refresh when ready', 'online');
       }
     });
   }

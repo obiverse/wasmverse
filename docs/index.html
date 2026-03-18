@@ -11,14 +11,14 @@
 // This inline script can't be blocked by a stale SW because
 // it's embedded in the HTML itself.
 (function(){
-  var V = 'v8'; // Must match sw.js VERSION suffix
+  var V = 'v10'; // Must match sw.js VERSION suffix
   var KEY = 'epistolary_sw_version';
   var stored = localStorage.getItem(KEY);
   var purge = location.search.indexOf('purge') !== -1;
 
   if (purge || (stored && stored !== V)) {
-    // Version mismatch or manual purge — nuclear reset
-    localStorage.removeItem(KEY);
+    // Version mismatch — update stored version, purge caches silently
+    localStorage.setItem(KEY, V);
     localStorage.removeItem('epistolary_pwa');
     if ('caches' in window) {
       caches.keys().then(function(keys) {
@@ -29,18 +29,16 @@
       navigator.serviceWorker.getRegistrations().then(function(regs) {
         regs.forEach(function(r) { r.unregister(); });
       }).then(function() {
-        if (purge) {
-          // Remove ?purge from URL and reload clean
-          location.replace(location.pathname);
-        } else {
-          location.reload();
-        }
+        if (purge) location.replace(location.pathname);
+        // No reload for version mismatch — caches are cleared,
+        // fresh SW will install on this page load naturally.
       });
     } else if (purge) {
       location.replace(location.pathname);
     }
+  } else {
+    localStorage.setItem(KEY, V);
   }
-  localStorage.setItem(KEY, V);
 })();
 </script>
 <link rel="manifest" href="manifest.webmanifest">
@@ -65,7 +63,12 @@
 
 <section class="books-section">
   <div class="section-label">Available Treatises</div>
-  <div class="books-grid" id="books-grid"></div>
+  <div class="books-grid" id="books-grid">
+    <!-- Skeleton cards — visible until JS replaces them -->
+    <div class="skeleton-card" aria-hidden="true"></div>
+    <div class="skeleton-card" aria-hidden="true"></div>
+    <div class="skeleton-card" aria-hidden="true"></div>
+  </div>
 </section>
 
 <footer class="footer">

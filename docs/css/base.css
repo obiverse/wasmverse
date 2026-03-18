@@ -76,3 +76,36 @@ body {
 
 .footer a { color: var(--gold-dim); text-decoration: none; transition: color 0.2s; }
 .footer a:hover { color: var(--gold); }
+
+/* ═══════════════════════════════════════════════
+   SKELETON — Loading placeholders
+   Visible instantly from CSS, no JS required.
+   Replaced by real content when app boots.
+   ═══════════════════════════════════════════════ */
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+.skeleton-card {
+  height: 280px;
+  border-radius: 16px;
+  background: linear-gradient(90deg,
+    var(--bg-elevated, #0f0f1e) 25%,
+    rgba(255,255,255,0.03) 50%,
+    var(--bg-elevated, #0f0f1e) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border: 1px solid var(--border, #1e1e30);
+}
+
+.skeleton-line {
+  height: 1em;
+  border-radius: 4px;
+  margin-bottom: 0.5em;
+  background: linear-gradient(90deg,
+    var(--border, #1e1e30) 25%,
+    rgba(255,255,255,0.04) 50%,
+    var(--border, #1e1e30) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
