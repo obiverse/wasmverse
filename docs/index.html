@@ -790,6 +790,204 @@ body {
 }
 
 /* ═══════════════════════════════════════════════
+   DEMO PANELS — Live Wasm embedded in chapters
+   ═══════════════════════════════════════════════ */
+.demo-panel {
+  margin: 2rem 0;
+  padding: 1.2rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.demo-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright), var(--gold-dim));
+  opacity: 0.6;
+}
+
+.demo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.demo-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.demo-badge {
+  font-family: var(--font-code);
+  font-size: 0.6rem;
+  color: var(--gold-bright);
+  background: rgba(201, 169, 110, 0.15);
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.demo-canvas-wrap {
+  position: relative;
+  width: 100%;
+  margin-bottom: 0.6rem;
+}
+
+.demo-canvas-wrap canvas {
+  width: 100%;
+  display: block;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-deep);
+}
+
+.demo-controls {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.demo-btn {
+  background: rgba(201, 169, 110, 0.08);
+  border: 1px solid var(--border);
+  color: var(--gold);
+  font-family: var(--font-code);
+  font-size: 0.7rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.demo-btn:hover { background: rgba(201, 169, 110, 0.18); border-color: var(--gold-dim); }
+.demo-btn:active { transform: scale(0.95); }
+.demo-btn.active { background: var(--gold-dim); color: var(--bg-deep); border-color: var(--gold); font-weight: 500; }
+.demo-btn.primary { background: rgba(201, 169, 110, 0.15); border-color: var(--gold-dim); }
+
+.demo-stats {
+  font-family: var(--font-code);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.demo-stats span { color: var(--gold); }
+
+/* Stack machine specific */
+.stack-vm-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+
+.stack-vm-panel {
+  background: var(--bg-code);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.6rem;
+  min-height: 120px;
+}
+
+.stack-vm-panel h4 {
+  font-family: var(--font-code);
+  font-size: 0.65rem;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
+
+.stack-vm-panel .values {
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.stack-val {
+  display: inline-block;
+  background: rgba(201, 169, 110, 0.12);
+  border: 1px solid var(--border);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  margin: 0.1rem;
+  transition: all 0.2s;
+}
+
+.stack-val.new { background: rgba(201, 169, 110, 0.3); border-color: var(--gold); }
+
+.program-line {
+  font-family: var(--font-code);
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+  color: var(--text-dim);
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+
+.program-line.active {
+  background: rgba(201, 169, 110, 0.2);
+  color: var(--gold-bright);
+}
+
+.demo-output {
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  color: var(--gold);
+  margin-top: 0.4rem;
+  min-height: 1.2rem;
+}
+
+.demo-error {
+  color: var(--accent-crimson);
+  font-family: var(--font-code);
+  font-size: 0.7rem;
+  margin-top: 0.3rem;
+}
+
+.demo-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: var(--text-dim);
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 960px) {
+  .demo-panel { margin: 1.5rem -0.5rem; padding: 1rem; }
+  .stack-vm-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .demo-panel { margin: 1rem -0.3rem; padding: 0.8rem; }
+  .demo-btn { font-size: 0.65rem; padding: 0.3rem 0.6rem; }
+  .demo-stats { font-size: 0.6rem; }
+}
+
+/* ═══════════════════════════════════════════════
    LOADING
    ═══════════════════════════════════════════════ */
 #loading {
@@ -817,7 +1015,7 @@ body {
 @media print {
   #sidebar, #mobile-toggle, #back-to-top, #hero, #particles-canvas,
   #top-progress, #chapter-indicator, #keyboard-hint,
-  .sacred-divider, .chapter-marker, .code-copy { display: none !important; }
+  .sacred-divider, .chapter-marker, .code-copy, .demo-panel { display: none !important; }
   #app.visible { display: block !important; }
   #content { padding: 0 !important; }
   .chapter, .chapter > * { opacity: 1 !important; transform: none !important; max-width: 100%; }
@@ -1248,7 +1446,22 @@ function renderChapters(chs) {
 
   let html = '';
   chs.forEach((ch, i) => {
-    const rendered = marked.parse(ch.lines.join('\n'));
+    let rendered = marked.parse(ch.lines.join('\n'));
+    // Detect demo markers: <!-- DEMO:xxx -->
+    rendered = rendered.replace(/&lt;!--\s*DEMO:([\w-]+)\s*--&gt;/g, (_, demoId) => {
+      const titles = {
+        'sorting-theater': 'Sorting Theater — TAOCP Vol. 3 Made Alive',
+        'stack-machine': 'Stack Machine — Knuth\'s MIX Reborn',
+      };
+      return `<div class="demo-panel" data-demo="${demoId}" id="demo-${demoId}">
+        <div class="demo-header">
+          <span class="demo-title">${titles[demoId] || demoId}</span>
+          <span class="demo-badge">live wasm</span>
+        </div>
+        <div class="demo-content"><div class="demo-loading"><div class="spinner"></div>Loading Wasm module\u2026</div></div>
+      </div>`;
+    });
+
     html += `<article class="chapter" id="${ch.id}" data-index="${i}">
       <div class="chapter-marker">${getAdinkraSVG(i)}</div>
       ${rendered}
@@ -1460,6 +1673,351 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 /* ═══════════════════════════════════════════════
+   WASM DEMOS — Lazy-loaded interactive panels
+   ═══════════════════════════════════════════════ */
+function initDemos() {
+  const observer = new IntersectionObserver(async (entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting && !entry.target.dataset.initialized) {
+        entry.target.dataset.initialized = 'true';
+        const demoId = entry.target.dataset.demo;
+        try {
+          if (demoId === 'sorting-theater') await initSortingDemo(entry.target);
+          else if (demoId === 'stack-machine') await initStackDemo(entry.target);
+        } catch (err) {
+          entry.target.querySelector('.demo-content').innerHTML =
+            `<div class="demo-error">Failed to load demo: ${err.message}</div>`;
+        }
+      }
+    }
+  }, { rootMargin: '400px' });
+
+  document.querySelectorAll('.demo-panel').forEach(el => observer.observe(el));
+}
+
+/* ── Sorting Theater ─────────────────────────── */
+async function initSortingDemo(panel) {
+  const { default: init, SortingTheater } = await import('./pkg/sorting-theater/sorting_theater.js');
+  const wasm = await init('./pkg/sorting-theater/sorting_theater_bg.wasm');
+
+  const SIZE = 48;
+  let theater = new SortingTheater(SIZE, 0);
+  let playing = false;
+  let speed = 3; // steps per frame
+  let animId = null;
+
+  const content = panel.querySelector('.demo-content');
+  content.innerHTML = `
+    <div class="demo-canvas-wrap"><canvas id="sorting-canvas" height="200"></canvas></div>
+    <div class="demo-controls" id="sorting-algos"></div>
+    <div class="demo-controls" id="sorting-actions"></div>
+    <div class="demo-stats" id="sorting-stats"></div>
+  `;
+
+  const canvas = document.getElementById('sorting-canvas');
+  const ctx = canvas.getContext('2d');
+
+  // Algorithm buttons
+  const algos = ['Bubble', 'Insertion', 'Selection', 'Quicksort', 'Heapsort', 'Merge'];
+  const algoBtns = document.getElementById('sorting-algos');
+  algos.forEach((name, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'demo-btn' + (idx === 0 ? ' active' : '');
+    btn.textContent = name;
+    btn.onclick = () => {
+      playing = false;
+      theater.set_algorithm(idx);
+      algoBtns.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      draw();
+      updateStats();
+    };
+    algoBtns.appendChild(btn);
+  });
+
+  // Action buttons
+  const actions = document.getElementById('sorting-actions');
+  const mkBtn = (text, cls, fn) => {
+    const b = document.createElement('button');
+    b.className = 'demo-btn ' + cls;
+    b.textContent = text;
+    b.onclick = fn;
+    actions.appendChild(b);
+    return b;
+  };
+
+  const playBtn = mkBtn('\u25B6 Play', 'primary', () => {
+    if (theater.is_done()) { theater.reset(); }
+    playing = !playing;
+    playBtn.textContent = playing ? '\u23F8 Pause' : '\u25B6 Play';
+    if (playing) animate();
+  });
+
+  mkBtn('Step', '', () => {
+    playing = false;
+    playBtn.textContent = '\u25B6 Play';
+    theater.step();
+    draw();
+    updateStats();
+  });
+
+  mkBtn('Reset', '', () => {
+    playing = false;
+    playBtn.textContent = '\u25B6 Play';
+    theater.reset();
+    draw();
+    updateStats();
+  });
+
+  mkBtn('Shuffle', '', () => {
+    playing = false;
+    playBtn.textContent = '\u25B6 Play';
+    theater.randomize();
+    draw();
+    updateStats();
+  });
+
+  mkBtn('Faster', '', () => { speed = Math.min(speed * 2, 64); });
+  mkBtn('Slower', '', () => { speed = Math.max(Math.floor(speed / 2), 1); });
+
+  function draw() {
+    const w = canvas.width = canvas.clientWidth * (window.devicePixelRatio || 1);
+    const h = canvas.height = 200 * (window.devicePixelRatio || 1);
+    ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+    const cw = canvas.clientWidth, ch = 200;
+
+    ctx.clearRect(0, 0, cw, ch);
+
+    const ptr = theater.data_ptr();
+    const data = new Uint32Array(wasm.memory.buffer, ptr, SIZE);
+    const ha = theater.highlight_a();
+    const hb = theater.highlight_b();
+    const barW = Math.max(1, (cw - SIZE) / SIZE);
+    const gap = 1;
+    const maxVal = SIZE;
+
+    for (let i = 0; i < SIZE; i++) {
+      const val = data[i];
+      const barH = (val / maxVal) * (ch - 10);
+      const x = i * (barW + gap) + gap;
+      const y = ch - barH;
+
+      if (i === ha || i === hb) {
+        ctx.fillStyle = '#e4c98a';
+        ctx.shadowColor = 'rgba(201, 169, 110, 0.5)';
+        ctx.shadowBlur = 8;
+      } else if (theater.is_done()) {
+        ctx.fillStyle = '#4a7a5a';
+        ctx.shadowBlur = 0;
+      } else {
+        ctx.fillStyle = '#5a5a6e';
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.fillRect(x, y, barW, barH);
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  function updateStats() {
+    document.getElementById('sorting-stats').innerHTML =
+      `<span>${theater.algorithm_name()}</span> &mdash; ` +
+      `Comparisons: <span>${theater.comparisons()}</span> &middot; ` +
+      `Swaps: <span>${theater.swaps()}</span>` +
+      (theater.is_done() ? ' &middot; <span>Done!</span>' : '') +
+      ` &middot; Speed: <span>${speed}x</span>`;
+  }
+
+  function animate() {
+    if (!playing) return;
+    const alive = theater.step_n(speed);
+    draw();
+    updateStats();
+    if (!alive) {
+      playing = false;
+      playBtn.textContent = '\u25B6 Play';
+      draw();
+      updateStats();
+      return;
+    }
+    animId = requestAnimationFrame(animate);
+  }
+
+  draw();
+  updateStats();
+}
+
+/* ── Stack Machine ───────────────────────────── */
+async function initStackDemo(panel) {
+  const { default: init, StackMachine } = await import('./pkg/stack-machine/stack_machine.js');
+  const wasm = await init('./pkg/stack-machine/stack_machine_bg.wasm');
+
+  const vm = new StackMachine();
+  let playing = false;
+  let animId = null;
+
+  const programs = {
+    'Arithmetic: (3+4)×2': 'PUSH 3\nPUSH 4\nADD\nPUSH 2\nMUL\nOUTPUT\nHALT',
+    'Fibonacci (first 10)': [
+      '# Fibonacci: compute first 10 numbers',
+      '# mem[0] = a, mem[1] = b, mem[2] = counter',
+      'PUSH 0\nPUSH 0\nSTORE',   // a = 0
+      'PUSH 1\nPUSH 1\nSTORE',   // b = 1
+      'PUSH 2\nPUSH 10\nSTORE',  // counter = 10
+      '# output a',
+      'PUSH 0\nLOAD\nOUTPUT',
+      '# temp = a + b',
+      'PUSH 0\nLOAD',
+      'PUSH 1\nLOAD',
+      'ADD',
+      '# a = b',
+      'PUSH 1\nLOAD',
+      'PUSH 0\nSWAP\nSTORE',
+      '# b = temp (still on stack)',
+      'PUSH 1\nSWAP\nSTORE',
+      '# counter--',
+      'PUSH 2\nLOAD\nPUSH 1\nSUB',
+      'DUP\nPUSH 2\nSWAP\nSTORE',
+      '# if counter > 0, loop',
+      'JNZ 27',
+      'HALT',
+    ].join('\n'),
+    'Countdown (10 to 1)': 'PUSH 10\nDUP\nOUTPUT\nPUSH 1\nSUB\nDUP\nJNZ 1\nDROP\nHALT',
+  };
+
+  const content = panel.querySelector('.demo-content');
+  content.innerHTML = `
+    <div class="demo-controls" id="stack-programs"></div>
+    <div class="stack-vm-grid">
+      <div class="stack-vm-panel"><h4>Program</h4><div class="values" id="stack-program"></div></div>
+      <div class="stack-vm-panel"><h4>Stack</h4><div class="values" id="stack-values"></div></div>
+    </div>
+    <div class="demo-output" id="stack-output"></div>
+    <div class="demo-error" id="stack-error"></div>
+    <div class="demo-controls" id="stack-actions"></div>
+    <div class="demo-stats" id="stack-stats"></div>
+  `;
+
+  // Program selector
+  const progBtns = document.getElementById('stack-programs');
+  let firstProg = true;
+  for (const [name, src] of Object.entries(programs)) {
+    const btn = document.createElement('button');
+    btn.className = 'demo-btn' + (firstProg ? ' active' : '');
+    btn.textContent = name;
+    btn.onclick = () => {
+      playing = false;
+      vm.load_program(src);
+      progBtns.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderVM();
+    };
+    progBtns.appendChild(btn);
+    if (firstProg) { vm.load_program(src); firstProg = false; }
+  }
+
+  // Action buttons
+  const actions = document.getElementById('stack-actions');
+  const mkBtn = (text, cls, fn) => {
+    const b = document.createElement('button');
+    b.className = 'demo-btn ' + cls;
+    b.textContent = text;
+    b.onclick = fn;
+    actions.appendChild(b);
+    return b;
+  };
+
+  const playBtn = mkBtn('\u25B6 Play', 'primary', () => {
+    if (vm.is_halted()) vm.reset();
+    playing = !playing;
+    playBtn.textContent = playing ? '\u23F8 Pause' : '\u25B6 Play';
+    if (playing) animateVM();
+  });
+
+  mkBtn('Step', '', () => {
+    playing = false;
+    playBtn.textContent = '\u25B6 Play';
+    vm.step();
+    renderVM();
+  });
+
+  mkBtn('Reset', '', () => {
+    playing = false;
+    playBtn.textContent = '\u25B6 Play';
+    vm.reset();
+    renderVM();
+  });
+
+  function renderVM() {
+    // Program listing with PC highlight
+    const disasm = vm.disassemble();
+    const pc = vm.pc();
+    const lines = disasm.split('\n').filter(l => l);
+    let progHTML = '';
+    for (const line of lines) {
+      const addr = parseInt(line.split(':')[0]);
+      const isActive = addr === pc && !vm.is_halted();
+      progHTML += `<div class="program-line${isActive ? ' active' : ''}">${line}</div>`;
+    }
+    document.getElementById('stack-program').innerHTML = progHTML;
+
+    // Stack
+    const depth = vm.stack_depth();
+    let stackHTML = '';
+    if (depth > 0) {
+      const ptr = vm.stack_ptr();
+      const stack = new Int32Array(wasm.memory.buffer, ptr, depth);
+      for (let i = depth - 1; i >= 0; i--) {
+        const isTop = i === depth - 1;
+        stackHTML += `<span class="stack-val${isTop ? ' new' : ''}">${stack[i]}</span> `;
+      }
+    } else {
+      stackHTML = '<span style="color:var(--text-dim);font-size:0.7rem">(empty)</span>';
+    }
+    document.getElementById('stack-values').innerHTML = stackHTML;
+
+    // Output
+    const outLen = vm.output_len();
+    let outHTML = '';
+    if (outLen > 0) {
+      const outPtr = vm.output_ptr();
+      const out = new Int32Array(wasm.memory.buffer, outPtr, outLen);
+      outHTML = 'Output: ' + Array.from(out).join(', ');
+    }
+    document.getElementById('stack-output').innerHTML = outHTML;
+
+    // Error
+    const err = vm.get_error();
+    document.getElementById('stack-error').textContent = err;
+
+    // Stats
+    document.getElementById('stack-stats').innerHTML =
+      `PC: <span>${vm.pc()}</span> &middot; ` +
+      `Steps: <span>${vm.step_count()}</span> &middot; ` +
+      `Stack depth: <span>${vm.stack_depth()}</span>` +
+      (vm.is_halted() ? ' &middot; <span>HALTED</span>' : '');
+  }
+
+  let stepDelay = 0;
+  function animateVM() {
+    if (!playing) return;
+    stepDelay++;
+    if (stepDelay % 8 === 0) { // Slow enough to watch
+      const alive = vm.step();
+      renderVM();
+      if (!alive) {
+        playing = false;
+        playBtn.textContent = '\u25B6 Play';
+        return;
+      }
+    }
+    requestAnimationFrame(animateVM);
+  }
+
+  renderVM();
+}
+
+/* ═══════════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════════ */
 async function init() {
@@ -1472,6 +2030,7 @@ async function init() {
     buildNavigation(chapters);
     initObservers();
     initProgress();
+    initDemos(); // Lazy-load Wasm demos
   } catch (err) {
     document.getElementById('loading').innerHTML =
       `<p style="color:var(--accent-crimson)">Could not load the treatise. ${err.message}</p>`;

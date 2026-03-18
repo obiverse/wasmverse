@@ -2739,6 +2739,215 @@ And the One who designed the silicon, the mathematics, the capacity of the human
 
 As Euler wrote to his princess: *"In whatever manner we may look at things, we shall find, upon careful examination, that all things proclaim the existence and the perfection of the Supreme Being."*
 
+But do not merely go. Stay a moment longer. For we have built something more.
+
+---
+
+## Part X: The Living Demonstrations
+
+### Letter 38: On Knuth, the Art, and the Visible Machine
+
+Dear Reader,
+
+In 1962, a young mathematician named Donald Ervin Knuth began writing what would become the most ambitious work in the history of computer science: *The Art of Computer Programming*. He planned seven volumes. Six decades later, the work is still unfinished — not because Knuth is slow, but because the subject is bottomless.
+
+Knuth understood something that most textbook authors do not: *you cannot teach an algorithm without a machine to run it on*. An algorithm is not an idea floating in abstraction. It is a sequence of operations performed on a specific substrate — registers, memory cells, an instruction counter advancing through stored instructions. Without that substrate, the algorithm is a ghost.
+
+So Knuth invented a computer. He called it MIX.
+
+MIX was not a real machine. It was a *pedagogical* machine — a virtual computer designed specifically so that algorithms could be demonstrated step by step, with every register visible, every memory cell inspectable, every instruction traceable. When Knuth showed you how quicksort partitions an array, he showed you the actual state of MIX's memory after every comparison and swap. When he analyzed a hashing algorithm, he counted the exact number of MIX instructions it required.
+
+**Consider what Knuth was doing. He was making the invisible visible.**
+
+A sorting algorithm, running on a real computer, executes billions of operations per second. You cannot see them. You cannot pause time and examine the state of memory between two comparisons. The machine operates below the threshold of human perception, like the electrons flowing through a circuit, like the molecules vibrating in a gas.
+
+Knuth's MIX machine slowed time down. It made every atomic operation — every comparison, every swap, every memory access — a discrete, observable event. It turned computation from a blur into a sequence of still frames that the human mind could follow.
+
+**This principle appears everywhere in pedagogy and science.**
+
+**A slow-motion camera** reveals the physics of a hummingbird's flight. In real time, the wings are a blur. At 1,000 frames per second, you see each stroke: the figure-eight pattern, the angle of attack changing at the top of each beat, the vortices shedding from the trailing edge. The same physics governs both timescales — but only one is visible to the human eye.
+
+**An anatomical drawing** by Vesalius shows the layers of the human body — skin, then fascia, then muscle, then bone — each revealed by peeling back the one above. A living person does not look like this. But without these layered views, surgery is guesswork. Vesalius made the invisible visible by stopping the process and examining each layer.
+
+**Euler himself** made the invisible visible. When he derived the formula for the vibrating string, he did not merely present the final equation. He showed each step of the derivation — each substitution, each simplification — so that the reader could follow the *process* of thought, not merely accept its conclusion.
+
+Knuth did the same for algorithms. And now, with WebAssembly, we can do something Knuth could not: **we can make the machine move**.
+
+Knuth's MIX traces were printed on paper — static tables of register values at each step. The reader had to simulate the machine in their head, advancing from one row of the table to the next. This was effective but demanding. Many students gave up.
+
+What if the machine could *run*? What if you could watch quicksort partition an array, one comparison at a time, with every bar sliding into position as you watch? What if you could step through a stack machine executing `3 + 4`, seeing the values push onto the stack, seeing the ADD instruction consume them and produce the result?
+
+This is what we have built.
+
+Below this text — *in this very document* — you will find a sorting theater and a stack machine. They are not illustrations. They are not screenshots. They are Rust programs compiled to WebAssembly, running in your browser, sharing their state with JavaScript through the same zero-copy linear memory we described in Letter 16. The sorting theater is Knuth's TAOCP Volume 3 made alive. The stack machine is Knuth's MIX made alive — or rather, made into what it always wanted to be.
+
+Knuth's MIX was a virtual machine before the term existed. WebAssembly is MIX's grandchild — the virtual machine that finally runs everywhere, at native speed, with structural safety. The chain is unbroken: MIX (1968) → p-code (1970) → JVM (1995) → WebAssembly (2017). Each generation adds portability, speed, and safety. Each generation makes computation more visible, more inspectable, more universal.
+
+*The Art of Computer Programming* is the art of making the invisible visible. That is what we attempt here.
+
+<!-- DEMO:sorting-theater -->
+
+### Letter 39: On Sorting — The Hydrogen Atom of Algorithms
+
+Dear Reader,
+
+Physicists have their hydrogen atom — the simplest system that exhibits all the essential features of quantum mechanics. Solve the hydrogen atom and you understand orbital structure, energy quantization, selection rules, and the periodic table. Every more complex atom is a variation on this theme.
+
+Computer scientists have sorting.
+
+Sorting is the hydrogen atom of algorithms. It is the simplest problem that exhibits all the essential features of algorithmic thinking: comparison, exchange, divide-and-conquer, space-time tradeoffs, best-case versus worst-case analysis, and the fundamental question that haunts all of computer science: *how fast can this possibly be done?*
+
+Knuth devoted an entire volume of TAOCP — Volume 3, *Sorting and Searching*, 780 pages — to this question. Not because sorting is hard (a child can sort playing cards) but because *understanding* sorting reveals the deep structure of computation itself.
+
+Let us examine what you see in the theater above.
+
+**Bubble sort** is the algorithm every beginner learns and every practitioner avoids. It works by repeated passes: compare adjacent elements, swap if out of order, repeat until no swaps occur. It is O(n²) — for 64 elements, it performs roughly 4,000 comparisons. Watch it run. See how the largest element "bubbles" to the top on each pass, like the heaviest stone sinking to the bottom of a riverbed. It is correct but slow — the brute-force approach, the first draft that must be revised.
+
+**Insertion sort** is how humans actually sort. Pick up each card and insert it into its correct position among the cards already sorted. Watch the elements slide rightward to make room for each insertion. It is also O(n²) but significantly faster than bubble sort in practice, because it terminates early when elements are already nearly sorted. A library clerk shelving books uses insertion sort — each new book is placed in order among those already shelved.
+
+**Selection sort** is the methodical approach: find the smallest unsorted element, place it in the next position, repeat. It always performs exactly the same number of comparisons regardless of the input — n(n-1)/2. It is the bureaucratic algorithm: predictable, orderly, never clever, never wasteful in swaps, but relentlessly slow in comparisons.
+
+**Quicksort** is the masterpiece. Invented by Tony Hoare in 1960, it is the algorithm that changed everything. Choose a pivot element. Partition the array so that everything smaller is to the left, everything larger to the right. Recurse on both halves. On average, it is O(n log n) — for 64 elements, roughly 384 comparisons instead of 4,000. Watch it run. See how the partition divides the problem in half at each level, like a tournament bracket reducing 64 contestants to a champion in 6 rounds instead of 63 sequential matches.
+
+**Heapsort** guarantees O(n log n) in all cases — no worst case. It treats the array as a binary heap: first building the heap (establishing the heap property), then repeatedly extracting the maximum. Watch the heap construction phase — values sifting down through the tree structure, each parent becoming larger than its children. It is the constitutional approach: the structure of the heap *prevents* disorder, the way a well-designed institution prevents corruption not by punishing it but by making it structurally impossible.
+
+**Merge sort** is the divide-and-conquer purist. Split the array in half, sort each half, merge the results. It is O(n log n) guaranteed, like heapsort, but it requires auxiliary memory — space for the merge buffer. Watch the bottom-up version: first merge pairs of 1, then pairs of 2, then pairs of 4, like an elimination tournament where the brackets grow wider at each round.
+
+The theater above lets you switch between all six and watch each one solve the same shuffled array. The counters at the bottom are your empirical evidence — the comparison and swap counts that Knuth analyzed so carefully with pencil and paper, now measured live by the machine itself.
+
+**The deep lesson is this**: all six algorithms solve the same problem. But they solve it at vastly different speeds, using vastly different strategies. The choice between them is not a matter of correctness — they all produce the same sorted output. It is a matter of *structure*. The O(n log n) algorithms exploit the *structure* of the problem (the fact that comparisons can be organized hierarchically) in ways that the O(n²) algorithms do not.
+
+This is what Knuth meant by "the art of computer programming." The art is not in making the machine work — any correct algorithm does that. The art is in discovering the *structure* that makes the machine work *well*.
+
+### Letter 40: On the Stack Machine Made Visible
+
+Dear Reader,
+
+In Letter 8, I showed you how a stack machine executes `(3 + 4) × 2`:
+
+```
+    Instruction      Stack (top →)     What happened
+    ───────────      ─────────────     ────────────────
+    PUSH 3           [3]               Push 3
+    PUSH 4           [3, 4]            Push 4
+    ADD              [7]               Pop 4 and 3, push 7
+    PUSH 2           [7, 2]            Push 2
+    MUL              [14]              Pop 2 and 7, push 14
+```
+
+That was ink on paper (or pixels on screen). You had to simulate the machine in your mind, stepping through each row of the table. Now you can watch it happen.
+
+Below is a stack machine — a real one, compiled from Rust to WebAssembly. It has a value stack, a linear memory of 256 cells, a program counter, and 20 instructions. You can load programs, step through them one instruction at a time, and watch the stack grow and shrink as values are pushed and popped.
+
+This is not a simulation of a stack machine. It *is* a stack machine. The bytecodes are real. The program counter advances through real memory. The stack operations are performed by real Wasm instructions. And the deepest irony — the most beautiful recursion — is that this stack machine *is itself running on a stack machine*. WebAssembly is a stack machine. Our pedagogical VM runs on the production VM. Knuth's MIX, reborn as a stack machine, running on the universal stack machine.
+
+**Try the example programs:**
+
+**"Arithmetic"** computes `(3 + 4) × 2 = 14`. This is the example from Letter 8, now alive. Watch the stack grow to [3], then [3, 4], then [7] after ADD, then [7, 2], then [14] after MUL.
+
+**"Fibonacci"** computes the first 10 Fibonacci numbers using memory and a loop. It stores values in memory cells 0, 1, and 2, using LOAD and STORE to read and write. Watch the memory cells update as each Fibonacci number is computed and output. This demonstrates that a stack machine with linear memory can perform any computation — loops, conditionals, memory access — the same capabilities that WebAssembly provides to every program running in your browser.
+
+**"Countdown"** counts from 10 to 1 using a conditional jump. It demonstrates the JNZ (jump if not zero) instruction — the fundamental mechanism of all loops. Every `for` loop, every `while` loop, every recursive call in every program you have ever used reduces to this: decrement a counter, test if zero, jump back if not.
+
+The stack machine is the atom of computation. Everything above it — high-level languages, frameworks, applications — is composition. Everything below it — logic gates, transistors, silicon — is implementation. The stack machine is the level at which *intent* meets *execution*, where human thought becomes machine action.
+
+Knuth knew this. That is why he built MIX. That is why we built this.
+
+<!-- DEMO:stack-machine -->
+
+---
+
+## Epilogue: On Noesis
+
+Dear Reader,
+
+Noesis — Greek νόησις — is the act of pure intellectual apprehension. Not learning facts. Not memorizing APIs. *Seeing* the structure directly, as one sees a geometric proof not by reading each step but by grasping the whole figure at once.
+
+You asked me to drive you to Noesis. Let me try to bring you to the threshold.
+
+Close your eyes. Hold in your mind the following image:
+
+```
+    THE COMPLETE CHAIN — From Switch to Universe
+
+    ┌──────────┐
+    │TRANSISTOR│  A switch. On or off. The act of distinction.
+    └────┬─────┘
+         │ compose billions
+         ▼
+    ┌──────────┐
+    │  GATES   │  AND, OR, NOT. Three operations. All of logic.
+    └────┬─────┘
+         │ add feedback (the latch!)
+         ▼
+    ┌──────────┐
+    │  MEMORY  │  Latches that remember. Registers. RAM.
+    └────┬─────┘
+         │ add a clock
+         ▼
+    ┌──────────┐
+    │   CPU    │  Fetch, execute, advance, repeat. Billions/sec.
+    └────┬─────┘
+         │ store instructions in memory
+         ▼
+    ┌──────────┐
+    │ PROGRAM  │  The stored program. Data IS instructions.
+    └────┬─────┘
+         │ compile from high-level language
+         ▼
+    ┌──────────┐
+    │ COMPILER │  Rust → LLVM → Wasm bytecode. One source, any target.
+    └────┬─────┘
+         │ target a virtual machine
+         ▼
+    ┌──────────┐
+    │   WASM   │  4 types, stack machine, linear memory, sandbox.
+    └────┬─────┘
+         │ validate, compile to native, instantiate
+         ▼
+    ┌──────────┐
+    │ INSTANCE │  Native-speed code in a structural sandbox.
+    └────┬─────┘
+         │ share memory with host (zero-copy)
+         ▼
+    ┌──────────┐
+    │ MEMBRANE │  JS looks through the glass at Wasm's bytes.
+    └────┬─────┘
+         │ iterate z ← z² + c, 262,144 times
+         ▼
+    ┌──────────┐
+    │MANDELBROT│  Infinite complexity from 13 lines.
+    └────┬─────┘  Delivered by URL. Runs anywhere. Safe by absence.
+         │
+         ▼
+    ┌──────────┐
+    │  YOUR    │  You see the fractal. You understand the chain.
+    │  SCREEN  │  Every layer faithful. Every interface clean.
+    └──────────┘  From quantum silicon to infinite beauty.
+```
+
+A transistor switches — like a valve in a refinery, like a gate at an airport, like a synapse in the brain. A billion transistors switch together, following a clock — like an assembly line at Toyota, like the takt time of a factory, like the heartbeat in your chest. They execute instructions fetched from memory — instructions that are themselves data, stored in the same substrate they manipulate, like a constitution that governs the process by which it can be amended, like DNA that encodes the machinery that reads DNA.
+
+These instructions were produced by a compiler — a translator, like the Rosetta Stone, like a diplomatic interpreter, like al-Khwarizmi's algorithms that translated arithmetic into a universal notation. The compiler transforms human thought into a virtual machine's language — a universal specification, like the metric system, like musical notation, like the shipping container.
+
+The virtual machine runs in a sandbox — an island, not a prison. Like Alcatraz, not a jail cell. Like a cell membrane, not a locked door. The sandbox does not enforce good behavior — it removes the vocabulary for bad behavior, the way a fish cannot climb because it has no legs, the way a calculator cannot send email because it has no network.
+
+Within the sandbox, the machine shares its memory with the host — zero-copy, like a glass-walled cleanroom, like a shared ledger, like a river that serves as a border between two nations. No data is transferred. No copy is made. Both systems look at the same bytes, the same truth, the same reality.
+
+Through this shared window, the host reads a sequence of bytes: the iteration counts of `z ← z² + c` for 262,144 points in the complex plane. It wraps these bytes in an ImageData and hands them to a canvas. The canvas paints them as pixels. The pixels form the Mandelbrot set — an object of infinite complexity, generated by a thirteen-line function, running in a sandbox that *structurally* cannot harm your system, delivered by URL to any device on Earth.
+
+From quantum effects in doped silicon to the infinite frontier of the Mandelbrot set. From a switch to a universe. Each layer faithful to the one below, each interface clean and composable, each abstraction making the truth *more* visible, not less.
+
+Like a city rising from bricks. Like a symphony arising from vibrating strings. Like a coastline fractal arising from the erosion of rock by water. Like the vast pattern of galaxies arising from quantum fluctuations in the first second after creation.
+
+This is what we have built. This is what you now understand.
+
+The universe, as Euler knew, is not complex. It is *deep*. The same simple principles, applied at every scale, produce all the richness we see. A switch. A gate. A program. A virtual machine. A fractal. Each is the same act of distinction — this from that, one from zero — played at a different octave.
+
+And the One who designed the silicon, the mathematics, the capacity of the human mind to grasp it all — who made the transistor possible in the heart of a dying star, who wove Boolean logic into the fabric of reality, who gave carbon the ability to form the double helix that encodes the brain that comprehends the universe that contains it — that One is worthy of every love and every respect.
+
+As Euler wrote to his princess: *"In whatever manner we may look at things, we shall find, upon careful examination, that all things proclaim the existence and the perfection of the Supreme Being."*
+
 Go now. Build something. The tools are in your hands.
 
 ---

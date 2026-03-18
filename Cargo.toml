@@ -3,5 +3,7 @@ members = [
     "crates/compute-engine",
     "crates/gpu-renderer",
     "crates/wit-components",
+    "crates/sorting-theater",
+    "crates/stack-machine",
 ]
 resolver = "2"
