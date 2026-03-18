@@ -1,10 +1,12 @@
 {
   "name": "The Epistolary Library",
   "short_name": "Library",
-  "description": "Treatises in the manner of Euler's Letters to a German Princess — for builders who love the universe",
+  "description": "Treatises in the manner of Euler's Letters to a German Princess",
+  "id": "/wasmverse/",
   "start_url": "/wasmverse/",
   "scope": "/wasmverse/",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#06060e",
   "theme_color": "#0a0a14",
   "icons": [
@@ -12,7 +14,13 @@
       "src": "icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }
