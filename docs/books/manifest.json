@@ -1,0 +1,32 @@
+{
+  "library": {
+    "title": "The Epistolary Library",
+    "subtitle": "Treatises in the manner of Euler, for builders who love the universe"
+  },
+  "books": [
+    {
+      "id": "wasm",
+      "title": "Letters on the Universal Machine",
+      "subtitle": "A Treatise on WebAssembly, from Transistors to Transcendence",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/wasm.md",
+      "symbol": "ananse",
+      "accent": "#c9a96e",
+      "letters": 40,
+      "parts": 10,
+      "description": "From the humblest transistor to infinite fractals running in a browser sandbox. What a computer actually is, why WebAssembly had to exist, and how the chain from silicon to screen remains faithful at every layer."
+    },
+    {
+      "id": "rust",
+      "title": "Letters on the Ownership of Memory",
+      "subtitle": "A Treatise on Rust, from Pointers to Proof",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/rust.md",
+      "symbol": "dwennimmen",
+      "accent": "#b87333",
+      "letters": 36,
+      "parts": 9,
+      "description": "Why every value must have an owner, why references must not outlive their referents, and how a compiler can prove the absence of an entire class of bugs that has plagued computing for fifty years."
+    }
+  ]
+}
