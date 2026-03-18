@@ -9,7 +9,7 @@
 <script>
 // Self-healing PWA: nuke stale service workers and caches.
 (function(){
-  var V = 'v6';
+  var V = 'v7';
   var KEY = 'epistolary_sw_version';
   var stored = localStorage.getItem(KEY);
   var purge = location.search.indexOf('purge') !== -1;
@@ -2325,6 +2325,340 @@ function saveReadingProgress(chaptersRead, totalChapters) {
       localStorage.setItem('epistolary_progress', JSON.stringify(data));
     }
   } catch {}
+}
+
+/* ═══════════════════════════════════════════════
+   THEME ENGINE
+   ═══════════════════════════════════════════════ */
+function initThemeEngine(book) {
+  const { applyTheme, getTheme, setTheme, THEMES } = ELib;
+  const savedTheme = getTheme();
+
+  // Apply saved theme (but preserve book accent)
+  if (savedTheme !== 'midnight') {
+    applyTheme(savedTheme);
+  }
+  // Re-apply book accent after theme
+  if (book.accent) {
+    document.documentElement.style.setProperty('--gold', book.accent);
+  }
+
+  // Mark active swatch
+  document.querySelectorAll('.theme-swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.theme === savedTheme);
+  });
+
+  // Swatch click handlers
+  document.querySelectorAll('.theme-swatch').forEach(swatch => {
+    swatch.addEventListener('click', () => {
+      const name = swatch.dataset.theme;
+      setTheme(name);
+      // Re-apply book accent
+      if (book.accent) {
+        document.documentElement.style.setProperty('--gold', book.accent);
+      }
+      document.querySelectorAll('.theme-swatch').forEach(s =>
+        s.classList.toggle('active', s.dataset.theme === name)
+      );
+    });
+  });
+
+  // Toggle theme panel
+  document.getElementById('btn-theme').addEventListener('click', () => {
+    const panel = document.getElementById('theme-panel');
+    const typoPanel = document.getElementById('typo-panel');
+    typoPanel.classList.remove('open');
+    panel.classList.toggle('open');
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   TYPOGRAPHY CONTROLS
+   ═══════════════════════════════════════════════ */
+function initTypographyControls() {
+  const { getTypography, setTypography, applyTypography } = ELib;
+  const typo = getTypography();
+  applyTypography(typo);
+
+  // Set slider values
+  const sizeSlider = document.getElementById('typo-size');
+  const heightSlider = document.getElementById('typo-height');
+  const widthSlider = document.getElementById('typo-width');
+  sizeSlider.value = typo.fontSize;
+  heightSlider.value = typo.lineHeight;
+  widthSlider.value = typo.contentMax;
+  document.getElementById('typo-size-val').textContent = typo.fontSize;
+  document.getElementById('typo-height-val').textContent = typo.lineHeight;
+  document.getElementById('typo-width-val').textContent = typo.contentMax + 'ch';
+
+  sizeSlider.addEventListener('input', e => {
+    const v = +e.target.value;
+    document.getElementById('typo-size-val').textContent = v;
+    setTypography({ fontSize: v });
+  });
+  heightSlider.addEventListener('input', e => {
+    const v = +e.target.value;
+    document.getElementById('typo-height-val').textContent = v;
+    setTypography({ lineHeight: v });
+  });
+  widthSlider.addEventListener('input', e => {
+    const v = +e.target.value;
+    document.getElementById('typo-width-val').textContent = v + 'ch';
+    setTypography({ contentMax: v });
+  });
+
+  // Toggle typography panel
+  document.getElementById('btn-typo').addEventListener('click', () => {
+    const panel = document.getElementById('typo-panel');
+    const themePanel = document.getElementById('theme-panel');
+    themePanel.classList.remove('open');
+    panel.classList.toggle('open');
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR TABS — Contents / Study
+   ═══════════════════════════════════════════════ */
+function initSidebarTabs() {
+  const tabs = document.querySelectorAll('.sidebar-tab');
+  const navTree = document.getElementById('nav-tree');
+  const studyPanel = document.getElementById('study-panel-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.tab;
+      navTree.style.display = target === 'contents' ? '' : 'none';
+      studyPanel.classList.toggle('open', target === 'study');
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   BOOKMARKS
+   ═══════════════════════════════════════════════ */
+function initBookmarks() {
+  const { isBookmarked, toggleBookmark } = ELib;
+
+  // Add bookmark buttons to each chapter header
+  document.querySelectorAll('.chapter').forEach(ch => {
+    const id = ch.id;
+    const h3 = ch.querySelector('h3');
+    if (!h3) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'bookmark-btn' + (isBookmarked(currentBookId, id) ? ' active' : '');
+    btn.innerHTML = '&#9856;'; // bookmark symbol
+    btn.title = 'Bookmark this letter';
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const added = toggleBookmark(currentBookId, id);
+      btn.classList.toggle('active', added);
+      updateNavBookmarkDots();
+      refreshStudyPanel();
+    });
+
+    h3.style.position = 'relative';
+    h3.appendChild(btn);
+  });
+
+  updateNavBookmarkDots();
+}
+
+function updateNavBookmarkDots() {
+  const { getBookmarks } = ELib;
+  const bookmarks = getBookmarks(currentBookId);
+  // Remove existing dots
+  document.querySelectorAll('.nav-bookmark-dot').forEach(d => d.remove());
+  // Add dots to nav items
+  bookmarks.forEach(b => {
+    const navLink = document.querySelector(`[data-chapter="${b.chapterId}"]`);
+    if (navLink && !navLink.querySelector('.nav-bookmark-dot')) {
+      const dot = document.createElement('span');
+      dot.className = 'nav-bookmark-dot';
+      navLink.appendChild(dot);
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   HIGHLIGHTS
+   ═══════════════════════════════════════════════ */
+function initHighlights() {
+  const toolbar = document.getElementById('highlight-toolbar');
+  let savedSelection = null;
+
+  // Show toolbar on text selection in chapters
+  document.getElementById('content').addEventListener('mouseup', e => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || sel.toString().trim().length < 3) {
+      toolbar.classList.remove('show');
+      return;
+    }
+
+    // Only highlight within chapter content
+    const anchor = sel.anchorNode?.parentElement?.closest?.('.chapter');
+    const focus = sel.focusNode?.parentElement?.closest?.('.chapter');
+    if (!anchor || !focus || anchor !== focus) {
+      toolbar.classList.remove('show');
+      return;
+    }
+
+    savedSelection = { sel: sel.getRangeAt(0).cloneRange(), chapterId: anchor.id, text: sel.toString().trim() };
+
+    // Position toolbar above selection
+    const range = sel.getRangeAt(0);
+    const rect = range.getBoundingClientRect();
+    toolbar.style.left = (rect.left + rect.width / 2 - 60) + 'px';
+    toolbar.style.top = (rect.top - 45 + window.scrollY) + 'px';
+    toolbar.classList.add('show');
+  });
+
+  // Hide toolbar on click outside
+  document.addEventListener('mousedown', e => {
+    if (!toolbar.contains(e.target)) {
+      toolbar.classList.remove('show');
+    }
+  });
+
+  // Color button clicks
+  toolbar.querySelectorAll('.hl-color-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!savedSelection) return;
+      const color = btn.dataset.color;
+      applyHighlight(savedSelection, color);
+      toolbar.classList.remove('show');
+      window.getSelection()?.removeAllRanges();
+      savedSelection = null;
+      refreshStudyPanel();
+    });
+  });
+
+  // Restore saved highlights
+  restoreHighlights();
+}
+
+function applyHighlight(selData, color) {
+  const { saveHighlight } = ELib;
+  const id = saveHighlight(currentBookId, {
+    chapterId: selData.chapterId,
+    text: selData.text,
+    color: color,
+  });
+
+  // Wrap selection in highlight span
+  try {
+    const range = selData.sel;
+    const span = document.createElement('span');
+    span.className = 'text-highlight';
+    span.dataset.color = color;
+    span.dataset.highlightId = id;
+    span.title = 'Click to remove';
+    range.surroundContents(span);
+
+    span.addEventListener('click', () => {
+      ELib.removeHighlight(currentBookId, span.dataset.highlightId);
+      const text = document.createTextNode(span.textContent);
+      span.replaceWith(text);
+      refreshStudyPanel();
+    });
+  } catch (e) {
+    // surroundContents fails if selection spans elements — fallback
+    console.warn('Highlight wrap failed (cross-element selection):', e.message);
+  }
+}
+
+function restoreHighlights() {
+  const highlights = ELib.getHighlights(currentBookId);
+  highlights.forEach(h => {
+    const chapter = document.getElementById(h.chapterId);
+    if (!chapter) return;
+
+    // Find the text within the chapter and wrap it
+    const walker = document.createTreeWalker(chapter, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    while (node = walker.nextNode()) {
+      const idx = node.textContent.indexOf(h.text);
+      if (idx >= 0) {
+        const range = document.createRange();
+        range.setStart(node, idx);
+        range.setEnd(node, idx + h.text.length);
+        const span = document.createElement('span');
+        span.className = 'text-highlight';
+        span.dataset.color = h.color;
+        span.dataset.highlightId = h.id;
+        span.title = 'Click to remove';
+        try {
+          range.surroundContents(span);
+          span.addEventListener('click', () => {
+            ELib.removeHighlight(currentBookId, span.dataset.highlightId);
+            const text = document.createTextNode(span.textContent);
+            span.replaceWith(text);
+            refreshStudyPanel();
+          });
+        } catch (e) { /* cross-element — skip */ }
+        break; // Only first match
+      }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   STUDY PANEL
+   ═══════════════════════════════════════════════ */
+let _currentBook = null;
+
+function initStudyPanel(book) {
+  _currentBook = book;
+  refreshStudyPanel();
+
+  document.getElementById('study-export').addEventListener('click', () => {
+    const md = ELib.exportHighlightsMarkdown(currentBookId, book.title);
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${currentBookId}-study-notes.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+}
+
+function refreshStudyPanel() {
+  const bookmarks = ELib.getBookmarks(currentBookId);
+  const highlights = ELib.getHighlights(currentBookId);
+
+  // Bookmarks section
+  const bmContainer = document.getElementById('study-bookmarks');
+  if (bookmarks.length) {
+    bmContainer.innerHTML = `<div class="study-section-title">Bookmarks</div>` +
+      bookmarks.map(b => `<div class="study-item" data-chapter="${b.chapterId}">&#9856; ${b.chapterId.replace(/-/g, ' ')}</div>`).join('');
+    bmContainer.querySelectorAll('.study-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const el = document.getElementById(item.dataset.chapter);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  } else {
+    bmContainer.innerHTML = '';
+  }
+
+  // Highlights section
+  const hlContainer = document.getElementById('study-highlights');
+  if (highlights.length) {
+    const colorMap = { gold: '#c9a96e', coral: '#cd5c5c', teal: '#48a6a6', lavender: '#9478c4' };
+    hlContainer.innerHTML = `<div class="study-section-title">Highlights</div>` +
+      highlights.map(h => `<div class="study-item" data-chapter="${h.chapterId}"><span class="study-color-dot" style="background:${colorMap[h.color] || '#c9a96e'}"></span>"${h.text.slice(0, 60)}${h.text.length > 60 ? '...' : ''}"${h.note ? `<br><small style="color:var(--text-dim)">${h.note}</small>` : ''}</div>`).join('');
+    hlContainer.querySelectorAll('.study-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const el = document.getElementById(item.dataset.chapter);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  } else {
+    hlContainer.innerHTML = '';
+  }
 }
 
 async function init() {

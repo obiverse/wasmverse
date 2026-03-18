@@ -1,15 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="64" fill="#0a0a14"/>
-  <!-- Seed of Life - Euler's sacred geometry -->
-  <g stroke="#c9a96e" fill="none" stroke-width="4" opacity="0.8">
-    <circle cx="256" cy="256" r="80"/>
-    <circle cx="256" cy="176" r="80"/>
-    <circle cx="256" cy="336" r="80"/>
-    <circle cx="186.72" cy="216" r="80"/>
-    <circle cx="325.28" cy="216" r="80"/>
-    <circle cx="186.72" cy="296" r="80"/>
-    <circle cx="325.28" cy="296" r="80"/>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0f0f20"/>
+      <stop offset="100%" stop-color="#06060e"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(201,169,110,0.15)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <!-- Glow -->
+  <circle cx="256" cy="240" r="180" fill="url(#glow)"/>
+  <!-- Seed of Life -->
+  <g stroke="#c9a96e" fill="none" stroke-width="3" opacity="0.7">
+    <circle cx="256" cy="240" r="72"/>
+    <circle cx="256" cy="168" r="72"/>
+    <circle cx="256" cy="312" r="72"/>
+    <circle cx="193.6" cy="204" r="72"/>
+    <circle cx="318.4" cy="204" r="72"/>
+    <circle cx="193.6" cy="276" r="72"/>
+    <circle cx="318.4" cy="276" r="72"/>
   </g>
+  <!-- Outer ring -->
+  <circle cx="256" cy="240" r="110" stroke="#c9a96e" stroke-width="1.5" fill="none" opacity="0.3"/>
   <!-- Central dot -->
-  <circle cx="256" cy="256" r="6" fill="#e4c98a"/>
+  <circle cx="256" cy="240" r="5" fill="#e4c98a"/>
+  <!-- OBIVERSE text -->
+  <text x="256" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="36" font-weight="700" letter-spacing="8" fill="#c9a96e" opacity="0.9">OBIVERSE</text>
+  <!-- Tagline -->
+  <text x="256" y="455" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-style="italic" fill="#9e9684" opacity="0.7">epistolary library</text>
 </svg>

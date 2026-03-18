@@ -11,7 +11,7 @@
 // This inline script can't be blocked by a stale SW because
 // it's embedded in the HTML itself.
 (function(){
-  var V = 'v6'; // Must match sw.js VERSION suffix
+  var V = 'v7'; // Must match sw.js VERSION suffix
   var KEY = 'epistolary_sw_version';
   var stored = localStorage.getItem(KEY);
   var purge = location.search.indexOf('purge') !== -1;
