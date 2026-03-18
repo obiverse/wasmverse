@@ -24,6 +24,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "euler"
+version = "0.1.0"
+dependencies = [
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "futures-core"
 version = "0.3.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"

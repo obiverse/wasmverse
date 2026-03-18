@@ -53,6 +53,18 @@
       "description": "From the humblest HTTP request to the service worker's interception, from the manifest's declaration to the cache's sovereignty. What a web app actually is, why Progressive Web Apps had to exist, and how a URL becomes an icon on your home screen."
     },
     {
+      "id": "euler",
+      "title": "Letters on the Composition of Systems",
+      "subtitle": "A Treatise on the Euler Framework, from Axioms to Archmage",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/euler.md",
+      "symbol": "funtun",
+      "accent": "#4a9e6e",
+      "letters": 31,
+      "parts": 10,
+      "description": "The system explaining its own engine. Five general-purpose WASM modules — JSON, Store, Theme, Router, Search — composed into a framework that powers this very library. The reader who finishes understands not just the framework, but why it must be this way."
+    },
+    {
       "id": "making",
       "title": "Letters on the Making of the Library",
       "subtitle": "A Treatise on Software Engineering, through the Lens of the Epistolary Library Itself",

@@ -1,4 +1,4 @@
-const VERSION = 'epistolary-v8';
+const VERSION = 'epistolary-v9';
 const BASE = '/wasmverse/';
 
 // Core shell — precached on install for offline support
@@ -10,6 +10,7 @@ const PRECACHE = [
   BASE + 'icon.svg',
   BASE + 'manifest.webmanifest',
   BASE + 'pwa.js',
+  BASE + 'euler-shell.js',
   BASE + 'lib.js',
 ];
 
