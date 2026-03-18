@@ -204,3 +204,13 @@ if (!crypto.randomUUID) {
     );
   };
 }
+
+// ── Global namespace (for non-module scripts) ─
+window.ELib = {
+  getProgress, saveProgress, getLastReadBook,
+  THEMES, getTheme, setTheme, applyTheme,
+  getTypography, setTypography, applyTypography,
+  getBookmarks, toggleBookmark, isBookmarked,
+  getHighlights, saveHighlight, updateHighlight, removeHighlight,
+  HIGHLIGHT_COLORS, exportHighlightsMarkdown,
+};
