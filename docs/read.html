@@ -9,7 +9,7 @@
 <script>
 // Self-healing PWA: nuke stale service workers and caches.
 (function(){
-  var V = 'v10';
+  var V = 'v13';
   var KEY = 'epistolary_sw_version';
   var stored = localStorage.getItem(KEY);
   var purge = location.search.indexOf('purge') !== -1;
@@ -48,6 +48,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/reader.css">
+<link rel="stylesheet" href="css/search.css">
 </head>
 <body>
 
@@ -70,7 +71,7 @@
 
   <nav id="sidebar">
     <div id="sidebar-header">
-      <a href="index.html" style="font-family:var(--font-code);font-size:0.65rem;color:var(--text-dim);text-decoration:none;display:block;margin-bottom:0.4rem;letter-spacing:0.06em;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-dim)'">&larr; LIBRARY</a>
+      <a href="index.html" class="sidebar-back-link">&larr; LIBRARY</a>
       <h2>Table of Scrolls</h2>
       <div id="reading-progress"><div id="reading-progress-bar"></div></div>
     </div>
@@ -133,8 +134,9 @@
 <button id="back-to-top" aria-label="Back to top">&#8593;</button>
 <div id="keyboard-hint">j / k &mdash; next / prev &nbsp;&middot;&nbsp; t &mdash; top &nbsp;&middot;&nbsp; s &mdash; sidebar</div>
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="js/marked.min.js"></script>
 <script type="module" src="js/reader.js"></script>
+<script type="module" src="js/search.js"></script>
 <script src="pwa.js"></script>
 </body>
 </html>
