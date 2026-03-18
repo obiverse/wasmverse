@@ -4,10 +4,14 @@
    3D tilt, continue banner, view transitions
    ═══════════════════════════════════════════════ */
 
-import { boot, autoPersist } from '../euler-shell.js';
+import { boot, autoPersist, applyTheme, applyTypography } from '../euler-shell.js';
 
 // Boot euler WASM — all state lives here now
 const euler = await boot();
+
+// Apply saved theme and typography immediately
+applyTheme();
+applyTypography();
 
 // Bridge functions: euler replaces lib.js
 function getProgress(bookId) {

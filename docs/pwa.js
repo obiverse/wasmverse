@@ -87,30 +87,30 @@
       max-width: 520px;
       margin: 0 auto 1rem;
       padding: 1.4rem 1.6rem;
-      background: rgba(14, 14, 28, 0.96);
+      background: var(--bg-elevated);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(201, 169, 110, 0.2);
       border-radius: 16px;
       box-shadow: 0 -8px 40px rgba(0,0,0,0.5), 0 0 80px rgba(201,169,110,0.05);
       font-family: 'Crimson Pro', Georgia, serif;
-      color: #ddd5c4;
+      color: var(--text);
     }
     @media (max-width: 560px) {
       .pwa-banner-inner { margin: 0 0.5rem 0.5rem; padding: 1.2rem; border-radius: 14px; }
     }
     .pwa-banner-title {
       font-family: 'Cormorant Garamond', Palatino, serif;
-      font-size: 1.15rem; font-weight: 600; color: #e4c98a;
+      font-size: 1.15rem; font-weight: 600; color: var(--gold-bright);
       margin-bottom: 0.4rem;
     }
-    .pwa-banner-text { font-size: 0.88rem; color: #9e9684; line-height: 1.55; margin-bottom: 1rem; }
+    .pwa-banner-text { font-size: 0.88rem; color: var(--text-dim); line-height: 1.55; margin-bottom: 1rem; }
     .pwa-banner-actions { display: flex; gap: 0.75rem; align-items: center; }
     .pwa-btn-install {
       flex: 1; padding: 0.7rem 1.2rem;
       background: rgba(201, 169, 110, 0.12);
       border: 1px solid rgba(201, 169, 110, 0.3);
-      border-radius: 10px; color: #c9a96e;
+      border-radius: 10px; color: var(--gold);
       font-family: 'Cormorant Garamond', Palatino, serif;
       font-size: 0.95rem; font-weight: 600; letter-spacing: 0.06em;
       cursor: pointer; transition: all 0.3s; text-align: center;
@@ -123,10 +123,10 @@
     .pwa-btn-dismiss {
       padding: 0.7rem 1rem; background: none;
       border: 1px solid rgba(255,255,255,0.06); border-radius: 10px;
-      color: #9e9684; font-family: 'Crimson Pro', Georgia, serif;
+      color: var(--text-dim); font-family: 'Crimson Pro', Georgia, serif;
       font-size: 0.85rem; cursor: pointer; transition: all 0.3s; white-space: nowrap;
     }
-    .pwa-btn-dismiss:hover { border-color: rgba(255,255,255,0.12); color: #ddd5c4; }
+    .pwa-btn-dismiss:hover { border-color: rgba(255,255,255,0.12); color: var(--text); }
 
     .pwa-ios-overlay {
       position: fixed; inset: 0; z-index: 10000;
@@ -138,21 +138,21 @@
     .pwa-ios-overlay.visible { opacity: 1; pointer-events: auto; }
     .pwa-ios-card {
       max-width: 360px; width: 90%; padding: 2rem 1.8rem;
-      background: rgba(14, 14, 28, 0.98);
+      background: var(--bg-elevated);
       border: 1px solid rgba(201, 169, 110, 0.2);
       border-radius: 20px; text-align: center;
       box-shadow: 0 20px 80px rgba(0,0,0,0.6);
     }
     .pwa-ios-card h3 {
       font-family: 'Cormorant Garamond', Palatino, serif;
-      font-size: 1.3rem; font-weight: 600; color: #e4c98a; margin-bottom: 1.2rem;
+      font-size: 1.3rem; font-weight: 600; color: var(--gold-bright); margin-bottom: 1.2rem;
     }
     .pwa-ios-steps { text-align: left; margin-bottom: 1.5rem; }
     .pwa-ios-step {
       display: flex; align-items: flex-start; gap: 0.75rem;
       padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);
       font-family: 'Crimson Pro', Georgia, serif;
-      font-size: 0.92rem; color: #ddd5c4; line-height: 1.5;
+      font-size: 0.92rem; color: var(--text); line-height: 1.5;
     }
     .pwa-ios-step:last-child { border-bottom: none; }
     .pwa-ios-step-num {
@@ -160,14 +160,14 @@
       background: rgba(201, 169, 110, 0.12);
       border: 1px solid rgba(201, 169, 110, 0.25);
       display: flex; align-items: center; justify-content: center;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #c9a96e;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--gold);
     }
     .pwa-ios-icon { display: inline-block; vertical-align: middle; width: 20px; height: 20px; }
     .pwa-ios-close {
       padding: 0.6rem 2rem;
       background: rgba(201, 169, 110, 0.1);
       border: 1px solid rgba(201, 169, 110, 0.25);
-      border-radius: 10px; color: #c9a96e;
+      border-radius: 10px; color: var(--gold);
       font-family: 'Cormorant Garamond', Palatino, serif;
       font-size: 0.95rem; cursor: pointer; transition: all 0.3s;
     }
@@ -177,11 +177,11 @@
       position: fixed; top: 1rem; left: 50%;
       transform: translateX(-50%) translateY(-120%);
       z-index: 9998; padding: 0.6rem 1.2rem;
-      background: rgba(14, 14, 28, 0.95);
+      background: var(--bg-elevated);
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(201, 169, 110, 0.15);
       border-radius: 10px; font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; color: #9e9684; letter-spacing: 0.04em;
+      font-size: 0.72rem; color: var(--text-dim); letter-spacing: 0.04em;
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap;
     }
     .pwa-toast.visible { transform: translateX(-50%) translateY(0); }
@@ -194,7 +194,7 @@
 
     .pwa-welcome {
       position: fixed; inset: 0; z-index: 10001;
-      background: #06060e; display: flex;
+      background: var(--bg-deep); display: flex;
       flex-direction: column; align-items: center; justify-content: center;
       opacity: 1; transition: opacity 0.8s ease;
     }
@@ -206,17 +206,17 @@
     }
     .pwa-welcome h2 {
       font-family: 'Cormorant Garamond', Palatino, serif;
-      font-size: 1.6rem; font-weight: 600; color: #e4c98a; margin-bottom: 0.3rem;
+      font-size: 1.6rem; font-weight: 600; color: var(--gold-bright); margin-bottom: 0.3rem;
       opacity: 0; animation: pwaIn 0.8s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .pwa-welcome p {
       font-family: 'Crimson Pro', Georgia, serif;
-      font-size: 0.95rem; color: #9e9684; font-style: italic;
+      font-size: 0.95rem; color: var(--text-dim); font-style: italic;
       opacity: 0; animation: pwaIn 0.8s 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .pwa-welcome-offline {
       margin-top: 1.5rem; font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem; color: #8b6914; letter-spacing: 0.1em; text-transform: uppercase;
+      font-size: 0.65rem; color: var(--gold-dim); letter-spacing: 0.1em; text-transform: uppercase;
       opacity: 0; animation: pwaIn 0.8s 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     @keyframes pwaIn { to { opacity: 1; transform: scale(1); } }

@@ -158,7 +158,7 @@
   font-size: 0.8rem;
   color: var(--gold-dim);
   letter-spacing: 0.06em;
-  background: rgba(6,6,14,0.85);
+  background: var(--bg-elevated);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 0.4rem 0.9rem;
@@ -200,7 +200,7 @@
   top: 0; left: 0;
   width: var(--sidebar-w);
   height: 100vh;
-  background: rgba(6,6,14,0.92);
+  background: var(--bg-elevated);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-right: 1px solid var(--border);
@@ -622,7 +622,7 @@
   z-index: 200;
   width: 42px; height: 42px;
   border: 1px solid var(--border);
-  background: rgba(6,6,14,0.9);
+  background: var(--bg-elevated);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: var(--gold);
@@ -655,7 +655,7 @@
   bottom: 2rem; right: 2rem;
   width: 44px; height: 44px;
   border: 1px solid var(--border);
-  background: rgba(6,6,14,0.9);
+  background: var(--bg-elevated);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: var(--gold-dim);
@@ -682,7 +682,7 @@
   font-family: var(--font-code);
   font-size: 0.65rem;
   color: var(--text-dim);
-  background: rgba(6,6,14,0.85);
+  background: var(--bg-elevated);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   padding: 0.35rem 0.9rem;
@@ -847,7 +847,7 @@ body { font-size: var(--font-size, 19px); line-height: var(--line-height, 1.85);
 #highlight-toolbar {
   position: absolute; display: none; z-index: 200;
   padding: 0.4rem 0.5rem;
-  background: rgba(14,14,28,0.95);
+  background: var(--bg-elevated);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border); border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
