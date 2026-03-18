@@ -2,6 +2,18 @@
    READER — Reading experience styles
    ═══════════════════════════════════════════════ */
 
+.sidebar-back-link {
+  font-family: var(--font-code);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+.sidebar-back-link:hover { color: var(--gold); }
+
 #top-progress {
   position: fixed;
   top: 0; left: 0;

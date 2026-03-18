@@ -395,13 +395,28 @@ function buildNavigation(chs) {
       <div class="nav-letters">`;
     letters.forEach(ch => {
       const short = ch.title.length > 42 ? ch.title.substring(0, 40) + '\u2026' : ch.title;
-      html += `<a class="nav-letter" data-target="${ch.id}" data-index="${ch.index}" onclick="scrollToChapter('${ch.id}')">${short}</a>`;
+      html += `<a class="nav-letter" data-target="${ch.id}" data-index="${ch.index}">${short}</a>`;
     });
     html += `</div></div>`;
     pi++;
   });
 
   tree.innerHTML = html;
+
+  // Event delegation for chapter navigation (module-scoped, no inline onclick)
+  tree.addEventListener('click', e => {
+    const link = e.target.closest('.nav-letter');
+    if (link) {
+      e.preventDefault();
+      scrollToChapter(link.dataset.target);
+    }
+    // Toggle part collapse
+    const partHeader = e.target.closest('.nav-part-header');
+    if (partHeader) {
+      const part = partHeader.parentElement;
+      part.classList.toggle('collapsed');
+    }
+  });
 }
 
 /* ═══════════════════════════════════════════════
@@ -1351,15 +1366,30 @@ async function init() {
       return;
     }
 
+    // Load manifest into euler for progress tracking
+    euler.load_manifest(JSON.stringify(manifest));
+    euler.on_book_open(bookId);
+
     // Populate hero dynamically
     document.getElementById('hero-title').textContent = book.title;
     document.getElementById('hero-subtitle').textContent = book.subtitle;
     document.getElementById('hero-manner').textContent = book.manner;
     document.title = book.title;
 
-    // Apply book accent color
-    if (book.accent) {
-      document.documentElement.style.setProperty('--gold', book.accent);
+    // Dynamic hero button text from euler
+    document.getElementById('enter-btn').textContent = euler.hero_button_text(bookId);
+
+    // Apply book accent color + theme
+    applyTheme(book.accent || '');
+    applyTypography();
+
+    // Skip hero for returning readers — go straight to content
+    if (!euler.should_show_hero(bookId)) {
+      const hero = document.getElementById('hero');
+      const app = document.getElementById('app');
+      hero.classList.add('hidden');
+      app.style.display = 'grid';
+      app.classList.add('visible');
     }
 
     // Fetch and render the treatise
@@ -1378,6 +1408,30 @@ async function init() {
     initBookmarks();
     initHighlights();
     initStudyPanel(book);
+
+    // Restore scroll position for returning readers
+    const scrollTarget = euler.get_scroll_target(bookId);
+    if (scrollTarget) {
+      // Wait for content to render, then scroll
+      requestAnimationFrame(() => {
+        const el = document.getElementById(scrollTarget);
+        if (el) {
+          el.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+      });
+    }
+
+    // Save scroll position on scroll (throttled)
+    let scrollSaveTimer = null;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollSaveTimer);
+      scrollSaveTimer = setTimeout(() => {
+        const scrollFraction = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
+        const currentChapter = document.querySelector('.chapter.visible')?.id || '';
+        euler.on_scroll_book(bookId, scrollFraction, currentChapter);
+        autoPersist();
+      }, 1000);
+    }, { passive: true });
   } catch (err) {
     document.getElementById('loading').innerHTML =
       `<p style="color:var(--accent-crimson)">Could not load the treatise. ${err.message}. <a href="index.html" style="color:var(--gold)">Back to library</a></p>`;
