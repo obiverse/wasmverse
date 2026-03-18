@@ -11,7 +11,7 @@
 // This inline script can't be blocked by a stale SW because
 // it's embedded in the HTML itself.
 (function(){
-  var V = 'v13'; // Must match sw.js VERSION suffix
+  var V = 'v14'; // Must match sw.js VERSION suffix
   var KEY = 'epistolary_sw_version';
   var stored = localStorage.getItem(KEY);
   var purge = location.search.indexOf('purge') !== -1;
@@ -51,6 +51,7 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/library.css">
 <link rel="stylesheet" href="css/search.css">
+<link rel="stylesheet" href="css/theme-toggle.css">
 </head>
 <body>
 
@@ -78,6 +79,7 @@
 
 <script type="module" src="js/library.js"></script>
 <script type="module" src="js/search.js"></script>
+<script type="module" src="js/theme-global.js"></script>
 <script src="pwa.js"></script>
 </body>
 </html>

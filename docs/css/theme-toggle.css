@@ -1,0 +1,143 @@
+/* ═══════════════════════════════════════════════
+   THEME TOGGLE — Global light/dark/system switcher
+   Floating control with African-inspired geometry
+   ═══════════════════════════════════════════════ */
+
+/* Toggle button — always visible */
+.theme-toggle {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 4px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.theme-toggle:hover {
+  border-color: var(--gold-dim);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.4), 0 0 20px var(--gold-glow);
+}
+
+/* Individual option */
+.theme-opt {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.theme-opt svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.theme-opt:hover {
+  color: var(--gold);
+}
+
+.theme-opt:hover svg {
+  transform: scale(1.15);
+}
+
+.theme-opt.active {
+  background: var(--gold-glow);
+  color: var(--gold-bright);
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.theme-opt:active svg {
+  transform: scale(0.9);
+}
+
+/* Tooltip */
+.theme-opt::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--bg-deep);
+  color: var(--text-dim);
+  font-family: var(--font-code);
+  font-size: 0.58rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+
+.theme-opt:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ═══════════════════════════════════════════════
+   AFRICAN SPIRITUAL PATTERNS — Sacred background
+   Kente-inspired geometric weaving
+   ═══════════════════════════════════════════════ */
+
+/* SVG pattern applied as background */
+.african-pattern {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.018;
+  background-repeat: repeat;
+  background-size: 120px 120px;
+  transition: opacity 0.5s;
+}
+
+/* Pattern adjusts with theme */
+[data-theme="parchment"] .african-pattern,
+[data-theme="sepia"] .african-pattern {
+  opacity: 0.035;
+  filter: invert(1);
+}
+
+[data-theme="dawn"] .african-pattern {
+  opacity: 0.025;
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .theme-toggle {
+    bottom: 1rem;
+    left: 1rem;
+  }
+  .theme-opt {
+    width: 30px;
+    height: 30px;
+  }
+  .theme-opt svg {
+    width: 14px;
+    height: 14px;
+  }
+  .theme-opt::after {
+    display: none;
+  }
+}
