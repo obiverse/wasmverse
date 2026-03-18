@@ -445,13 +445,21 @@ function initCardReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('revealed'), i * 150);
+        setTimeout(() => entry.target.classList.add('revealed'), i * 120);
         observer.unobserve(entry.target);
       }
     });
-  }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+  }, { rootMargin: '100px 0px 0px 0px', threshold: 0.01 });
 
   document.querySelectorAll('.book-card').forEach(card => observer.observe(card));
+
+  // Fallback: if any card is still hidden after 2s, force reveal
+  // (handles edge cases where observer doesn't fire)
+  setTimeout(() => {
+    document.querySelectorAll('.book-card:not(.revealed)').forEach(card => {
+      card.classList.add('revealed');
+    });
+  }, 2000);
 }
 
 /* ═══════════════════════════════════════════════
@@ -670,6 +678,9 @@ async function loadLibrary() {
     const manifest = await res.json();
     euler.load_manifest(JSON.stringify(manifest));
     const grid = document.getElementById('books-grid');
+
+    // Clear skeleton placeholder cards
+    grid.innerHTML = '';
 
     manifest.books.forEach((book, idx) => {
       const symbol = adinkraSVGs[book.symbol] || adinkraSVGs.nsoromma;
