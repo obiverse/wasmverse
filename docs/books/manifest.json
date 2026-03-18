@@ -39,6 +39,18 @@
       "letters": 48,
       "parts": 10,
       "description": "From barter and clay tablets to elliptic curves and payment channels. What money actually is, why Bitcoin had to exist, and how a network of sovereign verification replaced the need to trust any single institution."
+    },
+    {
+      "id": "pwa",
+      "title": "Letters on the Sovereign Application",
+      "subtitle": "A Treatise on Progressive Web Apps, from Cache to Coronation",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/pwa.md",
+      "symbol": "nsoromma",
+      "accent": "#6e9ec9",
+      "letters": 40,
+      "parts": 10,
+      "description": "From the humblest HTTP request to the service worker's interception, from the manifest's declaration to the cache's sovereignty. What a web app actually is, why Progressive Web Apps had to exist, and how a URL becomes an icon on your home screen."
     }
   ]
 }

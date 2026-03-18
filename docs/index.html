@@ -629,6 +629,53 @@ function initCardCanvas(canvas, bookId, accent) {
         ctx.font = '6px monospace';
         ctx.fillText(((i * 0xABCD + frame) & 0xFFFF).toString(16), hx, hy);
       }
+    } else if (bookId === 'pwa') {
+      // Service worker interception: requests flow right, cache shield in center
+      const shieldR = 22;
+      // Shield circle (the service worker)
+      const breathe = 0.5 + 0.5 * Math.sin(t * 0.8);
+      ctx.beginPath();
+      ctx.arc(cx, cy, shieldR, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.12 + breathe * 0.06})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      // Inner shield dot
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.2 + breathe * 0.15})`;
+      ctx.fill();
+      // Requests flowing inward from edges
+      for (let i = 0; i < 8; i++) {
+        const angle = (i * Math.PI * 2 / 8) + t * 0.2;
+        const progress = ((t * 0.8 + i * 0.4) % 1);
+        const fromR = 70;
+        const toR = shieldR + 4;
+        const r = fromR - progress * (fromR - toR);
+        const px = cx + Math.cos(angle) * r;
+        const py = cy + Math.sin(angle) * r;
+        const alpha = progress < 0.8 ? 0.3 * (1 - progress / 0.8) : 0;
+        ctx.beginPath();
+        ctx.arc(px, py, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha})`;
+        ctx.fill();
+        // Trail
+        const tr = r + 8;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+        ctx.lineTo(cx + Math.cos(angle) * tr, cy + Math.sin(angle) * tr);
+        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha * 0.4})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+      // Cached responses: orbiting dots inside the shield
+      for (let i = 0; i < 5; i++) {
+        const a = (i * Math.PI * 2 / 5) + t * 0.3;
+        const orbitR = 12;
+        ctx.beginPath();
+        ctx.arc(cx + Math.cos(a) * orbitR, cy + Math.sin(a) * orbitR, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + 0.1 * Math.sin(t * 2 + i)})`;
+        ctx.fill();
+      }
     } else {
       // Default: floating geometry
       for (let i = 0; i < 6; i++) {

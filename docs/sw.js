@@ -1,19 +1,21 @@
-const CACHE = 'epistolary-v2';
+const CACHE = 'epistolary-v4';
+const BASE = '/wasmverse/';
 
 const SHELL = [
-  '/',
-  '/index.html',
-  '/read.html',
-  '/books/manifest.json',
-  '/books/wasm.md',
-  '/books/rust.md',
-  '/pkg/sorting-theater/sorting_theater.js',
-  '/pkg/sorting-theater/sorting_theater_bg.wasm',
-  '/pkg/stack-machine/stack_machine.js',
-  '/pkg/stack-machine/stack_machine_bg.wasm',
-  '/pwa.js',
-  '/icon.svg',
-  '/manifest.webmanifest',
+  BASE,
+  BASE + 'index.html',
+  BASE + 'read.html',
+  BASE + 'books/manifest.json',
+  BASE + 'books/wasm.md',
+  BASE + 'books/rust.md',
+  BASE + 'books/bitcoin.md',
+  BASE + 'books/pwa.md',
+  BASE + 'pkg/sorting-theater/sorting_theater.js',
+  BASE + 'pkg/sorting-theater/sorting_theater_bg.wasm',
+  BASE + 'pkg/stack-machine/stack_machine.js',
+  BASE + 'pkg/stack-machine/stack_machine_bg.wasm',
+  BASE + 'icon.svg',
+  BASE + 'manifest.webmanifest',
 ];
 
 // Install — cache the app shell
@@ -40,7 +42,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
-  // Skip cross-origin requests (fonts, etc.) — let them go to network
+  // Skip cross-origin requests (fonts, etc.)
   if (url.origin !== location.origin) return;
 
   e.respondWith(
@@ -48,7 +50,6 @@ self.addEventListener('fetch', e => {
       if (cached) return cached;
 
       return fetch(e.request).then(response => {
-        // Cache successful GET responses
         if (response.ok && e.request.method === 'GET') {
           const clone = response.clone();
           caches.open(CACHE).then(cache => cache.put(e.request, clone));
@@ -56,9 +57,8 @@ self.addEventListener('fetch', e => {
         return response;
       });
     }).catch(() => {
-      // Offline fallback for navigation
       if (e.request.mode === 'navigate') {
-        return caches.match('/index.html');
+        return caches.match(BASE + 'index.html');
       }
     })
   );
