@@ -189,6 +189,7 @@ const adinkraSVGs = {
   ananse: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="4"/><circle cx="20" cy="20" r="10"/><circle cx="20" cy="20" r="16"/><line x1="20" y1="4" x2="20" y2="36"/><line x1="4" y1="20" x2="36" y2="20"/><line x1="8.7" y1="8.7" x2="31.3" y2="31.3"/><line x1="31.3" y1="8.7" x2="8.7" y2="31.3"/></svg>`,
   funtun: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 6 A14 14 0 0 1 20 34"/><path d="M20 6 A14 14 0 0 0 20 34"/><circle cx="20" cy="13" r="3"/><circle cx="20" cy="27" r="3"/></svg>`,
   fawohodie: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="14"/><line x1="20" y1="6" x2="20" y2="34"/><line x1="6" y1="20" x2="34" y2="20"/><circle cx="20" cy="20" r="5"/><path d="M15 12 L20 6 L25 12"/><path d="M15 28 L20 34 L25 28"/><path d="M12 15 L6 20 L12 25"/><path d="M28 15 L34 20 L28 25"/></svg>`,
+  matemasie: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M8 14 C8 10 12 8 16 8 C20 8 20 12 20 14 C20 12 20 8 24 8 C28 8 32 10 32 14 C32 18 28 20 20 20 C12 20 8 18 8 14Z"/><path d="M8 26 C8 22 12 20 16 20 C20 20 20 24 20 26 C20 24 20 20 24 20 C28 20 32 22 32 26 C32 30 28 32 20 32 C12 32 8 30 8 26Z"/><circle cx="14" cy="14" r="1.5" fill="currentColor"/><circle cx="26" cy="14" r="1.5" fill="currentColor"/><circle cx="14" cy="26" r="1.5" fill="currentColor"/><circle cx="26" cy="26" r="1.5" fill="currentColor"/></svg>`,
 };
 
 /* ═══════════════════════════════════════════════
@@ -369,6 +370,52 @@ function initCardCanvas(canvas, bookId, accent) {
         ctx.beginPath();
         ctx.arc(cx + Math.cos(a) * orbitR, cy + Math.sin(a) * orbitR, 1.5, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + 0.1 * Math.sin(t * 2 + i)})`;
+        ctx.fill();
+      }
+    } else if (bookId === 'messages') {
+      // Message relay network — nodes with flowing messages between them
+      const nodes = [];
+      for (let i = 0; i < 7; i++) {
+        const a = (i * Math.PI * 2 / 7) + 0.3;
+        const r = 35 + (i % 2) * 15;
+        nodes.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r });
+      }
+      nodes.push({ x: cx, y: cy }); // central relay
+      // Connection lines (web pattern)
+      ctx.lineWidth = 0.4;
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          if (Math.sqrt(dx*dx + dy*dy) < 70) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.06)`;
+            ctx.stroke();
+          }
+        }
+      }
+      // Nodes (people/devices)
+      for (let i = 0; i < nodes.length; i++) {
+        const pulse = 0.5 + 0.5 * Math.sin(t * 2 + i);
+        const nr = i === nodes.length - 1 ? 4 : 2.5;
+        ctx.beginPath();
+        ctx.arc(nodes[i].x, nodes[i].y, nr, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + pulse * 0.15})`;
+        ctx.fill();
+      }
+      // Flowing message packets
+      for (let i = 0; i < 5; i++) {
+        const progress = ((t * 0.6 + i * 0.35) % 1);
+        const from = nodes[i % nodes.length];
+        const to = nodes[(i + 3) % nodes.length];
+        const mx = from.x + (to.x - from.x) * progress;
+        const my = from.y + (to.y - from.y) * progress;
+        const alpha = Math.sin(progress * Math.PI) * 0.5;
+        ctx.beginPath();
+        ctx.arc(mx, my, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha})`;
         ctx.fill();
       }
     } else if (bookId === 'making') {

@@ -1,4 +1,4 @@
-const VERSION = 'epistolary-v14';
+const VERSION = 'epistolary-v15';
 const BASE = '/wasmverse/';
 
 // Core shell — precached on install for offline support

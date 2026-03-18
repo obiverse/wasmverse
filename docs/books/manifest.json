@@ -75,6 +75,18 @@
       "letters": 43,
       "parts": 8,
       "description": "The system explaining itself. Every concept in software engineering — from files to deployment — taught through the actual code of this very library. The reader who finishes can fork the repo and build their own."
+    },
+    {
+      "id": "messages",
+      "title": "Letters on the Web of Messages",
+      "subtitle": "A Treatise on WhatsApp, WebAssembly, and the Sovereign Network, from Drums to Digital Markets",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/messages.md",
+      "symbol": "matemasie",
+      "accent": "#e07c3e",
+      "letters": 42,
+      "parts": 10,
+      "description": "From the talking drum to the Signal Protocol, from the Onitsha marketplace to Nostr relays. How WhatsApp became Africa's digital economy, why it can serve as an event bus for peer-to-peer commerce, and how WebAssembly, Lightning, and cryptographic identity can make that economy sovereign."
     }
   ]
 }

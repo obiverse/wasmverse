@@ -117,8 +117,9 @@ LIBRARY_PLAN.md            Complete outline for 7 future treatises
 | dwennimmen | Ram's horns (strength of mind) | Rust |
 | fawohodie | Independence, freedom | Bitcoin |
 | nsoromma | Child of the heavens (guiding star) | PWA / default |
-| sankofa | Go back and learn | (chapter markers) |
-| funtun | Unity in diversity | (chapter markers) |
+| sankofa | Go back and learn | Making / (chapter markers) |
+| funtun | Unity in diversity | Euler / (chapter markers) |
+| matemasie | What I hear, I keep (wisdom) | Messages |
 
 ## Build Commands
 
