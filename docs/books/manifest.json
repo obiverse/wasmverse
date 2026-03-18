@@ -27,6 +27,18 @@
       "letters": 36,
       "parts": 9,
       "description": "Why every value must have an owner, why references must not outlive their referents, and how a compiler can prove the absence of an entire class of bugs that has plagued computing for fifty years."
+    },
+    {
+      "id": "bitcoin",
+      "title": "Letters on the Sovereignty of Value",
+      "subtitle": "A Treatise on Bitcoin, from Barter to the Lightning Network",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/bitcoin.md",
+      "symbol": "fawohodie",
+      "accent": "#f7931a",
+      "letters": 48,
+      "parts": 10,
+      "description": "From barter and clay tablets to elliptic curves and payment channels. What money actually is, why Bitcoin had to exist, and how a network of sovereign verification replaced the need to trust any single institution."
     }
   ]
 }

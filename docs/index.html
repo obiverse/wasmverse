@@ -6,6 +6,10 @@
 <title>The Epistolary Library</title>
 <meta name="description" content="Treatises in the manner of Euler's Letters to a German Princess — for builders who love the universe">
 <meta name="theme-color" content="#0a0a14">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -489,6 +493,7 @@ const adinkraSVGs = {
   dwennimmen: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 8 C14 8 8 12 8 20 C8 24 10 26 14 26"/><path d="M20 8 C26 8 32 12 32 20 C32 24 30 26 26 26"/><path d="M20 32 C14 32 8 28 8 20"/><path d="M20 32 C26 32 32 28 32 20"/><line x1="20" y1="6" x2="20" y2="34"/></svg>`,
   ananse: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="4"/><circle cx="20" cy="20" r="10"/><circle cx="20" cy="20" r="16"/><line x1="20" y1="4" x2="20" y2="36"/><line x1="4" y1="20" x2="36" y2="20"/><line x1="8.7" y1="8.7" x2="31.3" y2="31.3"/><line x1="31.3" y1="8.7" x2="8.7" y2="31.3"/></svg>`,
   funtun: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 6 A14 14 0 0 1 20 34"/><path d="M20 6 A14 14 0 0 0 20 34"/><circle cx="20" cy="13" r="3"/><circle cx="20" cy="27" r="3"/></svg>`,
+  fawohodie: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="14"/><line x1="20" y1="6" x2="20" y2="34"/><line x1="6" y1="20" x2="34" y2="20"/><circle cx="20" cy="20" r="5"/><path d="M15 12 L20 6 L25 12"/><path d="M15 28 L20 34 L25 28"/><path d="M12 15 L6 20 L12 25"/><path d="M28 15 L34 20 L28 25"/></svg>`,
 };
 
 /* ═══════════════════════════════════════════════
@@ -583,6 +588,47 @@ function initCardCanvas(canvas, bookId, accent) {
       ctx.arc(cx, cy - 5, 12, Math.PI, 0);
       ctx.stroke();
       ctx.strokeRect(cx - 14, cy - 5, 28, 20);
+    } else if (bookId === 'bitcoin') {
+      // Blockchain: linked blocks flowing left to right
+      const blockW = 28, blockH = 18, gap = 14;
+      const totalW = (blockW + gap) * 6;
+      const startX = cx - totalW / 2 + ((t * 15) % (blockW + gap));
+      ctx.lineWidth = 0.6;
+      for (let i = -1; i < 7; i++) {
+        const bx = startX + i * (blockW + gap);
+        const by = cy - blockH / 2;
+        // Block rectangle
+        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.1 + 0.05 * Math.sin(t * 2 + i)})`;
+        ctx.strokeRect(bx, by, blockW, blockH);
+        // Hash link to next block
+        if (i < 6) {
+          ctx.beginPath();
+          ctx.moveTo(bx + blockW, cy);
+          ctx.lineTo(bx + blockW + gap, cy);
+          ctx.stroke();
+          // Arrow head
+          ctx.beginPath();
+          ctx.moveTo(bx + blockW + gap - 3, cy - 2);
+          ctx.lineTo(bx + blockW + gap, cy);
+          ctx.lineTo(bx + blockW + gap - 3, cy + 2);
+          ctx.stroke();
+        }
+        // Nonce sparks inside blocks
+        const sparkX = bx + 5 + Math.sin(t * 8 + i * 3) * 8;
+        const sparkY = cy + Math.cos(t * 6 + i * 2) * 4;
+        ctx.beginPath();
+        ctx.arc(sparkX, sparkY, 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.2 + 0.15 * Math.sin(t * 5 + i)})`;
+        ctx.fill();
+      }
+      // Floating hash fragments
+      for (let i = 0; i < 10; i++) {
+        const hx = cx + Math.sin(t * 0.7 + i * 1.1) * 80;
+        const hy = cy + Math.cos(t * 0.5 + i * 0.9) * 30;
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.06)`;
+        ctx.font = '6px monospace';
+        ctx.fillText(((i * 0xABCD + frame) & 0xFFFF).toString(16), hx, hy);
+      }
     } else {
       // Default: floating geometry
       for (let i = 0; i < 6; i++) {
@@ -704,6 +750,8 @@ async function loadLibrary() {
 }
 
 loadLibrary();
+
 </script>
+<script src="pwa.js"></script>
 </body>
 </html>
