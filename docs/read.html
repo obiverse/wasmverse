@@ -1519,6 +1519,9 @@ function initObservers() {
           const short = ch.title.length > 50 ? ch.title.substring(0, 48) + '\u2026' : ch.title;
           indicator.textContent = `${idx + 1} / ${chapters.length} \u2014 ${short}`;
         }
+
+        // Persist reading progress for library hub
+        saveReadingProgress(idx + 1, chapters.length);
       }
     });
   }, { rootMargin: '-15% 0px -65% 0px' });
@@ -2021,11 +2024,32 @@ async function initStackDemo(panel) {
 /* ═══════════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   READING PROGRESS — Persist to localStorage
+   ═══════════════════════════════════════════════ */
+let currentBookId = 'wasm';
+function saveReadingProgress(chaptersRead, totalChapters) {
+  try {
+    const data = JSON.parse(localStorage.getItem('epistolary_progress') || '{}');
+    const existing = data[currentBookId] || { chaptersRead: 0 };
+    // Only update if we've read further
+    if (chaptersRead > existing.chaptersRead) {
+      data[currentBookId] = {
+        chaptersRead,
+        totalChapters,
+        lastRead: new Date().toISOString(),
+      };
+      localStorage.setItem('epistolary_progress', JSON.stringify(data));
+    }
+  } catch {}
+}
+
 async function init() {
   try {
     // Read book ID from URL param
     const params = new URLSearchParams(window.location.search);
     const bookId = params.get('book') || 'wasm';
+    currentBookId = bookId;
 
     // Fetch manifest
     const manifestRes = await fetch('books/manifest.json');
