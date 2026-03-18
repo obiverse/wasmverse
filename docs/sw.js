@@ -1,4 +1,4 @@
-const VERSION = 'epistolary-v5';
+const VERSION = 'epistolary-v6';
 const BASE = '/wasmverse/';
 
 // Core shell — precached on install for offline support
@@ -10,6 +10,7 @@ const PRECACHE = [
   BASE + 'icon.svg',
   BASE + 'manifest.webmanifest',
   BASE + 'pwa.js',
+  BASE + 'lib.js',
 ];
 
 // Books — cached on first access (stale-while-revalidate)
@@ -53,6 +54,12 @@ self.addEventListener('fetch', e => {
 
   // Skip cross-origin (fonts CDN, etc.)
   if (url.origin !== location.origin) return;
+
+  // ?purge escape hatch — always go to network, never serve from cache
+  if (url.search.includes('purge')) {
+    e.respondWith(fetch(e.request));
+    return;
+  }
 
   const path = url.pathname;
 

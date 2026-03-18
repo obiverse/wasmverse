@@ -6,6 +6,39 @@
 <title>The Epistolary Library</title>
 <meta name="description" content="Treatises in the manner of Euler's Letters">
 <meta name="theme-color" content="#0a0a14">
+<script>
+// Self-healing PWA: nuke stale service workers and caches.
+(function(){
+  var V = 'v6';
+  var KEY = 'epistolary_sw_version';
+  var stored = localStorage.getItem(KEY);
+  var purge = location.search.indexOf('purge') !== -1;
+
+  if (purge || (stored && stored !== V)) {
+    localStorage.removeItem(KEY);
+    localStorage.removeItem('epistolary_pwa');
+    if ('caches' in window) {
+      caches.keys().then(function(keys) {
+        return Promise.all(keys.map(function(k) { return caches.delete(k); }));
+      });
+    }
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        regs.forEach(function(r) { r.unregister(); });
+      }).then(function() {
+        if (purge) {
+          location.replace(location.pathname);
+        } else {
+          location.reload();
+        }
+      });
+    } else if (purge) {
+      location.replace(location.pathname);
+    }
+  }
+  localStorage.setItem(KEY, V);
+})();
+</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <meta name="apple-mobile-web-app-capable" content="yes">
