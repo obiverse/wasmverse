@@ -1558,8 +1558,13 @@ async function init() {
     applyTheme(book.accent || '');
     applyTypography();
 
-    // Skip hero for returning readers — go straight to content
-    if (!euler.should_show_hero(bookId)) {
+    // Determine if we should skip the hero:
+    // 1. URL has a hash fragment (user clicked a deep link) — always skip
+    // 2. Returning reader (has progress) — skip
+    const hashTarget = window.location.hash ? window.location.hash.slice(1) : '';
+    const skipHero = hashTarget || !euler.should_show_hero(bookId);
+
+    if (skipHero) {
       const hero = document.getElementById('hero');
       const app = document.getElementById('app');
       hero.classList.add('hidden');
@@ -1584,8 +1589,8 @@ async function init() {
     initHighlights();
     initStudyPanel(book);
 
-    // Restore scroll position for returning readers
-    const scrollTarget = euler.get_scroll_target(bookId);
+    // Scroll priority: 1) URL hash fragment, 2) saved scroll position, 3) top
+    const scrollTarget = hashTarget || euler.get_scroll_target(bookId);
     if (scrollTarget) {
       // Suppress scrollspy during restoration to prevent it from
       // overwriting progress when early chapters are briefly visible
