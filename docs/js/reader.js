@@ -1570,6 +1570,9 @@ async function init() {
       hero.classList.add('hidden');
       app.style.display = 'grid';
       app.classList.add('visible');
+      // CRITICAL: disable the hero scroll listener so it doesn't
+      // call enterScroll() → window.scrollTo(0,0) after 600ms
+      heroActive = false;
     }
 
     // Fetch and render the treatise
