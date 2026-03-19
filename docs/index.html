@@ -22,109 +22,86 @@
 
 <canvas id="bg-canvas"></canvas>
 
+<!-- ═══════════════════════════════════════════════
+     HERO — Compact temple entrance
+     ═══════════════════════════════════════════════ -->
 <section class="hero">
   <h1>The Epistolary Library</h1>
-  <p class="tagline">Treatises in the manner of Euler's Letters to a German Princess</p>
-  <p class="credit">For builders who love the universe</p>
-  <nav class="hero-nav">
-    <a href="#library" class="hero-nav-link">Library</a>
-    <a href="#laboratory" class="hero-nav-link">Laboratory</a>
-    <a href="#compass" class="hero-nav-link">Compass</a>
-  </nav>
+  <p class="tagline">Treatises in the manner of Euler, for builders who love the universe</p>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     THE LABORATORY — Interactive Wasm demos
+     THE COMPASS — Horizontal path strip (no dead space)
+     ═══════════════════════════════════════════════ -->
+<nav class="compass-strip" id="compass">
+  <div class="compass-scroll">
+    <a class="compass-pill" href="#library" data-path="sovereign">
+      <span class="compass-icon">&#9670;</span>
+      <span class="compass-name">Sovereign's Path</span>
+      <span class="compass-trail">Crypto → Bitcoin → Keys → Lightning → Nostr → Privacy → Fortress</span>
+    </a>
+    <a class="compass-pill" href="#library" data-path="coder">
+      <span class="compass-icon">&#9671;</span>
+      <span class="compass-name">Coder's Path</span>
+      <span class="compass-trail">Math → Algorithms → Rust → WebAssembly</span>
+    </a>
+    <a class="compass-pill" href="#library" data-path="maker">
+      <span class="compass-icon">&#9671;</span>
+      <span class="compass-name">Maker's Journey</span>
+      <span class="compass-trail">Electricity → Structures → Manufacturing → Industry</span>
+    </a>
+    <a class="compass-pill" href="#library" data-path="founder">
+      <span class="compass-icon">&#9671;</span>
+      <span class="compass-name">Founder's Path</span>
+      <span class="compass-trail">Enterprise → Wealth → Governance → Rhetoric</span>
+    </a>
+    <a class="compass-pill" href="#library" data-path="thinker">
+      <span class="compass-icon">&#9671;</span>
+      <span class="compass-name">Thinker's Path</span>
+      <span class="compass-trail">Systems → AI → Cryptography → Bitcoin</span>
+    </a>
+    <a class="compass-pill lab-pill" href="#laboratory">
+      <span class="compass-icon">&#9654;</span>
+      <span class="compass-name">Laboratory</span>
+      <span class="compass-trail">Live Wasm demos</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     THE LABORATORY — Compact inline demos
      ═══════════════════════════════════════════════ -->
 <section class="lab-section" id="laboratory">
-  <div class="section-label">The Laboratory — Learn by Doing</div>
-  <p class="lab-intro">Live demonstrations powered by WebAssembly. No installation. No backend. Pure computation in your browser.</p>
   <div class="lab-grid">
     <a class="lab-card" href="read.html?book=wasm#letter-38-on-knuth-the-art-and-the-visible-machine">
       <div class="lab-icon">&#9654;</div>
-      <div class="lab-title">Sorting Theater</div>
-      <div class="lab-desc">Watch 6 sorting algorithms race — bubble, insertion, selection, quicksort, heapsort, merge sort. Step through one comparison at a time or let them run.</div>
-      <div class="lab-tech">Rust → Wasm &middot; Canvas &middot; 26KB</div>
+      <div class="lab-info">
+        <div class="lab-title">Sorting Theater</div>
+        <div class="lab-desc">6 algorithms race. Step through or let them run.</div>
+      </div>
+      <div class="lab-tech">26KB</div>
     </a>
     <a class="lab-card" href="read.html?book=wasm#letter-40-on-the-stack-machine-made-visible">
       <div class="lab-icon">&#9654;</div>
-      <div class="lab-title">Stack Machine</div>
-      <div class="lab-desc">Step through a 20-instruction bytecode VM executing arithmetic, Fibonacci, and countdown. Watch the stack grow and shrink.</div>
-      <div class="lab-tech">Rust → Wasm &middot; 52KB</div>
+      <div class="lab-info">
+        <div class="lab-title">Stack Machine</div>
+        <div class="lab-desc">20-instruction bytecode VM. Watch the stack grow.</div>
+      </div>
+      <div class="lab-tech">52KB</div>
     </a>
     <a class="lab-card" href="read.html?book=electricity#letter-9-on-ohm-s-law-and-the-holy-trinity">
       <div class="lab-icon">&#9654;</div>
-      <div class="lab-title">Circuit Simulator</div>
-      <div class="lab-desc">Build DC circuits with resistors. See voltage, current, and power calculated live. Ohm's law and Kirchhoff made tangible.</div>
-      <div class="lab-tech">Rust → Wasm &middot; 71KB</div>
+      <div class="lab-info">
+        <div class="lab-title">Circuit Simulator</div>
+        <div class="lab-desc">Build DC circuits. Ohm's law made tangible.</div>
+      </div>
+      <div class="lab-tech">71KB</div>
     </a>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     THE COMPASS — Guided learning paths
-     ═══════════════════════════════════════════════ -->
-<section class="compass-section" id="compass">
-  <div class="section-label">The Compass — Where to Begin</div>
-  <div class="compass-grid">
-    <div class="compass-path">
-      <div class="compass-path-title">The Maker's Journey</div>
-      <div class="compass-path-desc">From electricity to structures to manufacturing. Build physical things.</div>
-      <div class="compass-steps">
-        <a href="read.html?book=electricity">1. Electricity</a>
-        <a href="read.html?book=strength">2. Structures</a>
-        <a href="read.html?book=manufacturing">3. Manufacturing</a>
-        <a href="read.html?book=industry">4. Industry</a>
-      </div>
-    </div>
-    <div class="compass-path">
-      <div class="compass-path-title">The Coder's Path</div>
-      <div class="compass-path-desc">From first principles to WebAssembly mastery. Build digital things.</div>
-      <div class="compass-steps">
-        <a href="read.html?book=math">1. Mathematics</a>
-        <a href="read.html?book=algorithms">2. Algorithms</a>
-        <a href="read.html?book=rust">3. Rust</a>
-        <a href="read.html?book=wasm">4. WebAssembly</a>
-      </div>
-    </div>
-    <div class="compass-path">
-      <div class="compass-path-title">The Founder's Path</div>
-      <div class="compass-path-desc">From first customer to sovereign enterprise. Build businesses.</div>
-      <div class="compass-steps">
-        <a href="read.html?book=enterprise">1. Enterprise</a>
-        <a href="read.html?book=wealth">2. Wealth</a>
-        <a href="read.html?book=governance">3. Governance</a>
-        <a href="read.html?book=rhetoric">4. Communication</a>
-      </div>
-    </div>
-    <div class="compass-path">
-      <div class="compass-path-title">The Thinker's Path</div>
-      <div class="compass-path-desc">From systems to AI to cryptography. Understand the deep patterns.</div>
-      <div class="compass-steps">
-        <a href="read.html?book=systems">1. Systems</a>
-        <a href="read.html?book=thought">2. AI</a>
-        <a href="read.html?book=crypto">3. Cryptography</a>
-        <a href="read.html?book=bitcoin">4. Bitcoin</a>
-      </div>
-    </div>
-    <div class="compass-path">
-      <div class="compass-path-title">The Sovereign's Path</div>
-      <div class="compass-path-desc">From zero to archmage. Understand and own your money, identity, speech, and infrastructure.</div>
-      <div class="compass-steps">
-        <a href="read.html?book=crypto">1. Cryptography</a>
-        <a href="read.html?book=bitcoin">2. Bitcoin</a>
-        <a href="read.html?book=keys">3. Keys</a>
-        <a href="read.html?book=lightning">4. Lightning</a>
-        <a href="read.html?book=whispers">5. Nostr</a>
-        <a href="read.html?book=cloak">6. Privacy</a>
-        <a href="read.html?book=fortress">7. Fortress</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     THE LIBRARY — Book catalog
+     THE LIBRARY — Honeycomb book grid
      ═══════════════════════════════════════════════ -->
 <section class="books-section" id="library">
   <div class="section-label">The Library — 26 Treatises</div>

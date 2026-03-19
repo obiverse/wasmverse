@@ -933,7 +933,7 @@ async function loadLibrary() {
         <div class="card-canvas-wrap">
           <canvas class="card-anim" data-book="${book.id}" data-accent="${book.accent || '#c9a96e'}"></canvas>
           <div class="progress-ring-wrap">
-            ${makeProgressRing(pct, book.accent || '#c9a96e', 70)}
+            ${makeProgressRing(pct, book.accent || '#c9a96e', 50)}
             <div class="progress-text">${pctLabel}</div>
           </div>
         </div>
