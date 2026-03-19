@@ -87,6 +87,66 @@
       "letters": 42,
       "parts": 10,
       "description": "From the talking drum to the Signal Protocol, from the Onitsha marketplace to Nostr relays. How WhatsApp became Africa's digital economy, why it can serve as an event bus for peer-to-peer commerce, and how WebAssembly, Lightning, and cryptographic identity can make that economy sovereign."
+    },
+    {
+      "id": "math",
+      "title": "Letters on the Mathematics of Reality",
+      "subtitle": "A Treatise on the Language of the Universe, from Counting to Calculus",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/math.md",
+      "symbol": "nsoromma",
+      "accent": "#4a6fa5",
+      "letters": 35,
+      "parts": 8,
+      "description": "Euler's own domain. From the shepherd's tally to the calculus of change, from compound interest to the bell curve. Mathematics as the African builder's birthright — the language that does not lie."
+    },
+    {
+      "id": "enterprise",
+      "title": "Letters on the Sovereign Enterprise",
+      "subtitle": "A Treatise on Building, from First Customer to Enduring Institution",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/enterprise.md",
+      "symbol": "dwennimmen",
+      "accent": "#d4764e",
+      "letters": 35,
+      "parts": 8,
+      "description": "From the village market to Flutterwave. Enterprise is Africa's oldest technology. The principles of value, revenue, growth, and endurance — taught from first principles through M-Pesa, Paystack, Andela, and the ancient traders of Timbuktu."
+    },
+    {
+      "id": "canvas",
+      "title": "Letters on the Generative Canvas",
+      "subtitle": "A Treatise on Creative Coding, from Pixel to Pattern, through the Lens of African Design",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/canvas.md",
+      "symbol": "ananse",
+      "accent": "#e04a6e",
+      "letters": 30,
+      "parts": 7,
+      "description": "Kente patterns are algorithms. Adinkra symbols are visual programs. African design has always been computational. This treatise teaches creative coding through the lens of ancestral craft — the reader creates art that runs in the browser."
+    },
+    {
+      "id": "wealth",
+      "title": "Letters on the Architecture of Wealth",
+      "subtitle": "A Treatise on Money, Markets, and the Mathematics of Prosperity",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/wealth.md",
+      "symbol": "fawohodie",
+      "accent": "#2e8b57",
+      "letters": 35,
+      "parts": 8,
+      "description": "Financial literacy is sovereignty. From M-Pesa to stock markets, from compound interest to chamas and stokvels, from budgeting to generational wealth. The African builder who understands money cannot be deceived."
+    },
+    {
+      "id": "systems",
+      "title": "Letters on the Patterns of Nature",
+      "subtitle": "A Treatise on Systems Thinking, from Feedback Loops to Emergent Order",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/systems.md",
+      "symbol": "funtun",
+      "accent": "#6e8b9e",
+      "letters": 30,
+      "parts": 7,
+      "description": "The deep patterns that connect ecology, economics, technology, and governance. Why some cities thrive. Why some businesses scale. Why some interventions backfire. Euler saw the same laws everywhere — this book makes that vision explicit."
     }
   ]
 }
