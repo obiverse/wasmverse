@@ -484,38 +484,75 @@ function renderChapters(chs) {
 let _scrollingTo = false; // Guard: suppress scrollspy during programmatic scroll
 
 function initObservers() {
-  // Scrollspy
-  const spy = new IntersectionObserver((entries) => {
-    // Skip scrollspy updates while programmatic scroll is in progress
+  // Scrollspy — uses scroll event + manual position check instead of
+  // IntersectionObserver to avoid the bounce-back race condition.
+  // IO delivers batched entries that can include stale intersections;
+  // manual checking always reflects the current scroll position.
+  let spyTicking = false;
+  function updateScrollspy() {
     if (_scrollingTo) return;
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
-        const idx = parseInt(entry.target.dataset.index);
-        currentChapterIdx = idx;
+    spyTicking = false;
 
-        document.querySelectorAll('.nav-letter').forEach(el => el.classList.remove('active'));
-        const navItem = document.querySelector(`.nav-letter[data-target="${id}"]`);
-        if (navItem) {
-          navItem.classList.add('active');
-          navItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-          const part = navItem.closest('.nav-part');
-          if (part) part.classList.remove('collapsed');
+    // Find the chapter whose top is closest to 20% from viewport top
+    const targetY = window.innerHeight * 0.2;
+    let bestIdx = 0;
+    let bestDist = Infinity;
+
+    document.querySelectorAll('.chapter').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      // Chapter is "active" if its top is above the target line and its bottom is below it
+      // (i.e., the target line is inside the chapter)
+      if (rect.top <= targetY && rect.bottom > targetY) {
+        const idx = parseInt(el.dataset.index);
+        if (!isNaN(idx)) {
+          bestIdx = idx;
+          bestDist = 0;
         }
-
-        // Update chapter indicator
-        const indicator = document.getElementById('chapter-indicator');
-        const ch = chapters[idx];
-        if (ch) {
-          const short = ch.title.length > 50 ? ch.title.substring(0, 48) + '\u2026' : ch.title;
-          indicator.textContent = `${idx + 1} / ${chapters.length} \u2014 ${short}`;
+      } else {
+        // Fallback: closest chapter top to target
+        const dist = Math.abs(rect.top - targetY);
+        const idx = parseInt(el.dataset.index);
+        if (!isNaN(idx) && dist < bestDist && rect.top <= targetY + 100) {
+          bestDist = dist;
+          bestIdx = idx;
         }
-
-        // Persist reading progress for library hub
-        saveReadingProgress(idx + 1, chapters.length);
       }
     });
-  }, { rootMargin: '-15% 0px -65% 0px' });
+
+    if (bestIdx === currentChapterIdx) return; // No change
+    currentChapterIdx = bestIdx;
+
+    const ch = chapters[bestIdx];
+    if (!ch) return;
+
+    // Update nav highlight
+    document.querySelectorAll('.nav-letter').forEach(el => el.classList.remove('active'));
+    const navItem = document.querySelector(`.nav-letter[data-target="${ch.id}"]`);
+    if (navItem) {
+      navItem.classList.add('active');
+      // Use auto scroll for sidebar nav — smooth causes window scrollend issues
+      navItem.scrollIntoView({ block: 'nearest', behavior: 'auto' });
+      const part = navItem.closest('.nav-part');
+      if (part) part.classList.remove('collapsed');
+    }
+
+    // Update chapter indicator
+    const indicator = document.getElementById('chapter-indicator');
+    if (indicator) {
+      const short = ch.title.length > 50 ? ch.title.substring(0, 48) + '\u2026' : ch.title;
+      indicator.textContent = `${bestIdx + 1} / ${chapters.length} \u2014 ${short}`;
+    }
+
+    // Persist reading progress
+    saveReadingProgress(bestIdx + 1, chapters.length);
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!spyTicking && !_scrollingTo) {
+      spyTicking = true;
+      requestAnimationFrame(updateScrollspy);
+    }
+  }, { passive: true });
 
   // Reveal on scroll
   const reveal = new IntersectionObserver((entries) => {
@@ -596,14 +633,10 @@ function scrollToChapter(id) {
   const el = document.getElementById(id);
   if (!el) return;
 
-  // Suppress scrollspy during programmatic scroll to prevent bounce-back
+  // Suppress scroll-based scrollspy during programmatic scroll
   _scrollingTo = true;
 
-  const offset = 20;
-  const y = el.getBoundingClientRect().top + window.scrollY - offset;
-  window.scrollTo({ top: y, behavior: 'smooth' });
-
-  // Manually update nav highlight immediately (don't wait for scrollspy)
+  // Update nav highlight immediately
   const idx = parseInt(el.dataset?.index);
   if (!isNaN(idx)) {
     currentChapterIdx = idx;
@@ -611,24 +644,35 @@ function scrollToChapter(id) {
     const navItem = document.querySelector(`.nav-letter[data-target="${id}"]`);
     if (navItem) {
       navItem.classList.add('active');
-      navItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      navItem.scrollIntoView({ block: 'nearest', behavior: 'auto' });
       const part = navItem.closest('.nav-part');
       if (part) part.classList.remove('collapsed');
     }
   }
 
-  // Re-enable scrollspy after scroll completes.
-  // Use scrollend event (modern browsers) with fallback timer.
-  let unlocked = false;
-  const unlock = () => {
-    if (unlocked) return;
-    unlocked = true;
-    // Extra delay after scroll settles to avoid observer firing on stale intersections
-    setTimeout(() => { _scrollingTo = false; }, 200);
+  // Scroll to the chapter
+  const offset = 20;
+  const y = el.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+
+  // Re-enable scrollspy after scroll animation settles.
+  // The scroll-based spy only runs via rAF when _scrollingTo is false,
+  // so there's no race — we just need to wait for the scroll to finish.
+  const checkSettled = () => {
+    // Poll until scroll position stabilizes
+    let lastY = window.scrollY;
+    const poll = setInterval(() => {
+      if (Math.abs(window.scrollY - lastY) < 2) {
+        clearInterval(poll);
+        setTimeout(() => { _scrollingTo = false; }, 100);
+      }
+      lastY = window.scrollY;
+    }, 100);
+    // Hard timeout safety net
+    setTimeout(() => { clearInterval(poll); _scrollingTo = false; }, 3000);
   };
-  window.addEventListener('scrollend', unlock, { once: true });
-  // Fallback: 2s covers even very long smooth scrolls
-  setTimeout(unlock, 2000);
+  // Start checking after a brief initial delay
+  setTimeout(checkSettled, 300);
 
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebar-overlay').classList.remove('open');
