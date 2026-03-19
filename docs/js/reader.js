@@ -565,7 +565,6 @@ function initObservers() {
   }, { rootMargin: '0px 0px -60px 0px', threshold: 0.02 });
 
   document.querySelectorAll('.chapter').forEach(el => {
-    spy.observe(el);
     reveal.observe(el);
   });
 }
