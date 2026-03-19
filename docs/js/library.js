@@ -574,26 +574,40 @@ function initControls(manifest) {
   allManifest = manifest;
   allBooks = manifest.books.map(b => ({
     ...b,
+    category: b.category || 'Other',
     progress: getProgress(b.id),
   }));
 
   const section = document.querySelector('.books-section');
   const sectionLabel = section.querySelector('.section-label');
 
+  // Compute stats
+  const totalLetters = manifest.books.reduce((s, b) => s + (b.letters || 0), 0);
+  const categories = [...new Set(manifest.books.map(b => b.category || 'Other'))].sort();
+
   const controls = document.createElement('div');
   controls.className = 'library-controls';
+
+  // Category filter buttons
+  const catBtns = categories.map(c => {
+    const count = manifest.books.filter(b => b.category === c).length;
+    return `<button class="ctrl-btn" data-filter="${c}">${c} <span class="ctrl-count">${count}</span></button>`;
+  }).join('');
+
   controls.innerHTML = `
-    <input type="search" class="lib-search" id="lib-search" placeholder="Search treatises...">
-    <div class="ctrl-group" id="sort-group">
-      <button class="ctrl-btn active" data-sort="default">Default</button>
-      <button class="ctrl-btn" data-sort="title">Title</button>
-      <button class="ctrl-btn" data-sort="recent">Recent</button>
-      <button class="ctrl-btn" data-sort="progress">Progress</button>
-    </div>
-    <div class="ctrl-group" id="filter-group">
-      <button class="ctrl-btn active" data-filter="all">All</button>
+    <div class="lib-stats">${manifest.books.length} treatises &middot; ${totalLetters} letters</div>
+    <input type="search" class="lib-search" id="lib-search" placeholder="Search treatises... (or \u2318K for deep search)">
+    <div class="ctrl-group ctrl-categories" id="filter-group">
+      <button class="ctrl-btn active" data-filter="all">All <span class="ctrl-count">${manifest.books.length}</span></button>
+      ${catBtns}
       <button class="ctrl-btn" data-filter="reading">Reading</button>
       <button class="ctrl-btn" data-filter="new">New</button>
+    </div>
+    <div class="ctrl-group" id="sort-group">
+      <button class="ctrl-btn active" data-sort="default">Default</button>
+      <button class="ctrl-btn" data-sort="title">A-Z</button>
+      <button class="ctrl-btn" data-sort="recent">Recent</button>
+      <button class="ctrl-btn" data-sort="progress">Progress</button>
     </div>
     <div class="ctrl-group" id="view-group">
       <button class="ctrl-btn active" data-view="grid" title="Grid view">&#9638;</button>
@@ -668,6 +682,9 @@ function renderBooks(sortKey, filterKey) {
     books = books.filter(b => b.progress.chaptersRead > 0 && b.progress.chaptersRead < b.letters);
   } else if (filterKey === 'new') {
     books = books.filter(b => !b.progress.chaptersRead);
+  } else if (filterKey && filterKey !== 'all') {
+    // Category filter
+    books = books.filter(b => (b.category || 'Other') === filterKey);
   }
 
   // Sort
@@ -746,6 +763,7 @@ async function loadLibrary() {
       card.style.setProperty('--card-glow', (book.accent || '#c9a96e') + '18');
       card.style.transitionDelay = `${idx * 0.1}s`;
 
+      card.dataset.category = book.category || 'Other';
       card.innerHTML = `
         <div class="card-sheen"></div>
         <div class="card-canvas-wrap">

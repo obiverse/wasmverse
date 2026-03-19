@@ -340,6 +340,28 @@
   position: relative;
   z-index: 1;
 }
+.lib-stats {
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-code);
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+
+.ctrl-categories {
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ctrl-count {
+  opacity: 0.5;
+  font-size: 0.5rem;
+  margin-left: 0.15rem;
+}
+
 .lib-search {
   flex: 1;
   min-width: 180px;

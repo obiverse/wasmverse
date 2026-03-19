@@ -14,7 +14,8 @@
       "accent": "#c9a96e",
       "letters": 40,
       "parts": 10,
-      "description": "From the humblest transistor to infinite fractals running in a browser sandbox. What a computer actually is, why WebAssembly had to exist, and how the chain from silicon to screen remains faithful at every layer."
+      "description": "From the humblest transistor to infinite fractals running in a browser sandbox. What a computer actually is, why WebAssembly had to exist, and how the chain from silicon to screen remains faithful at every layer.",
+      "category": "Technology"
     },
     {
       "id": "rust",
@@ -26,7 +27,8 @@
       "accent": "#b87333",
       "letters": 36,
       "parts": 9,
-      "description": "Why every value must have an owner, why references must not outlive their referents, and how a compiler can prove the absence of an entire class of bugs that has plagued computing for fifty years."
+      "description": "Why every value must have an owner, why references must not outlive their referents, and how a compiler can prove the absence of an entire class of bugs that has plagued computing for fifty years.",
+      "category": "Technology"
     },
     {
       "id": "bitcoin",
@@ -38,7 +40,8 @@
       "accent": "#f7931a",
       "letters": 48,
       "parts": 10,
-      "description": "From barter and clay tablets to elliptic curves and payment channels. What money actually is, why Bitcoin had to exist, and how a network of sovereign verification replaced the need to trust any single institution."
+      "description": "From barter and clay tablets to elliptic curves and payment channels. What money actually is, why Bitcoin had to exist, and how a network of sovereign verification replaced the need to trust any single institution.",
+      "category": "Finance"
     },
     {
       "id": "pwa",
@@ -50,7 +53,8 @@
       "accent": "#6e9ec9",
       "letters": 41,
       "parts": 10,
-      "description": "From the humblest HTTP request to the service worker's interception, from the manifest's declaration to the cache's sovereignty. What a web app actually is, why Progressive Web Apps had to exist, and how a URL becomes an icon on your home screen."
+      "description": "From the humblest HTTP request to the service worker's interception, from the manifest's declaration to the cache's sovereignty. What a web app actually is, why Progressive Web Apps had to exist, and how a URL becomes an icon on your home screen.",
+      "category": "Technology"
     },
     {
       "id": "euler",
@@ -62,7 +66,8 @@
       "accent": "#4a9e6e",
       "letters": 31,
       "parts": 10,
-      "description": "The system explaining its own engine. Five general-purpose WASM modules — JSON, Store, Theme, Router, Search — composed into a framework that powers this very library. The reader who finishes understands not just the framework, but why it must be this way."
+      "description": "The system explaining its own engine. Five general-purpose WASM modules \u2014 JSON, Store, Theme, Router, Search \u2014 composed into a framework that powers this very library. The reader who finishes understands not just the framework, but why it must be this way.",
+      "category": "Technology"
     },
     {
       "id": "making",
@@ -74,7 +79,8 @@
       "accent": "#9b6ea5",
       "letters": 43,
       "parts": 8,
-      "description": "The system explaining itself. Every concept in software engineering — from files to deployment — taught through the actual code of this very library. The reader who finishes can fork the repo and build their own."
+      "description": "The system explaining itself. Every concept in software engineering \u2014 from files to deployment \u2014 taught through the actual code of this very library. The reader who finishes can fork the repo and build their own.",
+      "category": "Technology"
     },
     {
       "id": "messages",
@@ -86,7 +92,8 @@
       "accent": "#e07c3e",
       "letters": 42,
       "parts": 10,
-      "description": "From the talking drum to the Signal Protocol, from the Onitsha marketplace to Nostr relays. How WhatsApp became Africa's digital economy, why it can serve as an event bus for peer-to-peer commerce, and how WebAssembly, Lightning, and cryptographic identity can make that economy sovereign."
+      "description": "From the talking drum to the Signal Protocol, from the Onitsha marketplace to Nostr relays. How WhatsApp became Africa's digital economy, why it can serve as an event bus for peer-to-peer commerce, and how WebAssembly, Lightning, and cryptographic identity can make that economy sovereign.",
+      "category": "Technology"
     },
     {
       "id": "math",
@@ -98,7 +105,8 @@
       "accent": "#4a6fa5",
       "letters": 35,
       "parts": 8,
-      "description": "Euler's own domain. From the shepherd's tally to the calculus of change, from compound interest to the bell curve. Mathematics as the African builder's birthright — the language that does not lie."
+      "description": "Euler's own domain. From the shepherd's tally to the calculus of change, from compound interest to the bell curve. Mathematics as the African builder's birthright \u2014 the language that does not lie.",
+      "category": "Science"
     },
     {
       "id": "enterprise",
@@ -110,7 +118,8 @@
       "accent": "#d4764e",
       "letters": 35,
       "parts": 8,
-      "description": "From the village market to Flutterwave. Enterprise is Africa's oldest technology. The principles of value, revenue, growth, and endurance — taught from first principles through M-Pesa, Paystack, Andela, and the ancient traders of Timbuktu."
+      "description": "From the village market to Flutterwave. Enterprise is Africa's oldest technology. The principles of value, revenue, growth, and endurance \u2014 taught from first principles through M-Pesa, Paystack, Andela, and the ancient traders of Timbuktu.",
+      "category": "Building"
     },
     {
       "id": "canvas",
@@ -122,7 +131,8 @@
       "accent": "#e04a6e",
       "letters": 30,
       "parts": 7,
-      "description": "Kente patterns are algorithms. Adinkra symbols are visual programs. African design has always been computational. This treatise teaches creative coding through the lens of ancestral craft — the reader creates art that runs in the browser."
+      "description": "Kente patterns are algorithms. Adinkra symbols are visual programs. African design has always been computational. This treatise teaches creative coding through the lens of ancestral craft \u2014 the reader creates art that runs in the browser.",
+      "category": "Creative"
     },
     {
       "id": "wealth",
@@ -134,7 +144,8 @@
       "accent": "#2e8b57",
       "letters": 35,
       "parts": 8,
-      "description": "Financial literacy is sovereignty. From M-Pesa to stock markets, from compound interest to chamas and stokvels, from budgeting to generational wealth. The African builder who understands money cannot be deceived."
+      "description": "Financial literacy is sovereignty. From M-Pesa to stock markets, from compound interest to chamas and stokvels, from budgeting to generational wealth. The African builder who understands money cannot be deceived.",
+      "category": "Finance"
     },
     {
       "id": "systems",
@@ -146,7 +157,8 @@
       "accent": "#6e8b9e",
       "letters": 30,
       "parts": 7,
-      "description": "The deep patterns that connect ecology, economics, technology, and governance. Why some cities thrive. Why some businesses scale. Why some interventions backfire. Euler saw the same laws everywhere — this book makes that vision explicit."
+      "description": "The deep patterns that connect ecology, economics, technology, and governance. Why some cities thrive. Why some businesses scale. Why some interventions backfire. Euler saw the same laws everywhere \u2014 this book makes that vision explicit.",
+      "category": "Science"
     },
     {
       "id": "thought",
@@ -158,7 +170,8 @@
       "accent": "#7a5aaa",
       "letters": 35,
       "parts": 8,
-      "description": "AI is not magic — it is mathematics applied to pattern recognition. From the single perceptron to the transformer that powers language models, taught so the African builder creates AI, not just consumes it."
+      "description": "AI is not magic \u2014 it is mathematics applied to pattern recognition. From the single perceptron to the transformer that powers language models, taught so the African builder creates AI, not just consumes it.",
+      "category": "Science"
     },
     {
       "id": "algorithms",
@@ -170,7 +183,8 @@
       "accent": "#2e8b57",
       "letters": 35,
       "parts": 8,
-      "description": "The hydrogen atom of computer science. Sorting, searching, graphs, trees — the foundations under every program. With African examples: Kobo360 route optimization, M-Pesa network analysis, Jumia search."
+      "description": "The hydrogen atom of computer science. Sorting, searching, graphs, trees \u2014 the foundations under every program. With African examples: Kobo360 route optimization, M-Pesa network analysis, Jumia search.",
+      "category": "Science"
     },
     {
       "id": "crypto",
@@ -182,7 +196,8 @@
       "accent": "#4a6f8b",
       "letters": 35,
       "parts": 8,
-      "description": "From XOR to zero-knowledge proofs. The mathematics of trust between strangers — digital identity, encryption, signatures. In a continent leapfrogging to digital identity, this knowledge is sovereignty."
+      "description": "From XOR to zero-knowledge proofs. The mathematics of trust between strangers \u2014 digital identity, encryption, signatures. In a continent leapfrogging to digital identity, this knowledge is sovereignty.",
+      "category": "Science"
     },
     {
       "id": "rhetoric",
@@ -194,7 +209,8 @@
       "accent": "#c9a96e",
       "letters": 30,
       "parts": 7,
-      "description": "The most undervalued skill in technology. How Euler himself wrote — and why the builder who can explain their work clearly will always outperform the one who can only code. Includes the African griot tradition and the power of proverbs."
+      "description": "The most undervalued skill in technology. How Euler himself wrote \u2014 and why the builder who can explain their work clearly will always outperform the one who can only code. Includes the African griot tradition and the power of proverbs.",
+      "category": "Building"
     },
     {
       "id": "governance",
@@ -206,7 +222,8 @@
       "accent": "#8b6e4a",
       "letters": 30,
       "parts": 7,
-      "description": "Every shared resource needs governance. African traditions — Ubuntu, the palaver tree, age-grade systems, gacaca courts — as models for leading teams, governing open source, and building institutions that outlive their founders."
+      "description": "Every shared resource needs governance. African traditions \u2014 Ubuntu, the palaver tree, age-grade systems, gacaca courts \u2014 as models for leading teams, governing open source, and building institutions that outlive their founders.",
+      "category": "Building"
     },
     {
       "id": "manufacturing",
@@ -218,7 +235,8 @@
       "accent": "#8b5e3c",
       "letters": 43,
       "parts": 10,
-      "description": "The carpenter and the programmer are the same. Wood, metal, plastic, fabric, code — every material obeys the same universal pattern of making. From Aba's leather to Innoson's vehicles, from the jig to the CI/CD pipeline."
+      "description": "The carpenter and the programmer are the same. Wood, metal, plastic, fabric, code \u2014 every material obeys the same universal pattern of making. From Aba's leather to Innoson's vehicles, from the jig to the CI/CD pipeline.",
+      "category": "Making"
     },
     {
       "id": "industry",
@@ -230,7 +248,8 @@
       "accent": "#5a7a4a",
       "letters": 35,
       "parts": 8,
-      "description": "Nations that manufacture become sovereign. Supply chains, logistics, quality systems, energy infrastructure, and Industry 4.0 — the systems that make industrialization possible. Dangote, Hawassa, AfCFTA, and the African industrial renaissance."
+      "description": "Nations that manufacture become sovereign. Supply chains, logistics, quality systems, energy infrastructure, and Industry 4.0 \u2014 the systems that make industrialization possible. Dangote, Hawassa, AfCFTA, and the African industrial renaissance.",
+      "category": "Making"
     }
   ]
 }
