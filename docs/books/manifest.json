@@ -207,6 +207,30 @@
       "letters": 30,
       "parts": 7,
       "description": "Every shared resource needs governance. African traditions — Ubuntu, the palaver tree, age-grade systems, gacaca courts — as models for leading teams, governing open source, and building institutions that outlive their founders."
+    },
+    {
+      "id": "manufacturing",
+      "title": "Letters on the Manufacturing of Worlds",
+      "subtitle": "A Treatise on Making, from the Carpenter's Bench to the Rocket's Engine",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/manufacturing.md",
+      "symbol": "dwennimmen",
+      "accent": "#8b5e3c",
+      "letters": 43,
+      "parts": 10,
+      "description": "The carpenter and the programmer are the same. Wood, metal, plastic, fabric, code — every material obeys the same universal pattern of making. From Aba's leather to Innoson's vehicles, from the jig to the CI/CD pipeline."
+    },
+    {
+      "id": "industry",
+      "title": "Letters on the Engine of Industry",
+      "subtitle": "A Treatise on Industrial Systems, from Supply Chains to Smart Factories",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/industry.md",
+      "symbol": "fawohodie",
+      "accent": "#5a7a4a",
+      "letters": 35,
+      "parts": 8,
+      "description": "Nations that manufacture become sovereign. Supply chains, logistics, quality systems, energy infrastructure, and Industry 4.0 — the systems that make industrialization possible. Dangote, Hawassa, AfCFTA, and the African industrial renaissance."
     }
   ]
 }
