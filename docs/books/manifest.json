@@ -147,6 +147,66 @@
       "letters": 30,
       "parts": 7,
       "description": "The deep patterns that connect ecology, economics, technology, and governance. Why some cities thrive. Why some businesses scale. Why some interventions backfire. Euler saw the same laws everywhere — this book makes that vision explicit."
+    },
+    {
+      "id": "thought",
+      "title": "Letters on the Architecture of Thought",
+      "subtitle": "A Treatise on Neural Networks, from Perceptrons to Transformers",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/thought.md",
+      "symbol": "ananse",
+      "accent": "#7a5aaa",
+      "letters": 35,
+      "parts": 8,
+      "description": "AI is not magic — it is mathematics applied to pattern recognition. From the single perceptron to the transformer that powers language models, taught so the African builder creates AI, not just consumes it."
+    },
+    {
+      "id": "algorithms",
+      "title": "Letters on the Shape of Data",
+      "subtitle": "A Treatise on Algorithms and Data Structures, from Arrays to Red-Black Trees",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/algorithms.md",
+      "symbol": "sankofa",
+      "accent": "#2e8b57",
+      "letters": 35,
+      "parts": 8,
+      "description": "The hydrogen atom of computer science. Sorting, searching, graphs, trees — the foundations under every program. With African examples: Kobo360 route optimization, M-Pesa network analysis, Jumia search."
+    },
+    {
+      "id": "crypto",
+      "title": "Letters on the Cryptography of Trust",
+      "subtitle": "A Treatise on Secrets, Proofs, and Digital Sovereignty",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/crypto.md",
+      "symbol": "fawohodie",
+      "accent": "#4a6f8b",
+      "letters": 35,
+      "parts": 8,
+      "description": "From XOR to zero-knowledge proofs. The mathematics of trust between strangers — digital identity, encryption, signatures. In a continent leapfrogging to digital identity, this knowledge is sovereignty."
+    },
+    {
+      "id": "rhetoric",
+      "title": "Letters on the Rhetoric of Clarity",
+      "subtitle": "A Treatise on Writing, Communication, and the Art of Making the Complex Transparent",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/rhetoric.md",
+      "symbol": "nsoromma",
+      "accent": "#c9a96e",
+      "letters": 30,
+      "parts": 7,
+      "description": "The most undervalued skill in technology. How Euler himself wrote — and why the builder who can explain their work clearly will always outperform the one who can only code. Includes the African griot tradition and the power of proverbs."
+    },
+    {
+      "id": "governance",
+      "title": "Letters on the Governance of the Commons",
+      "subtitle": "A Treatise on Leadership, Community, and the Architecture of Shared Stewardship",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/governance.md",
+      "symbol": "funtun",
+      "accent": "#8b6e4a",
+      "letters": 30,
+      "parts": 7,
+      "description": "Every shared resource needs governance. African traditions — Ubuntu, the palaver tree, age-grade systems, gacaca courts — as models for leading teams, governing open source, and building institutions that outlive their founders."
     }
   ]
 }
