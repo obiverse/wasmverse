@@ -198,6 +198,14 @@ const adinkraSVGs = {
 function initCardCanvas(canvas, bookId, accent) {
   const ctx = canvas.getContext('2d');
   let w, h;
+  let visible = false; // Only animate when card is on screen
+
+  // Pause/resume based on visibility
+  const visObs = new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    if (visible) animate(); // Restart loop when visible
+  }, { rootMargin: '100px' });
+  visObs.observe(canvas);
 
   function resize() {
     const rect = canvas.parentElement.getBoundingClientRect();
@@ -466,9 +474,9 @@ function initCardCanvas(canvas, bookId, accent) {
       }
     }
 
-    requestAnimationFrame(animate);
+    if (visible) requestAnimationFrame(animate);
   }
-  animate();
+  // Animation starts when IntersectionObserver detects visibility
 }
 
 /* ═══════════════════════════════════════════════

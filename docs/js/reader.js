@@ -574,7 +574,7 @@ function initProgress() {
 /* ═══════════════════════════════════════════════
    ACTIONS
    ═══════════════════════════════════════════════ */
-function enterScroll() {
+function enterScroll(skipScrollReset) {
   const hero = document.getElementById('hero');
   const app = document.getElementById('app');
 
@@ -585,9 +585,10 @@ function enterScroll() {
   setTimeout(() => {
     hero.classList.add('hidden');
     app.classList.add('visible');
-    window.scrollTo(0, 0);
-    window._startReadingParticles();
-    window._stopHero();
+    // Only reset scroll to top for new readers, not returning ones
+    if (!skipScrollReset) window.scrollTo(0, 0);
+    if (window._startReadingParticles) window._startReadingParticles();
+    if (window._stopHero) window._stopHero();
   }, 600);
 }
 
@@ -616,9 +617,18 @@ function scrollToChapter(id) {
     }
   }
 
-  // Re-enable scrollspy after scroll animation completes
-  // 800ms covers smooth scroll on most browsers
-  setTimeout(() => { _scrollingTo = false; }, 800);
+  // Re-enable scrollspy after scroll completes.
+  // Use scrollend event (modern browsers) with fallback timer.
+  let unlocked = false;
+  const unlock = () => {
+    if (unlocked) return;
+    unlocked = true;
+    // Extra delay after scroll settles to avoid observer firing on stale intersections
+    setTimeout(() => { _scrollingTo = false; }, 200);
+  };
+  window.addEventListener('scrollend', unlock, { once: true });
+  // Fallback: 2s covers even very long smooth scrolls
+  setTimeout(unlock, 2000);
 
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebar-overlay').classList.remove('open');
@@ -1444,18 +1454,41 @@ async function init() {
     // Restore scroll position for returning readers
     const scrollTarget = euler.get_scroll_target(bookId);
     if (scrollTarget) {
-      // Wait for content to render, then scroll
-      requestAnimationFrame(() => {
+      // Suppress scrollspy during restoration to prevent it from
+      // overwriting progress when early chapters are briefly visible
+      _scrollingTo = true;
+
+      // Wait for DOM layout to settle, then scroll
+      setTimeout(() => {
         const el = document.getElementById(scrollTarget);
         if (el) {
-          el.scrollIntoView({ behavior: 'auto', block: 'start' });
+          const offset = 20;
+          const y = el.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: y, behavior: 'auto' }); // instant, not smooth
+
+          // Update nav highlight manually
+          const idx = parseInt(el.dataset?.index);
+          if (!isNaN(idx)) {
+            currentChapterIdx = idx;
+            document.querySelectorAll('.nav-letter').forEach(n => n.classList.remove('active'));
+            const navItem = document.querySelector(`.nav-letter[data-target="${scrollTarget}"]`);
+            if (navItem) {
+              navItem.classList.add('active');
+              navItem.scrollIntoView({ block: 'nearest', behavior: 'auto' });
+              const part = navItem.closest('.nav-part');
+              if (part) part.classList.remove('collapsed');
+            }
+          }
         }
-      });
+        // Re-enable scrollspy after restoration settles
+        setTimeout(() => { _scrollingTo = false; }, 500);
+      }, 300); // 300ms gives DOM time to layout
     }
 
     // Save scroll position on scroll (throttled)
     let scrollSaveTimer = null;
     window.addEventListener('scroll', () => {
+      if (_scrollingTo) return; // Don't save during programmatic scrolls
       clearTimeout(scrollSaveTimer);
       scrollSaveTimer = setTimeout(() => {
         const scrollFraction = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
