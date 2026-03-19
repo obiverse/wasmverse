@@ -461,6 +461,162 @@ function initCardCanvas(canvas, bookId, accent) {
         ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.04)`;
         ctx.stroke();
       }
+    } else if (bookId === 'keys') {
+      // Key/lock pattern — rotating key teeth with central keyhole
+      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.1)`;
+      ctx.lineWidth = 0.8;
+      // Central keyhole
+      ctx.beginPath();
+      ctx.arc(cx, cy - 6, 10, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx - 4, cy + 4);
+      ctx.lineTo(cx + 4, cy + 4);
+      ctx.lineTo(cx + 3, cy + 18);
+      ctx.lineTo(cx - 3, cy + 18);
+      ctx.closePath();
+      ctx.stroke();
+      // Orbiting key bits (like derivation paths branching)
+      for (let i = 0; i < 8; i++) {
+        const a = (i * Math.PI / 4) + t * 0.15;
+        const r = 32 + Math.sin(t + i * 0.7) * 5;
+        const kx = cx + Math.cos(a) * r;
+        const ky = cy + Math.sin(a) * r;
+        ctx.beginPath();
+        ctx.arc(kx, ky, 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + 0.1 * Math.sin(t * 2 + i)})`;
+        ctx.fill();
+        // Tooth lines radiating outward
+        const toothLen = 6 + Math.sin(t * 1.5 + i) * 3;
+        ctx.beginPath();
+        ctx.moveTo(kx, ky);
+        ctx.lineTo(kx + Math.cos(a) * toothLen, ky + Math.sin(a) * toothLen);
+        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.08)`;
+        ctx.stroke();
+      }
+    } else if (bookId === 'lightning') {
+      // Lightning bolt paths — jagged lines flowing across the card
+      ctx.lineWidth = 0.8;
+      for (let i = 0; i < 5; i++) {
+        const startY = cy - 25 + i * 12;
+        const phase = (t * 40 + i * 30) % (cw + 40) - 20;
+        ctx.beginPath();
+        ctx.moveTo(phase, startY);
+        for (let seg = 0; seg < 6; seg++) {
+          const nx = phase + (seg + 1) * 14;
+          const ny = startY + (Math.random() > 0.5 ? -1 : 1) * (4 + Math.sin(t + seg) * 3);
+          ctx.lineTo(nx, ny);
+        }
+        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.1 + 0.08 * Math.sin(t * 3 + i)})`;
+        ctx.stroke();
+      }
+      // Channel nodes at edges
+      for (let i = 0; i < 4; i++) {
+        const ny = cy - 20 + i * 14;
+        ctx.beginPath();
+        ctx.arc(cx - 50, ny, 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.15)`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(cx + 50, ny, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    } else if (bookId === 'whispers') {
+      // Drum wave pattern — concentric pulse rings from nodes
+      const relays = [
+        { x: cx - 30, y: cy - 10 }, { x: cx + 25, y: cy - 15 },
+        { x: cx, y: cy + 15 }, { x: cx + 35, y: cy + 10 },
+      ];
+      relays.forEach((relay, i) => {
+        // Pulse rings
+        const pulseR = ((t * 20 + i * 15) % 40);
+        const alpha = Math.max(0, 0.12 - pulseR * 0.003);
+        ctx.beginPath();
+        ctx.arc(relay.x, relay.y, pulseR, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+        // Relay node
+        ctx.beginPath();
+        ctx.arc(relay.x, relay.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.2 + 0.1 * Math.sin(t * 2 + i)})`;
+        ctx.fill();
+      });
+      // Event packets flowing between relays
+      for (let i = 0; i < 3; i++) {
+        const from = relays[i % relays.length];
+        const to = relays[(i + 1) % relays.length];
+        const p = ((t * 0.5 + i * 0.4) % 1);
+        const px = from.x + (to.x - from.x) * p;
+        const py = from.y + (to.y - from.y) * p;
+        ctx.beginPath();
+        ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${Math.sin(p * Math.PI) * 0.4})`;
+        ctx.fill();
+      }
+    } else if (bookId === 'cloak') {
+      // Fading/invisible pattern — shapes that appear and disappear
+      for (let i = 0; i < 12; i++) {
+        const a = (i * Math.PI * 2 / 12) + t * 0.08;
+        const r = 25 + i * 2;
+        const fade = Math.max(0, Math.sin(t * 0.5 + i * 0.5));
+        if (fade > 0.05) {
+          ctx.beginPath();
+          ctx.arc(cx + Math.cos(a) * r * 0.4, cy + Math.sin(a) * r * 0.4, 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${fade * 0.2})`;
+          ctx.fill();
+        }
+      }
+      // Fading concentric rings (like an onion/tor layers)
+      for (let i = 0; i < 4; i++) {
+        const ringR = 12 + i * 10;
+        const ringAlpha = Math.max(0, 0.06 - i * 0.012) * (0.5 + 0.5 * Math.sin(t + i));
+        ctx.beginPath();
+        ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${ringAlpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.setLineDash([3, 4 + i * 2]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    } else if (bookId === 'fortress') {
+      // Castle/fortress pattern — battlements and walls
+      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.08)`;
+      ctx.lineWidth = 0.8;
+      // Wall base
+      const wallY = cy + 10;
+      ctx.beginPath();
+      ctx.moveTo(cx - 45, wallY);
+      ctx.lineTo(cx + 45, wallY);
+      ctx.stroke();
+      // Battlements
+      const merlonW = 8, crenelW = 6;
+      let bx = cx - 42;
+      ctx.beginPath();
+      ctx.moveTo(bx, wallY);
+      while (bx < cx + 42) {
+        ctx.lineTo(bx, wallY - 12);
+        ctx.lineTo(bx + merlonW, wallY - 12);
+        ctx.lineTo(bx + merlonW, wallY - 6);
+        ctx.lineTo(bx + merlonW + crenelW, wallY - 6);
+        ctx.lineTo(bx + merlonW + crenelW, wallY);
+        bx += merlonW + crenelW;
+      }
+      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.1)`;
+      ctx.stroke();
+      // Gate arch
+      ctx.beginPath();
+      ctx.arc(cx, wallY, 8, Math.PI, 0);
+      ctx.stroke();
+      // Tower nodes (services running)
+      const towers = [cx - 35, cx, cx + 35];
+      towers.forEach((tx, i) => {
+        const pulse = 0.5 + 0.5 * Math.sin(t * 2 + i * 1.5);
+        ctx.beginPath();
+        ctx.arc(tx, wallY - 18, 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + pulse * 0.15})`;
+        ctx.fill();
+      });
     } else {
       // Default: floating geometry
       for (let i = 0; i < 6; i++) {
