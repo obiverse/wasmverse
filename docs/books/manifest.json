@@ -263,6 +263,19 @@
       "parts": 10,
       "category": "Science",
       "description": "Electricity was always in the lightning, always in the spinning of the Earth. From charge and circuits to solar panels and microgrids \u2014 the reader finishes able to wire a building, design a solar system, and reason about grid architecture. Africa has more energy potential than any continent."
+    },
+    {
+      "id": "strength",
+      "title": "Letters on the Strength of Things",
+      "subtitle": "A Treatise on Forces, Materials, and Structures, from the Lever to the Bridge",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/strength.md",
+      "symbol": "dwennimmen",
+      "accent": "#7a6a5a",
+      "letters": 40,
+      "parts": 9,
+      "category": "Making",
+      "description": "Why beams bend, why arches carry, why triangles are rigid. Forces, materials, stress, strain \u2014 from the lever to Great Zimbabwe's dry-stone walls. Euler's own buckling formula connects our voice to the subject."
     }
   ]
 }

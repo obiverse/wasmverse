@@ -76,6 +76,11 @@ build_docs() {
     cp "$ROOT/crates/stack-machine/pkg/stack_machine_bg.wasm" "$ROOT/docs/pkg/stack-machine/"
     cp "$ROOT/crates/stack-machine/pkg/stack_machine.js" "$ROOT/docs/pkg/stack-machine/"
 
+    # Circuit simulator
+    mkdir -p "$ROOT/docs/pkg/circuit-sim"
+    cp "$ROOT/crates/circuit-sim/pkg/circuit_sim_bg.wasm" "$ROOT/docs/pkg/circuit-sim/"
+    cp "$ROOT/crates/circuit-sim/pkg/circuit_sim.js" "$ROOT/docs/pkg/circuit-sim/"
+
     echo "  → Copied to docs/pkg/"
 }
 
