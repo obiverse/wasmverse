@@ -481,9 +481,13 @@ function renderChapters(chs) {
 /* ═══════════════════════════════════════════════
    SCROLLSPY + REVEAL
    ═══════════════════════════════════════════════ */
+let _scrollingTo = false; // Guard: suppress scrollspy during programmatic scroll
+
 function initObservers() {
   // Scrollspy
   const spy = new IntersectionObserver((entries) => {
+    // Skip scrollspy updates while programmatic scroll is in progress
+    if (_scrollingTo) return;
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const id = entry.target.id;
@@ -589,13 +593,35 @@ function enterScroll() {
 
 function scrollToChapter(id) {
   const el = document.getElementById(id);
-  if (el) {
-    const offset = 20;
-    const y = el.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebar-overlay').classList.remove('open');
+  if (!el) return;
+
+  // Suppress scrollspy during programmatic scroll to prevent bounce-back
+  _scrollingTo = true;
+
+  const offset = 20;
+  const y = el.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+
+  // Manually update nav highlight immediately (don't wait for scrollspy)
+  const idx = parseInt(el.dataset?.index);
+  if (!isNaN(idx)) {
+    currentChapterIdx = idx;
+    document.querySelectorAll('.nav-letter').forEach(n => n.classList.remove('active'));
+    const navItem = document.querySelector(`.nav-letter[data-target="${id}"]`);
+    if (navItem) {
+      navItem.classList.add('active');
+      navItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      const part = navItem.closest('.nav-part');
+      if (part) part.classList.remove('collapsed');
+    }
   }
+
+  // Re-enable scrollspy after scroll animation completes
+  // 800ms covers smooth scroll on most browsers
+  setTimeout(() => { _scrollingTo = false; }, 800);
+
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
 }
 
 function toggleSidebar() {
