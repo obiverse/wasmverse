@@ -543,8 +543,12 @@ function initObservers() {
       indicator.textContent = `${bestIdx + 1} / ${chapters.length} \u2014 ${short}`;
     }
 
-    // Persist reading progress
+    // Persist reading progress AND scroll position
     saveReadingProgress(bestIdx + 1, chapters.length);
+    // Also save scroll position so returning to this book restores here
+    const scrollFraction = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
+    euler.on_scroll_book(currentBookId, scrollFraction, ch.id);
+    autoPersist();
   }
 
   window.addEventListener('scroll', () => {
@@ -1540,6 +1544,16 @@ async function init() {
         autoPersist();
       }, 1000);
     }, { passive: true });
+
+    // Persist state immediately when user leaves (tab close, navigate away)
+    // visibilitychange is more reliable than beforeunload on mobile
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        persist(); // Immediate, not debounced
+      }
+    });
+    window.addEventListener('beforeunload', () => persist());
+
   } catch (err) {
     document.getElementById('loading').innerHTML =
       `<p style="color:var(--accent-crimson)">Could not load the treatise. ${err.message}. <a href="index.html" style="color:var(--gold)">Back to library</a></p>`;
