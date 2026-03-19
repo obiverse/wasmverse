@@ -250,6 +250,19 @@
       "parts": 8,
       "description": "Nations that manufacture become sovereign. Supply chains, logistics, quality systems, energy infrastructure, and Industry 4.0 \u2014 the systems that make industrialization possible. Dangote, Hawassa, AfCFTA, and the African industrial renaissance.",
       "category": "Making"
+    },
+    {
+      "id": "electricity",
+      "title": "Letters on the Power of Nature",
+      "subtitle": "A Treatise on Electricity, from Lightning to the Grid",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/electricity.md",
+      "symbol": "nsoromma",
+      "accent": "#e8c44a",
+      "letters": 45,
+      "parts": 10,
+      "category": "Science",
+      "description": "Electricity was always in the lightning, always in the spinning of the Earth. From charge and circuits to solar panels and microgrids \u2014 the reader finishes able to wire a building, design a solar system, and reason about grid architecture. Africa has more energy potential than any continent."
     }
   ]
 }
