@@ -6,41 +6,6 @@
 <title>The Epistolary Library</title>
 <meta name="description" content="Treatises in the manner of Euler's Letters to a German Princess — for builders who love the universe">
 <meta name="theme-color" content="#0a0a14">
-<script>
-// Self-healing PWA: nuke stale service workers and caches.
-// This inline script can't be blocked by a stale SW because
-// it's embedded in the HTML itself.
-(function(){
-  var V = 'v14'; // Must match sw.js VERSION suffix
-  var KEY = 'epistolary_sw_version';
-  var stored = localStorage.getItem(KEY);
-  var purge = location.search.indexOf('purge') !== -1;
-
-  if (purge || (stored && stored !== V)) {
-    // Version mismatch — update stored version, purge caches silently
-    localStorage.setItem(KEY, V);
-    localStorage.removeItem('epistolary_pwa');
-    if ('caches' in window) {
-      caches.keys().then(function(keys) {
-        return Promise.all(keys.map(function(k) { return caches.delete(k); }));
-      });
-    }
-    if (navigator.serviceWorker) {
-      navigator.serviceWorker.getRegistrations().then(function(regs) {
-        regs.forEach(function(r) { r.unregister(); });
-      }).then(function() {
-        if (purge) location.replace(location.pathname);
-        // No reload for version mismatch — caches are cleared,
-        // fresh SW will install on this page load naturally.
-      });
-    } else if (purge) {
-      location.replace(location.pathname);
-    }
-  } else {
-    localStorage.setItem(KEY, V);
-  }
-})();
-</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <meta name="apple-mobile-web-app-capable" content="yes">
