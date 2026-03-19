@@ -14,7 +14,7 @@
    of truth. The cache is a backup, not a primary.
    ═══════════════════════════════════════════════ */
 
-const CACHE = 'letterverse-v1';
+const CACHE = 'letterverse-v2';
 
 self.addEventListener('install', () => self.skipWaiting());
 
