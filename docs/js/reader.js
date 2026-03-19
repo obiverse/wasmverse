@@ -440,6 +440,7 @@ function renderChapters(chs) {
       const titles = {
         'sorting-theater': 'Sorting Theater — TAOCP Vol. 3 Made Alive',
         'stack-machine': 'Stack Machine — Knuth\'s MIX Reborn',
+        'circuit-sim': 'Circuit Simulator — Ohm\'s Law Made Tangible',
       };
       return `<div class="demo-panel" data-demo="${demoId}" id="demo-${demoId}">
         <div class="demo-header">
@@ -758,6 +759,7 @@ function initDemos() {
         try {
           if (demoId === 'sorting-theater') await initSortingDemo(entry.target);
           else if (demoId === 'stack-machine') await initStackDemo(entry.target);
+          else if (demoId === 'circuit-sim') await initCircuitDemo(entry.target);
         } catch (err) {
           entry.target.querySelector('.demo-content').innerHTML =
             `<div class="demo-error">Failed to load demo: ${err.message}</div>`;
@@ -1091,9 +1093,93 @@ async function initStackDemo(panel) {
   renderVM();
 }
 
-/* ═══════════════════════════════════════════════
-   INIT
-   ═══════════════════════════════════════════════ */
+/* ── Circuit Simulator ───────────────────────── */
+async function initCircuitDemo(panel) {
+  const { default: init, CircuitSim } = await import('./pkg/circuit-sim/circuit_sim.js');
+  const wasm = await init('./pkg/circuit-sim/circuit_sim_bg.wasm');
+
+  const sim = new CircuitSim();
+  sim.load_preset('series2');
+
+  const content = panel.querySelector('.demo-content');
+  content.innerHTML = `
+    <div class="demo-controls" id="circuit-presets"></div>
+    <div class="demo-stats" id="circuit-summary" style="white-space:pre-wrap;line-height:1.8;margin:0.8rem 0"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:0.6rem">
+      <div>
+        <div class="demo-stats" style="margin-bottom:0.3rem"><strong style="color:var(--gold)">Ohm's Law Calculator</strong></div>
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+          <input id="ohm-v" type="number" placeholder="V (volts)" style="width:80px;padding:0.3rem;background:var(--bg-code);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:var(--font-code);font-size:0.7rem">
+          <input id="ohm-i" type="number" placeholder="I (amps)" style="width:80px;padding:0.3rem;background:var(--bg-code);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:var(--font-code);font-size:0.7rem">
+          <input id="ohm-r" type="number" placeholder="R (ohms)" style="width:80px;padding:0.3rem;background:var(--bg-code);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:var(--font-code);font-size:0.7rem">
+          <button class="demo-btn primary" id="ohm-calc">Calculate</button>
+        </div>
+        <div class="demo-stats" id="ohm-result" style="margin-top:0.4rem"></div>
+      </div>
+      <div>
+        <div class="demo-stats" style="margin-bottom:0.3rem"><strong style="color:var(--gold)">Voltage Control</strong></div>
+        <input id="voltage-slider" type="range" min="1" max="24" step="0.5" value="12" style="width:100%;accent-color:var(--gold)">
+        <div class="demo-stats" id="voltage-label">12.0 V</div>
+      </div>
+    </div>
+  `;
+
+  // Preset buttons
+  const presets = [
+    ['Series (2R)', 'series2'],
+    ['Parallel (2R)', 'parallel2'],
+    ['Series (3R)', 'series3'],
+    ['Mixed', 'mixed'],
+    ['Voltage Divider', 'voltage_divider'],
+    ['LED Circuit', 'led_circuit'],
+  ];
+  const presetsEl = document.getElementById('circuit-presets');
+  presets.forEach(([label, id], i) => {
+    const btn = document.createElement('button');
+    btn.className = 'demo-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = label;
+    btn.onclick = () => {
+      presetsEl.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      sim.load_preset(id);
+      document.getElementById('voltage-slider').value = sim.source_voltage();
+      render();
+    };
+    presetsEl.appendChild(btn);
+  });
+
+  // Voltage slider
+  document.getElementById('voltage-slider').addEventListener('input', e => {
+    sim.set_voltage(parseFloat(e.target.value));
+    render();
+  });
+
+  // Ohm's law calculator
+  document.getElementById('ohm-calc').addEventListener('click', () => {
+    const v = document.getElementById('ohm-v').value;
+    const i = document.getElementById('ohm-i').value;
+    const r = document.getElementById('ohm-r').value;
+    const vv = v ? parseFloat(v) : -1;
+    const ii = i ? parseFloat(i) : -1;
+    const rr = r ? parseFloat(r) : -1;
+    const filled = (v ? 1 : 0) + (i ? 1 : 0) + (r ? 1 : 0);
+    if (filled !== 2) {
+      document.getElementById('ohm-result').textContent = 'Fill exactly 2 fields, leave 1 empty';
+      return;
+    }
+    document.getElementById('ohm-result').innerHTML = '<span style="color:var(--gold)">' + CircuitSim.ohms_law(vv, ii, rr) + '</span>';
+  });
+
+  function render() {
+    document.getElementById('voltage-label').textContent = sim.source_voltage().toFixed(1) + ' V';
+    document.getElementById('circuit-summary').innerHTML = sim.summary()
+      .replace(/Source:/g, '<strong style="color:var(--gold)">Source:</strong>')
+      .replace(/R\d+/g, '<span style="color:var(--gold)">$&</span>');
+  }
+
+  render();
+}
+
 /* ═══════════════════════════════════════════════
    READING PROGRESS — Persist to localStorage
    ═══════════════════════════════════════════════ */

@@ -182,6 +182,10 @@ Let us apply this to a real scenario. You are designing the electrical system fo
 
 One final note on units. Energy is power multiplied by time. The standard unit is the joule (one watt for one second), but in practice, electrical energy is measured in kilowatt-hours (kWh): one kilowatt sustained for one hour. This is what your electricity meter measures, and what the utility bills you for. In Kenya, a kWh costs roughly 15-25 Kenyan shillings (about $0.10-0.17 USD). In Nigeria, it is nominally cheaper but often unavailable — the average Nigerian experiences more hours of blackout per year than hours of supply from the grid, which is why the country spends an estimated $14 billion annually on petrol and diesel generators. The economics of electricity in Africa are inseparable from the physics. Every watt lost to poor wiring, every kWh wasted by an inefficient appliance, every unit ungenerated because a solar panel was oriented wrongly — these are not abstract losses. They are losses measured in money, health, and human potential.
 
+Below is a live circuit simulator. Select a preset circuit, adjust the voltage, and watch Ohm's law calculate voltage, current, and power at every component. You can also use the Ohm's law calculator to solve for any unknown.
+
+<!-- DEMO:circuit-sim -->
+
 ---
 
 ### Letter 10: On Series and Parallel and the Two Roads
