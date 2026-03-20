@@ -275,7 +275,7 @@
       "letters": 40,
       "parts": 8,
       "category": "Sovereignty",
-      "description": "Your key is your name, your signature, your passport, and your fortress gate — all in 32 bytes. From the elder's seal to HD wallets, from multisig councils to Nostr identity. The reader finishes holding their own keys with understanding, not faith."
+      "description": "Your key is your name, your signature, your passport, and your fortress gate \u2014 all in 32 bytes. From the elder's seal to HD wallets, from multisig councils to Nostr identity. The reader finishes holding their own keys with understanding, not faith."
     },
     {
       "id": "lightning",
@@ -288,7 +288,7 @@
       "letters": 38,
       "parts": 9,
       "category": "Sovereignty",
-      "description": "If Bitcoin is the courthouse where property is recorded, Lightning is the market where goods change hands a thousand times before anyone visits the clerk. From payment channels to Machankura — the African Lightning economy."
+      "description": "If Bitcoin is the courthouse where property is recorded, Lightning is the market where goods change hands a thousand times before anyone visits the clerk. From payment channels to Machankura \u2014 the African Lightning economy."
     },
     {
       "id": "whispers",
@@ -301,7 +301,7 @@
       "letters": 42,
       "parts": 10,
       "category": "Sovereignty",
-      "description": "Before the telegraph, the Yoruba dundun drums carried messages across kingdoms. Nostr is the dundun of the digital age — anyone can drum, anyone can listen, no one controls the air. From events to relays to building your own client."
+      "description": "Before the telegraph, the Yoruba dundun drums carried messages across kingdoms. Nostr is the dundun of the digital age \u2014 anyone can drum, anyone can listen, no one controls the air. From events to relays to building your own client."
     },
     {
       "id": "cloak",
@@ -314,7 +314,7 @@
       "letters": 35,
       "parts": 8,
       "category": "Sovereignty",
-      "description": "Privacy is not secrecy. A merchant in Onitsha market need not announce his profit to conduct honest trade. From CoinJoin to silent payments, from Tor to zero-knowledge proofs — the mathematics of walking unseen."
+      "description": "Privacy is not secrecy. A merchant in Onitsha market need not announce his profit to conduct honest trade. From CoinJoin to silent payments, from Tor to zero-knowledge proofs \u2014 the mathematics of walking unseen."
     },
     {
       "id": "fortress",
@@ -327,7 +327,7 @@
       "letters": 36,
       "parts": 9,
       "category": "Sovereignty",
-      "description": "A sovereign does not rent their castle. From Bitcoin nodes to Lightning nodes to Nostr relays — running your own infrastructure on a Raspberry Pi, powered by African sunlight. The reader finishes able to build their own fortress."
+      "description": "A sovereign does not rent their castle. From Bitcoin nodes to Lightning nodes to Nostr relays \u2014 running your own infrastructure on a Raspberry Pi, powered by African sunlight. The reader finishes able to build their own fortress."
     },
     {
       "id": "strength",
@@ -341,6 +341,97 @@
       "parts": 9,
       "category": "Making",
       "description": "Why beams bend, why arches carry, why triangles are rigid. Forces, materials, stress, strain \u2014 from the lever to Great Zimbabwe's dry-stone walls. Euler's own buckling formula connects our voice to the subject."
+    },
+    {
+      "id": "chemistry",
+      "title": "Letters on the Chemistry of Matter",
+      "subtitle": "A Treatise on Elements, Reactions, and the Substance of Everything",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/chemistry.md",
+      "symbol": "dwennimmen",
+      "accent": "#5b8a6f",
+      "letters": 35,
+      "parts": 8,
+      "category": "Science",
+      "description": "Why steel is strong, why concrete cures, why batteries work. The maker's chemistry \u2014 from Dangote's kilns to the lithium of the Congo."
+    },
+    {
+      "id": "agriculture",
+      "title": "Letters on the Nourishment of Nations",
+      "subtitle": "A Treatise on Agriculture, from Soil to Table",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/agriculture.md",
+      "symbol": "sankofa",
+      "accent": "#6b8e23",
+      "letters": 35,
+      "parts": 8,
+      "category": "Making",
+      "description": "The farmer is a manufacturer whose factory is the soil. From Ethiopian teff to Ghanaian cocoa, from drip irrigation to agritech drones."
+    },
+    {
+      "id": "health",
+      "title": "Letters on the Healing of the Body",
+      "subtitle": "A Treatise on Health, from the Cell to the Community",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/health.md",
+      "symbol": "nsoromma",
+      "accent": "#cd5c5c",
+      "letters": 35,
+      "parts": 8,
+      "category": "Building",
+      "description": "Public health for communities. The body as system, nutrition, WASH, infectious disease, maternal health, mental health. Empowering builders to heal."
+    },
+    {
+      "id": "water",
+      "title": "Letters on the Flow of Water",
+      "subtitle": "A Treatise on Water, from Cloud to Cup",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/water.md",
+      "symbol": "funtun",
+      "accent": "#4a90d9",
+      "letters": 35,
+      "parts": 8,
+      "category": "Making",
+      "description": "400 million Africans lack clean water. Wells, pumps, treatment, irrigation, sanitation. The builder who provides clean water saves more lives than any doctor."
+    },
+    {
+      "id": "heat",
+      "title": "Letters on the Warmth of Fire",
+      "subtitle": "A Treatise on Heat, Engines, and the Thermal World",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/heat.md",
+      "symbol": "fawohodie",
+      "accent": "#e07c3e",
+      "letters": 30,
+      "parts": 7,
+      "category": "Science",
+      "description": "Heat, engines, refrigeration, cooking. 3 billion cook with wood. The clean cooking revolution, biogas, solar thermal \u2014 Africa's thermal energy transition."
+    },
+    {
+      "id": "earth",
+      "title": "Letters on the Map of the Earth",
+      "subtitle": "A Treatise on Surveying, Mapping, and the Sovereignty of Land",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/earth.md",
+      "symbol": "ananse",
+      "accent": "#8b7355",
+      "letters": 30,
+      "parts": 7,
+      "category": "Building",
+      "description": "70% of African land is unregistered. Surveying, GPS, GIS, remote sensing. The builder who maps land creates wealth from nothing."
+    },
+    {
+      "id": "design",
+      "title": "Letters on the Language of Design",
+      "subtitle": "A Treatise on Design Thinking, from Need to Solution",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/design.md",
+      "symbol": "matemasie",
+      "accent": "#9e6ec9",
+      "letters": 30,
+      "parts": 7,
+      "category": "Creative",
+      "description": "How to design things people use. User research, prototyping, visual design, accessibility. M-Pesa's genius was design, not technology."
     }
   ]
 }
