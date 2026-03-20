@@ -17,12 +17,17 @@ const euler = await boot();
 applyTheme();
 applyTypography();
 
+let _manifestCache = null; // Cache manifest to avoid re-fetching
+
 function getProgress(bookId) {
   const pct = euler.get_book_progress_pct(bookId);
   const lastRead = euler.get_last_read(bookId);
+  // Use actual letter count from cached manifest, not hardcoded 40
+  const bookMeta = _manifestCache?.books?.find(b => b.id === bookId);
+  const total = bookMeta?.letters || 40;
   return {
-    chaptersRead: Math.round(pct * 40),
-    totalChapters: 40,
+    chaptersRead: Math.round(pct * total),
+    totalChapters: total,
     lastRead: lastRead > 0 ? lastRead : null,
   };
 }
@@ -356,6 +361,7 @@ async function loadLibrary() {
   try {
     const res = await fetch('books/manifest.json');
     const manifest = await res.json();
+    _manifestCache = manifest; // Cache for getProgress() and other consumers
     euler.load_manifest(JSON.stringify(manifest));
     const grid = document.getElementById('books-grid');
     grid.innerHTML = '';

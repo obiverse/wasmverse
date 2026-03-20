@@ -702,8 +702,9 @@ function toggleSidebar() {
    KEYBOARD NAVIGATION
    ═══════════════════════════════════════════════ */
 document.addEventListener('keydown', (e) => {
-  // Don't intercept when typing in inputs
+  // Don't intercept when typing in inputs or using modifier keys
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
   const hero = document.getElementById('hero');
   if (!hero.classList.contains('hidden')) {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enterScroll(); }
