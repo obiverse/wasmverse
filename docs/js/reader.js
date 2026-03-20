@@ -779,8 +779,8 @@ function initDemos() {
 
 /* ── Sorting Theater ─────────────────────────── */
 async function initSortingDemo(panel) {
-  const { default: init, SortingTheater } = await import('./pkg/sorting-theater/sorting_theater.js');
-  const wasm = await init('./pkg/sorting-theater/sorting_theater_bg.wasm');
+  const { default: init, SortingTheater } = await import('../pkg/sorting-theater/sorting_theater.js');
+  const wasm = await init('../pkg/sorting-theater/sorting_theater_bg.wasm');
 
   const SIZE = 48;
   let theater = new SortingTheater(SIZE, 0);
@@ -931,8 +931,8 @@ async function initSortingDemo(panel) {
 
 /* ── Stack Machine ───────────────────────────── */
 async function initStackDemo(panel) {
-  const { default: init, StackMachine } = await import('./pkg/stack-machine/stack_machine.js');
-  const wasm = await init('./pkg/stack-machine/stack_machine_bg.wasm');
+  const { default: init, StackMachine } = await import('../pkg/stack-machine/stack_machine.js');
+  const wasm = await init('../pkg/stack-machine/stack_machine_bg.wasm');
 
   const vm = new StackMachine();
   let playing = false;
@@ -1101,8 +1101,8 @@ async function initStackDemo(panel) {
 
 /* ── Circuit Simulator ───────────────────────── */
 async function initCircuitDemo(panel) {
-  const { default: init, CircuitSim } = await import('./pkg/circuit-sim/circuit_sim.js');
-  const wasm = await init('./pkg/circuit-sim/circuit_sim_bg.wasm');
+  const { default: init, CircuitSim } = await import('../pkg/circuit-sim/circuit_sim.js');
+  const wasm = await init('../pkg/circuit-sim/circuit_sim_bg.wasm');
 
   const sim = new CircuitSim();
   sim.load_preset('series2');
