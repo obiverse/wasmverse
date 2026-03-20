@@ -432,24 +432,30 @@ function renderChapters(chs) {
   const content = document.getElementById('content');
   marked.setOptions({ breaks: false, gfm: true });
 
+  const demoTitles = {
+    'sorting-theater': 'Sorting Theater — TAOCP Vol. 3 Made Alive',
+    'stack-machine': 'Stack Machine — Knuth\'s MIX Reborn',
+    'circuit-sim': 'Circuit Simulator — Ohm\'s Law Made Tangible',
+  };
+
+  function demoReplace(_, demoId) {
+    return `<div class="demo-panel" data-demo="${demoId}" id="demo-${demoId}">
+      <div class="demo-header">
+        <span class="demo-title">${demoTitles[demoId] || demoId}</span>
+        <span class="demo-badge">live wasm</span>
+      </div>
+      <div class="demo-content"><div class="demo-loading"><div class="spinner"></div>Loading Wasm module\u2026</div></div>
+    </div>`;
+  }
+
   let html = '';
   chs.forEach((ch, i) => {
-    let rendered = marked.parse(ch.lines.join('\n'));
-    // Detect demo markers: <!-- DEMO:xxx -->
-    rendered = rendered.replace(/&lt;!--\s*DEMO:([\w-]+)\s*--&gt;/g, (_, demoId) => {
-      const titles = {
-        'sorting-theater': 'Sorting Theater — TAOCP Vol. 3 Made Alive',
-        'stack-machine': 'Stack Machine — Knuth\'s MIX Reborn',
-        'circuit-sim': 'Circuit Simulator — Ohm\'s Law Made Tangible',
-      };
-      return `<div class="demo-panel" data-demo="${demoId}" id="demo-${demoId}">
-        <div class="demo-header">
-          <span class="demo-title">${titles[demoId] || demoId}</span>
-          <span class="demo-badge">live wasm</span>
-        </div>
-        <div class="demo-content"><div class="demo-loading"><div class="spinner"></div>Loading Wasm module\u2026</div></div>
-      </div>`;
-    });
+    // Replace demo markers BEFORE markdown parsing (marked passes HTML comments through invisibly)
+    let raw = ch.lines.join('\n');
+    raw = raw.replace(/<!--\s*DEMO:([\w-]+)\s*-->/g, demoReplace);
+    let rendered = marked.parse(raw);
+    // Also catch the escaped form in case marked escapes it in some configurations
+    rendered = rendered.replace(/&lt;!--\s*DEMO:([\w-]+)\s*--&gt;/g, demoReplace);
 
     html += `<article class="chapter" id="${ch.id}" data-index="${i}">
       <div class="chapter-marker">${getAdinkraSVG(i)}</div>
