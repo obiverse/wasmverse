@@ -12,6 +12,7 @@
 
 import { boot, autoPersist, applyTheme, applyTypography } from '../euler-shell.js';
 import { drawAfricanBackground } from './african-patterns.js';
+import * as idb from './idb.js';
 
 const euler = await boot();
 applyTheme();
@@ -408,11 +409,61 @@ async function loadLibrary() {
     initControls(manifest);
     initCompass();
     initViewTransitions();
+    warmRecentBooks(manifest); // fire-and-forget — never blocks render
 
   } catch (err) {
     document.getElementById('books-grid').innerHTML =
       `<p style="color:#8b3a3a;text-align:center;padding:2rem">Failed to load library: ${err.message}</p>`;
   }
+}
+
+/* ═══════════════════════════════════════════════
+   PROACTIVE BOOK WARMING — Quota-aware preload
+
+   After the library renders, silently pre-cache
+   the reader's most recently-read books into IDB
+   so they open instantly on next visit.
+
+   Guards (all must pass before any fetch):
+   1. Not data-saver mode / slow connection
+   2. Storage estimate shows >10 MB available
+   3. Book not already cached in IDB
+   ═══════════════════════════════════════════════ */
+async function warmRecentBooks(manifest) {
+  try {
+    // Guard 1: respect data-saver and slow connections
+    const conn = navigator.connection;
+    if (conn?.saveData || ['slow-2g', '2g'].includes(conn?.effectiveType)) return;
+
+    // Guard 2: only warm if there is comfortable headroom
+    if (navigator.storage?.estimate) {
+      const { quota, usage } = await navigator.storage.estimate();
+      if (quota - usage < 10 * 1024 * 1024) return; // <10 MB available — skip
+    }
+
+    // Find books the reader has actually opened, sorted newest-first
+    const recentIds = manifest.books
+      .map(b => ({ id: b.id, file: b.file, lastRead: euler.get_last_read(b.id) }))
+      .filter(b => b.lastRead > 0)
+      .sort((a, b) => b.lastRead - a.lastRead)
+      .slice(0, 3); // warm the 3 most recent — enough to feel instant
+
+    for (const book of recentIds) {
+      // Guard 3: skip if already cached
+      const already = await idb.getCachedBook(book.id);
+      if (already) continue;
+
+      // Fetch quietly in the background — reader never waits for this
+      fetch(book.file)
+        .then(async res => {
+          if (!res.ok) return;
+          const content = await res.text();
+          const etag = res.headers.get('etag') || res.headers.get('last-modified') || '';
+          idb.cacheBook(book.id, content, etag);
+        })
+        .catch(() => {});
+    }
+  } catch {}
 }
 
 loadLibrary();

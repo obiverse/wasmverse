@@ -35,6 +35,11 @@ export async function boot() {
     idb = null; // IDB unavailable — silent
   }
 
+  // Request persistent storage so the browser never evicts our IDB data
+  // under disk pressure. Granted automatically for installed PWAs on most
+  // browsers; may prompt on desktop Chrome. Always fire-and-forget.
+  navigator.storage?.persist?.().catch?.(() => {});
+
   // State loading: IDB → localStorage → old multi-key migration
   let saved = null;
 

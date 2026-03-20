@@ -106,6 +106,55 @@ function idbGetAllByIndex(db, store, indexName, value) {
   });
 }
 
+function idbGetAll(db, store) {
+  return new Promise((resolve, reject) => {
+    const req = db.transaction(store, 'readonly').objectStore(store).getAll();
+    req.onsuccess = () => resolve(req.result ?? []);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function idbDelete(db, store, key) {
+  return new Promise((resolve, reject) => {
+    const req = db.transaction(store, 'readwrite').objectStore(store).delete(key);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+// ── Library cache management ──────────────────
+
+// Hard cap on library cache: 15MB.
+// Keeps the whole library (33 books, ~10MB) comfortably cacheable
+// while leaving room for settings, letters, and bookmarks.
+// The quota-aware warmRecentBooks() in library.js enforces a
+// softer check (skips proactive caching on tight-quota devices)
+// before this hard cap is ever reached.
+const LIBRARY_CACHE_MAX = 15 * 1024 * 1024; // 15 MB
+
+/**
+ * Evict the oldest cached books (LRU) until we have room for neededBytes.
+ * Only runs when the cache is actually over budget — usually a no-op.
+ */
+async function evictOldestBooks(db, neededBytes) {
+  const all = await idbGetAll(db, 'library');
+  if (!all.length) return;
+
+  const totalSize = all.reduce((sum, b) => sum + (b.size || 0), 0);
+  if (totalSize + neededBytes <= LIBRARY_CACHE_MAX) return;
+
+  // Oldest first — we keep the most recently accessed books
+  all.sort((a, b) => a.cachedAt - b.cachedAt);
+
+  let freed = 0;
+  const target = totalSize + neededBytes - LIBRARY_CACHE_MAX;
+  for (const book of all) {
+    if (freed >= target) break;
+    await idbDelete(db, 'library', book.bookId);
+    freed += book.size || 0;
+  }
+}
+
 // ── Public API ────────────────────────────────
 
 /**
@@ -177,7 +226,8 @@ export async function getLettersRead(bookId) {
 
 /**
  * Cache a book's markdown content for instant offline open.
- * Fire-and-forget safe.
+ * Tracks byte size and evicts the oldest cached books (LRU) if
+ * the 15MB library budget would be exceeded. Fire-and-forget safe.
  *
  * @param {string} bookId
  * @param {string} content — raw markdown
@@ -186,10 +236,16 @@ export async function getLettersRead(bookId) {
 export async function cacheBook(bookId, content, etag) {
   try {
     const db = await openDB();
+    // Measure actual UTF-8 size (Blob is the most accurate cross-browser method)
+    const size = new Blob([content]).size;
+    // Evict oldest books if needed — usually a no-op
+    await evictOldestBooks(db, size);
     await idbPut(db, 'library', bookId, {
+      bookId,       // stored in value for eviction lookup
       content,
       etag: etag || '',
       cachedAt: Date.now(),
+      size,
     });
   } catch {}
 }
