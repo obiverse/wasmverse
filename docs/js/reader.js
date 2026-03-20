@@ -48,10 +48,15 @@ document.addEventListener('mousemove', e => {
    HERO — Interactive particle field
    Mouse-reactive sacred geometry
    ═══════════════════════════════════════════════ */
+// Respect prefers-reduced-motion
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 (function initHero() {
   const canvas = document.getElementById('hero-canvas');
   const ctx = canvas.getContext('2d');
   let w, h, stopped = false;
+  const FPS_INTERVAL = 1000 / 20; // Throttle to 20fps (decorative, not interactive)
+  let lastFrameTime = 0;
 
   function resize() {
     w = canvas.width = window.innerWidth;
@@ -60,9 +65,9 @@ document.addEventListener('mousemove', e => {
   resize();
   window.addEventListener('resize', resize);
 
-  // Particle field
+  // Particle field — fewer on mobile for performance
   const particles = [];
-  const PARTICLE_COUNT = 80;
+  const PARTICLE_COUNT = window.innerWidth < 600 ? 30 : 60;
   for (let i = 0; i < PARTICLE_COUNT; i++) {
     particles.push({
       x: Math.random() * 2000,
@@ -145,8 +150,14 @@ document.addEventListener('mousemove', e => {
   }
 
   let frame = 0;
-  function animate() {
-    if (stopped) return;
+  function animate(timestamp) {
+    if (stopped || reduceMotion) return;
+    // Throttle to 20fps — decorative animation doesn't need 60fps
+    if (timestamp - lastFrameTime < FPS_INTERVAL) {
+      requestAnimationFrame(animate);
+      return;
+    }
+    lastFrameTime = timestamp;
     frame++;
     ctx.clearRect(0, 0, w, h);
     const t = frame * 0.004;
@@ -489,55 +500,49 @@ function renderChapters(chs) {
    SCROLLSPY + REVEAL
    ═══════════════════════════════════════════════ */
 let _scrollingTo = false; // Guard: suppress scrollspy during programmatic scroll
+let _chapterEls = []; // Cached chapter DOM elements
+let _activeNavEl = null; // Cache: currently active nav element (avoid querySelectorAll)
 
 function initObservers() {
-  // Scrollspy — uses scroll event + manual position check instead of
-  // IntersectionObserver to avoid the bounce-back race condition.
-  // IO delivers batched entries that can include stale intersections;
-  // manual checking always reflects the current scroll position.
+  // Cache chapter elements once (avoid querySelectorAll on every scroll)
+  _chapterEls = Array.from(document.querySelectorAll('.chapter'));
+
   let spyTicking = false;
   function updateScrollspy() {
     if (_scrollingTo) return;
     spyTicking = false;
 
-    // Find the chapter whose top is closest to 20% from viewport top
     const targetY = window.innerHeight * 0.2;
     let bestIdx = 0;
     let bestDist = Infinity;
 
-    document.querySelectorAll('.chapter').forEach(el => {
+    // Use cached elements instead of querySelectorAll every frame
+    for (const el of _chapterEls) {
       const rect = el.getBoundingClientRect();
-      // Chapter is "active" if its top is above the target line and its bottom is below it
-      // (i.e., the target line is inside the chapter)
       if (rect.top <= targetY && rect.bottom > targetY) {
         const idx = parseInt(el.dataset.index);
-        if (!isNaN(idx)) {
-          bestIdx = idx;
-          bestDist = 0;
-        }
+        if (!isNaN(idx)) { bestIdx = idx; bestDist = 0; }
       } else {
-        // Fallback: closest chapter top to target
         const dist = Math.abs(rect.top - targetY);
         const idx = parseInt(el.dataset.index);
         if (!isNaN(idx) && dist < bestDist && rect.top <= targetY + 100) {
-          bestDist = dist;
-          bestIdx = idx;
+          bestDist = dist; bestIdx = idx;
         }
       }
-    });
+    }
 
-    if (bestIdx === currentChapterIdx) return; // No change
+    if (bestIdx === currentChapterIdx) return;
     currentChapterIdx = bestIdx;
 
     const ch = chapters[bestIdx];
     if (!ch) return;
 
-    // Update nav highlight
-    document.querySelectorAll('.nav-letter').forEach(el => el.classList.remove('active'));
+    // Update nav: remove active from cached element only (not querySelectorAll)
+    if (_activeNavEl) _activeNavEl.classList.remove('active');
     const navItem = document.querySelector(`.nav-letter[data-target="${ch.id}"]`);
     if (navItem) {
       navItem.classList.add('active');
-      // Use auto scroll for sidebar nav — smooth causes window scrollend issues
+      _activeNavEl = navItem; // Cache for next update
       navItem.scrollIntoView({ block: 'nearest', behavior: 'auto' });
       const part = navItem.closest('.nav-part');
       if (part) part.classList.remove('collapsed');
@@ -780,7 +785,7 @@ function initDemos() {
 /* ── Sorting Theater ─────────────────────────── */
 async function initSortingDemo(panel) {
   const { default: init, SortingTheater } = await import('../pkg/sorting-theater/sorting_theater.js');
-  const wasm = await init('../pkg/sorting-theater/sorting_theater_bg.wasm');
+  const wasm = await init('./pkg/sorting-theater/sorting_theater_bg.wasm');
 
   const SIZE = 48;
   let theater = new SortingTheater(SIZE, 0);
@@ -932,7 +937,7 @@ async function initSortingDemo(panel) {
 /* ── Stack Machine ───────────────────────────── */
 async function initStackDemo(panel) {
   const { default: init, StackMachine } = await import('../pkg/stack-machine/stack_machine.js');
-  const wasm = await init('../pkg/stack-machine/stack_machine_bg.wasm');
+  const wasm = await init('./pkg/stack-machine/stack_machine_bg.wasm');
 
   const vm = new StackMachine();
   let playing = false;
@@ -1102,7 +1107,7 @@ async function initStackDemo(panel) {
 /* ── Circuit Simulator ───────────────────────── */
 async function initCircuitDemo(panel) {
   const { default: init, CircuitSim } = await import('../pkg/circuit-sim/circuit_sim.js');
-  const wasm = await init('../pkg/circuit-sim/circuit_sim_bg.wasm');
+  const wasm = await init('./pkg/circuit-sim/circuit_sim_bg.wasm');
 
   const sim = new CircuitSim();
   sim.load_preset('series2');
