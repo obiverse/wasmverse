@@ -22,7 +22,7 @@
      prefetch likely next books in the compass path
    ═══════════════════════════════════════════════ */
 
-const CACHE = 'lv-v3';
+const CACHE = 'lv-v4';
 const UPDATE_FLAG = 'lv-update-ready';
 
 /* ── Lifecycle ─────────────────────────────── */
@@ -41,6 +41,7 @@ self.addEventListener('install', e => {
         './css/theme-toggle.css',
         './euler-shell.js',
         './js/library.js',
+        './js/african-patterns.js',
         './js/reader.js',
         './js/search.js',
         './js/theme-global.js',
