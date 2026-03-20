@@ -104,25 +104,34 @@ async function indexAllBooks() {
     const res = await fetch('books/manifest.json');
     manifest = await res.json();
 
+    // Build title map
     for (const book of manifest.books) {
       bookTitles[book.id] = book.title;
-      try {
-        const bookRes = await fetch(book.file);
-        if (!bookRes.ok) continue;
-        const md = await bookRes.text();
+    }
 
-        // Split into chapters and index each one
-        const chapters = splitIntoChapters(md);
-        for (const ch of chapters) {
-          const docId = book.id + ':' + ch.id;
-          euler.index_book(docId, ch.title, ch.content);
-        }
-      } catch {}
+    // Fetch ALL books in parallel (not sequential — 33 books × ~100KB each)
+    const fetchResults = await Promise.allSettled(
+      manifest.books.map(async (book) => {
+        const bookRes = await fetch(book.file);
+        if (!bookRes.ok) return null;
+        return { id: book.id, md: await bookRes.text() };
+      })
+    );
+
+    // Index chapters from successful fetches
+    let totalChapters = 0;
+    for (const result of fetchResults) {
+      if (result.status !== 'fulfilled' || !result.value) continue;
+      const { id, md } = result.value;
+      const chapters = splitIntoChapters(md);
+      for (const ch of chapters) {
+        euler.index_book(id + ':' + ch.id, ch.title, ch.content);
+        totalChapters++;
+      }
     }
 
     indexed = true;
-    const bookCount = manifest.books.length;
-    statusEl.textContent = `${bookCount} treatises indexed`;
+    statusEl.textContent = `${manifest.books.length} treatises, ${totalChapters} chapters indexed`;
     setTimeout(() => { if (statusEl) statusEl.textContent = ''; }, 2000);
   } catch (err) {
     statusEl.textContent = 'Failed to index: ' + err.message;

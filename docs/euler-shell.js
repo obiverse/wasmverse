@@ -47,11 +47,18 @@ export function persist() {
 }
 
 /**
- * Debounced persist — call freely on every state change
+ * Smart persist — uses requestIdleCallback when available (saves battery),
+ * falls back to 500ms debounce. Safe to call on every state change.
  */
 export function autoPersist() {
   clearTimeout(_persistTimer);
-  _persistTimer = setTimeout(persist, 500);
+  if (window.requestIdleCallback) {
+    // Persist when the browser is idle — no jank, no battery drain
+    _persistTimer = requestIdleCallback(() => persist(), { timeout: 2000 });
+  } else {
+    // Fallback: debounced setTimeout
+    _persistTimer = setTimeout(persist, 500);
+  }
 }
 
 /**

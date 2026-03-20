@@ -34,11 +34,13 @@ const ELib = {
 };
 
 /* ═══════════════════════════════════════════════
-   GLOBALS
+   STATE — All module-scoped state documented here
    ═══════════════════════════════════════════════ */
-let chapters = [];
-let currentChapterIdx = 0;
-let mouseX = 0, mouseY = 0;
+let chapters = [];           // Parsed chapter objects from markdown
+let currentChapterIdx = 0;   // Index of the currently visible chapter
+let mouseX = 0, mouseY = 0;  // Mouse position for canvas interactions
+// Also: _scrollingTo (scrollspy guard), heroActive (hero scroll listener),
+// currentBookId (book ID from URL), _chapterEls (cached DOM), _activeNavEl (cached nav)
 
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX; mouseY = e.clientY;
