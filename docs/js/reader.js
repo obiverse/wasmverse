@@ -1530,6 +1530,9 @@ async function init() {
     const bookId = params.get('book') || 'wasm';
     currentBookId = bookId;
 
+    // Signal SW to prefetch next books in compass path
+    if (window.signalReading) window.signalReading(bookId);
+
     // Fetch manifest
     const manifestRes = await fetch('books/manifest.json');
     const manifest = await manifestRes.json();

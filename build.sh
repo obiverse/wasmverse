@@ -82,6 +82,12 @@ build_docs() {
     cp "$ROOT/crates/circuit-sim/pkg/circuit_sim.js" "$ROOT/docs/pkg/circuit-sim/"
 
     echo "  → Copied to docs/pkg/"
+
+    # Generate version stamp from git hash — SW uses this for cache busting
+    VERSION=$(git rev-parse --short HEAD 2>/dev/null || echo "dev")
+    echo "  → Version: $VERSION"
+    echo "{\"version\":\"$VERSION\",\"built\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > "$ROOT/docs/version.json"
+    echo "  → Wrote docs/version.json"
 }
 
 run_tests() {
