@@ -18,6 +18,7 @@ pub mod store;
 pub mod theme;
 pub mod router;
 pub mod search;
+pub mod perf;
 
 use std::collections::HashMap;
 use store::Versioned;
@@ -34,6 +35,8 @@ struct ReadingState {
     scroll_position: f64,
     current_chapter_id: String,
     last_read: f64,
+    reading_time_ms: f64,  // total reading time accumulated across sessions
+    session_start: f64,    // perf.now() when current session started; 0 = no session
 }
 
 #[derive(Clone)]
@@ -133,6 +136,8 @@ impl Euler {
                 if let Some(v) = json::get_num(&inner, "scrollPosition") { rs.scroll_position = v; }
                 if let Some(v) = json::get_str(&inner, "currentChapterId") { rs.current_chapter_id = v; }
                 if let Some(v) = json::get_num(&inner, "lastRead") { rs.last_read = v; }
+                if let Some(v) = json::get_num(&inner, "readingTimeMs") { rs.reading_time_ms = v; }
+                // session_start is ephemeral — never persisted
                 s.reading.insert(book_id, rs);
             }
         }
@@ -190,6 +195,7 @@ impl Euler {
             w.key("scrollPosition").val_num(rs.scroll_position);
             w.key("currentChapterId").val_str(&rs.current_chapter_id);
             w.key("lastRead").val_num(rs.last_read);
+            w.key("readingTimeMs").val_num(rs.reading_time_ms);
             w.object_close();
         }
         w.object_close();
@@ -459,6 +465,37 @@ impl Euler {
     pub fn on_book_open(&mut self, book_id: &str) {
         let s = self.state.get_mut();
         s.reading.entry(book_id.to_string()).or_insert_with(ReadingState::default);
+    }
+
+    // ── Reading Session Timing ─────────────────
+
+    /// Begin a reading session. Records performance.now() as the session start.
+    /// Called when the reader opens a book or the tab returns to focus.
+    pub fn session_start(&mut self, book_id: &str) {
+        let rs = self.state.get_mut().reading.entry(book_id.to_string()).or_default();
+        rs.session_start = perf::now();
+    }
+
+    /// End the reading session and accumulate elapsed time into reading_time_ms.
+    /// Returns elapsed ms for this session. Returns 0 if no session was started.
+    /// Called when the tab loses focus, is closed, or the user navigates away.
+    pub fn session_end(&mut self, book_id: &str) -> f64 {
+        let rs = self.state.get_mut().reading.entry(book_id.to_string()).or_default();
+        if rs.session_start > 0.0 {
+            let elapsed = perf::now() - rs.session_start;
+            rs.reading_time_ms += elapsed;
+            rs.session_start = 0.0;
+            elapsed
+        } else {
+            0.0
+        }
+    }
+
+    /// Get total accumulated reading time in ms for a book.
+    pub fn get_reading_time_ms(&self, book_id: &str) -> f64 {
+        self.state.get().reading.get(book_id)
+            .map(|rs| rs.reading_time_ms)
+            .unwrap_or(0.0)
     }
 
     pub fn on_scroll_book(&mut self, book_id: &str, position: f64, chapter_id: &str) {

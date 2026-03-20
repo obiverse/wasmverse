@@ -3,14 +3,22 @@
 
    Euler (WASM) is the brain. This is the nervous system.
    It connects WASM decisions to DOM actions.
+
+   Persistence hierarchy (three tiers):
+     1. IndexedDB (idb.js) — primary, unlimited, async
+     2. localStorage      — fallback for Safari private / IDB failure
+     3. Old multi-key     — migration path from pre-euler format
    ═══════════════════════════════════════════════ */
 
 let euler = null;
 let _persistTimer = null;
 
+// IDB module — loaded at boot. Null if IDB is unavailable.
+let idb = null;
+
 /**
  * Boot the euler framework.
- * Loads WASM, migrates old state, hydrates.
+ * Loads WASM, opens IDB, migrates old state, hydrates.
  * Must be called before any other function.
  */
 export async function boot() {
@@ -19,12 +27,38 @@ export async function boot() {
 
   euler = new Euler();
 
-  // Try new unified state first
-  const saved = localStorage.getItem('euler_state');
+  // Init IDB (fast — single IndexedDB.open call)
+  try {
+    idb = await import('./js/idb.js');
+    await idb.init();
+  } catch {
+    idb = null; // IDB unavailable — silent
+  }
+
+  // State loading: IDB → localStorage → old multi-key migration
+  let saved = null;
+
+  if (idb) {
+    saved = await idb.loadSettings();
+  }
+
+  if (!saved) {
+    // Check localStorage (either fallback or pre-IDB session)
+    const lsData = localStorage.getItem('euler_state');
+    if (lsData) {
+      saved = lsData;
+      // Migrate: move to IDB, clear from localStorage
+      if (idb) {
+        await idb.saveSettings(lsData);
+        localStorage.removeItem('euler_state');
+      }
+    }
+  }
+
   if (saved) {
     euler.hydrate(saved);
   } else {
-    // Migrate from old multi-key format
+    // Migrate from old multi-key format (pre-euler)
     migrateOldState();
   }
 
@@ -39,11 +73,17 @@ export function get() {
 }
 
 /**
- * Persist state to localStorage immediately
+ * Persist state immediately.
+ * IDB is primary; localStorage is the silent fallback.
  */
 export function persist() {
   if (!euler) return;
-  localStorage.setItem('euler_state', euler.dehydrate());
+  const json = euler.dehydrate();
+  if (idb) {
+    idb.saveSettings(json); // fire-and-forget — no await
+  } else {
+    localStorage.setItem('euler_state', json);
+  }
 }
 
 /**
@@ -86,6 +126,34 @@ export function applyTypography() {
   root.style.setProperty('--font-size', euler.font_size() + 'px');
   root.style.setProperty('--line-height', (euler.line_height_x10() / 10).toFixed(1));
   root.style.setProperty('--content-max', euler.content_width() + 'ch');
+}
+
+/**
+ * Start a reading session timer for the given book.
+ * Requires Phase 3 Wasm build (web-sys::Performance).
+ * No-op if the method isn't available yet.
+ */
+export function sessionStart(bookId) {
+  if (!euler || !euler.session_start) return;
+  euler.session_start(bookId);
+}
+
+/**
+ * End a reading session, accumulating elapsed time.
+ * Returns elapsed ms (0 if no session or method unavailable).
+ */
+export function sessionEnd(bookId) {
+  if (!euler || !euler.session_end) return 0;
+  return euler.session_end(bookId);
+}
+
+/**
+ * Get total reading time for a book in ms.
+ * Returns 0 if method unavailable.
+ */
+export function getReadingTimeMs(bookId) {
+  if (!euler || !euler.get_reading_time_ms) return 0;
+  return euler.get_reading_time_ms(bookId);
 }
 
 /**

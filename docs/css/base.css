@@ -23,6 +23,11 @@
   --content-max: 72ch;
   --font-body: 'Crimson Pro', 'Georgia', serif;
   --font-heading: 'Cormorant Garamond', 'Palatino', serif;
+  /* Playfair Display — grand editorial serif for hero titles and book covers */
+  --font-display: 'Playfair Display', 'Palatino', serif;
+  /* Ubuntu — humanist sans designed with African language support as a core goal
+     (Ubuntu = Nguni Bantu: "I am because we are"). Clean, warm, purpose-built. */
+  --font-ui: 'Ubuntu', system-ui, sans-serif;
   --font-code: 'JetBrains Mono', 'Consolas', monospace;
 }
 

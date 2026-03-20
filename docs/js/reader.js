@@ -4,7 +4,8 @@
    demos, bookmarks, highlights, study, themes
    ═══════════════════════════════════════════════ */
 
-import { boot, persist, autoPersist, applyTheme, applyTypography } from '../euler-shell.js';
+import { boot, persist, autoPersist, applyTheme, applyTypography, sessionStart, sessionEnd, getReadingTimeMs } from '../euler-shell.js';
+import * as idb from './idb.js';
 
 // Boot euler WASM
 const euler = await boot();
@@ -1195,11 +1196,18 @@ async function initCircuitDemo(panel) {
 }
 
 /* ═══════════════════════════════════════════════
-   READING PROGRESS — Persist to localStorage
+   READING PROGRESS — IDB + Euler state
+   Per-letter granularity: the iBooks layer.
    ═══════════════════════════════════════════════ */
 let currentBookId = 'wasm';
 function saveReadingProgress(chaptersRead, totalChapters) {
   euler.on_chapter_enter(currentBookId, chaptersRead, totalChapters, Date.now());
+  // Per-letter tracking: record the specific letter visited in IDB
+  const ch = chaptersRead > 0 ? chapters[chaptersRead - 1] : null;
+  if (ch) {
+    const scrollPct = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
+    idb.markLetterRead(currentBookId, ch.id, scrollPct); // fire-and-forget
+  }
   autoPersist();
 }
 
@@ -1561,12 +1569,44 @@ async function init() {
     // Load manifest into euler for progress tracking
     euler.load_manifest(JSON.stringify(manifest));
     euler.on_book_open(bookId);
+    sessionStart(bookId); // begin reading session timer
 
     // Populate hero dynamically
     document.getElementById('hero-title').textContent = book.title;
     document.getElementById('hero-subtitle').textContent = book.subtitle;
     document.getElementById('hero-manner').textContent = book.manner;
     document.title = book.title;
+
+    // SEO: update meta tags for this book
+    const pageUrl = window.location.href;
+    const setMeta = (sel, attr, val) => {
+      const el = document.querySelector(sel);
+      if (el) el.setAttribute(attr, val);
+    };
+    setMeta('meta[name="description"]', 'content', book.description);
+    setMeta('link[rel="canonical"]', 'href', pageUrl);
+    setMeta('meta[property="og:url"]', 'content', pageUrl);
+    setMeta('meta[property="og:title"]', 'content', book.title);
+    setMeta('meta[property="og:description"]', 'content', book.description);
+    setMeta('meta[name="twitter:title"]', 'content', book.title);
+    setMeta('meta[name="twitter:description"]', 'content', book.description);
+
+    // Structured data
+    const jsonLd = document.querySelector('script[type="application/ld+json"]');
+    if (jsonLd) {
+      jsonLd.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Book",
+        "name": book.title,
+        "description": book.description,
+        "url": pageUrl,
+        "inLanguage": "en",
+        "numberOfPages": book.letters,
+        "author": { "@type": "Organization", "name": "OBIVERSE", "url": "https://obiverse.net" },
+        "publisher": { "@type": "Organization", "name": "OBIVERSE", "url": "https://obiverse.net" },
+        "image": "https://obiverse.github.io/wasmverse/og-image.png"
+      });
+    }
 
     // Dynamic hero button text from euler
     document.getElementById('enter-btn').textContent = euler.hero_button_text(bookId);
@@ -1592,10 +1632,28 @@ async function init() {
       heroActive = false;
     }
 
-    // Fetch and render the treatise
-    const res = await fetch(book.file);
-    if (!res.ok) throw new Error('Failed to load ' + book.file);
-    const md = await res.text();
+    // IDB-first book load: instant from cache, background-refresh if content changed
+    let md;
+    const cached = await idb.getCachedBook(bookId);
+    if (cached?.content) {
+      md = cached.content;
+      // Background: check if remote content has changed (ETag / Last-Modified)
+      fetch(book.file).then(async res => {
+        if (!res.ok) return;
+        const newEtag = res.headers.get('etag') || res.headers.get('last-modified') || '';
+        if (!newEtag || newEtag !== cached.etag) {
+          const fresh = await res.text();
+          idb.cacheBook(bookId, fresh, newEtag); // update cache silently
+        }
+      }).catch(() => {});
+    } else {
+      // No cache yet — fetch from network and store for next visit
+      const res = await fetch(book.file);
+      if (!res.ok) throw new Error('Failed to load ' + book.file);
+      md = await res.text();
+      const etag = res.headers.get('etag') || res.headers.get('last-modified') || '';
+      idb.cacheBook(bookId, md, etag); // fire-and-forget
+    }
     chapters = parseTreatise(md);
     renderChapters(chapters);
     buildNavigation(chapters);
@@ -1660,10 +1718,16 @@ async function init() {
     // visibilitychange is more reliable than beforeunload on mobile
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        persist(); // Immediate, not debounced
+        sessionEnd(bookId);   // accumulate reading time before saving
+        persist();            // Immediate, not debounced
+      } else {
+        sessionStart(bookId); // restart timer when tab returns to focus
       }
     });
-    window.addEventListener('beforeunload', () => persist());
+    window.addEventListener('beforeunload', () => {
+      sessionEnd(bookId);
+      persist();
+    });
 
   } catch (err) {
     document.getElementById('loading').innerHTML =

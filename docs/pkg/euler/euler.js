@@ -233,6 +233,17 @@ export class Euler {
         }
     }
     /**
+     * Get total accumulated reading time in ms for a book.
+     * @param {string} book_id
+     * @returns {number}
+     */
+    get_reading_time_ms(book_id) {
+        const ptr0 = passStringToWasm0(book_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.euler_get_reading_time_ms(this.__wbg_ptr, ptr0, len0);
+        return ret;
+    }
+    /**
      * @param {string} book_id
      * @returns {number}
      */
@@ -436,6 +447,29 @@ export class Euler {
         }
     }
     /**
+     * End the reading session and accumulate elapsed time into reading_time_ms.
+     * Returns elapsed ms for this session. Returns 0 if no session was started.
+     * Called when the tab loses focus, is closed, or the user navigates away.
+     * @param {string} book_id
+     * @returns {number}
+     */
+    session_end(book_id) {
+        const ptr0 = passStringToWasm0(book_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.euler_session_end(this.__wbg_ptr, ptr0, len0);
+        return ret;
+    }
+    /**
+     * Begin a reading session. Records performance.now() as the session start.
+     * Called when the reader opens a book or the tab returns to focus.
+     * @param {string} book_id
+     */
+    session_start(book_id) {
+        const ptr0 = passStringToWasm0(book_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        wasm.euler_session_start(this.__wbg_ptr, ptr0, len0);
+    }
+    /**
      * @param {number} v
      */
     set_content_width(v) {
@@ -610,8 +644,46 @@ if (Symbol.dispose) Euler.prototype[Symbol.dispose] = Euler.prototype.free;
 function __wbg_get_imports() {
     const import0 = {
         __proto__: null,
+        __wbg___wbindgen_is_undefined_52709e72fb9f179c: function(arg0) {
+            const ret = arg0 === undefined;
+            return ret;
+        },
         __wbg___wbindgen_throw_6ddd609b62940d55: function(arg0, arg1) {
             throw new Error(getStringFromWasm0(arg0, arg1));
+        },
+        __wbg_instanceof_Window_23e677d2c6843922: function(arg0) {
+            let result;
+            try {
+                result = arg0 instanceof Window;
+            } catch (_) {
+                result = false;
+            }
+            const ret = result;
+            return ret;
+        },
+        __wbg_now_c6d7a7d35f74f6f1: function(arg0) {
+            const ret = arg0.now();
+            return ret;
+        },
+        __wbg_performance_28be169151161678: function(arg0) {
+            const ret = arg0.performance;
+            return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
+        },
+        __wbg_static_accessor_GLOBAL_8adb955bd33fac2f: function() {
+            const ret = typeof global === 'undefined' ? null : global;
+            return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
+        },
+        __wbg_static_accessor_GLOBAL_THIS_ad356e0db91c7913: function() {
+            const ret = typeof globalThis === 'undefined' ? null : globalThis;
+            return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
+        },
+        __wbg_static_accessor_SELF_f207c857566db248: function() {
+            const ret = typeof self === 'undefined' ? null : self;
+            return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
+        },
+        __wbg_static_accessor_WINDOW_bb9f1ba69d61b386: function() {
+            const ret = typeof window === 'undefined' ? null : window;
+            return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
         },
         __wbindgen_init_externref_table: function() {
             const table = wasm.__wbindgen_externrefs;
@@ -633,6 +705,12 @@ const EulerFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_euler_free(ptr >>> 0, 1));
 
+function addToExternrefTable0(obj) {
+    const idx = wasm.__externref_table_alloc();
+    wasm.__wbindgen_externrefs.set(idx, obj);
+    return idx;
+}
+
 function getStringFromWasm0(ptr, len) {
     ptr = ptr >>> 0;
     return decodeText(ptr, len);
@@ -644,6 +722,10 @@ function getUint8ArrayMemory0() {
         cachedUint8ArrayMemory0 = new Uint8Array(wasm.memory.buffer);
     }
     return cachedUint8ArrayMemory0;
+}
+
+function isLikeNone(x) {
+    return x === undefined || x === null;
 }
 
 function passStringToWasm0(arg, malloc, realloc) {
