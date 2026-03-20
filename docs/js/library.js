@@ -366,6 +366,10 @@ async function loadLibrary() {
     const grid = document.getElementById('books-grid');
     grid.innerHTML = '';
 
+    // Update label from manifest (no hardcoded count)
+    document.getElementById('library-label').textContent =
+      `The Library — ${manifest.books.length} Treatises`;
+
     manifest.books.forEach((book, idx) => {
       const symbol = adinkraSVGs[book.symbol] || adinkraSVGs.nsoromma;
       const progress = getProgress(book.id);
