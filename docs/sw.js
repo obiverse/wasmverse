@@ -22,7 +22,7 @@
      prefetch likely next books in the compass path
    ═══════════════════════════════════════════════ */
 
-const CACHE = 'lv-v4';
+const CACHE = 'lv-v5';
 const UPDATE_FLAG = 'lv-update-ready';
 
 /* ── Lifecycle ─────────────────────────────── */
