@@ -1,20 +1,22 @@
 /* ═══════════════════════════════════════════════
    LIBRARY — Hub page logic
-   Card rendering, sorting, filtering, canvas animations,
-   3D tilt, continue banner, view transitions
+
+   The Taoist rewrite: remove strokes until only
+   the essential remain.
+
+   - No per-card canvas animations (Adinkra SVG instead)
+   - No 3D tilt (CSS-only hover)
+   - No display:none filtering (opacity + order)
+   - No transform conflicts (CSS owns transform)
    ═══════════════════════════════════════════════ */
 
 import { boot, autoPersist, applyTheme, applyTypography } from '../euler-shell.js';
 import { drawAfricanBackground } from './african-patterns.js';
 
-// Boot euler WASM — all state lives here now
 const euler = await boot();
-
-// Apply saved theme and typography immediately
 applyTheme();
 applyTypography();
 
-// Bridge functions: euler replaces lib.js
 function getProgress(bookId) {
   const pct = euler.get_book_progress_pct(bookId);
   const lastRead = euler.get_last_read(bookId);
@@ -24,6 +26,7 @@ function getProgress(bookId) {
     lastRead: lastRead > 0 ? lastRead : null,
   };
 }
+
 function getLastReadBook() {
   const info = euler.get_continue_info();
   if (!info) return null;
@@ -34,14 +37,8 @@ function getLastReadBook() {
 }
 
 /* ═══════════════════════════════════════════════
-   GLOBALS
-   ═══════════════════════════════════════════════ */
-let mouseX = 0, mouseY = 0;
-document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-
-/* ═══════════════════════════════════════════════
-   FULL-SCREEN BACKGROUND — African ancestral
-   patterns with Seed of Life sacred geometry
+   BACKGROUND — African patterns + Seed of Life
+   Throttled to ~15fps (patterns are subtle)
    ═══════════════════════════════════════════════ */
 (function() {
   const canvas = document.getElementById('bg-canvas');
@@ -55,34 +52,29 @@ document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.cli
   resize();
   window.addEventListener('resize', resize);
 
-  function drawCircle(cx, cy, r, alpha) {
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(201,169,110,${alpha})`;
-    ctx.lineWidth = 0.5;
-    ctx.stroke();
-  }
-
   let frame = 0;
   function animate() {
     frame++;
+    // Throttle to ~15fps — patterns don't need 60
+    if (frame % 4 !== 0) { requestAnimationFrame(animate); return; }
+
+    // Resize check
     if (frame % 120 === 0) {
       const newH = document.documentElement.scrollHeight;
       if (Math.abs(h - newH) > 50) { h = canvas.height = newH; }
     }
 
     ctx.clearRect(0, 0, w, h);
-    const t = frame * 0.003;
+
+    // African ancestral patterns
+    drawAfricanBackground(ctx, w, h, performance.now());
+
+    // Seed of Life in hero area
     const scrollY = window.scrollY;
-    const now = performance.now();
-
-    // African ancestral patterns (crossfading, procedural)
-    drawAfricanBackground(ctx, w, h, now);
-
-    // Seed of Life in hero area (parallax)
     const hcx = w / 2, hcy = window.innerHeight * 0.35 - scrollY * 0.3;
     const r = Math.min(w, window.innerHeight || 800) * 0.06;
     if (hcy > -r * 4 && hcy < window.innerHeight + r * 4) {
+      const t = frame * 0.003;
       const breathe = 0.5 + 0.5 * Math.sin(t * 0.4);
       const gr = ctx.createRadialGradient(hcx, hcy + scrollY, 0, hcx, hcy + scrollY, r * 3);
       gr.addColorStop(0, `rgba(201,169,110,${0.025 + breathe * 0.015})`);
@@ -91,17 +83,18 @@ document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.cli
       ctx.fillRect(0, scrollY, w, window.innerHeight);
 
       const sy = hcy + scrollY;
-      drawCircle(hcx, sy, r, 0.06);
-      for (let i = 0; i < 6; i++) {
-        const a = (i * Math.PI / 3) + t * 0.08;
-        drawCircle(hcx + r * Math.cos(a), sy + r * Math.sin(a), r, 0.04);
-      }
-      for (let i = 0; i < 6; i++) {
-        const a = (i * Math.PI / 3) + t * 0.08;
-        const bx = hcx + r * Math.cos(a), by = sy + r * Math.sin(a);
-        for (let j = -1; j <= 1; j += 2) {
-          const a2 = a + j * Math.PI / 3;
-          drawCircle(bx + r * Math.cos(a2), by + r * Math.sin(a2), r, 0.02);
+      ctx.lineWidth = 0.5;
+      for (let ring = 0; ring < 2; ring++) {
+        const count = ring === 0 ? 1 : 6;
+        const radius = ring === 0 ? 0 : r;
+        for (let i = 0; i < count; i++) {
+          const a = (i * Math.PI / 3) + t * 0.08;
+          const cx = hcx + (radius ? Math.cos(a) * radius : 0);
+          const cy = sy + (radius ? Math.sin(a) * radius : 0);
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(201,169,110,${ring === 0 ? 0.06 : 0.04})`;
+          ctx.stroke();
         }
       }
     }
@@ -112,7 +105,7 @@ document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.cli
 })();
 
 /* ═══════════════════════════════════════════════
-   ADINKRA SYMBOLS
+   ADINKRA SYMBOLS — Static SVGs for card identity
    ═══════════════════════════════════════════════ */
 const adinkraSVGs = {
   nsoromma: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="8"/><line x1="20" y1="4" x2="20" y2="12"/><line x1="20" y1="28" x2="20" y2="36"/><line x1="4" y1="20" x2="12" y2="20"/><line x1="28" y1="20" x2="36" y2="20"/><line x1="8.7" y1="8.7" x2="14.3" y2="14.3"/><line x1="25.7" y1="25.7" x2="31.3" y2="31.3"/><line x1="31.3" y1="8.7" x2="25.7" y2="14.3"/><line x1="14.3" y1="25.7" x2="8.7" y2="31.3"/></svg>`,
@@ -125,529 +118,54 @@ const adinkraSVGs = {
 };
 
 /* ═══════════════════════════════════════════════
-   PER-CARD CANVAS — Unique animated pattern
+   COMPASS PATH FILTERING
+   No display:none. No layout reflow. Just opacity.
    ═══════════════════════════════════════════════ */
-function initCardCanvas(canvas, bookId, accent) {
-  const ctx = canvas.getContext('2d');
-  let w, h;
-  let visible = false; // Only animate when card is on screen
+const COMPASS_PATHS = {
+  sovereign: ['crypto', 'bitcoin', 'keys', 'lightning', 'whispers', 'cloak', 'fortress'],
+  coder:     ['math', 'algorithms', 'rust', 'wasm'],
+  maker:     ['electricity', 'strength', 'manufacturing', 'industry'],
+  founder:   ['enterprise', 'wealth', 'governance', 'rhetoric'],
+  thinker:   ['systems', 'thought', 'crypto', 'bitcoin'],
+};
 
-  // Pause/resume based on visibility
-  const visObs = new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    if (visible) animate(); // Restart loop when visible
-  }, { rootMargin: '100px' });
-  visObs.observe(canvas);
+let activePath = null;
 
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    w = canvas.width = rect.width * (window.devicePixelRatio || 1);
-    h = canvas.height = rect.height * (window.devicePixelRatio || 1);
-    ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
-  }
-  resize();
+function initCompass() {
+  document.querySelectorAll('.compass-pill[data-path]').forEach(pill => {
+    pill.addEventListener('click', e => {
+      e.preventDefault();
+      const path = pill.dataset.path;
+      const grid = document.getElementById('books-grid');
 
-  // Parse accent color to RGB
-  const temp = document.createElement('div');
-  temp.style.color = accent;
-  document.body.appendChild(temp);
-  const rgb = getComputedStyle(temp).color.match(/\d+/g).map(Number);
-  document.body.removeChild(temp);
+      if (activePath === path) {
+        // Deselect
+        activePath = null;
+        grid.classList.remove('path-active');
+        grid.querySelectorAll('.book-card').forEach(c => c.classList.remove('in-path'));
+        document.querySelectorAll('.compass-pill').forEach(p => p.classList.remove('active'));
+        return;
+      }
 
-  const cw = canvas.parentElement.offsetWidth;
-  const ch = canvas.parentElement.offsetHeight;
-  let frame = 0;
+      activePath = path;
+      document.querySelectorAll('.compass-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
 
-  function animate() {
-    frame++;
-    const dpr = window.devicePixelRatio || 1;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, cw, ch);
-    const t = frame * 0.004;
-    const cx = cw / 2, cy = ch / 2;
-
-    if (bookId === 'wasm') {
-      // Circuit/grid pattern
-      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.06)`;
-      ctx.lineWidth = 0.5;
-      const spacing = 24;
-      for (let x = 0; x < cw; x += spacing) {
-        const wave = Math.sin(t + x * 0.02) * 4;
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, ch);
-        ctx.stroke();
-        // Nodes
-        for (let y = spacing/2; y < ch; y += spacing) {
-          if (Math.sin(t * 2 + x * 0.1 + y * 0.1) > 0.7) {
-            ctx.beginPath();
-            ctx.arc(x, y + wave, 1.5, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + 0.1 * Math.sin(t * 3 + x + y)})`;
-            ctx.fill();
-          }
+      const bookIds = COMPASS_PATHS[path] || [];
+      grid.classList.add('path-active');
+      grid.querySelectorAll('.book-card').forEach(card => {
+        const id = card.dataset.book;
+        if (bookIds.includes(id)) {
+          card.classList.add('in-path');
+          card.style.order = bookIds.indexOf(id);
+        } else {
+          card.classList.remove('in-path');
+          card.style.order = 99;
         }
-      }
-      // Flowing data packets
-      for (let i = 0; i < 8; i++) {
-        const px = ((t * 30 + i * cw / 8) % cw);
-        const lane = (i * spacing * 3 + spacing) % cw;
-        const py = ch / 2 + Math.sin(t + i) * 20;
-        ctx.beginPath();
-        ctx.arc(px, py, 2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.4)`;
-        ctx.fill();
-      }
-    } else if (bookId === 'rust') {
-      // Crystalline/ownership pattern — interlocking rings
-      for (let i = 0; i < 5; i++) {
-        const angle = (i * Math.PI * 2 / 5) + t * 0.15;
-        const ox = cx + Math.cos(angle) * 40;
-        const oy = cy + Math.sin(angle) * 20;
-        const r = 25 + Math.sin(t + i) * 5;
-        ctx.beginPath();
-        ctx.arc(ox, oy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.08 + 0.04 * Math.sin(t + i)})`;
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-        // Ownership arrows
-        const ax = ox + r * Math.cos(t * 0.5 + i);
-        const ay = oy + r * Math.sin(t * 0.5 + i);
-        ctx.beginPath();
-        ctx.arc(ax, ay, 2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.3)`;
-        ctx.fill();
-      }
-      // Central lock symbol
-      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.1)`;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.arc(cx, cy - 5, 12, Math.PI, 0);
-      ctx.stroke();
-      ctx.strokeRect(cx - 14, cy - 5, 28, 20);
-    } else if (bookId === 'bitcoin') {
-      // Blockchain: linked blocks flowing left to right
-      const blockW = 28, blockH = 18, gap = 14;
-      const totalW = (blockW + gap) * 6;
-      const startX = cx - totalW / 2 + ((t * 15) % (blockW + gap));
-      ctx.lineWidth = 0.6;
-      for (let i = -1; i < 7; i++) {
-        const bx = startX + i * (blockW + gap);
-        const by = cy - blockH / 2;
-        // Block rectangle
-        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.1 + 0.05 * Math.sin(t * 2 + i)})`;
-        ctx.strokeRect(bx, by, blockW, blockH);
-        // Hash link to next block
-        if (i < 6) {
-          ctx.beginPath();
-          ctx.moveTo(bx + blockW, cy);
-          ctx.lineTo(bx + blockW + gap, cy);
-          ctx.stroke();
-          // Arrow head
-          ctx.beginPath();
-          ctx.moveTo(bx + blockW + gap - 3, cy - 2);
-          ctx.lineTo(bx + blockW + gap, cy);
-          ctx.lineTo(bx + blockW + gap - 3, cy + 2);
-          ctx.stroke();
-        }
-        // Nonce sparks inside blocks
-        const sparkX = bx + 5 + Math.sin(t * 8 + i * 3) * 8;
-        const sparkY = cy + Math.cos(t * 6 + i * 2) * 4;
-        ctx.beginPath();
-        ctx.arc(sparkX, sparkY, 1.2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.2 + 0.15 * Math.sin(t * 5 + i)})`;
-        ctx.fill();
-      }
-      // Floating hash fragments
-      for (let i = 0; i < 10; i++) {
-        const hx = cx + Math.sin(t * 0.7 + i * 1.1) * 80;
-        const hy = cy + Math.cos(t * 0.5 + i * 0.9) * 30;
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.06)`;
-        ctx.font = '6px monospace';
-        ctx.fillText(((i * 0xABCD + frame) & 0xFFFF).toString(16), hx, hy);
-      }
-    } else if (bookId === 'pwa') {
-      // Service worker interception: requests flow right, cache shield in center
-      const shieldR = 22;
-      // Shield circle (the service worker)
-      const breathe = 0.5 + 0.5 * Math.sin(t * 0.8);
-      ctx.beginPath();
-      ctx.arc(cx, cy, shieldR, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.12 + breathe * 0.06})`;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-      // Inner shield dot
-      ctx.beginPath();
-      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.2 + breathe * 0.15})`;
-      ctx.fill();
-      // Requests flowing inward from edges
-      for (let i = 0; i < 8; i++) {
-        const angle = (i * Math.PI * 2 / 8) + t * 0.2;
-        const progress = ((t * 0.8 + i * 0.4) % 1);
-        const fromR = 70;
-        const toR = shieldR + 4;
-        const r = fromR - progress * (fromR - toR);
-        const px = cx + Math.cos(angle) * r;
-        const py = cy + Math.sin(angle) * r;
-        const alpha = progress < 0.8 ? 0.3 * (1 - progress / 0.8) : 0;
-        ctx.beginPath();
-        ctx.arc(px, py, 1.8, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha})`;
-        ctx.fill();
-        // Trail
-        const tr = r + 8;
-        ctx.beginPath();
-        ctx.moveTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
-        ctx.lineTo(cx + Math.cos(angle) * tr, cy + Math.sin(angle) * tr);
-        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha * 0.4})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
-      // Cached responses: orbiting dots inside the shield
-      for (let i = 0; i < 5; i++) {
-        const a = (i * Math.PI * 2 / 5) + t * 0.3;
-        const orbitR = 12;
-        ctx.beginPath();
-        ctx.arc(cx + Math.cos(a) * orbitR, cy + Math.sin(a) * orbitR, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + 0.1 * Math.sin(t * 2 + i)})`;
-        ctx.fill();
-      }
-    } else if (bookId === 'messages') {
-      // Message relay network — nodes with flowing messages between them
-      const nodes = [];
-      for (let i = 0; i < 7; i++) {
-        const a = (i * Math.PI * 2 / 7) + 0.3;
-        const r = 35 + (i % 2) * 15;
-        nodes.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r });
-      }
-      nodes.push({ x: cx, y: cy }); // central relay
-      // Connection lines (web pattern)
-      ctx.lineWidth = 0.4;
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          if (Math.sqrt(dx*dx + dy*dy) < 70) {
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.06)`;
-            ctx.stroke();
-          }
-        }
-      }
-      // Nodes (people/devices)
-      for (let i = 0; i < nodes.length; i++) {
-        const pulse = 0.5 + 0.5 * Math.sin(t * 2 + i);
-        const nr = i === nodes.length - 1 ? 4 : 2.5;
-        ctx.beginPath();
-        ctx.arc(nodes[i].x, nodes[i].y, nr, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + pulse * 0.15})`;
-        ctx.fill();
-      }
-      // Flowing message packets
-      for (let i = 0; i < 5; i++) {
-        const progress = ((t * 0.6 + i * 0.35) % 1);
-        const from = nodes[i % nodes.length];
-        const to = nodes[(i + 3) % nodes.length];
-        const mx = from.x + (to.x - from.x) * progress;
-        const my = from.y + (to.y - from.y) * progress;
-        const alpha = Math.sin(progress * Math.PI) * 0.5;
-        ctx.beginPath();
-        ctx.arc(mx, my, 1.8, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha})`;
-        ctx.fill();
-      }
-    } else if (bookId === 'making') {
-      // Recursive fractal — the system explaining itself
-      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.08)`;
-      ctx.lineWidth = 0.5;
-      function drawRecursiveBox(x, y, w, h, depth) {
-        if (depth <= 0 || w < 6) return;
-        ctx.strokeRect(x, y, w, h);
-        // Two child boxes inside (like code blocks in chapters)
-        const pad = w * 0.1;
-        const childW = (w - pad * 3) / 2;
-        const childH = h * 0.6;
-        drawRecursiveBox(x + pad, y + pad, childW, childH, depth - 1);
-        drawRecursiveBox(x + pad * 2 + childW, y + pad, childW, childH, depth - 1);
-      }
-      const boxW = 60 + Math.sin(t * 0.3) * 5;
-      const boxH = 40 + Math.cos(t * 0.4) * 3;
-      drawRecursiveBox(cx - boxW/2, cy - boxH/2, boxW, boxH, 3);
-      // Orbiting file icons (dots representing files)
-      const files = ['index', 'read', 'sw', 'lib', 'manifest'];
-      for (let i = 0; i < files.length; i++) {
-        const a = (i * Math.PI * 2 / files.length) + t * 0.2;
-        const orbitR = 50;
-        const fx = cx + Math.cos(a) * orbitR;
-        const fy = cy + Math.sin(a) * orbitR;
-        ctx.beginPath();
-        ctx.arc(fx, fy, 2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + 0.1 * Math.sin(t + i)})`;
-        ctx.fill();
-        // Connection line to center
-        ctx.beginPath();
-        ctx.moveTo(fx, fy);
-        ctx.lineTo(cx, cy);
-        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.04)`;
-        ctx.stroke();
-      }
-    } else if (bookId === 'keys') {
-      // Key/lock pattern — rotating key teeth with central keyhole
-      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.1)`;
-      ctx.lineWidth = 0.8;
-      // Central keyhole
-      ctx.beginPath();
-      ctx.arc(cx, cy - 6, 10, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(cx - 4, cy + 4);
-      ctx.lineTo(cx + 4, cy + 4);
-      ctx.lineTo(cx + 3, cy + 18);
-      ctx.lineTo(cx - 3, cy + 18);
-      ctx.closePath();
-      ctx.stroke();
-      // Orbiting key bits (like derivation paths branching)
-      for (let i = 0; i < 8; i++) {
-        const a = (i * Math.PI / 4) + t * 0.15;
-        const r = 32 + Math.sin(t + i * 0.7) * 5;
-        const kx = cx + Math.cos(a) * r;
-        const ky = cy + Math.sin(a) * r;
-        ctx.beginPath();
-        ctx.arc(kx, ky, 2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + 0.1 * Math.sin(t * 2 + i)})`;
-        ctx.fill();
-        // Tooth lines radiating outward
-        const toothLen = 6 + Math.sin(t * 1.5 + i) * 3;
-        ctx.beginPath();
-        ctx.moveTo(kx, ky);
-        ctx.lineTo(kx + Math.cos(a) * toothLen, ky + Math.sin(a) * toothLen);
-        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.08)`;
-        ctx.stroke();
-      }
-    } else if (bookId === 'lightning') {
-      // Lightning bolt paths — jagged lines flowing across the card
-      ctx.lineWidth = 0.8;
-      for (let i = 0; i < 5; i++) {
-        const startY = cy - 25 + i * 12;
-        const phase = (t * 40 + i * 30) % (cw + 40) - 20;
-        ctx.beginPath();
-        ctx.moveTo(phase, startY);
-        for (let seg = 0; seg < 6; seg++) {
-          const nx = phase + (seg + 1) * 14;
-          const ny = startY + (Math.random() > 0.5 ? -1 : 1) * (4 + Math.sin(t + seg) * 3);
-          ctx.lineTo(nx, ny);
-        }
-        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.1 + 0.08 * Math.sin(t * 3 + i)})`;
-        ctx.stroke();
-      }
-      // Channel nodes at edges
-      for (let i = 0; i < 4; i++) {
-        const ny = cy - 20 + i * 14;
-        ctx.beginPath();
-        ctx.arc(cx - 50, ny, 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.15)`;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(cx + 50, ny, 3, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    } else if (bookId === 'whispers') {
-      // Drum wave pattern — concentric pulse rings from nodes
-      const relays = [
-        { x: cx - 30, y: cy - 10 }, { x: cx + 25, y: cy - 15 },
-        { x: cx, y: cy + 15 }, { x: cx + 35, y: cy + 10 },
-      ];
-      relays.forEach((relay, i) => {
-        // Pulse rings
-        const pulseR = ((t * 20 + i * 15) % 40);
-        const alpha = Math.max(0, 0.12 - pulseR * 0.003);
-        ctx.beginPath();
-        ctx.arc(relay.x, relay.y, pulseR, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-        // Relay node
-        ctx.beginPath();
-        ctx.arc(relay.x, relay.y, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.2 + 0.1 * Math.sin(t * 2 + i)})`;
-        ctx.fill();
       });
-      // Event packets flowing between relays
-      for (let i = 0; i < 3; i++) {
-        const from = relays[i % relays.length];
-        const to = relays[(i + 1) % relays.length];
-        const p = ((t * 0.5 + i * 0.4) % 1);
-        const px = from.x + (to.x - from.x) * p;
-        const py = from.y + (to.y - from.y) * p;
-        ctx.beginPath();
-        ctx.arc(px, py, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${Math.sin(p * Math.PI) * 0.4})`;
-        ctx.fill();
-      }
-    } else if (bookId === 'cloak') {
-      // Fading/invisible pattern — shapes that appear and disappear
-      for (let i = 0; i < 12; i++) {
-        const a = (i * Math.PI * 2 / 12) + t * 0.08;
-        const r = 25 + i * 2;
-        const fade = Math.max(0, Math.sin(t * 0.5 + i * 0.5));
-        if (fade > 0.05) {
-          ctx.beginPath();
-          ctx.arc(cx + Math.cos(a) * r * 0.4, cy + Math.sin(a) * r * 0.4, 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${fade * 0.2})`;
-          ctx.fill();
-        }
-      }
-      // Fading concentric rings (like an onion/tor layers)
-      for (let i = 0; i < 4; i++) {
-        const ringR = 12 + i * 10;
-        const ringAlpha = Math.max(0, 0.06 - i * 0.012) * (0.5 + 0.5 * Math.sin(t + i));
-        ctx.beginPath();
-        ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${ringAlpha})`;
-        ctx.lineWidth = 0.5;
-        ctx.setLineDash([3, 4 + i * 2]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-    } else if (bookId === 'fortress') {
-      // Castle/fortress pattern — battlements and walls
-      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.08)`;
-      ctx.lineWidth = 0.8;
-      // Wall base
-      const wallY = cy + 10;
-      ctx.beginPath();
-      ctx.moveTo(cx - 45, wallY);
-      ctx.lineTo(cx + 45, wallY);
-      ctx.stroke();
-      // Battlements
-      const merlonW = 8, crenelW = 6;
-      let bx = cx - 42;
-      ctx.beginPath();
-      ctx.moveTo(bx, wallY);
-      while (bx < cx + 42) {
-        ctx.lineTo(bx, wallY - 12);
-        ctx.lineTo(bx + merlonW, wallY - 12);
-        ctx.lineTo(bx + merlonW, wallY - 6);
-        ctx.lineTo(bx + merlonW + crenelW, wallY - 6);
-        ctx.lineTo(bx + merlonW + crenelW, wallY);
-        bx += merlonW + crenelW;
-      }
-      ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.1)`;
-      ctx.stroke();
-      // Gate arch
-      ctx.beginPath();
-      ctx.arc(cx, wallY, 8, Math.PI, 0);
-      ctx.stroke();
-      // Tower nodes (services running)
-      const towers = [cx - 35, cx, cx + 35];
-      towers.forEach((tx, i) => {
-        const pulse = 0.5 + 0.5 * Math.sin(t * 2 + i * 1.5);
-        ctx.beginPath();
-        ctx.arc(tx, wallY - 18, 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.15 + pulse * 0.15})`;
-        ctx.fill();
-      });
-    } else {
-      // Default: floating geometry
-      for (let i = 0; i < 6; i++) {
-        const a = (i * Math.PI / 3) + t * 0.1;
-        const r = 30;
-        ctx.beginPath();
-        ctx.arc(cx + r * Math.cos(a), cy + r * Math.sin(a), 15, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.06)`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
-    }
 
-    if (visible) requestAnimationFrame(animate);
-  }
-  // Animation starts when IntersectionObserver detects visibility
-}
-
-/* ═══════════════════════════════════════════════
-   READING PROGRESS — uses lib.js
-   ═══════════════════════════════════════════════ */
-function makeProgressRing(pct, accent, size) {
-  const r = (size - 6) / 2;
-  const circ = 2 * Math.PI * r;
-  const targetOffset = circ * (1 - pct);
-  // Start at full offset (empty), animate to target on reveal
-  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/>
-    <circle class="progress-arc" cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${accent}" stroke-width="3"
-      stroke-dasharray="${circ}" stroke-dashoffset="${circ}"
-      data-target="${targetOffset}"
-      stroke-linecap="round" transform="rotate(-90 ${size/2} ${size/2})"
-      style="transition:stroke-dashoffset 1.2s cubic-bezier(0.16,1,0.3,1)"/>
-  </svg>`;
-}
-
-/* ═══════════════════════════════════════════════
-   CARD REVEAL ON SCROLL
-   ═══════════════════════════════════════════════ */
-function initCardReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('revealed'), i * 120);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { rootMargin: '100px 0px 0px 0px', threshold: 0.01 });
-
-  document.querySelectorAll('.book-card').forEach(card => observer.observe(card));
-
-  // Fallback: if any card is still hidden after 2s, force reveal
-  // (handles edge cases where observer doesn't fire)
-  setTimeout(() => {
-    document.querySelectorAll('.book-card:not(.revealed)').forEach(card => {
-      card.classList.add('revealed');
-    });
-  }, 2000);
-}
-
-/* ═══════════════════════════════════════════════
-   3D CARD TILT + HOLOGRAPHIC SHEEN
-   ═══════════════════════════════════════════════ */
-function init3DTilt() {
-  document.querySelectorAll('.book-card').forEach(card => {
-    const sheen = card.querySelector('.card-sheen');
-    let targetRX = 0, targetRY = 0, currentRX = 0, currentRY = 0;
-    let tiltRAF = null;
-
-    // Smooth interpolation — organic, not rigid
-    function animateTilt() {
-      currentRX += (targetRX - currentRX) * 0.08;
-      currentRY += (targetRY - currentRY) * 0.08;
-
-      if (Math.abs(targetRX - currentRX) > 0.01 || Math.abs(targetRY - currentRY) > 0.01) {
-        card.style.transform = `perspective(800px) rotateX(${currentRX}deg) rotateY(${currentRY}deg) translateY(-2px)`;
-        tiltRAF = requestAnimationFrame(animateTilt);
-      } else {
-        card.style.transform = targetRX === 0 && targetRY === 0 ? '' :
-          `perspective(800px) rotateX(${targetRX}deg) rotateY(${targetRY}deg) translateY(-2px)`;
-      }
-    }
-
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      targetRY = (x - 0.5) * 6; // ±3° (gentler)
-      targetRX = (0.5 - y) * 6;
-      if (sheen) {
-        sheen.style.setProperty('--sheen-x', (x * 100) + '%');
-        sheen.style.setProperty('--sheen-y', (y * 100) + '%');
-      }
-      if (!tiltRAF) tiltRAF = requestAnimationFrame(animateTilt);
-    });
-    card.addEventListener('mouseleave', () => {
-      targetRX = 0;
-      targetRY = 0;
-      if (!tiltRAF) tiltRAF = requestAnimationFrame(animateTilt);
+      // Smooth scroll to library
+      document.getElementById('library').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 }
@@ -680,30 +198,17 @@ function initContinueBanner(manifest) {
 }
 
 /* ═══════════════════════════════════════════════
-   LIBRARY CONTROLS — Sort, Filter, View, Search
+   LIBRARY CONTROLS — Sort, Filter, Search
    ═══════════════════════════════════════════════ */
-let allBooks = [];
-let allManifest = null;
-
 function initControls(manifest) {
-  allManifest = manifest;
-  allBooks = manifest.books.map(b => ({
-    ...b,
-    category: b.category || 'Other',
-    progress: getProgress(b.id),
-  }));
-
   const section = document.querySelector('.books-section');
   const sectionLabel = section.querySelector('.section-label');
-
-  // Compute stats
   const totalLetters = manifest.books.reduce((s, b) => s + (b.letters || 0), 0);
   const categories = [...new Set(manifest.books.map(b => b.category || 'Other'))].sort();
 
   const controls = document.createElement('div');
   controls.className = 'library-controls';
 
-  // Category filter buttons
   const catBtns = categories.map(c => {
     const count = manifest.books.filter(b => b.category === c).length;
     return `<button class="ctrl-btn" data-filter="${c}">${c} <span class="ctrl-count">${count}</span></button>`;
@@ -715,208 +220,111 @@ function initControls(manifest) {
     <div class="ctrl-group ctrl-categories" id="filter-group">
       <button class="ctrl-btn active" data-filter="all">All <span class="ctrl-count">${manifest.books.length}</span></button>
       ${catBtns}
-      <button class="ctrl-btn" data-filter="reading">Reading</button>
-      <button class="ctrl-btn" data-filter="new">New</button>
     </div>
     <div class="ctrl-group" id="sort-group">
       <button class="ctrl-btn active" data-sort="default">Default</button>
       <button class="ctrl-btn" data-sort="title">A-Z</button>
-      <button class="ctrl-btn" data-sort="recent">Recent</button>
       <button class="ctrl-btn" data-sort="progress">Progress</button>
-    </div>
-    <div class="ctrl-group" id="view-group">
-      <button class="ctrl-btn active" data-view="grid" title="Grid view">&#9638;</button>
-      <button class="ctrl-btn" data-view="list" title="List view">&#9776;</button>
     </div>`;
 
   sectionLabel.after(controls);
 
-  // Sort handlers
+  // Sort
   controls.querySelector('#sort-group').addEventListener('click', e => {
     const btn = e.target.closest('[data-sort]');
     if (!btn) return;
     controls.querySelectorAll('#sort-group .ctrl-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    renderBooks(btn.dataset.sort, getCurrentFilter());
+    sortBooks(btn.dataset.sort);
   });
 
-  // Filter handlers
+  // Filter
   controls.querySelector('#filter-group').addEventListener('click', e => {
     const btn = e.target.closest('[data-filter]');
     if (!btn) return;
     controls.querySelectorAll('#filter-group .ctrl-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    renderBooks(getCurrentSort(), btn.dataset.filter);
+
+    // Clear compass when using category filter
+    if (activePath) {
+      activePath = null;
+      document.getElementById('books-grid').classList.remove('path-active');
+      document.querySelectorAll('.book-card').forEach(c => { c.classList.remove('in-path'); c.style.order = ''; });
+      document.querySelectorAll('.compass-pill').forEach(p => p.classList.remove('active'));
+    }
+
+    filterBooks(btn.dataset.filter);
   });
 
-  // View toggle
-  controls.querySelector('#view-group').addEventListener('click', e => {
-    const btn = e.target.closest('[data-view]');
-    if (!btn) return;
-    controls.querySelectorAll('#view-group .ctrl-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const grid = document.getElementById('books-grid');
-    grid.classList.toggle('list-mode', btn.dataset.view === 'list');
-  });
-
-  // Search (simple text filter for now, WASM search in Phase 4)
-  let searchTimeout;
+  // Search
+  let searchTimer;
   controls.querySelector('#lib-search').addEventListener('input', e => {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => {
-      const q = e.target.value.toLowerCase().trim();
-      filterBySearch(q);
-    }, 200);
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => filterBySearch(e.target.value.toLowerCase().trim()), 200);
   });
 }
 
-function getCurrentSort() {
-  return document.querySelector('#sort-group .ctrl-btn.active')?.dataset.sort || 'default';
+function sortBooks(key) {
+  const grid = document.getElementById('books-grid');
+  const cards = [...grid.querySelectorAll('.book-card')];
+
+  if (key === 'title') {
+    cards.sort((a, b) => a.querySelector('.card-title').textContent.localeCompare(b.querySelector('.card-title').textContent));
+  } else if (key === 'progress') {
+    cards.sort((a, b) => {
+      const pa = parseFloat(a.dataset.progress || 0);
+      const pb = parseFloat(b.dataset.progress || 0);
+      return pb - pa;
+    });
+  }
+
+  cards.forEach(card => grid.appendChild(card));
 }
-function getCurrentFilter() {
-  return document.querySelector('#filter-group .ctrl-btn.active')?.dataset.filter || 'all';
+
+function filterBooks(category) {
+  const grid = document.getElementById('books-grid');
+  grid.querySelectorAll('.book-card').forEach(card => {
+    if (category === 'all' || card.dataset.category === category) {
+      card.classList.remove('filtered-out');
+    } else {
+      card.classList.add('filtered-out');
+    }
+  });
 }
 
 function filterBySearch(query) {
-  const cards = document.querySelectorAll('.book-card');
-  cards.forEach(card => {
-    if (!query) {
-      card.style.display = '';
-      return;
-    }
-    const text = card.textContent.toLowerCase();
-    card.style.display = text.includes(query) ? '' : 'none';
-  });
-}
-
-function renderBooks(sortKey, filterKey) {
-  let books = [...allBooks];
-
-  // Filter
-  if (filterKey === 'reading') {
-    books = books.filter(b => b.progress.chaptersRead > 0 && b.progress.chaptersRead < b.letters);
-  } else if (filterKey === 'new') {
-    books = books.filter(b => !b.progress.chaptersRead);
-  } else if (filterKey && filterKey !== 'all') {
-    // Category filter
-    books = books.filter(b => (b.category || 'Other') === filterKey);
-  }
-
-  // Sort
-  if (sortKey === 'title') {
-    books.sort((a, b) => a.title.localeCompare(b.title));
-  } else if (sortKey === 'recent') {
-    books.sort((a, b) => (b.progress.lastRead || 0) - (a.progress.lastRead || 0));
-  } else if (sortKey === 'progress') {
-    books.sort((a, b) => {
-      const pa = b.letters > 0 ? b.progress.chaptersRead / b.letters : 0;
-      const pb = a.letters > 0 ? a.progress.chaptersRead / a.letters : 0;
-      return pa - pb;
-    });
-  }
-
-  // Reorder DOM
-  const grid = document.getElementById('books-grid');
-  const cardMap = {};
-  grid.querySelectorAll('.book-card').forEach(card => {
-    const bookId = card.querySelector('.card-anim')?.dataset.book;
-    if (bookId) cardMap[bookId] = card;
-  });
-
-  // Hide cards not in filtered set
-  Object.values(cardMap).forEach(card => card.style.display = 'none');
-
-  // Show and reorder
-  books.forEach(book => {
-    const card = cardMap[book.id];
-    if (card) {
-      card.style.display = '';
-      grid.appendChild(card); // move to end = reorder
+  document.querySelectorAll('.book-card').forEach(card => {
+    if (!query || card.textContent.toLowerCase().includes(query)) {
+      card.classList.remove('filtered-out');
+    } else {
+      card.classList.add('filtered-out');
     }
   });
 }
 
 /* ═══════════════════════════════════════════════
-   COMPASS PATH FILTERING — Click a path to
-   filter the library to those books
+   CARD REVEAL ON SCROLL
    ═══════════════════════════════════════════════ */
-const COMPASS_PATHS = {
-  sovereign: ['crypto', 'bitcoin', 'keys', 'lightning', 'whispers', 'cloak', 'fortress'],
-  coder:     ['math', 'algorithms', 'rust', 'wasm'],
-  maker:     ['electricity', 'strength', 'manufacturing', 'industry'],
-  founder:   ['enterprise', 'wealth', 'governance', 'rhetoric'],
-  thinker:   ['systems', 'thought', 'crypto', 'bitcoin'],
-};
-
-let activeCompassPath = null;
-
-function initCompassFiltering() {
-  document.querySelectorAll('.compass-pill[data-path]').forEach(pill => {
-    pill.addEventListener('click', e => {
-      e.preventDefault();
-      const path = pill.dataset.path;
-
-      // Toggle: click same path again to deselect
-      if (activeCompassPath === path) {
-        activeCompassPath = null;
-        document.querySelectorAll('.compass-pill').forEach(p => p.classList.remove('active'));
-        showAllBooks();
-        return;
+function initCardReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
       }
-
-      activeCompassPath = path;
-      document.querySelectorAll('.compass-pill').forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-
-      const bookIds = COMPASS_PATHS[path];
-      if (!bookIds) return;
-
-      filterToBooks(bookIds);
-
-      // Smooth scroll to library
-      document.getElementById('library').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-  });
-}
+  }, { rootMargin: '50px', threshold: 0.01 });
 
-function filterToBooks(bookIds) {
-  const cards = document.querySelectorAll('.book-card');
-  cards.forEach((card, i) => {
-    const cardBookId = card.querySelector('.card-anim')?.dataset.book;
-    const inPath = bookIds.includes(cardBookId);
+  document.querySelectorAll('.book-card').forEach(card => observer.observe(card));
 
-    // Stagger the animation
-    setTimeout(() => {
-      if (inPath) {
-        card.style.display = '';
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-        // Reorder: move path books to the front in path order
-        const order = bookIds.indexOf(cardBookId);
-        card.style.order = order;
-      } else {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(10px) scale(0.97)';
-        setTimeout(() => { card.style.display = 'none'; }, 300);
-      }
-    }, i * 30);
-  });
-}
-
-function showAllBooks() {
-  const cards = document.querySelectorAll('.book-card');
-  cards.forEach((card, i) => {
-    setTimeout(() => {
-      card.style.display = '';
-      card.style.order = '';
-      card.style.opacity = '1';
-      card.style.transform = 'translateY(0)';
-    }, i * 20);
-  });
+  // Fallback
+  setTimeout(() => {
+    document.querySelectorAll('.book-card:not(.revealed)').forEach(c => c.classList.add('revealed'));
+  }, 1500);
 }
 
 /* ═══════════════════════════════════════════════
-   VIEW TRANSITIONS — Library → Reader
+   VIEW TRANSITIONS
    ═══════════════════════════════════════════════ */
 function initViewTransitions() {
   if (!document.startViewTransition) return;
@@ -924,15 +332,13 @@ function initViewTransitions() {
     card.addEventListener('click', e => {
       e.preventDefault();
       const href = card.getAttribute('href');
-      document.startViewTransition(() => {
-        window.location.href = href;
-      });
+      document.startViewTransition(() => { window.location.href = href; });
     });
   });
 }
 
 /* ═══════════════════════════════════════════════
-   LOAD LIBRARY
+   LOAD LIBRARY — The single entry point
    ═══════════════════════════════════════════════ */
 async function loadLibrary() {
   try {
@@ -940,45 +346,34 @@ async function loadLibrary() {
     const manifest = await res.json();
     euler.load_manifest(JSON.stringify(manifest));
     const grid = document.getElementById('books-grid');
-
-    // Clear skeleton placeholder cards
     grid.innerHTML = '';
 
     manifest.books.forEach((book, idx) => {
       const symbol = adinkraSVGs[book.symbol] || adinkraSVGs.nsoromma;
       const progress = getProgress(book.id);
       const pct = book.letters > 0 ? Math.min(progress.chaptersRead / book.letters, 1) : 0;
-      const pctLabel = pct > 0 ? `${Math.round(pct * 100)}%` : 'New';
+      const pctLabel = pct > 0 ? `${Math.round(pct * 100)}%` : '';
 
       const card = document.createElement('a');
       card.className = 'book-card';
       card.href = `read.html?book=${book.id}`;
-      card.style.setProperty('--card-accent', book.accent || '#c9a96e');
-      card.style.setProperty('--card-glow', (book.accent || '#c9a96e') + '18');
-      card.style.transitionDelay = `${idx * 0.1}s`;
-
+      card.dataset.book = book.id;
       card.dataset.category = book.category || 'Other';
+      card.dataset.progress = pct.toFixed(2);
+      card.style.setProperty('--card-accent', book.accent || '#c9a96e');
+      // Stagger reveal via CSS custom property
+      card.style.setProperty('--reveal-delay', `${idx * 0.04}s`);
+
       card.innerHTML = `
-        <div class="card-sheen"></div>
-        <div class="card-canvas-wrap">
-          <canvas class="card-anim" data-book="${book.id}" data-accent="${book.accent || '#c9a96e'}"></canvas>
-          <div class="progress-ring-wrap">
-            ${makeProgressRing(pct, book.accent || '#c9a96e', 50)}
-            <div class="progress-text">${pctLabel}</div>
-          </div>
+        <div class="card-header" style="color:${book.accent || '#c9a96e'}">
+          <div class="card-symbol">${symbol}</div>
+          ${pctLabel ? `<div class="card-pct">${pctLabel}</div>` : ''}
         </div>
         <div class="card-body">
           <div class="card-title">${book.title}</div>
-          <div class="card-subtitle">${book.subtitle}</div>
-          <p class="card-desc">${book.description}</p>
           <div class="card-meta">
             <strong>${book.letters}</strong> letters &middot;
             <strong>${book.parts}</strong> parts
-            ${progress.lastRead ? `&middot; last read ${new Date(progress.lastRead).toLocaleDateString()}` : ''}
-          </div>
-          <div class="card-enter">
-            ${pct > 0 && pct < 1 ? 'Continue Reading' : pct >= 1 ? 'Read Again' : 'Begin Reading'}
-            <span class="arrow">&rarr;</span>
           </div>
         </div>
       `;
@@ -986,34 +381,10 @@ async function loadLibrary() {
       grid.appendChild(card);
     });
 
-    // Init per-card canvases
-    document.querySelectorAll('.card-anim').forEach(c => {
-      initCardCanvas(c, c.dataset.book, c.dataset.accent);
-    });
-
-    // Init scroll reveal with progress ring animation
     initCardReveal();
-
-    // Animate progress rings when cards are revealed
-    setTimeout(() => {
-      document.querySelectorAll('.progress-arc').forEach(arc => {
-        arc.setAttribute('stroke-dashoffset', arc.dataset.target);
-      });
-    }, 400);
-
-    // Init 3D tilt + holographic sheen
-    init3DTilt();
-
-    // Init continue reading banner
     initContinueBanner(manifest);
-
-    // Init sort/filter/search controls
     initControls(manifest);
-
-    // Init compass path filtering
-    initCompassFiltering();
-
-    // Init view transitions
+    initCompass();
     initViewTransitions();
 
   } catch (err) {
@@ -1023,4 +394,3 @@ async function loadLibrary() {
 }
 
 loadLibrary();
-
