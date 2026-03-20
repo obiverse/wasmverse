@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /wasmverse/
+
+Sitemap: https://obiverse.github.io/wasmverse/sitemap.xml

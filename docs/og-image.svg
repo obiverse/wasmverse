@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0a0a14"/>
+  <!-- Seed of Life -->
+  <g transform="translate(600,280)" stroke="#c9a96e" stroke-width="1" fill="none" opacity="0.15">
+    <circle r="80"/>
+    <circle cx="80" r="80"/><circle cx="-80" r="80"/>
+    <circle cx="40" cy="69.3" r="80"/><circle cx="-40" cy="69.3" r="80"/>
+    <circle cx="40" cy="-69.3" r="80"/><circle cx="-40" cy="-69.3" r="80"/>
+  </g>
+  <!-- Title -->
+  <text x="600" y="240" text-anchor="middle" fill="#e4c98a" font-family="Georgia,serif" font-size="52" font-weight="700">The Epistolary Library</text>
+  <text x="600" y="290" text-anchor="middle" fill="#9e9684" font-family="Georgia,serif" font-size="22" font-style="italic">Treatises in the manner of Euler, for builders who love the universe</text>
+  <!-- Stats -->
+  <text x="600" y="370" text-anchor="middle" fill="#c9a96e" font-family="monospace" font-size="16" letter-spacing="2">33 TREATISES · 1,195 LETTERS · LIVE WASM DEMOS · WORKS OFFLINE</text>
+  <!-- Bottom -->
+  <text x="600" y="560" text-anchor="middle" fill="#8b6914" font-family="Georgia,serif" font-size="18">OBIVERSE</text>
+  <!-- Adinkra dots -->
+  <g fill="#c9a96e" opacity="0.08">
+    <circle cx="100" cy="100" r="3"/><circle cx="140" cy="100" r="3"/><circle cx="180" cy="100" r="3"/>
+    <circle cx="100" cy="140" r="3"/><circle cx="140" cy="140" r="3"/><circle cx="180" cy="140" r="3"/>
+    <circle cx="1020" cy="490" r="3"/><circle cx="1060" cy="490" r="3"/><circle cx="1100" cy="490" r="3"/>
+    <circle cx="1020" cy="530" r="3"/><circle cx="1060" cy="530" r="3"/><circle cx="1100" cy="530" r="3"/>
+  </g>
+</svg>
