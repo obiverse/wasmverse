@@ -149,9 +149,9 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.6rem 1rem;
+  padding: 0.7rem 1rem;
   background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(201,169,110,0.15);
   border-radius: 10px;
   text-decoration: none;
   color: inherit;
@@ -162,19 +162,25 @@
 }
 
 .lab-card:hover {
-  border-color: rgba(201,169,110,0.2);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  border-color: rgba(201,169,110,0.35);
+  box-shadow: 0 4px 20px rgba(201,169,110,0.08), 0 4px 16px rgba(0,0,0,0.12);
 }
 
 .lab-icon {
-  width: 28px; height: 28px;
-  border-radius: 8px;
-  background: var(--sacred);
-  border: 1px solid var(--border);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(201,169,110,0.1);
+  border: 1px solid rgba(201,169,110,0.2);
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.7rem;
-  color: var(--gold);
+  font-size: 0.8rem;
+  color: var(--gold-bright);
   flex-shrink: 0;
+  animation: labPulse 3s ease-in-out infinite;
+}
+
+@keyframes labPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,110,0); }
+  50% { box-shadow: 0 0 8px 2px rgba(201,169,110,0.12); }
 }
 
 .lab-info { flex: 1; min-width: 0; }
@@ -190,10 +196,13 @@
   font-size: 0.72rem; color: var(--text-dim); line-height: 1.4;
 }
 
-.lab-tech {
+.lab-badge {
   font-family: var(--font-code);
-  font-size: 0.5rem; color: var(--gold-dim);
-  flex-shrink: 0;
+  font-size: 0.5rem;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  margin-top: 0.2rem;
+  text-transform: uppercase;
 }
 
 /* ═══════════════════════════════════════════════
@@ -257,24 +266,19 @@
   box-shadow: 0 6px 24px rgba(0,0,0,0.12), 0 0 16px rgba(201,169,110,0.06);
 }
 
-/* ── Path filtering: no layout reflow ───────── */
-/* Dimmed cards stay in grid, just ghosted */
-.books-grid.path-active .book-card {
-  opacity: 0.1;
-  transition: opacity 0.3s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-  pointer-events: none;
+/* ── Path filtering ─────────────────────────── */
+/* Non-path cards collapse smoothly */
+.book-card.not-in-path {
+  display: none;
 }
 
 .books-grid.path-active .book-card.in-path {
   opacity: 1;
-  pointer-events: auto;
 }
 
 /* Category filtering */
 .book-card.filtered-out {
-  opacity: 0.08;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  display: none;
 }
 
 /* ── Card header: Adinkra symbol + progress ── */

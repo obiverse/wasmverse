@@ -139,10 +139,13 @@ function initCompass() {
       const grid = document.getElementById('books-grid');
 
       if (activePath === path) {
-        // Deselect
+        // Deselect — restore all
         activePath = null;
         grid.classList.remove('path-active');
-        grid.querySelectorAll('.book-card').forEach(c => c.classList.remove('in-path'));
+        grid.querySelectorAll('.book-card').forEach(c => {
+          c.classList.remove('in-path', 'not-in-path');
+          c.style.order = '';
+        });
         document.querySelectorAll('.compass-pill').forEach(p => p.classList.remove('active'));
         return;
       }
@@ -153,19 +156,28 @@ function initCompass() {
 
       const bookIds = COMPASS_PATHS[path] || [];
       grid.classList.add('path-active');
+
+      // Separate path cards from non-path cards
       grid.querySelectorAll('.book-card').forEach(card => {
         const id = card.dataset.book;
         if (bookIds.includes(id)) {
           card.classList.add('in-path');
+          card.classList.remove('not-in-path');
           card.style.order = bookIds.indexOf(id);
         } else {
           card.classList.remove('in-path');
-          card.style.order = 99;
+          card.classList.add('not-in-path');
+          card.style.order = '';
         }
       });
 
-      // Smooth scroll to library
-      document.getElementById('library').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Scroll to the first in-path card after a brief paint
+      requestAnimationFrame(() => {
+        const first = grid.querySelector('.book-card.in-path');
+        if (first) {
+          first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
     });
   });
 }
