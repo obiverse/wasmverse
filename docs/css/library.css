@@ -84,15 +84,21 @@
   border-radius: 20px;
   text-decoration: none;
   color: inherit;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.5s ease, background 0.5s ease, box-shadow 0.5s ease;
   scroll-snap-align: start;
   cursor: pointer;
 }
 
 .compass-pill:hover {
-  border-color: var(--gold-dim);
+  border-color: rgba(201,169,110,0.2);
   background: var(--sacred);
-  transform: translateY(-1px);
+  box-shadow: 0 2px 12px rgba(201,169,110,0.06);
+}
+
+.compass-pill.active {
+  border-color: rgba(201,169,110,0.4);
+  background: rgba(201,169,110,0.1);
+  box-shadow: 0 0 20px rgba(201,169,110,0.08);
 }
 
 .compass-icon {
@@ -117,12 +123,13 @@
   opacity: 0;
   max-width: 0;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.6s ease 0.1s, max-width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.compass-pill:hover .compass-trail {
+.compass-pill:hover .compass-trail,
+.compass-pill.active .compass-trail {
   opacity: 1;
-  max-width: 300px;
+  max-width: 350px;
   margin-left: 0.4rem;
 }
 
@@ -165,9 +172,8 @@
 }
 
 .lab-card:hover {
-  border-color: var(--gold-dim);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2), 0 0 15px var(--gold-glow);
+  border-color: rgba(201,169,110,0.2);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15), 0 0 12px var(--gold-glow);
 }
 
 .lab-icon {
@@ -251,12 +257,13 @@
   padding: 0;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.6s ease, box-shadow 0.6s ease, opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   display: block;
   color: inherit;
   opacity: 0;
   transform: translateY(30px);
+  will-change: transform;
 }
 
 .book-card.revealed {
@@ -265,11 +272,10 @@
 }
 
 .book-card:hover {
-  border-color: var(--gold-dim);
+  border-color: rgba(201,169,110,0.2);
   box-shadow:
-    0 12px 40px rgba(0,0,0,0.15),
-    0 0 30px var(--card-glow, var(--gold-glow));
-  transform: translateY(-3px);
+    0 8px 30px rgba(0,0,0,0.12),
+    0 0 20px var(--card-glow, var(--gold-glow));
 }
 
 .book-card:active { transform: scale(0.98); }

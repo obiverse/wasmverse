@@ -5,6 +5,7 @@
    ═══════════════════════════════════════════════ */
 
 import { boot, autoPersist, applyTheme, applyTypography } from '../euler-shell.js';
+import { drawAfricanBackground } from './african-patterns.js';
 
 // Boot euler WASM — all state lives here now
 const euler = await boot();
@@ -39,8 +40,8 @@ let mouseX = 0, mouseY = 0;
 document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 
 /* ═══════════════════════════════════════════════
-   FULL-SCREEN BACKGROUND — Interactive particle
-   field with sacred geometry
+   FULL-SCREEN BACKGROUND — African ancestral
+   patterns with Seed of Life sacred geometry
    ═══════════════════════════════════════════════ */
 (function() {
   const canvas = document.getElementById('bg-canvas');
@@ -54,17 +55,6 @@ document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.cli
   resize();
   window.addEventListener('resize', resize);
 
-  // Particles
-  const particles = [];
-  for (let i = 0; i < 60; i++) {
-    particles.push({
-      x: Math.random() * 3000, y: Math.random() * 3000,
-      vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2,
-      r: Math.random() * 1.5 + 0.4, alpha: Math.random() * 0.3 + 0.05,
-      pulse: Math.random() * Math.PI * 2,
-    });
-  }
-
   function drawCircle(cx, cy, r, alpha) {
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
@@ -76,7 +66,6 @@ document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.cli
   let frame = 0;
   function animate() {
     frame++;
-    // Resize check for scrollHeight changes
     if (frame % 120 === 0) {
       const newH = document.documentElement.scrollHeight;
       if (Math.abs(h - newH) > 50) { h = canvas.height = newH; }
@@ -85,91 +74,34 @@ document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.cli
     ctx.clearRect(0, 0, w, h);
     const t = frame * 0.003;
     const scrollY = window.scrollY;
+    const now = performance.now();
+
+    // African ancestral patterns (crossfading, procedural)
+    drawAfricanBackground(ctx, w, h, now);
 
     // Seed of Life in hero area (parallax)
-    const hcx = w / 2, hcy = window.innerHeight * 0.4 - scrollY * 0.3;
-    const r = Math.min(w, h > 0 ? window.innerHeight : 800) * 0.07;
+    const hcx = w / 2, hcy = window.innerHeight * 0.35 - scrollY * 0.3;
+    const r = Math.min(w, window.innerHeight || 800) * 0.06;
     if (hcy > -r * 4 && hcy < window.innerHeight + r * 4) {
-      // Breathing glow
-      const breathe = 0.5 + 0.5 * Math.sin(t * 0.6);
+      const breathe = 0.5 + 0.5 * Math.sin(t * 0.4);
       const gr = ctx.createRadialGradient(hcx, hcy + scrollY, 0, hcx, hcy + scrollY, r * 3);
-      gr.addColorStop(0, `rgba(201,169,110,${0.03 + breathe * 0.02})`);
+      gr.addColorStop(0, `rgba(201,169,110,${0.025 + breathe * 0.015})`);
       gr.addColorStop(1, 'transparent');
       ctx.fillStyle = gr;
       ctx.fillRect(0, scrollY, w, window.innerHeight);
 
       const sy = hcy + scrollY;
-      drawCircle(hcx, sy, r, 0.07);
+      drawCircle(hcx, sy, r, 0.06);
       for (let i = 0; i < 6; i++) {
-        const a = (i * Math.PI / 3) + t * 0.12;
-        drawCircle(hcx + r * Math.cos(a), sy + r * Math.sin(a), r, 0.05);
+        const a = (i * Math.PI / 3) + t * 0.08;
+        drawCircle(hcx + r * Math.cos(a), sy + r * Math.sin(a), r, 0.04);
       }
-      // Second ring
       for (let i = 0; i < 6; i++) {
-        const a = (i * Math.PI / 3) + t * 0.12;
+        const a = (i * Math.PI / 3) + t * 0.08;
         const bx = hcx + r * Math.cos(a), by = sy + r * Math.sin(a);
         for (let j = -1; j <= 1; j += 2) {
           const a2 = a + j * Math.PI / 3;
-          drawCircle(bx + r * Math.cos(a2), by + r * Math.sin(a2), r, 0.025);
-        }
-      }
-
-      // Metatron lines
-      const pts = [[hcx, sy]];
-      for (let ring = 1; ring <= 2; ring++) {
-        for (let i = 0; i < 6; i++) {
-          const a = (i * Math.PI / 3) + t * 0.08;
-          pts.push([hcx + r * ring * 0.8 * Math.cos(a), sy + r * ring * 0.8 * Math.sin(a)]);
-        }
-      }
-      ctx.lineWidth = 0.25;
-      ctx.strokeStyle = `rgba(201,169,110,0.025)`;
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          ctx.beginPath();
-          ctx.moveTo(pts[i][0], pts[i][1]);
-          ctx.lineTo(pts[j][0], pts[j][1]);
-          ctx.stroke();
-        }
-      }
-    }
-
-    // Particles
-    const mx = mouseX, my = mouseY + scrollY;
-    particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy; p.pulse += 0.015;
-      if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
-      if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
-
-      // Mouse attraction (viewport coords)
-      const dx = mx - p.x, dy = my - p.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 250 && dist > 0) {
-        const f = 0.015 * (1 - dist/250);
-        p.vx += (dx/dist)*f; p.vy += (dy/dist)*f;
-      }
-      p.vx *= 0.995; p.vy *= 0.995;
-
-      const a = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(201,169,110,${a})`;
-      ctx.fill();
-    });
-
-    // Connection lines
-    ctx.lineWidth = 0.2;
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const d2 = dx*dx + dy*dy;
-        if (d2 < 15000) {
-          ctx.strokeStyle = `rgba(201,169,110,${0.04*(1-d2/15000)})`;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
+          drawCircle(bx + r * Math.cos(a2), by + r * Math.sin(a2), r, 0.02);
         }
       }
     }
@@ -683,20 +615,39 @@ function initCardReveal() {
 function init3DTilt() {
   document.querySelectorAll('.book-card').forEach(card => {
     const sheen = card.querySelector('.card-sheen');
+    let targetRX = 0, targetRY = 0, currentRX = 0, currentRY = 0;
+    let tiltRAF = null;
+
+    // Smooth interpolation — organic, not rigid
+    function animateTilt() {
+      currentRX += (targetRX - currentRX) * 0.08;
+      currentRY += (targetRY - currentRY) * 0.08;
+
+      if (Math.abs(targetRX - currentRX) > 0.01 || Math.abs(targetRY - currentRY) > 0.01) {
+        card.style.transform = `perspective(800px) rotateX(${currentRX}deg) rotateY(${currentRY}deg) translateY(-2px)`;
+        tiltRAF = requestAnimationFrame(animateTilt);
+      } else {
+        card.style.transform = targetRX === 0 && targetRY === 0 ? '' :
+          `perspective(800px) rotateX(${targetRX}deg) rotateY(${targetRY}deg) translateY(-2px)`;
+      }
+    }
+
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;
       const y = (e.clientY - rect.top) / rect.height;
-      const rotateY = (x - 0.5) * 10; // ±5°
-      const rotateX = (0.5 - y) * 10;
-      card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px) scale(1.01)`;
+      targetRY = (x - 0.5) * 6; // ±3° (gentler)
+      targetRX = (0.5 - y) * 6;
       if (sheen) {
         sheen.style.setProperty('--sheen-x', (x * 100) + '%');
         sheen.style.setProperty('--sheen-y', (y * 100) + '%');
       }
+      if (!tiltRAF) tiltRAF = requestAnimationFrame(animateTilt);
     });
     card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
+      targetRX = 0;
+      targetRY = 0;
+      if (!tiltRAF) tiltRAF = requestAnimationFrame(animateTilt);
     });
   });
 }
@@ -886,6 +837,85 @@ function renderBooks(sortKey, filterKey) {
 }
 
 /* ═══════════════════════════════════════════════
+   COMPASS PATH FILTERING — Click a path to
+   filter the library to those books
+   ═══════════════════════════════════════════════ */
+const COMPASS_PATHS = {
+  sovereign: ['crypto', 'bitcoin', 'keys', 'lightning', 'whispers', 'cloak', 'fortress'],
+  coder:     ['math', 'algorithms', 'rust', 'wasm'],
+  maker:     ['electricity', 'strength', 'manufacturing', 'industry'],
+  founder:   ['enterprise', 'wealth', 'governance', 'rhetoric'],
+  thinker:   ['systems', 'thought', 'crypto', 'bitcoin'],
+};
+
+let activeCompassPath = null;
+
+function initCompassFiltering() {
+  document.querySelectorAll('.compass-pill[data-path]').forEach(pill => {
+    pill.addEventListener('click', e => {
+      e.preventDefault();
+      const path = pill.dataset.path;
+
+      // Toggle: click same path again to deselect
+      if (activeCompassPath === path) {
+        activeCompassPath = null;
+        document.querySelectorAll('.compass-pill').forEach(p => p.classList.remove('active'));
+        showAllBooks();
+        return;
+      }
+
+      activeCompassPath = path;
+      document.querySelectorAll('.compass-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      const bookIds = COMPASS_PATHS[path];
+      if (!bookIds) return;
+
+      filterToBooks(bookIds);
+
+      // Smooth scroll to library
+      document.getElementById('library').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+}
+
+function filterToBooks(bookIds) {
+  const cards = document.querySelectorAll('.book-card');
+  cards.forEach((card, i) => {
+    const cardBookId = card.querySelector('.card-anim')?.dataset.book;
+    const inPath = bookIds.includes(cardBookId);
+
+    // Stagger the animation
+    setTimeout(() => {
+      if (inPath) {
+        card.style.display = '';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+        // Reorder: move path books to the front in path order
+        const order = bookIds.indexOf(cardBookId);
+        card.style.order = order;
+      } else {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px) scale(0.97)';
+        setTimeout(() => { card.style.display = 'none'; }, 300);
+      }
+    }, i * 30);
+  });
+}
+
+function showAllBooks() {
+  const cards = document.querySelectorAll('.book-card');
+  cards.forEach((card, i) => {
+    setTimeout(() => {
+      card.style.display = '';
+      card.style.order = '';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, i * 20);
+  });
+}
+
+/* ═══════════════════════════════════════════════
    VIEW TRANSITIONS — Library → Reader
    ═══════════════════════════════════════════════ */
 function initViewTransitions() {
@@ -979,6 +1009,9 @@ async function loadLibrary() {
 
     // Init sort/filter/search controls
     initControls(manifest);
+
+    // Init compass path filtering
+    initCompassFiltering();
 
     // Init view transitions
     initViewTransitions();
