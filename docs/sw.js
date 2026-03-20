@@ -22,7 +22,11 @@
      prefetch likely next books in the compass path
    ═══════════════════════════════════════════════ */
 
-const CACHE = 'lv-v5';
+// Cache version: update this on any deploy. build.sh does it
+// automatically, but you can also just change this string.
+// Any change to sw.js triggers browser re-install of the SW,
+// which purges the old cache via the activate handler below.
+const CACHE = 'lv-93e792d';
 const UPDATE_FLAG = 'lv-update-ready';
 
 /* ── Lifecycle ─────────────────────────────── */

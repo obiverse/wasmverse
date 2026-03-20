@@ -16,6 +16,14 @@ set -e
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
+# Stamp the SW cache version with the current git hash.
+# Any change to sw.js triggers browser re-install → cache purge.
+stamp_sw() {
+    VERSION=$(git rev-parse --short HEAD 2>/dev/null || echo "dev")
+    echo "  → Stamping sw.js with version: $VERSION"
+    sed -i '' "s/const CACHE = 'lv-[^']*'/const CACHE = 'lv-$VERSION'/" "$ROOT/docs/sw.js"
+}
+
 build_euler() {
     echo "=== Euler Framework ==="
     cd "$ROOT/crates/euler"
@@ -83,9 +91,8 @@ build_docs() {
 
     echo "  → Copied to docs/pkg/"
 
-    # Generate version stamp from git hash — SW uses this for cache busting
-    VERSION=$(git rev-parse --short HEAD 2>/dev/null || echo "dev")
-    echo "  → Version: $VERSION"
+    # Stamp git hash into SW for automatic cache busting
+    stamp_sw
     echo "{\"version\":\"$VERSION\",\"built\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > "$ROOT/docs/version.json"
     echo "  → Wrote docs/version.json"
 }
@@ -113,6 +120,7 @@ case "${1:-all}" in
     wit)     build_wit ;;
     sorting) build_sorting ;;
     stack)   build_stack ;;
+    stamp)   stamp_sw ;;
     test)    run_tests ;;
     docs)    build_euler; build_sorting; build_stack; build_docs ;;
     serve)   build_euler; build_sorting; build_stack; build_docs; serve ;;
