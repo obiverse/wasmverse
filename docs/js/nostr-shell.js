@@ -93,8 +93,14 @@ export function getPubkeyDisplay() {
  * After calling this, call waitForConnect() to wait for the wallet.
  * The ephemeral session is stored in IDB so this survives page refresh.
  */
+const RELAYS = [
+  'wss://relay.primal.net',
+  'wss://nos.lol',
+  'wss://relay.nostr.band',
+];
+
 export async function generateConnectUri({
-  relay = 'wss://relay.damus.io',
+  relay = RELAYS[0],
   appName = 'Letterverse',
   callbackUrl = '',
 } = {}) {
@@ -270,14 +276,26 @@ async function _connectRelay(relayUrl) {
   if (_ws?.readyState === WebSocket.OPEN && _ws._relayUrl === relayUrl) return;
   _ws?.close();
 
-  await new Promise((resolve, reject) => {
-    const ws = new WebSocket(relayUrl);
-    ws._relayUrl = relayUrl;
-    ws.onopen  = () => { _ws = ws; resolve(); };
-    ws.onerror = () => reject(new Error(`Cannot connect to relay: ${relayUrl}`));
-    ws.onclose = () => { if (_ws === ws) _ws = null; };
-    ws.onmessage = (e) => _handleRelayMessage(e.data);
-  });
+  // Try the requested relay first, then fall back through the list
+  const candidates = [relayUrl, ...RELAYS.filter(r => r !== relayUrl)];
+  let lastErr;
+  for (const url of candidates) {
+    try {
+      await new Promise((resolve, reject) => {
+        const ws = new WebSocket(url);
+        ws._relayUrl = url;
+        const t = setTimeout(() => reject(new Error('timeout')), 5000);
+        ws.onopen  = () => { clearTimeout(t); _ws = ws; resolve(); };
+        ws.onerror = () => { clearTimeout(t); reject(new Error(`relay error: ${url}`)); };
+        ws.onclose = () => { if (_ws === ws) _ws = null; };
+        ws.onmessage = (e) => _handleRelayMessage(e.data);
+      });
+      // Update session to remember the working relay
+      if (_session) { _session.relay = url; _saveSession(); }
+      return;
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr ?? new Error('All relays failed');
 }
 
 async function _ensureRelay() {
