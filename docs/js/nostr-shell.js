@@ -1,20 +1,25 @@
 /* ═══════════════════════════════════════════════════════════════════════
    NOSTR-SHELL — Sovereign identity layer for the Letterverse
 
-   WASM handles all cryptography (keys, NIP-44, Schnorr).
-   This JS module handles the network: WebSocket relay, NIP-46 protocol.
+   Uses the OBIVERSE GATE flow (KIND 22242) — the same protocol the wallet
+   already uses to authenticate with obiverse.net. No new wallet code needed.
 
-   The flow:
-     1. generateConnectUri()  — build obiverse://connect deep link + QR
-     2. waitForConnect()      — subscribe on relay, await wallet approval
-     3. request()             — send NIP-46 RPC (sign_event, 9s:read, etc.)
+   Flow:
+     1. generateGateUri()   — build obiverse://gate deep link + QR
+     2. waitForGateAuth()   — subscribe on relay, await wallet's signed event
+     3. event.pubkey        — that IS the user's sovereign identity
 
-   Session persisted in IDB (nostr_session store). Silent reconnect on
-   next page load — user sees "Connected ◉" without re-approving.
+   The wallet:
+     - Scans the QR (or follows deep link)
+     - Shows GateApprovalSheet: "Sign in to Letterverse as [mobi]"
+     - After approval: publishes KIND 22242 with content NIP-44 encrypted to eph key
+     - Plaintext: "obiverse.net::{nonce}"
+
+   Session persisted in IDB. Silent reconnect on next page load.
 
    Architecture:
-     WASM  (nostr_wasm.js)  — all crypto: keygen, NIP-44, event signing
-     JS    (this file)      — relay WebSocket, NIP-46 message protocol
+     WASM  (nostr_wasm.js)  — keygen, NIP-44 decrypt, QR pixels
+     JS    (this file)      — relay WebSocket, GATE protocol
      IDB   (idb.js)         — session persistence
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -22,261 +27,172 @@ import * as idb from './idb.js';
 
 // ── Module state ──────────────────────────────────────────────────────────
 
-let _wasm = null;     // loaded WASM exports
-let _ws   = null;     // active WebSocket
-let _session = null;  // {eph_nsec, eph_npub, bunker_npub, relay, user_npub}
+let _wasm    = null;   // loaded WASM exports
+let _ws      = null;   // active WebSocket
+let _session = null;   // {eph_nsec, eph_npub, nonce, relay, user_npub}
+let _gateResolve = null;
+let _gateReject  = null;
 
-// Map of reqId → {resolve, reject} for in-flight NIP-46 requests
-const _pending = new Map();
-
-// ── Boot ──────────────────────────────────────────────────────────────────
-
-/**
- * Load the nostr WASM module. Safe to call multiple times — cached after
- * first load. Must be called before any other function.
- */
-export async function boot() {
-  if (_wasm) return;
-  const base = new URL('../pkg/nostr-wasm/', import.meta.url).href;
-  const { default: init, generate_keypair, pubkey_from_nsec,
-          nip44_encrypt, nip44_decrypt, sign_event, random_hex,
-          qr_pixels, qr_actual_size } =
-    await import(base + 'nostr_wasm.js');
-  await init(base + 'nostr_wasm_bg.wasm');
-  _wasm = { generate_keypair, pubkey_from_nsec,
-            nip44_encrypt, nip44_decrypt, sign_event, random_hex,
-            qr_pixels, qr_actual_size };
-}
-
-/**
- * Render `text` as a QR code onto a <canvas> element using WASM pixel rendering.
- * No JS QR library — pure Rust computation via WebAssembly.
- *
- * @param {HTMLCanvasElement} canvas
- * @param {string} text
- * @param {object} opts  — scale (px per module, default 4), dark (0xRRGGBB), light (0xRRGGBB)
- */
-export async function renderQR(canvas, text, { scale = 4, dark = 0x0a0a14, light = 0xfaf6f0 } = {}) {
-  await boot();
-  const size   = _wasm.qr_actual_size(text, scale);
-  const pixels = _wasm.qr_pixels(text, scale, dark, light);
-  canvas.width  = size;
-  canvas.height = size;
-  const ctx  = canvas.getContext('2d');
-  const data = new ImageData(new Uint8ClampedArray(pixels), size, size);
-  ctx.putImageData(data, 0, 0);
-}
-
-// ── Session API ───────────────────────────────────────────────────────────
-
-export function isConnected() { return !!_session?.user_npub; }
-
-/** The user's Nostr public key (hex), or null if not connected. */
-export function getPubkey() { return _session?.user_npub ?? null; }
-
-/** Short display string: first 8 + last 4 chars of npub. */
-export function getPubkeyDisplay() {
-  const p = getPubkey();
-  if (!p) return null;
-  return p.slice(0, 8) + '…' + p.slice(-4);
-}
-
-// ── Connection initiation ─────────────────────────────────────────────────
-
-/**
- * Generate the connection URI and prepare to receive the wallet's response.
- *
- * Returns {uri, qrText} where:
- *   uri     — the full obiverse://connect?... deep link
- *   qrText  — same URI (for QR code rendering)
- *
- * After calling this, call waitForConnect() to wait for the wallet.
- * The ephemeral session is stored in IDB so this survives page refresh.
- */
 const RELAYS = [
   'wss://relay.primal.net',
   'wss://nos.lol',
   'wss://relay.nostr.band',
 ];
 
-export async function generateConnectUri({
-  relay = RELAYS[0],
-  appName = 'Letterverse',
-  callbackUrl = '',
-} = {}) {
+// ── Boot ──────────────────────────────────────────────────────────────────
+
+/**
+ * Load the nostr WASM module. Safe to call multiple times — cached after first load.
+ */
+export async function boot() {
+  if (_wasm) return;
+  const base = new URL('../pkg/nostr-wasm/', import.meta.url).href;
+  const { default: init, generate_keypair, nip44_decrypt,
+          random_hex, qr_pixels, qr_actual_size } =
+    await import(base + 'nostr_wasm.js');
+  await init(base + 'nostr_wasm_bg.wasm');
+  _wasm = { generate_keypair, nip44_decrypt, random_hex, qr_pixels, qr_actual_size };
+}
+
+/**
+ * Render `text` as a QR code onto a <canvas> element using WASM pixel rendering.
+ * No JS QR library — pure Rust via WebAssembly.
+ */
+export async function renderQR(canvas, text, { scale = 4, dark = 0x0a0a14, light = 0xfaf6f0 } = {}) {
+  await boot();
+  const size = _wasm.qr_actual_size(text, scale);
+  const pixels = _wasm.qr_pixels(text, scale, dark, light);
+  canvas.width  = size;
+  canvas.height = size;
+  canvas.getContext('2d').putImageData(
+    new ImageData(new Uint8ClampedArray(pixels), size, size), 0, 0
+  );
+}
+
+// ── Session API ───────────────────────────────────────────────────────────
+
+export function isConnected() { return !!_session?.user_npub; }
+export function getPubkey()   { return _session?.user_npub ?? null; }
+
+/** Short display: first 8 + "…" + last 4 chars. */
+export function getPubkeyDisplay() {
+  const p = getPubkey();
+  return p ? p.slice(0, 8) + '…' + p.slice(-4) : null;
+}
+
+// ── GATE Auth ─────────────────────────────────────────────────────────────
+
+/**
+ * Generate a GATE challenge URI for the wallet to scan.
+ *
+ * Produces `obiverse://gate?relay=...&pubkey={eph_pub}&challenge={nonce}&origin=Letterverse`
+ * which the wallet's existing GateScannerScreen and GateApprovalSheet handle natively.
+ *
+ * Returns { uri, qrText } — both the same string, ready for renderQR() and deep link.
+ * Call waitForGateAuth() immediately after to start listening.
+ */
+export async function generateGateUri({ relay = RELAYS[0], origin = 'Letterverse' } = {}) {
   await boot();
 
-  // Generate ephemeral keypair for this connection session
   const keypair = JSON.parse(_wasm.generate_keypair());
-  const reqId   = _wasm.random_hex(16);
+  const nonce   = _wasm.random_hex(16);
 
-  // Store pending session (no user_npub yet — filled in after handshake)
   _session = {
-    eph_nsec:    keypair.nsec_hex,
-    eph_npub:    keypair.npub_hex,
-    bunker_npub: null,   // learned from wallet's ack event
+    eph_nsec:  keypair.nsec_hex,
+    eph_npub:  keypair.npub_hex,
+    nonce,
     relay,
-    user_npub:   null,
-    req_id:      reqId,
+    user_npub: null,
   };
   await _saveSession();
 
-  const params = new URLSearchParams({
-    relay,
-    pubkey: keypair.npub_hex,
-    reqid:  reqId,
-    app:    appName,
-  });
-  if (callbackUrl) params.set('callback', callbackUrl);
-
-  const uri = `obiverse://connect?${params.toString()}`;
+  const params = new URLSearchParams({ relay, pubkey: keypair.npub_hex, challenge: nonce, origin });
+  const uri = `obiverse://gate?${params}`;
   return { uri, qrText: uri };
 }
 
 /**
- * Connect to the relay and wait for the wallet to send the NIP-46 ack.
- * Resolves with the user's npub when fully connected.
+ * Connect to the relay and wait for the wallet to publish the KIND 22242 auth event.
+ * Resolves with the user's pubkey (hex) once verified.
  *
- * Timeout: 5 minutes (long enough for the user to switch apps and approve).
- * Call generateConnectUri() before this.
+ * Verification: decrypt event content with our eph_nsec + event.pubkey,
+ * confirm plaintext is "obiverse.net::{nonce}".
+ *
+ * Timeout: 5 minutes — enough time to switch apps and approve.
  */
-export async function waitForConnect(timeoutMs = 300_000) {
-  if (!_session?.eph_nsec) throw new Error('Call generateConnectUri() first');
-  await boot();
+export async function waitForGateAuth(timeoutMs = 300_000) {
+  if (!_session?.eph_nsec) throw new Error('Call generateGateUri() first');
 
   await _connectRelay(_session.relay);
-  _subscribeToSelf();
+  _subscribeForGate();
 
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
-      reject(new Error('Connection timeout — wallet did not respond'));
+      _gateResolve = null;
+      _gateReject  = null;
+      reject(new Error('Timeout — wallet did not respond'));
     }, timeoutMs);
 
-    _pending.set(_session.req_id, {
-      resolve: async (ack) => {
-        clearTimeout(timer);
-        // After ack we know bunker_npub (from the event sender).
-        // Now request the actual user pubkey.
-        try {
-          const userNpub = await _getPublicKey();
-          _session.user_npub = userNpub;
-          await _saveSession();
-          resolve(userNpub);
-        } catch (e) {
-          reject(e);
+    _gateResolve = async (event) => {
+      clearTimeout(timer);
+      _gateResolve = null;
+      _gateReject  = null;
+      try {
+        // Decrypt and verify nonce — proves wallet holds the private key
+        const plain = _wasm.nip44_decrypt(_session.eph_nsec, event.pubkey, event.content);
+        if (plain !== `obiverse.net::${_session.nonce}`) {
+          throw new Error('Nonce mismatch — rejecting');
         }
-      },
-      reject: (err) => { clearTimeout(timer); reject(err); },
-    });
+        _session.user_npub = event.pubkey;
+        await _saveSession();
+        resolve(event.pubkey);
+      } catch (e) {
+        reject(e);
+      }
+    };
+
+    _gateReject = (e) => {
+      clearTimeout(timer);
+      _gateResolve = null;
+      _gateReject  = null;
+      reject(e);
+    };
   });
 }
 
 /**
- * Attempt to restore a previous session from IDB and reconnect.
- * Returns the user npub if restored, null otherwise.
+ * Attempt to restore a previous session from IDB.
+ * Returns the user npub if restored, null otherwise. No relay reconnect needed.
  */
 export async function restoreSession() {
   try {
     await boot();
     const saved = await idb.loadNostrSession();
     if (!saved?.user_npub) return null;
-
     _session = saved;
-
-    // Reconnect to relay silently (for 9S operations later)
-    await _connectRelay(_session.relay).catch(() => {});
-    if (_ws?.readyState === WebSocket.OPEN) _subscribeToSelf();
-
     return _session.user_npub;
   } catch { return null; }
 }
 
 /**
- * Clear the session (sign out).
+ * Clear session (sign out).
  */
 export async function disconnect() {
   _session = null;
   _ws?.close();
   _ws = null;
-  _pending.clear();
+  _gateResolve = null;
+  _gateReject  = null;
   await idb.clearNostrSession();
 }
 
-// ── NIP-46 RPC ────────────────────────────────────────────────────────────
-
-/**
- * Send a NIP-46 RPC request to the connected bunker.
- * Returns the result string from the bunker.
- *
- * @param {string} method   — e.g. "sign_event", "get_public_key", "9s:read"
- * @param {Array}  params   — method parameters
- * @param {number} timeout  — ms to wait for response (default 60s)
- */
-export async function request(method, params = [], timeoutMs = 60_000) {
-  if (!isConnected()) throw new Error('Not connected to bunker');
-  await _ensureRelay();
-
-  const reqId   = _wasm.random_hex(16);
-  const payload = JSON.stringify({ id: reqId, method, params });
-  const content = _wasm.nip44_encrypt(
-    _session.eph_nsec, _session.bunker_npub, payload
-  );
-  const tagsJson = JSON.stringify([['p', _session.bunker_npub]]);
-  const event = JSON.parse(_wasm.sign_event(
-    _session.eph_nsec, 24133, tagsJson, content
-  ));
-
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
-      _pending.delete(reqId);
-      reject(new Error(`NIP-46 request "${method}" timed out`));
-    }, timeoutMs);
-
-    _pending.set(reqId, {
-      resolve: (result) => { clearTimeout(timer); resolve(result); },
-      reject:  (err)    => { clearTimeout(timer); reject(err); },
-    });
-
-    _sendEvent(event).catch(reject);
-  });
-}
-
-/**
- * Convenience: request sign_event. Returns the signed event JSON string.
- * `eventObj` — unsigned Nostr event (kind, tags, content; pubkey/created_at
- *              will be set by the bunker).
- */
-export async function signEvent(eventObj) {
-  const result = await request('sign_event', [JSON.stringify(eventObj)]);
-  return result;
-}
-
-/**
- * Convenience: read a 9S scroll path from the wallet.
- * Returns parsed data or null.
- */
-export async function scrollRead(path) {
-  try {
-    const result = await request('9s:read', [{ path }]);
-    return typeof result === 'string' ? JSON.parse(result) : result;
-  } catch { return null; }
-}
-
-/**
- * Convenience: write a 9S scroll path in the wallet.
- * Fire-and-forget on the caller side; still awaited internally.
- */
-export async function scrollWrite(path, data) {
-  await request('9s:write', [{ path, data }]);
-}
-
-// ── Internal: relay management ────────────────────────────────────────────
+// ── Internal: relay ───────────────────────────────────────────────────────
 
 async function _connectRelay(relayUrl) {
   if (_ws?.readyState === WebSocket.OPEN && _ws._relayUrl === relayUrl) return;
   _ws?.close();
+  _ws = null;
 
-  // Try the requested relay first, then fall back through the list
   const candidates = [relayUrl, ...RELAYS.filter(r => r !== relayUrl)];
   let lastErr;
   for (const url of candidates) {
@@ -285,12 +201,11 @@ async function _connectRelay(relayUrl) {
         const ws = new WebSocket(url);
         ws._relayUrl = url;
         const t = setTimeout(() => reject(new Error('timeout')), 5000);
-        ws.onopen  = () => { clearTimeout(t); _ws = ws; resolve(); };
-        ws.onerror = () => { clearTimeout(t); reject(new Error(`relay error: ${url}`)); };
-        ws.onclose = () => { if (_ws === ws) _ws = null; };
+        ws.onopen    = () => { clearTimeout(t); _ws = ws; resolve(); };
+        ws.onerror   = () => { clearTimeout(t); reject(new Error(`relay error: ${url}`)); };
+        ws.onclose   = () => { if (_ws === ws) _ws = null; };
         ws.onmessage = (e) => _handleRelayMessage(e.data);
       });
-      // Update session to remember the working relay
       if (_session) { _session.relay = url; _saveSession(); }
       return;
     } catch (e) { lastErr = e; }
@@ -298,28 +213,17 @@ async function _connectRelay(relayUrl) {
   throw lastErr ?? new Error('All relays failed');
 }
 
-async function _ensureRelay() {
-  if (_ws?.readyState === WebSocket.OPEN) return;
-  await _connectRelay(_session.relay);
-  _subscribeToSelf();
-}
-
-function _subscribeToSelf() {
+function _subscribeForGate() {
   if (!_ws || !_session?.eph_npub) return;
   const subId = Math.random().toString(36).slice(2, 10);
   _ws.send(JSON.stringify([
     'REQ', subId,
     {
-      kinds: [24133],
+      kinds: [22242],
       '#p':  [_session.eph_npub],
       since: Math.floor(Date.now() / 1000) - 5,
     },
   ]));
-}
-
-async function _sendEvent(event) {
-  await _ensureRelay();
-  _ws.send(JSON.stringify(['EVENT', event]));
 }
 
 function _handleRelayMessage(raw) {
@@ -328,64 +232,16 @@ function _handleRelayMessage(raw) {
   if (!Array.isArray(msg) || msg[0] !== 'EVENT') return;
 
   const event = msg[2];
-  if (!event?.content || event.kind !== 24133) return;
+  if (!event || event.kind !== 22242 || !event.content || !event.pubkey) return;
 
-  // Learn bunker_npub from the first event we receive
-  if (!_session.bunker_npub && event.pubkey) {
-    _session.bunker_npub = event.pubkey;
-    _saveSession();
-  }
+  // Confirm this event has our challenge tag (belt-and-suspenders)
+  const challengeTag = event.tags?.find(t => Array.isArray(t) && t[0] === 'challenge');
+  if (challengeTag?.[1] !== _session?.nonce) return;
 
-  let payload;
-  try {
-    const plaintext = _wasm.nip44_decrypt(
-      _session.eph_nsec,
-      event.pubkey,
-      event.content,
-    );
-    payload = JSON.parse(plaintext);
-  } catch { return; }
-
-  const resolver = _pending.get(payload.id);
-  if (!resolver) return;
-  _pending.delete(payload.id);
-
-  if (payload.error) {
-    resolver.reject(new Error(payload.error));
-  } else {
-    resolver.resolve(payload.result);
-  }
+  _gateResolve?.(event);
 }
 
-// ── Internal: handshake helpers ───────────────────────────────────────────
-
-async function _getPublicKey() {
-  const reqId   = _wasm.random_hex(16);
-  const payload = JSON.stringify({ id: reqId, method: 'get_public_key', params: [] });
-  const content = _wasm.nip44_encrypt(
-    _session.eph_nsec, _session.bunker_npub, payload
-  );
-  const tagsJson = JSON.stringify([['p', _session.bunker_npub]]);
-  const event = JSON.parse(_wasm.sign_event(
-    _session.eph_nsec, 24133, tagsJson, content
-  ));
-
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
-      _pending.delete(reqId);
-      reject(new Error('get_public_key timed out'));
-    }, 30_000);
-
-    _pending.set(reqId, {
-      resolve: (npub) => { clearTimeout(timer); resolve(npub); },
-      reject:  (err)  => { clearTimeout(timer); reject(err); },
-    });
-
-    _sendEvent(event).catch(reject);
-  });
-}
-
-// ── Internal: IDB session ─────────────────────────────────────────────────
+// ── Internal: IDB ─────────────────────────────────────────────────────────
 
 async function _saveSession() {
   try { await idb.saveNostrSession(_session); } catch {}

@@ -245,16 +245,11 @@ async function startConnect() {
   qrCanvas.width = 0;
 
   try {
-    const callbackUrl = window.location.href.split('?')[0];
-    const { uri } = await nostr.generateConnectUri({
-      relay:       'wss://relay.damus.io',
-      appName:     'Letterverse',
-      callbackUrl,
-    });
+    const { uri } = await nostr.generateGateUri({ origin: 'Letterverse' });
 
     // Render QR via WASM (no JS library)
     await nostr.renderQR(qrCanvas, uri, { scale: 4 });
-    qrHint.textContent = 'Scan with OBIVERSE or any NIP-46 wallet';
+    qrHint.textContent = 'Scan with OBIVERSE wallet';
 
     // Mobile: show deep link button
     if (isMobile()) {
@@ -264,8 +259,7 @@ async function startConnect() {
 
     setStatus('Waiting for wallet approval…');
 
-    // Wait for wallet to respond via relay
-    const npub = await nostr.waitForConnect();
+    const npub = await nostr.waitForGateAuth();
     closeModal();
     setConnected(npub);
   } catch (e) {
@@ -274,34 +268,7 @@ async function startConnect() {
   }
 }
 
-// ── Paste flow (other NIP-46 bunkers) ─────────────────────────────────────
-async function connectFromUri(uri) {
-  setStatus('Connecting…');
-  try {
-    // For nostrconnect:// URIs from other wallets:
-    // Parse relay + bunker_npub from the URI, then run the standard handshake
-    const url  = new URL(uri.replace('nostrconnect://', 'nostr://').replace('obiverse://connect?', 'obiverse://x?'));
-    const params = uri.startsWith('obiverse://connect?')
-      ? new URLSearchParams(uri.split('?')[1])
-      : url.searchParams;
-    const relay = params.get('relay') || 'wss://relay.damus.io';
-
-    await nostr.generateConnectUri({ relay, appName: 'Letterverse' });
-    await nostr.renderQR(qrCanvas, uri, { scale: 4 });
-    qrHint.textContent = uri.slice(0, 40) + '…';
-
-    const npub = await nostr.waitForConnect();
-    closeModal();
-    setConnected(npub);
-  } catch (e) {
-    setStatus(e.message || 'Connection failed');
-  }
-}
-
-pasteBtn.addEventListener('click', () => {
-  const v = pasteIn.value.trim();
-  if (v) connectFromUri(v);
-});
+pasteBtn.addEventListener('click', () => { /* other wallets — phase 2 */ });
 pasteIn.addEventListener('keydown', e => { if (e.key === 'Enter') pasteBtn.click(); });
 
 // ── Disconnect ─────────────────────────────────────────────────────────────
