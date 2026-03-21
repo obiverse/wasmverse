@@ -37,11 +37,12 @@ const _pending = new Map();
  */
 export async function boot() {
   if (_wasm) return;
+  const base = new URL('../pkg/nostr-wasm/', import.meta.url).href;
   const { default: init, generate_keypair, pubkey_from_nsec,
           nip44_encrypt, nip44_decrypt, sign_event, random_hex,
           qr_pixels, qr_actual_size } =
-    await import('../pkg/nostr-wasm/nostr_wasm.js');
-  await init('../pkg/nostr-wasm/nostr_wasm_bg.wasm');
+    await import(base + 'nostr_wasm.js');
+  await init(base + 'nostr_wasm_bg.wasm');
   _wasm = { generate_keypair, pubkey_from_nsec,
             nip44_encrypt, nip44_decrypt, sign_event, random_hex,
             qr_pixels, qr_actual_size };
