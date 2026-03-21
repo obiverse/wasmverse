@@ -102,9 +102,19 @@
 
     <!-- State: connected — show identity -->
     <div id="nostr-connected-view" hidden>
-      <div class="nostr-modal-title">CONNECTED</div>
+      <div class="nostr-modal-title">SOVEREIGN</div>
       <p class="nostr-pubkey" id="nostr-pubkey-display"></p>
-      <p class="nostr-modal-sub">Your progress syncs to your wallet via Nostr.</p>
+
+      <!-- Ceremony: shown only on first connect, hidden on silent reconnect -->
+      <div id="nostr-ceremony" hidden>
+        <p class="nostr-ceremony-math">secp256k1 ECDH &middot; NIP-44 ChaCha20 &middot; Schnorr signature</p>
+        <p class="nostr-ceremony-sub">No password. No server. Only your key &mdash; the same mathematics in
+          <a class="nostr-ceremony-link" href="read.html?book=crypto">Letters on Cryptography</a>.
+        </p>
+      </div>
+
+      <p class="nostr-modal-sub" id="nostr-connected-sub">Your progress is now sovereign.</p>
+      <p class="nostr-attestations" id="nostr-attestations" hidden></p>
       <button class="nostr-disconnect-btn" id="nostr-disconnect">Disconnect</button>
     </div>
   </div>
@@ -195,6 +205,11 @@
 
 <footer class="footer">
   <a href="https://github.com/obiverse/wasmverse">Wasmverse</a>, 2026
+  &ensp;&middot;&ensp;
+  <span class="footer-lightning">
+    Support the library &thinsp;&#9889;&thinsp;
+    <a href="lightning:letterverse@obiverse.net" class="footer-lnaddr">letterverse@obiverse.net</a>
+  </span>
 </footer>
 
 <script type="module" src="js/library.js"></script>
@@ -216,10 +231,12 @@ const pasteBtn  = document.getElementById('nostr-paste-btn');
 const status    = document.getElementById('nostr-status');
 const qrCanvas  = document.getElementById('nostr-qr-canvas');
 const qrHint    = document.getElementById('nostr-qr-hint');
-const connView  = document.getElementById('nostr-connect-view');
-const doneView  = document.getElementById('nostr-connected-view');
-const npubDisp  = document.getElementById('nostr-pubkey-display');
-const discBtn   = document.getElementById('nostr-disconnect');
+const connView    = document.getElementById('nostr-connect-view');
+const doneView    = document.getElementById('nostr-connected-view');
+const npubDisp    = document.getElementById('nostr-pubkey-display');
+const ceremony    = document.getElementById('nostr-ceremony');
+const attestEl    = document.getElementById('nostr-attestations');
+const discBtn     = document.getElementById('nostr-disconnect');
 
 const isMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -260,8 +277,16 @@ async function startConnect() {
     setStatus('Waiting for wallet approval…');
 
     const npub = await nostr.waitForGateAuth();
-    closeModal();
+    // Show ceremony before closing — let the reader see the math
+    connView.hidden = true;
+    doneView.hidden = false;
+    npubDisp.textContent = nostr.getPubkeyDisplay() ?? npub.slice(0, 8);
+    ceremony.hidden = false;
     setConnected(npub);
+    // Fetch attestations and display count
+    _refreshAttestations();
+    // Auto-close after reader has absorbed the ceremony
+    setTimeout(closeModal, 5000);
   } catch (e) {
     setStatus(e.message || 'Connection failed');
     qrHint.textContent = '';
@@ -284,9 +309,22 @@ function showModal(connected) {
   document.body.style.overflow = 'hidden';
   connView.hidden = connected;
   doneView.hidden = !connected;
+  ceremony.hidden = true; // ceremony only on first connect, not on reopen
   if (connected) {
-    npubDisp.textContent = nostr.getPubkey();
+    npubDisp.textContent = nostr.getPubkeyDisplay() ?? nostr.getPubkey()?.slice(0, 8);
+    _refreshAttestations();
   }
+}
+
+async function _refreshAttestations() {
+  try {
+    const records = await nostr.fetchProgress();
+    const count = records.filter(r => r.t === 'letterverse-attestation').length;
+    if (count > 0) {
+      attestEl.textContent = `${count} book${count === 1 ? '' : 's'} completed`;
+      attestEl.hidden = false;
+    }
+  } catch {}
 }
 function closeModal() {
   modal.hidden = true;

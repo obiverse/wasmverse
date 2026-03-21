@@ -6,9 +6,10 @@
 
 import { boot, persist, autoPersist, applyTheme, applyTypography, sessionStart, sessionEnd, getReadingTimeMs } from '../euler-shell.js';
 import * as idb from './idb.js';
+import * as nostr from './nostr-shell.js';
 
-// Boot euler WASM
-const euler = await boot();
+// Boot euler WASM + restore nostr session (parallel — both are async)
+const [euler] = await Promise.all([boot(), nostr.restoreSession()]);
 
 // Bridge: ELib compatibility layer over euler
 const ELib = {
@@ -1200,6 +1201,9 @@ async function initCircuitDemo(panel) {
    Per-letter granularity: the iBooks layer.
    ═══════════════════════════════════════════════ */
 let currentBookId = 'wasm';
+let _sovereignPromptShown = false;
+let _attestationPublished = false;
+
 function saveReadingProgress(chaptersRead, totalChapters) {
   euler.on_chapter_enter(currentBookId, chaptersRead, totalChapters, Date.now());
   // Per-letter tracking: record the specific letter visited in IDB
@@ -1208,7 +1212,69 @@ function saveReadingProgress(chaptersRead, totalChapters) {
     const scrollPct = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
     idb.markLetterRead(currentBookId, ch.id, scrollPct); // fire-and-forget
   }
+
+  // First letter completed — offer sovereign identity if not connected
+  if (chaptersRead === 1 && !_sovereignPromptShown && !nostr.isConnected()) {
+    _sovereignPromptShown = true;
+    _showSovereignPrompt();
+  }
+
+  // Publish progress to relay (fire-and-forget)
+  if (nostr.isConnected()) {
+    const pct = Math.round((chaptersRead / totalChapters) * 100);
+    nostr.publishProgress(currentBookId, chaptersRead, pct);
+  }
+
+  // Book complete — publish attestation once
+  if (chaptersRead === totalChapters && nostr.isConnected() && !_attestationPublished) {
+    _attestationPublished = true;
+    const bookTitle = document.title.split('—')[0]?.trim() || currentBookId;
+    nostr.publishAttestation(currentBookId, totalChapters, bookTitle);
+    _showAttestationMoment(totalChapters, bookTitle);
+  }
+
   autoPersist();
+}
+
+function _showSovereignPrompt() {
+  // Don't show if already dismissed this session
+  if (sessionStorage.getItem('lv-sovereign-prompt-dismissed')) return;
+
+  const bar = document.createElement('div');
+  bar.className = 'sovereign-prompt';
+  bar.innerHTML =
+    'You\'ve completed Letter\u00A01. This progress lives only on this device. ' +
+    '<button class="sovereign-prompt-btn">Connect wallet to make it permanent</button>' +
+    '<button class="sovereign-prompt-close" aria-label="Dismiss">\u00D7</button>';
+
+  bar.querySelector('.sovereign-prompt-btn').addEventListener('click', () => {
+    bar.remove();
+    // Open identity modal on the hub (reader is a separate page — deep link back)
+    window.open('index.html', '_blank');
+  });
+  bar.querySelector('.sovereign-prompt-close').addEventListener('click', () => {
+    sessionStorage.setItem('lv-sovereign-prompt-dismissed', '1');
+    bar.remove();
+  });
+
+  document.body.appendChild(bar);
+  // Animate in
+  requestAnimationFrame(() => bar.classList.add('visible'));
+}
+
+function _showAttestationMoment(letterCount, bookTitle) {
+  const banner = document.createElement('div');
+  banner.className = 'attestation-banner';
+  banner.innerHTML =
+    `<span class="attestation-icon">&#9670;</span>` +
+    `<span><strong>${bookTitle}</strong> &mdash; ${letterCount} letters completed. ` +
+    `Your attestation is on the Nostr relay.</span>` +
+    `<button class="attestation-close" aria-label="Dismiss">\u00D7</button>`;
+
+  banner.querySelector('.attestation-close').addEventListener('click', () => banner.remove());
+  document.body.appendChild(banner);
+  requestAnimationFrame(() => banner.classList.add('visible'));
+  setTimeout(() => banner.remove(), 8000);
 }
 
 /* ═══════════════════════════════════════════════

@@ -1171,3 +1171,91 @@ body { font-size: var(--font-size, 19px); line-height: var(--line-height, 1.85);
   .chapter pre { border: 1px solid #ccc; }
   .chapter > p:first-of-type::first-letter { color: #333; text-shadow: none; }
 }
+
+/* ═══════════════════════════════════════════════
+   SOVEREIGN PROMPT — first-letter completion bar
+   ═══════════════════════════════════════════════ */
+.sovereign-prompt {
+  position: fixed;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 560px;
+  width: calc(100% - 2rem);
+  background: var(--void-deep, #0a0a14);
+  border: 1px solid rgba(201,169,110,0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-dim, #888);
+  z-index: 900;
+  transition: bottom 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+.sovereign-prompt.visible { bottom: 1.5rem; }
+.sovereign-prompt-btn {
+  background: none;
+  border: 1px solid rgba(201,169,110,0.4);
+  border-radius: 4px;
+  color: var(--gold, #c9a96e);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sovereign-prompt-btn:hover { background: rgba(201,169,110,0.08); }
+.sovereign-prompt-close {
+  background: none;
+  border: none;
+  color: var(--text-dim, #888);
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 0 0.25rem;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════
+   ATTESTATION BANNER — book completion moment
+   ═══════════════════════════════════════════════ */
+.attestation-banner {
+  position: fixed;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 560px;
+  width: calc(100% - 2rem);
+  background: var(--void-deep, #0a0a14);
+  border: 1px solid rgba(201,169,110,0.5);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text, #e8e4dc);
+  z-index: 900;
+  transition: top 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+.attestation-banner.visible { top: 1.5rem; }
+.attestation-icon {
+  color: var(--gold, #c9a96e);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.attestation-close {
+  background: none;
+  border: none;
+  color: var(--text-dim, #888);
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 0 0.25rem;
+  flex-shrink: 0;
+}

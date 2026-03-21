@@ -13,8 +13,9 @@
 import { boot, autoPersist, applyTheme, applyTypography } from '../euler-shell.js';
 import { drawAfricanBackground } from './african-patterns.js';
 import * as idb from './idb.js';
+import * as nostr from './nostr-shell.js';
 
-const euler = await boot();
+const [euler] = await Promise.all([boot(), nostr.restoreSession()]);
 applyTheme();
 applyTypography();
 
@@ -410,6 +411,7 @@ async function loadLibrary() {
     initCompass();
     initViewTransitions();
     warmRecentBooks(manifest); // fire-and-forget — never blocks render
+    initSovereignCompass(manifest); // fire-and-forget — personalises after auth
 
   } catch (err) {
     document.getElementById('books-grid').innerHTML =
@@ -462,6 +464,95 @@ async function warmRecentBooks(manifest) {
           idb.cacheBook(book.id, content, etag);
         })
         .catch(() => {});
+    }
+  } catch {}
+}
+
+/* ═══════════════════════════════════════════════
+   SOVEREIGN COMPASS — personalised next-book hints
+   Runs after library renders. Fetches attestations
+   from relay, marks next recommended books on cards.
+   ═══════════════════════════════════════════════ */
+async function initSovereignCompass(manifest) {
+  if (!nostr.isConnected()) return;
+  try {
+    const records = await nostr.fetchProgress();
+    const completed = new Set(
+      records
+        .filter(r => r.t === 'letterverse-attestation' && r.book)
+        .map(r => r.book)
+    );
+    if (completed.size === 0) return;
+
+    // Collect next-book recommendations from completed books
+    const nextIds = new Set();
+    for (const book of manifest.books) {
+      if (completed.has(book.id) && Array.isArray(book.next)) {
+        book.next.forEach(id => { if (!completed.has(id)) nextIds.add(id); });
+      }
+    }
+    if (nextIds.size === 0) return;
+
+    // Badge completed cards and highlight next cards
+    const grid = document.getElementById('books-grid');
+    grid.querySelectorAll('.book-card').forEach(card => {
+      const id = card.dataset.book;
+      if (completed.has(id)) {
+        card.classList.add('sovereign-done');
+        const sym = card.querySelector('.card-symbol');
+        if (sym && !sym.querySelector('.done-mark')) {
+          const mark = document.createElement('span');
+          mark.className = 'done-mark';
+          mark.title = 'Attestation on relay';
+          mark.textContent = '◉';
+          sym.appendChild(mark);
+        }
+      }
+      if (nextIds.has(id)) {
+        card.classList.add('sovereign-next');
+        if (!card.querySelector('.next-badge')) {
+          const badge = document.createElement('div');
+          badge.className = 'next-badge';
+          badge.textContent = 'Next for you';
+          card.querySelector('.card-header')?.appendChild(badge);
+        }
+      }
+    });
+
+    // Add "Your Path" pill to the compass if not already there
+    const compassScroll = document.querySelector('.compass-scroll');
+    if (compassScroll && !document.getElementById('compass-your-path')) {
+      const pill = document.createElement('a');
+      pill.className = 'compass-pill active';
+      pill.id = 'compass-your-path';
+      pill.href = '#library';
+      pill.innerHTML =
+        `<span class="compass-icon">&#9670;</span>` +
+        `<span class="compass-name">Your Path</span>` +
+        `<span class="compass-trail">${[...nextIds].slice(0, 4).join(' \u2192 ')}</span>`;
+      pill.addEventListener('click', e => {
+        e.preventDefault();
+        const isActive = pill.classList.contains('active');
+        grid.querySelectorAll('.book-card').forEach(c => {
+          c.classList.remove('in-path', 'not-in-path');
+          c.style.order = '';
+        });
+        if (!isActive) {
+          grid.classList.add('path-active');
+          grid.querySelectorAll('.book-card').forEach(c => {
+            if (nextIds.has(c.dataset.book)) {
+              c.classList.add('in-path');
+            } else {
+              c.classList.add('not-in-path');
+            }
+          });
+          pill.classList.add('active');
+        } else {
+          grid.classList.remove('path-active');
+          pill.classList.remove('active');
+        }
+      });
+      compassScroll.prepend(pill);
     }
   } catch {}
 }

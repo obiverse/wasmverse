@@ -32,6 +32,8 @@ let _ws      = null;   // active WebSocket
 let _session = null;   // {eph_nsec, eph_npub, nonce, relay, user_npub}
 let _gateResolve = null;
 let _gateReject  = null;
+// subId → { onEvent(ev), onEose() } for one-shot subscriptions
+const _subCallbacks = new Map();
 
 const RELAYS = [
   'wss://relay.primal.net',
@@ -47,11 +49,11 @@ const RELAYS = [
 export async function boot() {
   if (_wasm) return;
   const base = new URL('../pkg/nostr-wasm/', import.meta.url).href;
-  const { default: init, generate_keypair, nip44_decrypt,
+  const { default: init, generate_keypair, nip44_decrypt, sign_event,
           random_hex, qr_pixels, qr_actual_size } =
     await import(base + 'nostr_wasm.js');
   await init(base + 'nostr_wasm_bg.wasm');
-  _wasm = { generate_keypair, nip44_decrypt, random_hex, qr_pixels, qr_actual_size };
+  _wasm = { generate_keypair, nip44_decrypt, sign_event, random_hex, qr_pixels, qr_actual_size };
 }
 
 /**
@@ -229,16 +231,120 @@ function _subscribeForGate() {
 function _handleRelayMessage(raw) {
   let msg;
   try { msg = JSON.parse(raw); } catch { return; }
-  if (!Array.isArray(msg) || msg[0] !== 'EVENT') return;
+  if (!Array.isArray(msg)) return;
 
-  const event = msg[2];
-  if (!event || event.kind !== 22242 || !event.content || !event.pubkey) return;
+  if (msg[0] === 'EVENT') {
+    const subId = msg[1];
+    const event = msg[2];
+    if (!event) return;
 
-  // Confirm this event has our challenge tag (belt-and-suspenders)
-  const challengeTag = event.tags?.find(t => Array.isArray(t) && t[0] === 'challenge');
-  if (challengeTag?.[1] !== _session?.nonce) return;
+    // Route to named subscription callback if registered
+    const cb = _subCallbacks.get(subId);
+    if (cb) { cb.onEvent?.(event); return; }
 
-  _gateResolve?.(event);
+    // Default: GATE auth (KIND 22242)
+    if (event.kind !== 22242 || !event.content || !event.pubkey) return;
+    const challengeTag = event.tags?.find(t => Array.isArray(t) && t[0] === 'challenge');
+    if (challengeTag?.[1] !== _session?.nonce) return;
+    _gateResolve?.(event);
+
+  } else if (msg[0] === 'EOSE') {
+    const subId = msg[1];
+    const cb = _subCallbacks.get(subId);
+    if (cb) { cb.onEose?.(); _subCallbacks.delete(subId); }
+  }
+}
+
+// ── Progress & Attestations ───────────────────────────────────────────────
+
+/**
+ * Publish a reading progress event to the relay.
+ * Signed by the ephemeral key, tagged to the user's pubkey.
+ * Fire-and-forget — failures are silent.
+ */
+export async function publishProgress(bookId, chapter, pct) {
+  if (!_session?.user_npub || !_session?.eph_nsec) return;
+  try {
+    await _connectRelay(_session.relay).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return;
+    const event = JSON.parse(_wasm.sign_event(
+      _session.eph_nsec, 30078,
+      JSON.stringify([
+        ['d', `letterverse/progress/${bookId}`],
+        ['p', _session.user_npub],
+        ['book', bookId],
+        ['chapter', String(chapter)],
+        ['pct', String(pct)],
+        ['t', 'letterverse'],
+      ]),
+      ''
+    ));
+    _ws.send(JSON.stringify(['EVENT', event]));
+  } catch {}
+}
+
+/**
+ * Publish a book completion attestation to the relay.
+ */
+export async function publishAttestation(bookId, letterCount, bookTitle) {
+  if (!_session?.user_npub || !_session?.eph_nsec) return;
+  try {
+    await _connectRelay(_session.relay).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return;
+    const event = JSON.parse(_wasm.sign_event(
+      _session.eph_nsec, 30078,
+      JSON.stringify([
+        ['d', `letterverse/attestation/${bookId}`],
+        ['p', _session.user_npub],
+        ['book', bookId],
+        ['title', bookTitle || bookId],
+        ['letters', String(letterCount)],
+        ['t', 'letterverse-attestation'],
+        ['completed_at', String(Math.floor(Date.now() / 1000))],
+      ]),
+      ''
+    ));
+    _ws.send(JSON.stringify(['EVENT', event]));
+  } catch {}
+}
+
+/**
+ * Fetch all Letterverse progress/attestation records for the current user.
+ * Returns array of tag-maps from KIND 30078 events.
+ * Timeout: 5 seconds.
+ */
+export async function fetchProgress() {
+  if (!_session?.user_npub) return [];
+  try {
+    await _connectRelay(_session.relay).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return [];
+
+    return new Promise((resolve) => {
+      const results = [];
+      const subId = Math.random().toString(36).slice(2, 10);
+      const timer = setTimeout(() => {
+        _subCallbacks.delete(subId);
+        resolve(results);
+      }, 5000);
+
+      _subCallbacks.set(subId, {
+        onEvent(ev) {
+          if (!ev.tags) return;
+          const tags = Object.fromEntries(ev.tags.map(t => [t[0], t[1]]));
+          results.push(tags);
+        },
+        onEose() {
+          clearTimeout(timer);
+          resolve(results);
+        },
+      });
+
+      _ws.send(JSON.stringify([
+        'REQ', subId,
+        { kinds: [30078], '#p': [_session.user_npub], '#t': ['letterverse'] },
+      ]));
+    });
+  } catch { return []; }
 }
 
 // ── Internal: IDB ─────────────────────────────────────────────────────────
