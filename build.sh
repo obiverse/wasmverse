@@ -66,6 +66,13 @@ build_stack() {
     echo "  → Built: crates/stack-machine/pkg/"
 }
 
+build_nostr() {
+    echo "=== Nostr WASM ==="
+    cd "$ROOT/crates/nostr-wasm"
+    wasm-pack build --target web --out-dir pkg
+    echo "  → Built: crates/nostr-wasm/pkg/"
+}
+
 build_docs() {
     echo "=== Copying to docs/pkg/ for GitHub Pages ==="
 
@@ -88,6 +95,11 @@ build_docs() {
     mkdir -p "$ROOT/docs/pkg/circuit-sim"
     cp "$ROOT/crates/circuit-sim/pkg/circuit_sim_bg.wasm" "$ROOT/docs/pkg/circuit-sim/"
     cp "$ROOT/crates/circuit-sim/pkg/circuit_sim.js" "$ROOT/docs/pkg/circuit-sim/"
+
+    # Nostr WASM
+    mkdir -p "$ROOT/docs/pkg/nostr-wasm"
+    cp "$ROOT/crates/nostr-wasm/pkg/nostr_wasm_bg.wasm" "$ROOT/docs/pkg/nostr-wasm/"
+    cp "$ROOT/crates/nostr-wasm/pkg/nostr_wasm.js" "$ROOT/docs/pkg/nostr-wasm/"
 
     echo "  → Copied to docs/pkg/"
 
@@ -120,12 +132,13 @@ case "${1:-all}" in
     wit)     build_wit ;;
     sorting) build_sorting ;;
     stack)   build_stack ;;
+    nostr)   build_nostr ;;
     stamp)   stamp_sw ;;
     test)    run_tests ;;
-    docs)    build_euler; build_sorting; build_stack; build_docs ;;
-    serve)   build_euler; build_sorting; build_stack; build_docs; serve ;;
-    all)     build_euler; build_compute; build_gpu; build_wit; build_sorting; build_stack ;;
-    *)       echo "Usage: $0 {euler|sorting|stack|compute|gpu|wit|docs|test|serve|all}"; exit 1 ;;
+    docs)    build_euler; build_sorting; build_stack; build_nostr; build_docs ;;
+    serve)   build_euler; build_sorting; build_stack; build_nostr; build_docs; serve ;;
+    all)     build_euler; build_compute; build_gpu; build_wit; build_sorting; build_stack; build_nostr ;;
+    *)       echo "Usage: $0 {euler|sorting|stack|nostr|compute|gpu|wit|docs|test|serve|all}"; exit 1 ;;
 esac
 
 echo ""

@@ -1,0 +1,43 @@
+[package]
+name = "nostr-wasm"
+version = "0.1.0"
+edition = "2021"
+description = "NIP-44 encryption, Schnorr signing, and key generation for the Letterverse sovereign identity layer"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+js-sys         = "0.3"
+
+# Secure randomness in the browser — uses crypto.getRandomValues
+getrandom = { version = "0.2", features = ["js"] }
+
+# secp256k1: key gen, ECDH, Schnorr (BIP-340)
+k256 = { version = "0.13", features = ["ecdh", "schnorr"] }
+
+# Hashing and MACs
+sha2  = "0.10"
+hmac  = "0.12"
+hkdf  = "0.12"
+
+# ChaCha20 stream cipher (NIP-44 uses it directly, not AEAD)
+chacha20 = "0.9"
+
+# Encoding
+hex     = "0.4"
+base64ct = { version = "1.6", features = ["alloc"] }
+
+# JSON — no_std + alloc for WASM size
+serde_json = { version = "1", default-features = false, features = ["alloc"] }
+
+# Constant-time comparison for MAC verification
+subtle = "2"
+
+# QR code matrix generation (pure Rust, WASM-compatible)
+qrcode = { version = "0.14", default-features = false }
+
+[profile.release]
+opt-level = "s"   # optimise for size
+lto       = true

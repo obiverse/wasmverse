@@ -22,7 +22,7 @@
    ═══════════════════════════════════════════════ */
 
 const DB_NAME = 'letterverse';
-const DB_VERSION = 1;
+const DB_VERSION = 2;  // v2: added nostr_session store
 
 // Lazy singleton — one promise for the lifetime of the page
 let _dbPromise = null;
@@ -66,6 +66,11 @@ function openDB() {
       // Book content cache (bookId → {content, etag, cachedAt})
       if (!db.objectStoreNames.contains('library'))
         db.createObjectStore('library');
+
+      // Nostr session — single record keyed 'singleton'
+      // {eph_nsec, eph_npub, bunker_npub, relay, user_npub, req_id}
+      if (!db.objectStoreNames.contains('nostr_session'))
+        db.createObjectStore('nostr_session');
     };
 
     req.onsuccess = e => resolve(e.target.result);
@@ -259,4 +264,38 @@ export async function getCachedBook(bookId) {
     const db = await openDB();
     return await idbGet(db, 'library', bookId);
   } catch { return null; }
+}
+
+// ── Nostr session ─────────────────────────────────────────────────────────
+
+/**
+ * Persist the active Nostr session object.
+ * Called after each stage of the NIP-46 handshake.
+ */
+export async function saveNostrSession(session) {
+  try {
+    const db = await openDB();
+    await idbPut(db, 'nostr_session', 'singleton', session);
+  } catch {}
+}
+
+/**
+ * Load the persisted Nostr session (for silent reconnect on next load).
+ * Returns null if none saved.
+ */
+export async function loadNostrSession() {
+  try {
+    const db = await openDB();
+    return await idbGet(db, 'nostr_session', 'singleton');
+  } catch { return null; }
+}
+
+/**
+ * Remove the Nostr session (sign out).
+ */
+export async function clearNostrSession() {
+  try {
+    const db = await openDB();
+    await idbDelete(db, 'nostr_session', 'singleton');
+  } catch {}
 }

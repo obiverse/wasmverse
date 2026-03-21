@@ -26,7 +26,7 @@
 // automatically, but you can also just change this string.
 // Any change to sw.js triggers browser re-install of the SW,
 // which purges the old cache via the activate handler below.
-const CACHE = 'lv-76cdd69';
+const CACHE = 'lv-6fa7b49';
 const UPDATE_FLAG = 'lv-update-ready';
 
 /* ── Lifecycle ─────────────────────────────── */
@@ -50,6 +50,7 @@ self.addEventListener('install', e => {
         './js/reader.js',
         './js/search.js',
         './js/theme-global.js',
+        './js/nostr-shell.js',
         './pwa.js',
         './icon.svg',
         './books/manifest.json',

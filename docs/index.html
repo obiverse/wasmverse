@@ -59,7 +59,56 @@
 <section class="hero">
   <h1>The Epistolary Library</h1>
   <p class="tagline">Treatises in the manner of Euler, for builders who love the universe</p>
+  <div class="identity-bar">
+    <button class="identity-btn" id="identity-btn" aria-label="Connect your sovereign identity">
+      <span class="identity-dot" id="identity-dot">·</span>
+      <span id="identity-label">Connect</span>
+    </button>
+  </div>
 </section>
+
+<!-- ═══════════════════════════════════════════════
+     NOSTR CONNECT MODAL
+     ═══════════════════════════════════════════════ -->
+<div class="nostr-modal-backdrop" id="nostr-modal" hidden aria-modal="true" role="dialog">
+  <div class="nostr-modal">
+    <button class="nostr-modal-close" id="nostr-close" aria-label="Close">&times;</button>
+
+    <!-- State: disconnected — show connect UI -->
+    <div id="nostr-connect-view">
+      <div class="nostr-modal-title">SIGN IN WITH OBIVERSE</div>
+      <p class="nostr-modal-sub">Your sovereign identity. No password. No server.</p>
+
+      <!-- QR Code — rendered by WASM, no JS library -->
+      <div class="nostr-qr-wrap">
+        <canvas id="nostr-qr-canvas"></canvas>
+        <p class="nostr-qr-hint" id="nostr-qr-hint">Generating&hellip;</p>
+      </div>
+
+      <!-- Mobile: deep link button -->
+      <a class="nostr-open-btn" id="nostr-open-btn" href="#" hidden>
+        Open OBIVERSE &#8599;
+      </a>
+
+      <div class="nostr-divider">— or use any NIP-46 bunker —</div>
+      <div class="nostr-paste-row">
+        <input class="nostr-paste-input" id="nostr-paste" type="text"
+               placeholder="nostrconnect://… or obiverse://…" autocomplete="off" spellcheck="false">
+        <button class="nostr-paste-btn" id="nostr-paste-btn">&#8594;</button>
+      </div>
+
+      <p class="nostr-status" id="nostr-status"></p>
+    </div>
+
+    <!-- State: connected — show identity -->
+    <div id="nostr-connected-view" hidden>
+      <div class="nostr-modal-title">CONNECTED</div>
+      <p class="nostr-pubkey" id="nostr-pubkey-display"></p>
+      <p class="nostr-modal-sub">Your progress syncs to your wallet via Nostr.</p>
+      <button class="nostr-disconnect-btn" id="nostr-disconnect">Disconnect</button>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════════════════
      THE COMPASS — Horizontal path strip (no dead space)
@@ -152,5 +201,147 @@
 <script type="module" src="js/search.js"></script>
 <script type="module" src="js/theme-global.js"></script>
 <script src="pwa.js"></script>
+<script type="module">
+/* ── Nostr Connect UI ── */
+import * as nostr from './js/nostr-shell.js';
+
+const modal     = document.getElementById('nostr-modal');
+const btn       = document.getElementById('identity-btn');
+const dot       = document.getElementById('identity-dot');
+const label     = document.getElementById('identity-label');
+const closeBtn  = document.getElementById('nostr-close');
+const openBtn   = document.getElementById('nostr-open-btn');
+const pasteIn   = document.getElementById('nostr-paste');
+const pasteBtn  = document.getElementById('nostr-paste-btn');
+const status    = document.getElementById('nostr-status');
+const qrCanvas  = document.getElementById('nostr-qr-canvas');
+const qrHint    = document.getElementById('nostr-qr-hint');
+const connView  = document.getElementById('nostr-connect-view');
+const doneView  = document.getElementById('nostr-connected-view');
+const npubDisp  = document.getElementById('nostr-pubkey-display');
+const discBtn   = document.getElementById('nostr-disconnect');
+
+const isMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+// ── Boot: restore session silently ────────────────────────────────────────
+(async () => {
+  const npub = await nostr.restoreSession();
+  if (npub) setConnected(npub);
+})();
+
+// ── Modal open ────────────────────────────────────────────────────────────
+btn.addEventListener('click', async () => {
+  if (nostr.isConnected()) {
+    showModal(true);
+    return;
+  }
+  showModal(false);
+  await startConnect();
+});
+
+async function startConnect() {
+  setStatus('');
+  qrHint.textContent = 'Generating…';
+  qrCanvas.width = 0;
+
+  try {
+    const callbackUrl = window.location.href.split('?')[0];
+    const { uri } = await nostr.generateConnectUri({
+      relay:       'wss://relay.damus.io',
+      appName:     'Letterverse',
+      callbackUrl,
+    });
+
+    // Render QR via WASM (no JS library)
+    await nostr.renderQR(qrCanvas, uri, { scale: 4 });
+    qrHint.textContent = 'Scan with OBIVERSE or any NIP-46 wallet';
+
+    // Mobile: show deep link button
+    if (isMobile()) {
+      openBtn.href = uri;
+      openBtn.hidden = false;
+    }
+
+    setStatus('Waiting for wallet approval…');
+
+    // Wait for wallet to respond via relay
+    const npub = await nostr.waitForConnect();
+    closeModal();
+    setConnected(npub);
+  } catch (e) {
+    setStatus(e.message || 'Connection failed');
+    qrHint.textContent = '';
+  }
+}
+
+// ── Paste flow (other NIP-46 bunkers) ─────────────────────────────────────
+async function connectFromUri(uri) {
+  setStatus('Connecting…');
+  try {
+    // For nostrconnect:// URIs from other wallets:
+    // Parse relay + bunker_npub from the URI, then run the standard handshake
+    const url  = new URL(uri.replace('nostrconnect://', 'nostr://').replace('obiverse://connect?', 'obiverse://x?'));
+    const params = uri.startsWith('obiverse://connect?')
+      ? new URLSearchParams(uri.split('?')[1])
+      : url.searchParams;
+    const relay = params.get('relay') || 'wss://relay.damus.io';
+
+    await nostr.generateConnectUri({ relay, appName: 'Letterverse' });
+    await nostr.renderQR(qrCanvas, uri, { scale: 4 });
+    qrHint.textContent = uri.slice(0, 40) + '…';
+
+    const npub = await nostr.waitForConnect();
+    closeModal();
+    setConnected(npub);
+  } catch (e) {
+    setStatus(e.message || 'Connection failed');
+  }
+}
+
+pasteBtn.addEventListener('click', () => {
+  const v = pasteIn.value.trim();
+  if (v) connectFromUri(v);
+});
+pasteIn.addEventListener('keydown', e => { if (e.key === 'Enter') pasteBtn.click(); });
+
+// ── Disconnect ─────────────────────────────────────────────────────────────
+discBtn.addEventListener('click', async () => {
+  await nostr.disconnect();
+  closeModal();
+  setDisconnected();
+});
+
+// ── UI helpers ─────────────────────────────────────────────────────────────
+function showModal(connected) {
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  connView.hidden = connected;
+  doneView.hidden = !connected;
+  if (connected) {
+    npubDisp.textContent = nostr.getPubkey();
+  }
+}
+function closeModal() {
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+function setConnected(npub) {
+  dot.textContent  = '◉';
+  dot.style.color  = 'var(--gold-bright)';
+  label.textContent = nostr.getPubkeyDisplay() ?? npub.slice(0, 8);
+}
+function setDisconnected() {
+  dot.textContent  = '·';
+  dot.style.color  = '';
+  label.textContent = 'Connect';
+}
+function setStatus(msg) {
+  status.textContent = msg;
+}
+
+closeBtn.addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+</script>
 </body>
 </html>

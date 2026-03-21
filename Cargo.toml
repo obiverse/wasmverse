@@ -7,5 +7,6 @@ members = [
     "crates/stack-machine",
     "crates/euler",
     "crates/circuit-sim",
+    "crates/nostr-wasm",
 ]
 resolver = "2"
