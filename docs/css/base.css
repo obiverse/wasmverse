@@ -226,6 +226,35 @@ body {
   min-height: 1em;
 }
 
+.lv-connect-get-wallet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border-subtle);
+  width: 100%;
+}
+
+.lv-connect-get-label {
+  font-family: var(--font-code);
+  font-size: 0.56rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  opacity: 0.6;
+}
+
+.lv-connect-get-link {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--gold-bright);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s;
+}
+.lv-connect-get-link:hover { opacity: 0.75; }
+
 /* ── Lightning payment dialog ────────────────── */
 #lv-lightning-overlay {
   position: fixed;

@@ -17,6 +17,10 @@ import * as nostr from './nostr-shell.js';
 
 export const LIGHTNING_ADDR = 'letterverse@breez.tips';
 
+// TestFlight invite link for the OBIVERSE wallet (iOS).
+// Update this single constant when the App Store link is ready.
+export const OBIVERSE_WALLET_URL = 'https://testflight.apple.com/join/GwwPuv4W';
+
 // ── LNURL bech32 encoding ─────────────────────────────────────────────────
 // Lightning Addresses resolve to LNURL-pay endpoints.
 // The QR code must encode the bech32 LNURL, not "lightning:user@domain".
@@ -118,6 +122,12 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
       <canvas class="lv-connect-qr" id="lv-connect-qr"></canvas>
       <a class="lv-connect-open" id="lv-connect-open" href="#" hidden>Open OBIVERSE &nearr;</a>
       <p class="lv-connect-status" id="lv-connect-status">Generating&hellip;</p>
+      <div class="lv-connect-get-wallet">
+        <span class="lv-connect-get-label">Don&rsquo;t have the wallet?</span>
+        <a class="lv-connect-get-link" href="${OBIVERSE_WALLET_URL}" target="_blank" rel="noopener">
+          Get OBIVERSE on TestFlight &nearr;
+        </a>
+      </div>
     </div>
   `;
 

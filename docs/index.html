@@ -117,6 +117,13 @@
       </div>
 
       <p class="nostr-status" id="nostr-status"></p>
+
+      <div class="nostr-get-wallet">
+        <span class="nostr-get-label">Don&rsquo;t have the wallet?</span>
+        <a class="nostr-get-link" id="nostr-get-link" href="#" target="_blank" rel="noopener">
+          Get OBIVERSE on TestFlight &nearr;
+        </a>
+      </div>
     </div>
 
     <!-- State: connected — show identity -->
@@ -316,7 +323,7 @@
 /* ── Nostr Connect UI + Portal ── */
 import * as nostr  from './js/nostr-shell.js';
 import * as portal from './js/portal.js';
-import { wireLightningLinks, lnurlEncode, LIGHTNING_ADDR } from './js/connect.js';
+import { wireLightningLinks, lnurlEncode, LIGHTNING_ADDR, OBIVERSE_WALLET_URL } from './js/connect.js';
 
 const modal     = document.getElementById('nostr-modal');
 const btn       = document.getElementById('identity-btn');
@@ -340,6 +347,7 @@ const isMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 // ── Boot: restore session + render hero QR + wire lightning links ─────────
 wireLightningLinks();
+document.getElementById('nostr-get-link').href = OBIVERSE_WALLET_URL;
 (async () => {
   const npub = await nostr.restoreSession();
   if (npub) setConnected(npub);
