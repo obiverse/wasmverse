@@ -231,9 +231,9 @@ body {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(6, 6, 14, 0.88);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(6, 6, 14, 0.90);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -245,15 +245,15 @@ body {
   background: var(--bg-elevated);
   border: 1px solid rgba(201, 169, 110, 0.22);
   border-radius: 1rem;
-  padding: 1.75rem;
+  padding: 2rem 1.5rem 1.5rem;
   width: 100%;
-  max-width: 280px;
+  max-width: 300px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  gap: 0.9rem;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
 }
 
 .lv-lightning-close {
@@ -273,81 +273,97 @@ body {
   color: var(--gold-dim);
 }
 
-.lv-lightning-qr {
-  image-rendering: pixelated;
-  width: 160px;
-  height: 160px;
-  border-radius: 8px;
-  display: none;
-}
-
-.lv-lightning-addr-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 0.45rem 0.7rem;
+/* Address block — primary action */
+.lv-lightning-addr-block {
   width: 100%;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-.lv-lightning-addr {
+.lv-lightning-addr-text {
   font-family: var(--font-code);
-  font-size: 0.65rem;
+  font-size: 0.78rem;
   color: var(--gold-bright);
   letter-spacing: 0.02em;
-  flex: 1;
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  word-break: break-all;
+  line-height: 1.4;
 }
 
-.lv-lightning-copy {
-  background: rgba(201,169,110,0.12);
-  border: 1px solid rgba(201,169,110,0.3);
-  border-radius: 6px;
-  color: var(--gold-dim);
-  font-family: var(--font-code);
-  font-size: 0.6rem;
-  padding: 0.25rem 0.5rem;
-  cursor: pointer;
+/* Big primary copy button */
+.lv-lightning-copy-btn {
+  width: 100%;
+  padding: 0.7rem 1.5rem;
+  background: rgba(201, 169, 110, 0.15);
+  border: 1px solid rgba(201, 169, 110, 0.45);
+  border-radius: 8px;
+  color: var(--gold-bright);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 500;
   letter-spacing: 0.06em;
-  transition: background 0.15s, color 0.15s;
-  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
 }
-.lv-lightning-copy:hover { background: rgba(201,169,110,0.22); color: var(--gold-bright); }
+.lv-lightning-copy-btn:hover { background: rgba(201, 169, 110, 0.28); border-color: rgba(201,169,110,0.7); }
 
-.lv-lightning-sub {
-  font-family: var(--font-heading);
-  font-size: 0.75rem;
-  font-style: italic;
-  color: var(--text-dim);
-  margin: 0;
-}
-
+/* MUUN-specific step hint */
 .lv-lightning-muun-hint {
   font-family: var(--font-code);
   font-size: 0.58rem;
   color: var(--text-dim);
-  letter-spacing: 0.03em;
-  opacity: 0.55;
-  margin: -0.25rem 0 0;
+  letter-spacing: 0.02em;
+  opacity: 0.65;
+  margin: -0.3rem 0 0;
   text-align: center;
+  line-height: 1.5;
 }
 
-.lv-lightning-open {
-  font-family: var(--font-code);
-  font-size: 0.6rem;
+/* Open in wallet — visible button on mobile */
+.lv-lightning-open-btn {
+  display: block;
+  width: 100%;
+  padding: 0.55rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(201, 169, 110, 0.2);
+  border-radius: 8px;
   color: var(--text-dim);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
   letter-spacing: 0.05em;
   text-decoration: none;
-  opacity: 0.5;
-  transition: opacity 0.2s;
+  transition: border-color 0.15s, color 0.15s;
+  box-sizing: border-box;
 }
-.lv-lightning-open:hover { opacity: 0.85; }
+.lv-lightning-open-btn:hover { border-color: rgba(201,169,110,0.4); color: var(--gold-bright); }
+
+/* QR section — secondary for scan-capable wallets */
+.lv-lightning-qr-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.lv-lightning-qr-label {
+  font-family: var(--font-code);
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.lv-lightning-qr {
+  image-rendering: pixelated;
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+  display: none;
+}
 
 /* ═══════════════════════════════════════════════
    SITE NAV — Slim fixed top bar (index + community)

@@ -188,14 +188,24 @@ export function showLightningDialog(addr = LIGHTNING_ADDR) {
     <div class="lv-lightning-modal">
       <button class="lv-lightning-close" id="lv-lightning-close" aria-label="Close">&times;</button>
       <div class="lv-lightning-title">SUPPORT THE LIBRARY</div>
-      <canvas class="lv-lightning-qr" id="lv-lightning-qr"></canvas>
-      <p class="lv-lightning-sub">Phoenix &middot; Breez &middot; Strike &middot; Zeus: scan QR</p>
-      <div class="lv-lightning-addr-row">
-        <span class="lv-lightning-addr" id="lv-lightning-addr">${addr}</span>
-        <button class="lv-lightning-copy" id="lv-lightning-copy">Copy</button>
+
+      <!-- Primary: address + copy (works with every wallet) -->
+      <div class="lv-lightning-addr-block">
+        <div class="lv-lightning-addr-text">${addr}</div>
+        <button class="lv-lightning-copy-btn" id="lv-lightning-copy">&#9889;&ensp;Copy Address</button>
       </div>
-      <p class="lv-lightning-muun-hint">MUUN &amp; others: tap Copy, paste in Send</p>
-      <a class="lv-lightning-open" href="${lnUri}" id="lv-lightning-open">Open in wallet app ↗</a>
+
+      <!-- MUUN instruction -->
+      <p class="lv-lightning-muun-hint">MUUN: tap GO BACK TO SEND → paste in the address field</p>
+
+      <!-- Mobile: open directly in wallet app -->
+      <a class="lv-lightning-open-btn" href="${lnUri}" id="lv-lightning-open">Open in Wallet App ↗</a>
+
+      <!-- Secondary: QR for scan-capable wallets -->
+      <div class="lv-lightning-qr-section">
+        <div class="lv-lightning-qr-label">Phoenix &middot; Breez &middot; Zeus &middot; Strike — scan QR</div>
+        <canvas class="lv-lightning-qr" id="lv-lightning-qr"></canvas>
+      </div>
     </div>
   `;
 
@@ -216,8 +226,8 @@ export function showLightningDialog(addr = LIGHTNING_ADDR) {
   document.getElementById('lv-lightning-copy').addEventListener('click', async function() {
     try {
       await navigator.clipboard.writeText(addr);
-      this.textContent = '✓ Copied';
-      setTimeout(() => { this.textContent = 'Copy'; }, 2000);
+      this.innerHTML = '✓&ensp;Copied!';
+      setTimeout(() => { this.innerHTML = '&#9889;&ensp;Copy Address'; }, 2000);
     } catch {
       this.textContent = 'Error';
     }
