@@ -12,6 +12,7 @@
 
 import * as nostr  from './nostr-shell.js';
 import * as portal from './portal.js';
+import { openConnectOverlay, wireLightningLinks, showLightningDialog, LIGHTNING_ADDR } from './connect.js';
 
 const RELAYS     = ['wss://relay.primal.net', 'wss://nos.lol', 'wss://relay.nostr.band'];
 const TAG        = 'letterverse';
@@ -238,11 +239,11 @@ function openZapSheet(card, ev) {
       lnaddr = meta.lud16 || meta.lud06 || null;
     } catch {}
     const statusEl = sheet.querySelector('#zap-status');
-    statusEl.textContent = lnaddr ? `⚡ ${lnaddr}` : `⚡ 120941092081@breez.tips (library)`;
-    if (!lnaddr) lnaddr = '120941092081@breez.tips';
+    statusEl.textContent = lnaddr ? `⚡ ${lnaddr}` : `⚡ ${LIGHTNING_ADDR} (library)`;
+    if (!lnaddr) lnaddr = LIGHTNING_ADDR;
   }).catch(() => {
-    lnaddr = '120941092081@breez.tips';
-    sheet.querySelector('#zap-status').textContent = '⚡ 120941092081@breez.tips (library)';
+    lnaddr = LIGHTNING_ADDR;
+    sheet.querySelector('#zap-status').textContent = `⚡ ${LIGHTNING_ADDR} (library)`;
   });
 
   sheet.querySelectorAll('.zap-amt').forEach(btn => {
@@ -255,15 +256,48 @@ function openZapSheet(card, ev) {
 
       try {
         const bolt11 = await fetchBolt11(addr, sats);
-        window.location.href = `lightning:${bolt11}`;
-        statusEl.textContent = `✓ Opening wallet for ${sats} sats…`;
+        statusEl.textContent = `✓ Invoice for ${sats} sats — scan or copy`;
+        // Show invoice QR in the sheet itself
+        _showInvoiceQr(sheet, bolt11, sats);
       } catch {
-        // Fallback: open address directly
-        window.location.href = `lightning:${addr}`;
-        statusEl.textContent = `Opening wallet…`;
+        // Fallback: show address dialog (no invoice, but still wallet-agnostic)
+        sheet.remove();
+        showLightningDialog(addr);
       }
-      setTimeout(() => sheet.remove(), 3000);
     });
+  });
+}
+
+// Replace the zap sheet body with a bolt11 invoice QR + copy button
+function _showInvoiceQr(sheet, bolt11, sats) {
+  const amtsEl = sheet.querySelector('.zap-amounts');
+  if (amtsEl) amtsEl.style.display = 'none';
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:0.5rem;margin-top:0.5rem';
+  wrap.innerHTML =
+    `<canvas id="zap-invoice-qr" style="image-rendering:pixelated;width:140px;height:140px;border-radius:6px;display:none"></canvas>` +
+    `<div style="display:flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:0.35rem 0.6rem;width:100%;box-sizing:border-box">` +
+      `<span style="font-family:var(--font-code);font-size:0.55rem;color:var(--gold-bright);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${sats} sats</span>` +
+      `<button id="zap-copy-btn" style="background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.3);border-radius:4px;color:var(--gold-dim);font-family:var(--font-code);font-size:0.58rem;padding:0.2rem 0.4rem;cursor:pointer">Copy</button>` +
+      `<a href="lightning:${bolt11}" style="font-family:var(--font-code);font-size:0.58rem;color:var(--text-dim);text-decoration:none;opacity:0.5" target="_blank">Wallet ↗</a>` +
+    `</div>`;
+
+  sheet.appendChild(wrap);
+
+  // Render QR
+  const canvas = wrap.querySelector('#zap-invoice-qr');
+  nostr.renderQR(canvas, `lightning:${bolt11}`, { scale: 3 })
+    .then(() => { canvas.style.display = 'block'; })
+    .catch(() => {});
+
+  // Copy bolt11
+  wrap.querySelector('#zap-copy-btn').addEventListener('click', async function() {
+    try {
+      await navigator.clipboard.writeText(bolt11);
+      this.textContent = '✓';
+      setTimeout(() => { this.textContent = 'Copy'; }, 2000);
+    } catch { this.textContent = 'Err'; }
   });
 }
 
@@ -592,10 +626,6 @@ async function init() {
 
   // ── Portal wiring ─────────────────────────────────────────────────────
   document.getElementById('portal-close')?.addEventListener('click', portal.close);
-  document.getElementById('portal-disconnect-btn')?.addEventListener('click', async () => {
-    await nostr.disconnect();
-    portal.close();
-  });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && !document.getElementById('portal-overlay')?.hidden) portal.close();
   });
@@ -603,7 +633,7 @@ async function init() {
   // ── Community QR (fire-and-forget — never blocks relay connect) ───────
   const commQr = document.getElementById('comm-zap-qr');
   if (commQr) {
-    nostr.renderQR(commQr, 'lightning:120941092081@breez.tips', { scale: 3 })
+    nostr.renderQR(commQr, `lightning:${LIGHTNING_ADDR}`, { scale: 3 })
       .then(() => { commQr.style.display = 'block'; })
       .catch(() => {});
   }
@@ -631,20 +661,49 @@ async function init() {
     if (e.key === 'Escape' && !document.getElementById('compose-overlay')?.hidden) closeCompose();
   });
 
-  // Show FAB + compose if authenticated
-  if (nostr.isConnected()) {
-    const fab = document.getElementById('compose-fab');
-    if (fab) { fab.hidden = false; fab.addEventListener('click', () => { populateTopicSelect(); openCompose(); }); }
+  // ── Identity button — always visible, state-aware ─────────────────────
+  const identityBtn   = document.getElementById('comm-identity-btn');
+  const identityDot   = document.getElementById('comm-identity-dot');
+  const identityLabel = document.getElementById('comm-identity-label');
 
-    // Identity button in site nav → opens portal
-    const identityBtn = document.getElementById('comm-identity-btn');
-    if (identityBtn) {
-      identityBtn.hidden = false;
-      const dot = document.getElementById('comm-identity-dot');
-      if (dot) { dot.textContent = '◉'; dot.className = 'nav-dot-live'; }
-      identityBtn.addEventListener('click', () => portal.open());
+  function updateIdentity() {
+    if (!identityBtn) return;
+    identityBtn.hidden = false;
+    if (nostr.isConnected()) {
+      if (identityDot) { identityDot.textContent = '◉'; identityDot.className = 'nav-dot-live'; }
+      if (identityLabel) identityLabel.textContent = nostr.getPubkeyDisplay() ?? 'Account';
+      identityBtn.title   = 'Your account';
+      identityBtn.onclick = () => portal.open();
+
+      // Activate FAB
+      const fab = document.getElementById('compose-fab');
+      if (fab && fab.hidden) {
+        fab.hidden = false;
+        fab.addEventListener('click', () => { populateTopicSelect(); openCompose(); });
+      }
+    } else {
+      if (identityDot) { identityDot.textContent = '·'; identityDot.className = ''; }
+      if (identityLabel) identityLabel.textContent = 'Sign in';
+      identityBtn.title   = 'Sign in with OBIVERSE';
+      identityBtn.onclick = () => openConnectOverlay({
+        onSuccess: () => updateIdentity(),
+      });
     }
   }
+  updateIdentity();
+
+  // Portal disconnect → update identity
+  document.getElementById('portal-disconnect-btn')?.addEventListener('click', async () => {
+    await nostr.disconnect();
+    portal.close();
+    updateIdentity();
+    // Hide FAB
+    const fab = document.getElementById('compose-fab');
+    if (fab) fab.hidden = true;
+  });
+
+  // Wire Lightning links to dialog (platform-agnostic, no lightning: URI)
+  wireLightningLinks();
 
   const loading = document.getElementById('comm-loading');
   const errEl   = document.getElementById('comm-error');

@@ -81,7 +81,7 @@
   <div class="hero-right">
     <div class="hero-support-label">PATRONAGE</div>
     <canvas id="hero-zap-qr"></canvas>
-    <a href="lightning:120941092081@breez.tips" class="hero-zap-addr">&#9889;&ensp;120941092081@breez.tips</a>
+    <a href="#" data-lightning="letterverse@breez.tips" class="hero-zap-addr">&#9889;&ensp;letterverse@breez.tips</a>
     <p class="hero-support-sub">Every letter is free, forever</p>
   </div>
 </section>
@@ -232,7 +232,7 @@
   &ensp;&middot;&ensp;
   <span class="footer-lightning">
     Support the library &thinsp;&#9889;&thinsp;
-    <a href="lightning:120941092081@breez.tips" class="footer-lnaddr">120941092081@breez.tips</a>
+    <a href="#" data-lightning="letterverse@breez.tips" class="footer-lnaddr">letterverse@breez.tips</a>
   </span>
 </footer>
 
@@ -290,8 +290,8 @@
     <section class="portal-section portal-lightning-section">
       <div class="portal-section-label">SUPPORT THE LIBRARY</div>
       <p class="portal-lightning-sub">Every letter is free, forever.<br>Patronage powers the mission.</p>
-      <a href="lightning:120941092081@breez.tips" class="portal-zap-btn">
-        &#9889;&ensp;120941092081@breez.tips
+      <a href="#" data-lightning="letterverse@breez.tips" class="portal-zap-btn">
+        &#9889;&ensp;letterverse@breez.tips
       </a>
       <div class="portal-qr-wrap">
         <canvas id="portal-zap-qr"></canvas>
@@ -315,6 +315,7 @@
 /* ── Nostr Connect UI + Portal ── */
 import * as nostr  from './js/nostr-shell.js';
 import * as portal from './js/portal.js';
+import { wireLightningLinks } from './js/connect.js';
 
 const modal     = document.getElementById('nostr-modal');
 const btn       = document.getElementById('identity-btn');
@@ -336,7 +337,8 @@ const discBtn     = document.getElementById('nostr-disconnect');
 
 const isMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-// ── Boot: restore session + render hero QR ────────────────────────────────
+// ── Boot: restore session + render hero QR + wire lightning links ─────────
+wireLightningLinks();
 (async () => {
   const npub = await nostr.restoreSession();
   if (npub) setConnected(npub);
@@ -344,7 +346,7 @@ const isMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   // Render Lightning QR in hero — fire-and-forget, never blocks UI
   const heroQr = document.getElementById('hero-zap-qr');
   if (heroQr) {
-    nostr.renderQR(heroQr, 'lightning:120941092081@breez.tips', { scale: 3 })
+    nostr.renderQR(heroQr, 'lightning:letterverse@breez.tips', { scale: 3 })
       .then(() => { heroQr.style.display = 'block'; })
       .catch(() => {});
   }

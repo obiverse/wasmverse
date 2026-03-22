@@ -8,6 +8,7 @@ import { boot, persist, autoPersist, applyTheme, applyTypography, sessionStart, 
 import * as idb    from './idb.js';
 import * as nostr  from './nostr-shell.js';
 import * as portal from './portal.js';
+import { openConnectOverlay, wireLightningLinks } from './connect.js';
 
 // Boot euler WASM + restore nostr session (parallel — both are async)
 const [euler] = await Promise.all([boot(), nostr.restoreSession()]);
@@ -24,12 +25,14 @@ const [euler] = await Promise.all([boot(), nostr.restoreSession()]);
       dot.textContent = '◉';
       dot.style.color = 'var(--gold-bright)';
       lbl.textContent = nostr.getPubkeyDisplay() ?? 'Connected';
+      btn.title  = 'Your account';
       btn.onclick = () => portal.open();
     } else {
       dot.textContent = '·';
       dot.style.color = '';
-      lbl.textContent = 'Account';
-      btn.onclick = () => { window.location.href = 'index.html'; };
+      lbl.textContent = 'Sign in';
+      btn.title = 'Sign in with OBIVERSE';
+      btn.onclick = () => openConnectOverlay({ onSuccess: () => update() });
     }
   }
   update();
@@ -47,6 +50,9 @@ const [euler] = await Promise.all([boot(), nostr.restoreSession()]);
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && !document.getElementById('portal-overlay')?.hidden) portal.close();
   });
+
+  // Wire Lightning links on the page to dialog (platform-agnostic)
+  wireLightningLinks();
 })();
 
 // Bridge: ELib compatibility layer over euler

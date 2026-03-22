@@ -27,6 +27,7 @@ let _manifest = null;
  * Wire the close + disconnect buttons before calling.
  */
 export async function open() {
+  if (!nostr.isConnected()) return;
   await _render();
   document.getElementById('portal-overlay').hidden = false;
   document.body.style.overflow = 'hidden';
@@ -85,7 +86,7 @@ async function _render() {
   const qrCanvas = document.getElementById('portal-zap-qr');
   if (qrCanvas) {
     try {
-      await nostr.renderQR(qrCanvas, 'lightning:120941092081@breez.tips', { scale: 3 });
+      await nostr.renderQR(qrCanvas, 'lightning:letterverse@breez.tips', { scale: 3 });
       qrCanvas.style.display = 'block';
     } catch {}
   }
