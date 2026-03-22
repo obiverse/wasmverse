@@ -189,11 +189,12 @@ export function showLightningDialog(addr = LIGHTNING_ADDR) {
       <button class="lv-lightning-close" id="lv-lightning-close" aria-label="Close">&times;</button>
       <div class="lv-lightning-title">SUPPORT THE LIBRARY</div>
       <canvas class="lv-lightning-qr" id="lv-lightning-qr"></canvas>
-      <p class="lv-lightning-sub">Scan with any Lightning wallet</p>
+      <p class="lv-lightning-sub">Phoenix &middot; Breez &middot; Strike &middot; Zeus: scan QR</p>
       <div class="lv-lightning-addr-row">
         <span class="lv-lightning-addr" id="lv-lightning-addr">${addr}</span>
         <button class="lv-lightning-copy" id="lv-lightning-copy">Copy</button>
       </div>
+      <p class="lv-lightning-muun-hint">MUUN &amp; others: tap Copy, paste in Send</p>
       <a class="lv-lightning-open" href="${lnUri}" id="lv-lightning-open">Open in wallet app ↗</a>
     </div>
   `;

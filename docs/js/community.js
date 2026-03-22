@@ -249,7 +249,7 @@ function openZapSheet(card, ev) {
   sheet.querySelectorAll('.zap-amt').forEach(btn => {
     btn.addEventListener('click', async () => {
       const sats = parseInt(btn.dataset.sats, 10);
-      const addr = lnaddr || '120941092081@breez.tips';
+      const addr = lnaddr || LIGHTNING_ADDR;
       const statusEl = sheet.querySelector('#zap-status');
       statusEl.textContent = 'Fetching invoice…';
       btn.disabled = true;

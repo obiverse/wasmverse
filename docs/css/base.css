@@ -29,6 +29,9 @@
      (Ubuntu = Nguni Bantu: "I am because we are"). Clean, warm, purpose-built. */
   --font-ui: 'Ubuntu', system-ui, sans-serif;
   --font-code: 'JetBrains Mono', 'Consolas', monospace;
+  /* Aliases for compatibility */
+  --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+  --surface: #0f0f1e; /* same as --bg-elevated */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -323,6 +326,16 @@ body {
   font-style: italic;
   color: var(--text-dim);
   margin: 0;
+}
+
+.lv-lightning-muun-hint {
+  font-family: var(--font-code);
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  letter-spacing: 0.03em;
+  opacity: 0.55;
+  margin: -0.25rem 0 0;
+  text-align: center;
 }
 
 .lv-lightning-open {
