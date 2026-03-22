@@ -68,13 +68,21 @@
      HERO — Compact temple entrance
      ═══════════════════════════════════════════════ -->
 <section class="hero">
-  <h1>The Epistolary Library</h1>
-  <p class="tagline">Treatises in the manner of Euler, for builders who love the universe</p>
-  <div class="identity-bar">
-    <button class="identity-btn" id="identity-btn" aria-label="Connect your sovereign identity">
-      <span class="identity-dot" id="identity-dot">·</span>
-      <span id="identity-label">Connect</span>
-    </button>
+  <div class="hero-left">
+    <h1>The Epistolary Library</h1>
+    <p class="tagline">Treatises in the manner of Euler, for builders who love the universe</p>
+    <div class="identity-bar">
+      <button class="identity-btn" id="identity-btn" aria-label="Connect your sovereign identity">
+        <span class="identity-dot" id="identity-dot">·</span>
+        <span id="identity-label">Connect</span>
+      </button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-support-label">PATRONAGE</div>
+    <canvas id="hero-zap-qr"></canvas>
+    <a href="lightning:120941092081@breez.tips" class="hero-zap-addr">&#9889;&ensp;120941092081@breez.tips</a>
+    <p class="hero-support-sub">Every letter is free, forever</p>
   </div>
 </section>
 
@@ -328,10 +336,18 @@ const discBtn     = document.getElementById('nostr-disconnect');
 
 const isMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-// ── Boot: restore session silently ────────────────────────────────────────
+// ── Boot: restore session + render hero QR ────────────────────────────────
 (async () => {
   const npub = await nostr.restoreSession();
   if (npub) setConnected(npub);
+
+  // Render Lightning QR in hero — fire-and-forget, never blocks UI
+  const heroQr = document.getElementById('hero-zap-qr');
+  if (heroQr) {
+    nostr.renderQR(heroQr, 'lightning:120941092081@breez.tips', { scale: 3 })
+      .then(() => { heroQr.style.display = 'block'; })
+      .catch(() => {});
+  }
 })();
 
 // ── Portal close + disconnect ─────────────────────────────────────────────
