@@ -266,6 +266,18 @@ export async function getCachedBook(bookId) {
   } catch { return null; }
 }
 
+/**
+ * Get every letter visit record across all books.
+ * Returns array of {bookId, letterId, scrollPct, readAt}.
+ * Used by the portal to compute per-book progress rings.
+ */
+export async function getAllLettersRead() {
+  try {
+    const db = await openDB();
+    return await idbGetAll(db, 'letters');
+  } catch { return []; }
+}
+
 // ── Nostr session ─────────────────────────────────────────────────────────
 
 /**

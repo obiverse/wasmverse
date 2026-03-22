@@ -48,6 +48,7 @@
 <link rel="stylesheet" href="css/library.css">
 <link rel="stylesheet" href="css/search.css">
 <link rel="stylesheet" href="css/theme-toggle.css">
+<link rel="stylesheet" href="css/portal.css">
 </head>
 <body>
 
@@ -212,13 +213,81 @@
   </span>
 </footer>
 
+<!-- ═══════════════════════════════════════════════
+     PORTAL — Sovereign account panel (slides from right)
+     ═══════════════════════════════════════════════ -->
+<div id="portal-overlay" hidden>
+  <div id="portal" role="dialog" aria-modal="true" aria-label="Your Library">
+
+    <!-- Header -->
+    <div class="portal-header">
+      <span class="portal-header-title">YOUR LIBRARY</span>
+      <button class="portal-close" id="portal-close" aria-label="Close">&times;</button>
+    </div>
+
+    <!-- Identity -->
+    <section class="portal-section portal-identity-section">
+      <div class="portal-avatar">◉</div>
+      <div class="portal-pubkey-display" id="portal-pubkey">—</div>
+      <div class="portal-relay-line">
+        <span id="portal-relay-dot" class="portal-relay-dot"></span>
+        <span id="portal-relay">—</span>
+      </div>
+    </section>
+
+    <!-- Reading Journey stats -->
+    <section class="portal-section portal-stats-section">
+      <div class="portal-stat">
+        <div class="portal-stat-n" id="portal-stat-letters">—</div>
+        <div class="portal-stat-label">letters read</div>
+      </div>
+      <div class="portal-stat">
+        <div class="portal-stat-n" id="portal-stat-started">—</div>
+        <div class="portal-stat-label">books started</div>
+      </div>
+      <div class="portal-stat">
+        <div class="portal-stat-n" id="portal-stat-completed">—</div>
+        <div class="portal-stat-label">completed</div>
+      </div>
+    </section>
+
+    <!-- Your Shelf -->
+    <section class="portal-section">
+      <div class="portal-section-label">YOUR SHELF — 33 TREATISES</div>
+      <div id="portal-shelf" class="portal-shelf"></div>
+    </section>
+
+    <!-- Relay record: attestations -->
+    <section class="portal-section" id="portal-attests-section" hidden>
+      <div class="portal-section-label">RELAY RECORD · ATTESTATIONS</div>
+      <div id="portal-attests-list"></div>
+    </section>
+
+    <!-- Lightning patronage -->
+    <section class="portal-section portal-lightning-section">
+      <div class="portal-section-label">SUPPORT THE LIBRARY</div>
+      <p class="portal-lightning-sub">Every letter is free, forever.<br>Patronage powers the mission.</p>
+      <a href="lightning:letterverse@obiverse.net" class="portal-zap-btn">
+        &#9889;&ensp;letterverse@obiverse.net
+      </a>
+    </section>
+
+    <!-- Disconnect -->
+    <section class="portal-section portal-danger-section">
+      <button class="portal-disconnect-btn" id="portal-disconnect-btn">Disconnect Wallet</button>
+    </section>
+
+  </div>
+</div>
+
 <script type="module" src="js/library.js"></script>
 <script type="module" src="js/search.js"></script>
 <script type="module" src="js/theme-global.js"></script>
 <script src="pwa.js"></script>
 <script type="module">
-/* ── Nostr Connect UI ── */
-import * as nostr from './js/nostr-shell.js';
+/* ── Nostr Connect UI + Portal ── */
+import * as nostr  from './js/nostr-shell.js';
+import * as portal from './js/portal.js';
 
 const modal     = document.getElementById('nostr-modal');
 const btn       = document.getElementById('identity-btn');
@@ -246,10 +315,21 @@ const isMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   if (npub) setConnected(npub);
 })();
 
-// ── Modal open ────────────────────────────────────────────────────────────
+// ── Portal close + disconnect ─────────────────────────────────────────────
+document.getElementById('portal-close').addEventListener('click', () => portal.close());
+document.getElementById('portal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('portal-overlay')) portal.close();
+});
+document.getElementById('portal-disconnect-btn').addEventListener('click', async () => {
+  await nostr.disconnect();
+  portal.close();
+  setDisconnected();
+});
+
+// ── Modal / Portal open ───────────────────────────────────────────────────
 btn.addEventListener('click', async () => {
   if (nostr.isConnected()) {
-    showModal(true);
+    portal.open();
     return;
   }
   showModal(false);
@@ -346,7 +426,12 @@ function setStatus(msg) {
 
 closeBtn.addEventListener('click', closeModal);
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (!modal.hidden) closeModal();
+    if (!document.getElementById('portal-overlay').hidden) portal.close();
+  }
+});
 </script>
 </body>
 </html>

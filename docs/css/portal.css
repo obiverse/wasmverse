@@ -1,0 +1,294 @@
+/* ═══════════════════════════════════════════════
+   PORTAL — Sovereign account panel
+
+   Slides in from the right (iOS Settings style).
+   Full-screen on mobile, 420px max on desktop.
+   ═══════════════════════════════════════════════ */
+
+/* ── Backdrop ──────────────────────────────── */
+#portal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  background: rgba(10, 10, 20, 0.6);
+  backdrop-filter: blur(4px);
+}
+#portal-overlay[hidden] { display: none; }
+
+/* ── Panel ─────────────────────────────────── */
+#portal {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-deep);
+  border-left: 1px solid rgba(201, 169, 110, 0.18);
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 169, 110, 0.2) transparent;
+  display: flex;
+  flex-direction: column;
+}
+#portal.open { transform: translateX(0); }
+
+/* ── Header ────────────────────────────────── */
+.portal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.25rem 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: sticky;
+  top: 0;
+  background: var(--bg-deep);
+  z-index: 2;
+}
+
+.portal-header-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--gold-bright);
+}
+
+.portal-close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.35rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.2rem 0.4rem;
+  transition: color 0.2s;
+}
+.portal-close:hover { color: var(--text); }
+
+/* ── Sections ──────────────────────────────── */
+.portal-section {
+  padding: 1.25rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.portal-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+/* ── Identity ──────────────────────────────── */
+.portal-identity-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.75rem 1.25rem 1.5rem;
+}
+
+.portal-avatar {
+  font-size: 2.2rem;
+  color: var(--gold-bright);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 0 40px rgba(201, 169, 110, 0.5);
+}
+
+.portal-pubkey-display {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--gold-bright);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+
+.portal-relay-line {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+
+.portal-relay-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.portal-relay-dot.connected { background: #4ade80; }
+
+/* ── Stats row ─────────────────────────────── */
+.portal-stats-section {
+  display: flex;
+  gap: 0;
+  padding: 0;
+}
+
+.portal-stat {
+  flex: 1;
+  text-align: center;
+  padding: 1rem 0.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+.portal-stat:last-child { border-right: none; }
+
+.portal-stat-n {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  line-height: 1.1;
+}
+
+.portal-stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  margin-top: 0.2rem;
+}
+
+/* ── Shelf ─────────────────────────────────── */
+.portal-shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 0.9rem 0.6rem;
+  padding: 0.25rem 0;
+}
+
+.portal-shelf-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.portal-shelf-tile:hover { opacity: 0.8; }
+
+/* Progress ring via conic-gradient — no SVG, no JS */
+.portal-ring {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--gold-dim, rgba(201,169,110,0.6)) 0% calc(var(--pct, 0) * 1%),
+    rgba(255, 255, 255, 0.06) 0%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.4s;
+}
+
+.portal-ring-inner {
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  background: var(--bg-elevated, #111122);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+}
+.portal-ring-inner.done {
+  color: var(--gold-bright);
+  font-size: 0.7rem;
+}
+
+.portal-shelf-tile.attested .portal-ring {
+  background: conic-gradient(
+    var(--gold-bright, #c9a96e) 0% 100%,
+    transparent 0%
+  );
+}
+
+.portal-tile-id {
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  text-align: center;
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Attestations ──────────────────────────── */
+.portal-attest-item {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  color: var(--gold-bright);
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.portal-attest-item:last-child { border-bottom: none; }
+
+/* ── Lightning section ─────────────────────── */
+.portal-lightning-section {
+  text-align: center;
+}
+
+.portal-lightning-sub {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+
+.portal-zap-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 1.4rem;
+  background: rgba(201, 169, 110, 0.12);
+  border: 1px solid rgba(201, 169, 110, 0.35);
+  border-radius: 99px;
+  color: var(--gold-bright);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+.portal-zap-btn:hover {
+  background: rgba(201, 169, 110, 0.22);
+  border-color: rgba(201, 169, 110, 0.6);
+}
+
+/* ── Danger (disconnect) ───────────────────── */
+.portal-danger-section {
+  text-align: center;
+  margin-top: auto;
+}
+
+.portal-disconnect-btn {
+  background: transparent;
+  border: 1px solid rgba(201, 169, 110, 0.2);
+  border-radius: 99px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.45rem 1.4rem;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: border-color 0.2s, color 0.2s;
+}
+.portal-disconnect-btn:hover {
+  border-color: rgba(255, 80, 80, 0.5);
+  color: rgba(255, 120, 120, 0.9);
+}

@@ -1259,3 +1259,84 @@ body { font-size: var(--font-size, 19px); line-height: var(--line-height, 1.85);
   padding: 0 0.25rem;
   flex-shrink: 0;
 }
+
+/* ═══════════════════════════════════════════════
+   SHARE — Nostr note publishing from chapters
+   ═══════════════════════════════════════════════ */
+.share-btn {
+  float: right;
+  background: none; border: none;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: all 0.25s; padding: 0.2rem;
+  margin-left: 0.25rem;
+}
+.share-btn:hover { opacity: 0.8; color: var(--gold); }
+
+.share-popover {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(201,169,110,0.25);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin: 0.75rem 0 1.5rem;
+  position: relative;
+}
+
+.share-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,169,110,0.2);
+  border-radius: 0.4rem;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  padding: 0.65rem 0.75rem;
+  resize: vertical;
+  min-height: 100px;
+  outline: none;
+}
+.share-textarea:focus { border-color: rgba(201,169,110,0.45); }
+
+.share-popover-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  align-items: center;
+}
+
+.share-publish-btn {
+  background: rgba(201,169,110,0.14);
+  border: 1px solid rgba(201,169,110,0.35);
+  border-radius: 99px;
+  color: var(--gold-bright);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: background 0.15s;
+}
+.share-publish-btn:hover { background: rgba(201,169,110,0.26); }
+
+.share-cancel-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 0.4rem 0.5rem;
+  transition: color 0.2s;
+}
+.share-cancel-btn:hover { color: var(--text); }
+
+.share-status {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--gold-dim);
+  margin: 0.4rem 0 0;
+  min-height: 1em;
+}

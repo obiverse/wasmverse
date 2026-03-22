@@ -347,6 +347,44 @@ export async function fetchProgress() {
   } catch { return []; }
 }
 
+// ── Publishing ────────────────────────────────────────────────────────────
+
+/**
+ * Publish a KIND 1 note (short-form text note) to the relay.
+ * Signed by the ephemeral key, tagged to the user's pubkey.
+ * Used for sharing letter excerpts to the Nostr network.
+ * Returns true on success, false on any error.
+ */
+export async function publishNote(content) {
+  if (!_session?.user_npub || !_session?.eph_nsec) return false;
+  try {
+    await _connectRelay(_session.relay).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return false;
+    const event = JSON.parse(_wasm.sign_event(
+      _session.eph_nsec, 1,
+      JSON.stringify([
+        ['p', _session.user_npub],
+        ['t', 'letterverse'],
+        ['client', 'Letterverse'],
+      ]),
+      content
+    ));
+    _ws.send(JSON.stringify(['EVENT', event]));
+    return true;
+  } catch { return false; }
+}
+
+/**
+ * Return the active relay URL and current WebSocket connection state.
+ * Used by the portal to display relay status.
+ */
+export function getRelayStatus() {
+  return {
+    relay:     _session?.relay ?? RELAYS[0],
+    connected: _ws?.readyState === WebSocket.OPEN,
+  };
+}
+
 // ── Internal: IDB ─────────────────────────────────────────────────────────
 
 async function _saveSession() {

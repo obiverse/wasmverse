@@ -1411,9 +1411,57 @@ function initBookmarks() {
 
     h3.style.position = 'relative';
     h3.appendChild(btn);
+
+    // Share to Nostr — only when authenticated
+    if (nostr.isConnected()) {
+      const shareBtn = document.createElement('button');
+      shareBtn.className = 'share-btn';
+      shareBtn.innerHTML = '&#8599;'; // ↗
+      shareBtn.title = 'Share this letter to Nostr';
+      shareBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        _openSharePopover(shareBtn, chapters[parseInt(ch.dataset?.index ?? '0')] || { title: h3.textContent.trim() }, id);
+      });
+      h3.appendChild(shareBtn);
+    }
   });
 
   updateNavBookmarkDots();
+}
+
+function _openSharePopover(anchorBtn, chObj, chapterId) {
+  // One popover at a time
+  document.querySelectorAll('.share-popover').forEach(p => p.remove());
+
+  const url  = `${location.origin}${location.pathname}?book=${currentBookId}#${chapterId}`;
+  const text = `"${chObj?.title ?? chapterId}"\n— from The Epistolary Library\n\n${url}`;
+
+  const pop = document.createElement('div');
+  pop.className = 'share-popover';
+  pop.innerHTML =
+    `<textarea class="share-textarea">${text}</textarea>` +
+    `<div class="share-popover-row">` +
+      `<button class="share-publish-btn">Publish to Nostr &#8599;</button>` +
+      `<button class="share-cancel-btn">Cancel</button>` +
+    `</div>` +
+    `<p class="share-status"></p>`;
+
+  // Insert after the chapter h3
+  const h3 = anchorBtn.closest('h3');
+  if (h3) h3.after(pop);
+  else anchorBtn.closest('.chapter')?.prepend(pop);
+
+  pop.querySelector('.share-publish-btn').addEventListener('click', async () => {
+    const content = pop.querySelector('.share-textarea').value.trim();
+    if (!content) return;
+    const ok = await nostr.publishNote(content);
+    const statusEl = pop.querySelector('.share-status');
+    statusEl.textContent = ok ? '✓ Published to Nostr' : 'Connection error — try again';
+    statusEl.style.color = ok ? 'var(--gold-bright)' : '';
+    if (ok) setTimeout(() => pop.remove(), 2500);
+  });
+
+  pop.querySelector('.share-cancel-btn').addEventListener('click', () => pop.remove());
 }
 
 function updateNavBookmarkDots() {
