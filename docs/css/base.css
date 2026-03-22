@@ -308,16 +308,19 @@ body {
 }
 .lv-lightning-copy-btn:hover { background: rgba(201, 169, 110, 0.28); border-color: rgba(201,169,110,0.7); }
 
-/* MUUN-specific step hint */
+/* Wallet recommendation hint */
 .lv-lightning-muun-hint {
-  font-family: var(--font-code);
-  font-size: 0.58rem;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-style: italic;
   color: var(--text-dim);
-  letter-spacing: 0.02em;
-  opacity: 0.65;
-  margin: -0.3rem 0 0;
   text-align: center;
-  line-height: 1.5;
+  line-height: 1.6;
+  margin: 0;
+}
+.lv-lightning-muun-hint strong {
+  color: var(--gold-bright);
+  font-style: normal;
 }
 
 /* Open in wallet — visible button on mobile */
@@ -338,15 +341,13 @@ body {
 }
 .lv-lightning-open-btn:hover { border-color: rgba(201,169,110,0.4); color: var(--gold-bright); }
 
-/* QR section — secondary for scan-capable wallets */
+/* QR section */
 .lv-lightning-qr-section {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid var(--border-subtle);
 }
 
 .lv-lightning-qr-label {

@@ -189,23 +189,26 @@ export function showLightningDialog(addr = LIGHTNING_ADDR) {
       <button class="lv-lightning-close" id="lv-lightning-close" aria-label="Close">&times;</button>
       <div class="lv-lightning-title">SUPPORT THE LIBRARY</div>
 
-      <!-- Primary: address + copy (works with every wallet) -->
+      <!-- QR — primary for scan-capable wallets -->
+      <div class="lv-lightning-qr-section">
+        <canvas class="lv-lightning-qr" id="lv-lightning-qr"></canvas>
+        <div class="lv-lightning-qr-label">Scan with Phoenix, Breez, Zeus, or Strike</div>
+      </div>
+
+      <!-- Address + copy -->
       <div class="lv-lightning-addr-block">
         <div class="lv-lightning-addr-text">${addr}</div>
         <button class="lv-lightning-copy-btn" id="lv-lightning-copy">&#9889;&ensp;Copy Address</button>
       </div>
 
-      <!-- MUUN instruction -->
-      <p class="lv-lightning-muun-hint">MUUN: tap GO BACK TO SEND → paste in the address field</p>
+      <!-- Wallet recommendations -->
+      <p class="lv-lightning-muun-hint">
+        <strong>Phoenix</strong> or <strong>Breez</strong> recommended &mdash; free, instant setup.<br>
+        MUUN does not support Lightning Addresses.
+      </p>
 
       <!-- Mobile: open directly in wallet app -->
       <a class="lv-lightning-open-btn" href="${lnUri}" id="lv-lightning-open">Open in Wallet App ↗</a>
-
-      <!-- Secondary: QR for scan-capable wallets -->
-      <div class="lv-lightning-qr-section">
-        <div class="lv-lightning-qr-label">Phoenix &middot; Breez &middot; Zeus &middot; Strike — scan QR</div>
-        <canvas class="lv-lightning-qr" id="lv-lightning-qr"></canvas>
-      </div>
     </div>
   `;
 
