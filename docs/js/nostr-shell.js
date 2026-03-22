@@ -29,7 +29,7 @@ import * as idb from './idb.js';
 
 let _wasm    = null;   // loaded WASM exports
 let _ws      = null;   // active WebSocket
-let _session = null;   // {eph_nsec, eph_npub, nonce, relay, user_npub}
+let _session = null;   // {eph_nsec, eph_npub, nonce, relay, user_npub, mobi, profile}
 let _gateResolve = null;
 let _gateReject  = null;
 // subId → { onEvent(ev), onEose() } for one-shot subscriptions
@@ -73,11 +73,18 @@ export async function renderQR(canvas, text, { scale = 4, dark = 0x0a0a14, light
 
 // ── Session API ───────────────────────────────────────────────────────────
 
-export function isConnected() { return !!_session?.user_npub; }
-export function getPubkey()   { return _session?.user_npub ?? null; }
+export function isConnected()     { return !!_session?.user_npub; }
+export function getPubkey()       { return _session?.user_npub ?? null; }
+export function getMobi()         { return _session?.mobi ?? null; }
+export function getProfile()      { return _session?.profile ?? null; }
 
-/** Short display: first 8 + "…" + last 4 chars. */
+/**
+ * Best available display name, in priority order:
+ *   mobi number → Nostr display_name/name → short pubkey
+ */
 export function getPubkeyDisplay() {
+  if (_session?.mobi)            return _session.mobi;
+  if (_session?.profile?.name)   return _session.profile.name;
   const p = getPubkey();
   return p ? p.slice(0, 8) + '…' + p.slice(-4) : null;
 }
@@ -140,13 +147,27 @@ export async function waitForGateAuth(timeoutMs = 300_000) {
       _gateResolve = null;
       _gateReject  = null;
       try {
-        // Decrypt and verify nonce — proves wallet holds the private key
-        const plain = _wasm.nip44_decrypt(_session.eph_nsec, event.pubkey, event.content);
-        if (plain !== `obiverse.net::${_session.nonce}`) {
+        // Decrypt and verify nonce — proves wallet holds the private key.
+        // Payload: "obiverse.net::{nonce}" (legacy)
+        //       or "obiverse.net::{nonce}::{mobi}" (bunker v2+)
+        const plain  = _wasm.nip44_decrypt(_session.eph_nsec, event.pubkey, event.content);
+        const parts  = plain.split('::');
+        const prefix = parts[0];
+        const nonce  = parts[1];
+        const mobi   = parts[2] || null;   // optional mobi number from bunker
+
+        if (prefix !== 'obiverse.net' || nonce !== _session.nonce) {
           throw new Error('Nonce mismatch — rejecting');
         }
+
         _session.user_npub = event.pubkey;
+        if (mobi) _session.mobi = mobi;
         await _saveSession();
+
+        // Background: fetch Nostr profile (KIND 0) for display name + avatar.
+        // Fire-and-forget — never blocks auth resolution.
+        _fetchAndCacheProfile(event.pubkey).catch(() => {});
+
         resolve(event.pubkey);
       } catch (e) {
         reject(e);
@@ -172,6 +193,10 @@ export async function restoreSession() {
     const saved = await idb.loadNostrSession();
     if (!saved?.user_npub) return null;
     _session = saved;
+    // Refresh profile in background if we don't already have it cached
+    if (!_session.profile) {
+      _fetchAndCacheProfile(_session.user_npub).catch(() => {});
+    }
     return _session.user_npub;
   } catch { return null; }
 }
@@ -186,6 +211,50 @@ export async function disconnect() {
   _gateResolve = null;
   _gateReject  = null;
   await idb.clearNostrSession();
+}
+
+// ── Profile ───────────────────────────────────────────────────────────────
+
+/**
+ * Fetch KIND 0 (profile metadata) for a pubkey and cache in session.
+ * Populates _session.profile = { name, picture, lud16, nip05, about }.
+ * Called automatically after GATE auth and on session restore.
+ */
+async function _fetchAndCacheProfile(pubkey) {
+  try {
+    await _connectRelay(_session?.relay ?? RELAYS[0]).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return;
+
+    const profile = await new Promise((resolve) => {
+      const subId = Math.random().toString(36).slice(2, 10);
+      const timer = setTimeout(() => { _subCallbacks.delete(subId); resolve(null); }, 5000);
+
+      _subCallbacks.set(subId, {
+        onEvent(ev) {
+          clearTimeout(timer);
+          _subCallbacks.delete(subId);
+          try {
+            const m = JSON.parse(ev.content || '{}');
+            resolve({
+              name:    m.display_name || m.name || null,
+              picture: m.picture || null,
+              lud16:   m.lud16 || null,
+              nip05:   m.nip05 || null,
+              about:   m.about || null,
+            });
+          } catch { resolve(null); }
+        },
+        onEose() { _subCallbacks.delete(subId); resolve(null); },
+      });
+
+      _ws.send(JSON.stringify(['REQ', subId, { kinds: [0], authors: [pubkey], limit: 1 }]));
+    });
+
+    if (profile && _session) {
+      _session.profile = profile;
+      await _saveSession();
+    }
+  } catch {}
 }
 
 // ── Internal: relay ───────────────────────────────────────────────────────

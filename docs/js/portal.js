@@ -59,8 +59,33 @@ async function _render() {
   }
 
   // ── Identity ──────────────────────────────────────────────────────────
+  const profile = nostr.getProfile();
+  const mobi    = nostr.getMobi();
   const display = nostr.getPubkeyDisplay() ?? (nostr.getPubkey()?.slice(0, 12) + '…');
+
+  // Avatar: profile picture or deterministic geometric placeholder
+  const avatarEl = document.getElementById('portal-avatar');
+  if (avatarEl) {
+    if (profile?.picture) {
+      avatarEl.innerHTML =
+        `<img src="${_esc(profile.picture)}" alt="avatar"
+              style="width:100%;height:100%;object-fit:cover;border-radius:50%"
+              onerror="this.parentElement.textContent='◉'">`;
+    } else {
+      avatarEl.textContent = '◉';
+    }
+  }
+
+  // Name: mobi > display_name > short pubkey
   document.getElementById('portal-pubkey').textContent = display;
+
+  // NIP-05 or mobi badge below the name
+  const badgeEl = document.getElementById('portal-identity-badge');
+  if (badgeEl) {
+    const badge = mobi ?? profile?.nip05 ?? null;
+    badgeEl.textContent = badge ?? '';
+    badgeEl.hidden = !badge;
+  }
 
   const { relay, connected } = nostr.getRelayStatus();
   document.getElementById('portal-relay').textContent = relay.replace('wss://', '');
