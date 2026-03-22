@@ -22,10 +22,22 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/community.css">
 <link rel="stylesheet" href="css/theme-toggle.css">
+<link rel="stylesheet" href="css/portal.css">
 </head>
 <body>
 
 <div id="comm-top-progress"></div>
+
+<!-- ── Site nav ─────────────────────────────────────────────────────────── -->
+<nav class="site-nav" aria-label="Site navigation">
+  <a class="site-nav-brand" href="index.html">◈ LETTERVERSE</a>
+  <a class="site-nav-link" href="index.html">Library</a>
+  <span class="site-nav-sep">·</span>
+  <a class="site-nav-link active" href="community.html">Community</a>
+  <button class="site-nav-identity" id="comm-identity-btn" title="Your account" hidden>
+    <span id="comm-identity-dot">·</span>
+  </button>
+</nav>
 
 <!-- ── Header ──────────────────────────────────────────────────────────── -->
 <header class="comm-header">
@@ -78,6 +90,15 @@
 
 </main>
 
+<!-- ── Support section ──────────────────────────────────────────────────── -->
+<div class="comm-support">
+  <div class="comm-support-label">SUPPORT THE LIBRARY</div>
+  <p class="comm-support-sub">Every letter is free, forever.<br>Patronage powers the mission.</p>
+  <canvas id="comm-zap-qr"></canvas>
+  <br>
+  <a href="lightning:120941092081@breez.tips" class="comm-support-addr">&#9889;&ensp;120941092081@breez.tips</a>
+</div>
+
 <footer class="comm-footer">
   <a href="index.html">The Epistolary Library</a>
   &ensp;&middot;&ensp;
@@ -85,6 +106,58 @@
   &ensp;&middot;&ensp;
   <a href="lightning:120941092081@breez.tips" class="comm-footer-zap">&#9889; Support the library</a>
 </footer>
+
+<!-- ── Portal overlay ───────────────────────────────────────────────────── -->
+<div id="portal-overlay" hidden>
+  <div id="portal" role="dialog" aria-modal="true" aria-label="Your Library">
+    <div class="portal-header">
+      <span class="portal-header-title">YOUR LIBRARY</span>
+      <button class="portal-close" id="portal-close" aria-label="Close">&times;</button>
+    </div>
+    <section class="portal-section portal-identity-section">
+      <div class="portal-avatar">&#9673;</div>
+      <div class="portal-pubkey-display" id="portal-pubkey">&mdash;</div>
+      <div class="portal-relay-line">
+        <span id="portal-relay-dot" class="portal-relay-dot"></span>
+        <span id="portal-relay">&mdash;</span>
+      </div>
+    </section>
+    <section class="portal-section portal-stats-section">
+      <div class="portal-stat">
+        <div class="portal-stat-n" id="portal-stat-letters">&mdash;</div>
+        <div class="portal-stat-label">letters read</div>
+      </div>
+      <div class="portal-stat">
+        <div class="portal-stat-n" id="portal-stat-started">&mdash;</div>
+        <div class="portal-stat-label">books started</div>
+      </div>
+      <div class="portal-stat">
+        <div class="portal-stat-n" id="portal-stat-completed">&mdash;</div>
+        <div class="portal-stat-label">completed</div>
+      </div>
+    </section>
+    <section class="portal-section">
+      <div class="portal-section-label">YOUR SHELF &mdash; 33 TREATISES</div>
+      <div id="portal-shelf" class="portal-shelf"></div>
+    </section>
+    <section class="portal-section" id="portal-attests-section" hidden>
+      <div class="portal-section-label">RELAY RECORD &middot; ATTESTATIONS</div>
+      <div id="portal-attests-list"></div>
+    </section>
+    <section class="portal-section portal-lightning-section">
+      <div class="portal-section-label">SUPPORT THE LIBRARY</div>
+      <p class="portal-lightning-sub">Every letter is free, forever.<br>Patronage powers the mission.</p>
+      <a href="lightning:120941092081@breez.tips" class="portal-zap-btn">&#9889;&ensp;120941092081@breez.tips</a>
+      <div class="portal-qr-wrap">
+        <canvas id="portal-zap-qr"></canvas>
+        <span class="portal-qr-hint">SCAN TO ZAP</span>
+      </div>
+    </section>
+    <section class="portal-section portal-danger-section">
+      <button class="portal-disconnect-btn" id="portal-disconnect-btn">Disconnect Wallet</button>
+    </section>
+  </div>
+</div>
 
 <!-- ── Compose overlay (Phase 4) ───────────────────────────────────────── -->
 <div id="compose-overlay" hidden aria-modal="true" role="dialog" aria-label="New post">

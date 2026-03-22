@@ -81,6 +81,15 @@ async function _render() {
   // ── Shelf ─────────────────────────────────────────────────────────────
   _renderShelf(lettersByBook, attestations);
 
+  // ── Lightning QR ───────────────────────────────────────────────────────
+  const qrCanvas = document.getElementById('portal-zap-qr');
+  if (qrCanvas) {
+    try {
+      await nostr.renderQR(qrCanvas, 'lightning:120941092081@breez.tips', { scale: 3 });
+      qrCanvas.style.display = 'block';
+    } catch {}
+  }
+
   // ── Attestations list ─────────────────────────────────────────────────
   const attestSection = document.getElementById('portal-attests-section');
   if (attestations.length > 0) {

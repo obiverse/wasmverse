@@ -19,7 +19,7 @@
 .comm-header {
   max-width: 720px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 1.5rem;
+  padding: calc(2rem + 40px) 1.5rem 1.5rem;
   position: relative;
 }
 
@@ -385,9 +385,53 @@
 .comm-footer a:hover { color: var(--gold-bright); }
 .comm-footer-zap { color: var(--gold-dim) !important; }
 
+/* ── Community support QR ──────────────────── */
+.comm-support {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.comm-support-label {
+  font-family: var(--font-code);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  margin-bottom: 0.9rem;
+}
+
+.comm-support-sub {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin: 0.5rem 0 1rem;
+  line-height: 1.5;
+}
+
+#comm-zap-qr {
+  image-rendering: pixelated;
+  max-width: 140px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: none;
+  margin: 0 auto 0.5rem;
+}
+
+.comm-support-addr {
+  font-family: var(--font-code);
+  font-size: 0.62rem;
+  color: var(--gold-dim);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.comm-support-addr:hover { color: var(--gold-bright); }
+
 /* ── Responsive ────────────────────────────── */
 @media (max-width: 600px) {
-  .comm-header { padding: 1.5rem 1rem 1rem; }
+  .comm-header { padding: calc(1.5rem + 40px) 1rem 1rem; }
   .comm-tabs { padding: 0 1rem; }
   .comm-main { padding: 1.2rem 1rem 4rem; }
   .comm-tab { padding: 0.65rem 0.75rem; font-size: 0.68rem; }

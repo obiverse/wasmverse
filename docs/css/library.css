@@ -18,7 +18,7 @@
 .hero {
   position: relative;
   text-align: center;
-  padding: 8vh 2rem 3vh;
+  padding: calc(8vh + 40px) 2rem 3vh;
   z-index: 1;
 }
 

@@ -10,7 +10,8 @@
    Gravity: score = (sats^0.7 + replies*15 + reactions*5) / (age+2)^1.8
    ═══════════════════════════════════════════════════════════════════════ */
 
-import * as nostr from './nostr-shell.js';
+import * as nostr  from './nostr-shell.js';
+import * as portal from './portal.js';
 
 const RELAYS     = ['wss://relay.primal.net', 'wss://nos.lol', 'wss://relay.nostr.band'];
 const TAG        = 'letterverse';
@@ -589,6 +590,24 @@ async function init() {
   // Restore nostr session (for compose + reply buttons)
   await nostr.restoreSession().catch(() => {});
 
+  // ── Portal wiring ─────────────────────────────────────────────────────
+  document.getElementById('portal-close')?.addEventListener('click', portal.close);
+  document.getElementById('portal-disconnect-btn')?.addEventListener('click', async () => {
+    await nostr.disconnect();
+    portal.close();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !document.getElementById('portal-overlay')?.hidden) portal.close();
+  });
+
+  // ── Community QR (fire-and-forget — never blocks relay connect) ───────
+  const commQr = document.getElementById('comm-zap-qr');
+  if (commQr) {
+    nostr.renderQR(commQr, 'lightning:120941092081@breez.tips', { scale: 3 })
+      .then(() => { commQr.style.display = 'block'; })
+      .catch(() => {});
+  }
+
   // Scroll progress bar
   window.addEventListener('scroll', () => {
     const dh = document.documentElement.scrollHeight - window.innerHeight;
@@ -616,6 +635,15 @@ async function init() {
   if (nostr.isConnected()) {
     const fab = document.getElementById('compose-fab');
     if (fab) { fab.hidden = false; fab.addEventListener('click', () => { populateTopicSelect(); openCompose(); }); }
+
+    // Identity button in site nav → opens portal
+    const identityBtn = document.getElementById('comm-identity-btn');
+    if (identityBtn) {
+      identityBtn.hidden = false;
+      const dot = document.getElementById('comm-identity-dot');
+      if (dot) { dot.textContent = '◉'; dot.className = 'nav-dot-live'; }
+      identityBtn.addEventListener('click', () => portal.open());
+    }
   }
 
   const loading = document.getElementById('comm-loading');

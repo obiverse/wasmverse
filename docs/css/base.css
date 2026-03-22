@@ -32,6 +32,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
 
 html {
   scroll-behavior: smooth;
@@ -114,6 +115,65 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
+
+/* ═══════════════════════════════════════════════
+   SITE NAV — Slim fixed top bar (index + community)
+   ═══════════════════════════════════════════════ */
+
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 1.25rem;
+  height: 40px;
+  background: rgba(6, 6, 14, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-subtle);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.site-nav-brand {
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-right: auto;
+  text-decoration: none;
+}
+
+.site-nav-link {
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.site-nav-link:hover { color: var(--gold-bright); background: rgba(201,169,110,0.08); }
+.site-nav-link.active { color: var(--gold-bright); }
+
+.site-nav-sep { color: var(--border); user-select: none; }
+
+.site-nav-identity {
+  margin-left: auto;
+  background: none;
+  border: 1px solid rgba(201,169,110,0.25);
+  border-radius: 99px;
+  color: var(--gold-dim);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.6rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.site-nav-identity:hover { border-color: var(--gold-dim); color: var(--gold-bright); }
+.site-nav-identity .nav-dot-live { color: #4ade80; }
 
 /* ═══════════════════════════════════════════════
    REDUCED MOTION — Respect vestibular preferences
