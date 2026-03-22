@@ -764,3 +764,14 @@
   border-color: rgba(201,169,110,0.4);
   background: rgba(201,169,110,0.06);
 }
+
+/* ── Community pill — distinct from lab, has network feel ── */
+.community-pill {
+  border-color: rgba(201,169,110,0.35);
+  background: rgba(201,169,110,0.05);
+}
+.community-pill:hover {
+  border-color: rgba(201,169,110,0.65);
+  background: rgba(201,169,110,0.1);
+}
+.community-pill .compass-icon { color: var(--gold-bright); }

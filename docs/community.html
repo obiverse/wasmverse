@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Commons — Letterverse Community</title>
+<meta name="description" content="Ideas, questions, and insights from readers of the Epistolary Library. Ranked by zaps. Powered by Nostr.">
+<meta name="theme-color" content="#0a0a14">
+<link rel="canonical" href="https://obiverse.github.io/wasmverse/community.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Commons — Letterverse Community">
+<meta property="og:description" content="Discuss the letters. Zap the insights. Build the African knowledge economy.">
+<meta property="og:image" content="https://obiverse.github.io/wasmverse/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/community.css">
+<link rel="stylesheet" href="css/theme-toggle.css">
+</head>
+<body>
+
+<div id="comm-top-progress"></div>
+
+<!-- ── Header ──────────────────────────────────────────────────────────── -->
+<header class="comm-header">
+  <a href="index.html" class="comm-back">&larr; LIBRARY</a>
+  <div class="comm-hero">
+    <h1 class="comm-title">The Commons</h1>
+    <p class="comm-sub">Ideas from readers of the Epistolary Library &middot; Ranked by zaps &middot; Powered by Nostr</p>
+  </div>
+</header>
+
+<!-- ── Tab strip ───────────────────────────────────────────────────────── -->
+<nav class="comm-tabs" id="comm-tabs" aria-label="Feed views">
+  <button class="comm-tab active" data-tab="hot">&#9889; Hot</button>
+  <button class="comm-tab" data-tab="new">&#9670; New</button>
+  <button class="comm-tab" data-tab="topics">&#9671; Topics</button>
+</nav>
+
+<!-- ── Feed ────────────────────────────────────────────────────────────── -->
+<main class="comm-main" id="comm-main">
+
+  <!-- Loading state -->
+  <div class="comm-loading" id="comm-loading">
+    <div class="comm-spinner"></div>
+    <p>Connecting to the relay&hellip;</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="comm-empty" id="comm-error" hidden>
+    <p class="comm-empty-icon">&#9670;</p>
+    <p class="comm-empty-title">Relay unreachable</p>
+    <p class="comm-empty-sub">Could not connect to the Nostr network. Check your connection and refresh.</p>
+  </div>
+
+  <!-- Feed: post cards injected here -->
+  <div id="comm-feed" hidden></div>
+
+  <!-- Empty state: no posts yet -->
+  <div class="comm-empty" id="comm-empty" hidden>
+    <p class="comm-empty-icon">&#9670;</p>
+    <p class="comm-empty-title">The commons awaits its first voice</p>
+    <p class="comm-empty-sub">When you read a letter and a thought strikes, share it using the &nearr; button in the reader. It will appear here.</p>
+    <div class="comm-starters" id="comm-starters"></div>
+  </div>
+
+  <!-- Topics tab view -->
+  <div id="comm-topics-view" hidden>
+    <p class="comm-topics-label">DISCUSSIONS BY TREATISE</p>
+    <div class="comm-topic-grid" id="comm-topic-grid"></div>
+  </div>
+
+</main>
+
+<footer class="comm-footer">
+  <a href="index.html">The Epistolary Library</a>
+  &ensp;&middot;&ensp;
+  <span>Every post lives on Nostr &mdash; no server, no permission needed</span>
+  &ensp;&middot;&ensp;
+  <a href="lightning:120941092081@breez.tips" class="comm-footer-zap">&#9889; Support the library</a>
+</footer>
+
+<script type="module" src="js/community.js"></script>
+<script src="pwa.js"></script>
+</body>
+</html>
