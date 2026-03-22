@@ -17,6 +17,70 @@ import * as nostr from './nostr-shell.js';
 
 export const LIGHTNING_ADDR = 'letterverse@breez.tips';
 
+// ── LNURL bech32 encoding ─────────────────────────────────────────────────
+// Lightning Addresses resolve to LNURL-pay endpoints.
+// The QR code must encode the bech32 LNURL, not "lightning:user@domain".
+// "lightning:" prefix is for bolt11 invoices — wallets like MUUN reject it.
+//
+//   letterverse@breez.tips
+//     → https://breez.tips/.well-known/lnurlp/letterverse
+//     → bech32("lnurl", urlBytes)
+//     → LNURL1DP68GURN8GHJ7…  (what goes in the QR)
+
+const _CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+const _GEN     = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3];
+
+function _polymod(values) {
+  let chk = 1;
+  for (const v of values) {
+    const b = chk >> 25;
+    chk = ((chk & 0x1ffffff) << 5) ^ v;
+    for (let i = 0; i < 5; i++) if ((b >> i) & 1) chk ^= _GEN[i];
+  }
+  return chk;
+}
+
+function _hrpExpand(hrp) {
+  const out = [];
+  for (const c of hrp) out.push(c.charCodeAt(0) >> 5);
+  out.push(0);
+  for (const c of hrp) out.push(c.charCodeAt(0) & 31);
+  return out;
+}
+
+function _checksum(hrp, data) {
+  const poly = _polymod(_hrpExpand(hrp).concat(data, [0,0,0,0,0,0])) ^ 1;
+  return Array.from({length:6}, (_, i) => (poly >> (5 * (5 - i))) & 31);
+}
+
+function _to5bit(bytes) {
+  let acc = 0, bits = 0;
+  const out = [];
+  for (const b of bytes) {
+    acc = (acc << 8) | b;
+    bits += 8;
+    while (bits >= 5) { bits -= 5; out.push((acc >> bits) & 31); }
+  }
+  if (bits > 0) out.push((acc << (5 - bits)) & 31);
+  return out;
+}
+
+/**
+ * Encode a Lightning Address as a bech32 LNURL string.
+ * This is what wallets actually scan — not "lightning:user@domain".
+ *
+ * @param {string} addr  e.g. "letterverse@breez.tips"
+ * @returns {string}     e.g. "LNURL1DP68GURN8GHJ7MR…"
+ */
+export function lnurlEncode(addr) {
+  const [user, domain] = addr.split('@');
+  const url   = `https://${domain}/.well-known/lnurlp/${user}`;
+  const bytes = new TextEncoder().encode(url);
+  const data  = _to5bit(bytes);
+  const hrp   = 'lnurl';
+  return (hrp + '1' + [...data, ..._checksum(hrp, data)].map(x => _CHARSET[x]).join('')).toUpperCase();
+}
+
 const OVERLAY_ID = 'lv-connect-overlay';
 
 /**
@@ -103,8 +167,10 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
 export function showLightningDialog(addr = LIGHTNING_ADDR) {
   document.getElementById('lv-lightning-overlay')?.remove();
 
-  const lnUri  = `lightning:${addr}`;
-  const lnurlp = `https://lightningaddress.me/?address=${encodeURIComponent(addr)}`;
+  // QR encodes the bech32 LNURL — universally understood by Lightning wallets.
+  // "lightning:user@domain" is NOT a valid QR format; it's for bolt11 invoices.
+  const lnurl = lnurlEncode(addr);
+  const lnUri = `lightning:${addr}`; // kept only as last-resort app deeplink
 
   const overlay = document.createElement('div');
   overlay.id = 'lv-lightning-overlay';
@@ -116,11 +182,11 @@ export function showLightningDialog(addr = LIGHTNING_ADDR) {
       <button class="lv-lightning-close" id="lv-lightning-close" aria-label="Close">&times;</button>
       <div class="lv-lightning-title">SUPPORT THE LIBRARY</div>
       <canvas class="lv-lightning-qr" id="lv-lightning-qr"></canvas>
+      <p class="lv-lightning-sub">Scan with any Lightning wallet</p>
       <div class="lv-lightning-addr-row">
         <span class="lv-lightning-addr" id="lv-lightning-addr">${addr}</span>
         <button class="lv-lightning-copy" id="lv-lightning-copy">Copy</button>
       </div>
-      <p class="lv-lightning-sub">Scan with any Lightning wallet</p>
       <a class="lv-lightning-open" href="${lnUri}" id="lv-lightning-open">Open in wallet app ↗</a>
     </div>
   `;
@@ -149,9 +215,10 @@ export function showLightningDialog(addr = LIGHTNING_ADDR) {
     }
   });
 
-  // Render QR (fire-and-forget)
+  // QR encodes the bech32 LNURL — NOT the lightning: URI.
+  // Wallets resolve LNURL → fetch invoice → pay. Works with MUUN, Phoenix, etc.
   const canvas = document.getElementById('lv-lightning-qr');
-  nostr.renderQR(canvas, lnUri, { scale: 4 })
+  nostr.renderQR(canvas, lnurl, { scale: 4, light: 0xffffff })
     .then(() => { canvas.style.display = 'block'; })
     .catch(() => {});
 }

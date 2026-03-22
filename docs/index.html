@@ -315,7 +315,7 @@
 /* ── Nostr Connect UI + Portal ── */
 import * as nostr  from './js/nostr-shell.js';
 import * as portal from './js/portal.js';
-import { wireLightningLinks } from './js/connect.js';
+import { wireLightningLinks, lnurlEncode, LIGHTNING_ADDR } from './js/connect.js';
 
 const modal     = document.getElementById('nostr-modal');
 const btn       = document.getElementById('identity-btn');
@@ -346,7 +346,7 @@ wireLightningLinks();
   // Render Lightning QR in hero — fire-and-forget, never blocks UI
   const heroQr = document.getElementById('hero-zap-qr');
   if (heroQr) {
-    nostr.renderQR(heroQr, 'lightning:letterverse@breez.tips', { scale: 3 })
+    nostr.renderQR(heroQr, lnurlEncode(LIGHTNING_ADDR), { scale: 3, light: 0xffffff })
       .then(() => { heroQr.style.display = 'block'; })
       .catch(() => {});
   }

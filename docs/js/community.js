@@ -12,7 +12,7 @@
 
 import * as nostr  from './nostr-shell.js';
 import * as portal from './portal.js';
-import { openConnectOverlay, wireLightningLinks, showLightningDialog, LIGHTNING_ADDR } from './connect.js';
+import { openConnectOverlay, wireLightningLinks, showLightningDialog, lnurlEncode, LIGHTNING_ADDR } from './connect.js';
 
 const RELAYS     = ['wss://relay.primal.net', 'wss://nos.lol', 'wss://relay.nostr.band'];
 const TAG        = 'letterverse';
@@ -633,7 +633,7 @@ async function init() {
   // ── Community QR (fire-and-forget — never blocks relay connect) ───────
   const commQr = document.getElementById('comm-zap-qr');
   if (commQr) {
-    nostr.renderQR(commQr, `lightning:${LIGHTNING_ADDR}`, { scale: 3 })
+    nostr.renderQR(commQr, lnurlEncode(LIGHTNING_ADDR), { scale: 3, light: 0xffffff })
       .then(() => { commQr.style.display = 'block'; })
       .catch(() => {});
   }

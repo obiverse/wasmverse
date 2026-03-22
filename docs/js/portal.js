@@ -17,6 +17,7 @@
 
 import * as idb   from './idb.js';
 import * as nostr from './nostr-shell.js';
+import { lnurlEncode, LIGHTNING_ADDR } from './connect.js';
 
 let _manifest = null;
 
@@ -86,7 +87,7 @@ async function _render() {
   const qrCanvas = document.getElementById('portal-zap-qr');
   if (qrCanvas) {
     try {
-      await nostr.renderQR(qrCanvas, 'lightning:letterverse@breez.tips', { scale: 3 });
+      await nostr.renderQR(qrCanvas, lnurlEncode(LIGHTNING_ADDR), { scale: 3, light: 0xffffff });
       qrCanvas.style.display = 'block';
     } catch {}
   }
