@@ -164,20 +164,44 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
   })();
 }
 
+// ── LNURL-pay: fetch bolt11 invoice from a Lightning Address ─────────────
+// Two HTTP calls, fully client-side — no backend needed.
+// Step 1: fetch metadata + callback from /.well-known/lnurlp/{user}
+// Step 2: call callback?amount={msats} → get bolt11 invoice
+// MUUN can scan the resulting bolt11 QR code.
+async function _fetchBolt11(addr, sats) {
+  const [user, domain] = addr.split('@');
+  if (!user || !domain) throw new Error('Invalid address');
+  const meta = await fetch(`https://${domain}/.well-known/lnurlp/${user}`)
+    .then(r => { if (!r.ok) throw new Error('Endpoint unreachable'); return r.json(); });
+  const msats = sats * 1000;
+  if (meta.minSendable && msats < meta.minSendable)
+    throw new Error(`Min ${meta.minSendable / 1000} sats`);
+  if (meta.maxSendable && msats > meta.maxSendable)
+    throw new Error(`Max ${meta.maxSendable / 1000} sats`);
+  const inv = await fetch(`${meta.callback}?amount=${msats}`).then(r => r.json());
+  if (!inv.pr) throw new Error('No invoice returned');
+  return inv.pr;
+}
+
 /**
  * Show a wallet-agnostic Lightning payment dialog.
- * Renders a QR code + copyable address instead of opening lightning: URI directly.
- * Works with any Lightning wallet (mobile scan, desktop copy-paste, or URI handler).
+ *
+ * Layout:
+ *   1. LNURL QR   — Phoenix, Breez, Zeus, Strike: scan directly
+ *   2. Address    — copy and paste into any Lightning Address-aware wallet
+ *   3. MUUN zone  — pick amount → fetch bolt11 via LNURL-pay → bolt11 QR
+ *
+ * MUUN only accepts bolt11 invoices. The LNURL-pay HTTP flow generates one
+ * client-side in ~2 round trips. No backend server needed.
  *
  * @param {string} [addr]  Lightning address (defaults to LIGHTNING_ADDR)
  */
 export function showLightningDialog(addr = LIGHTNING_ADDR) {
   document.getElementById('lv-lightning-overlay')?.remove();
 
-  // QR encodes the bech32 LNURL — universally understood by Lightning wallets.
-  // "lightning:user@domain" is NOT a valid QR format; it's for bolt11 invoices.
   const lnurl = lnurlEncode(addr);
-  const lnUri = `lightning:${addr}`; // kept only as last-resort app deeplink
+  const lnUri = `lightning:${addr}`;
 
   const overlay = document.createElement('div');
   overlay.id = 'lv-lightning-overlay';
@@ -189,25 +213,32 @@ export function showLightningDialog(addr = LIGHTNING_ADDR) {
       <button class="lv-lightning-close" id="lv-lightning-close" aria-label="Close">&times;</button>
       <div class="lv-lightning-title">SUPPORT THE LIBRARY</div>
 
-      <!-- QR — primary for scan-capable wallets -->
+      <!-- Section 1: LNURL QR — Phoenix, Breez, Zeus, Strike -->
       <div class="lv-lightning-qr-section">
         <canvas class="lv-lightning-qr" id="lv-lightning-qr"></canvas>
-        <div class="lv-lightning-qr-label">Scan with Phoenix, Breez, Zeus, or Strike</div>
+        <div class="lv-lightning-qr-label">Phoenix &middot; Breez &middot; Zeus &middot; Strike — scan QR</div>
       </div>
 
-      <!-- Address + copy -->
+      <!-- Section 2: address copy -->
       <div class="lv-lightning-addr-block">
         <div class="lv-lightning-addr-text">${addr}</div>
         <button class="lv-lightning-copy-btn" id="lv-lightning-copy">&#9889;&ensp;Copy Address</button>
       </div>
 
-      <!-- Wallet recommendations -->
-      <p class="lv-lightning-muun-hint">
-        <strong>Phoenix</strong> or <strong>Breez</strong> recommended &mdash; free, instant setup.<br>
-        MUUN does not support Lightning Addresses.
-      </p>
+      <!-- Section 3: MUUN — generate bolt11 invoice by amount -->
+      <div class="lv-lightning-muun-section">
+        <div class="lv-lightning-muun-label">MUUN — choose an amount to generate invoice</div>
+        <div class="lv-lightning-muun-amts">
+          <button class="lv-ln-amt" data-sats="21">21</button>
+          <button class="lv-ln-amt" data-sats="210">210</button>
+          <button class="lv-ln-amt" data-sats="2100">2100</button>
+          <button class="lv-ln-amt" data-sats="21000">21k</button>
+        </div>
+        <p class="lv-lightning-muun-status" id="lv-muun-status"></p>
+        <canvas class="lv-lightning-qr" id="lv-muun-qr" style="display:none;margin-top:0.4rem"></canvas>
+        <button class="lv-lightning-copy-btn" id="lv-muun-copy" style="display:none;margin-top:0.4rem;font-size:0.7rem;padding:0.4rem 0.8rem">Copy Invoice</button>
+      </div>
 
-      <!-- Mobile: open directly in wallet app -->
       <a class="lv-lightning-open-btn" href="${lnUri}" id="lv-lightning-open">Open in Wallet App ↗</a>
     </div>
   `;
@@ -225,23 +256,56 @@ export function showLightningDialog(addr = LIGHTNING_ADDR) {
   overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
   document.addEventListener('keydown', _onKey);
 
-  // Copy button
+  // Copy address button
   document.getElementById('lv-lightning-copy').addEventListener('click', async function() {
     try {
       await navigator.clipboard.writeText(addr);
       this.innerHTML = '✓&ensp;Copied!';
       setTimeout(() => { this.innerHTML = '&#9889;&ensp;Copy Address'; }, 2000);
-    } catch {
-      this.textContent = 'Error';
-    }
+    } catch { this.textContent = 'Error'; }
   });
 
-  // QR encodes the bech32 LNURL — NOT the lightning: URI.
-  // Wallets resolve LNURL → fetch invoice → pay. Works with MUUN, Phoenix, etc.
-  const canvas = document.getElementById('lv-lightning-qr');
-  nostr.renderQR(canvas, lnurl, { scale: 4, light: 0xffffff })
-    .then(() => { canvas.style.display = 'block'; })
+  // LNURL QR (Phoenix / Breez / Zeus / Strike)
+  const qrCanvas = document.getElementById('lv-lightning-qr');
+  nostr.renderQR(qrCanvas, lnurl, { scale: 4, light: 0xffffff })
+    .then(() => { qrCanvas.style.display = 'block'; })
     .catch(() => {});
+
+  // MUUN amount buttons — fetch bolt11 invoice via LNURL-pay
+  let _bolt11 = null;
+  const statusEl  = document.getElementById('lv-muun-status');
+  const muunQr    = document.getElementById('lv-muun-qr');
+  const muunCopy  = document.getElementById('lv-muun-copy');
+
+  overlay.querySelectorAll('.lv-ln-amt').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const sats = parseInt(btn.dataset.sats, 10);
+      overlay.querySelectorAll('.lv-ln-amt').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      statusEl.textContent = 'Fetching invoice…';
+      muunQr.style.display = 'none';
+      muunCopy.style.display = 'none';
+      _bolt11 = null;
+      try {
+        _bolt11 = await _fetchBolt11(addr, sats);
+        statusEl.textContent = `${sats} sats — scan or copy`;
+        await nostr.renderQR(muunQr, _bolt11, { scale: 3 });
+        muunQr.style.display = 'block';
+        muunCopy.style.display = 'block';
+      } catch (e) {
+        statusEl.textContent = e.message || 'Could not fetch invoice';
+      }
+    });
+  });
+
+  muunCopy.addEventListener('click', async function() {
+    if (!_bolt11) return;
+    try {
+      await navigator.clipboard.writeText(_bolt11);
+      this.textContent = '✓ Copied';
+      setTimeout(() => { this.textContent = 'Copy Invoice'; }, 2000);
+    } catch { this.textContent = 'Error'; }
+  });
 }
 
 /**
