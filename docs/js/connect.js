@@ -54,12 +54,19 @@ function _checksum(hrp, data) {
 }
 
 function _to5bit(bytes) {
+  // JavaScript bitwise ops are 32-bit signed. Without masking the accumulator,
+  // it overflows after ~4 bytes and corrupts the bech32 output silently.
+  // Fix: mask acc to only the remaining bits after each extraction.
   let acc = 0, bits = 0;
   const out = [];
   for (const b of bytes) {
-    acc = (acc << 8) | b;
+    acc = ((acc << 8) | b) >>> 0;  // >>> 0 = treat as unsigned 32-bit
     bits += 8;
-    while (bits >= 5) { bits -= 5; out.push((acc >> bits) & 31); }
+    while (bits >= 5) {
+      bits -= 5;
+      out.push((acc >>> bits) & 31);
+    }
+    acc &= (1 << bits) - 1;        // discard already-extracted high bits
   }
   if (bits > 0) out.push((acc << (5 - bits)) & 31);
   return out;
