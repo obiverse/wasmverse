@@ -30,6 +30,7 @@
 <link rel="stylesheet" href="css/reader.css">
 <link rel="stylesheet" href="css/search.css">
 <link rel="stylesheet" href="css/theme-toggle.css">
+<link rel="stylesheet" href="css/portal.css">
 </head>
 <body>
 
@@ -52,7 +53,13 @@
 
   <nav id="sidebar">
     <div id="sidebar-header">
-      <a href="index.html" class="sidebar-back-link">&larr; LIBRARY</a>
+      <div class="sidebar-top-row">
+        <a href="index.html" class="sidebar-back-link">&larr; LIBRARY</a>
+        <button id="reader-identity-btn" class="reader-identity-btn" title="Your account">
+          <span id="reader-identity-dot">·</span>
+          <span id="reader-identity-label">Account</span>
+        </button>
+      </div>
       <h2>Table of Scrolls</h2>
       <div id="reading-progress"><div id="reading-progress-bar"></div></div>
     </div>
@@ -114,6 +121,54 @@
 <div id="chapter-indicator"></div>
 <button id="back-to-top" aria-label="Back to top">&#8593;</button>
 <div id="keyboard-hint">j / k &mdash; next / prev &nbsp;&middot;&nbsp; t &mdash; top &nbsp;&middot;&nbsp; s &mdash; sidebar</div>
+
+<!-- Portal overlay (same structure as index.html — portal.js drives both) -->
+<div id="portal-overlay" hidden>
+  <div id="portal" role="dialog" aria-modal="true" aria-label="Your Library">
+    <div class="portal-header">
+      <span class="portal-header-title">YOUR LIBRARY</span>
+      <button class="portal-close" id="portal-close" aria-label="Close">&times;</button>
+    </div>
+    <section class="portal-section portal-identity-section">
+      <div class="portal-avatar">◉</div>
+      <div class="portal-pubkey-display" id="portal-pubkey">—</div>
+      <div class="portal-relay-line">
+        <span id="portal-relay-dot" class="portal-relay-dot"></span>
+        <span id="portal-relay">—</span>
+      </div>
+    </section>
+    <section class="portal-section portal-stats-section">
+      <div class="portal-stat">
+        <div class="portal-stat-n" id="portal-stat-letters">—</div>
+        <div class="portal-stat-label">letters read</div>
+      </div>
+      <div class="portal-stat">
+        <div class="portal-stat-n" id="portal-stat-started">—</div>
+        <div class="portal-stat-label">books started</div>
+      </div>
+      <div class="portal-stat">
+        <div class="portal-stat-n" id="portal-stat-completed">—</div>
+        <div class="portal-stat-label">completed</div>
+      </div>
+    </section>
+    <section class="portal-section">
+      <div class="portal-section-label">YOUR SHELF — 33 TREATISES</div>
+      <div id="portal-shelf" class="portal-shelf"></div>
+    </section>
+    <section class="portal-section" id="portal-attests-section" hidden>
+      <div class="portal-section-label">RELAY RECORD · ATTESTATIONS</div>
+      <div id="portal-attests-list"></div>
+    </section>
+    <section class="portal-section portal-lightning-section">
+      <div class="portal-section-label">SUPPORT THE LIBRARY</div>
+      <p class="portal-lightning-sub">Every letter is free, forever.<br>Patronage powers the mission.</p>
+      <a href="lightning:120941092081@breez.tips" class="portal-zap-btn">&#9889;&ensp;120941092081@breez.tips</a>
+    </section>
+    <section class="portal-section portal-danger-section">
+      <button class="portal-disconnect-btn" id="portal-disconnect-btn">Disconnect Wallet</button>
+    </section>
+  </div>
+</div>
 
 <script src="js/marked.min.js"></script>
 <script type="module" src="js/reader.js"></script>

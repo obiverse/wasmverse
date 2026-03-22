@@ -5,11 +5,49 @@
    ═══════════════════════════════════════════════ */
 
 import { boot, persist, autoPersist, applyTheme, applyTypography, sessionStart, sessionEnd, getReadingTimeMs } from '../euler-shell.js';
-import * as idb from './idb.js';
-import * as nostr from './nostr-shell.js';
+import * as idb    from './idb.js';
+import * as nostr  from './nostr-shell.js';
+import * as portal from './portal.js';
 
 // Boot euler WASM + restore nostr session (parallel — both are async)
 const [euler] = await Promise.all([boot(), nostr.restoreSession()]);
+
+// ── Reader identity button (sidebar portal access) ────────────────────────
+(function initReaderIdentity() {
+  const btn = document.getElementById('reader-identity-btn');
+  if (!btn) return;
+  const dot = document.getElementById('reader-identity-dot');
+  const lbl = document.getElementById('reader-identity-label');
+
+  function update() {
+    if (nostr.isConnected()) {
+      dot.textContent = '◉';
+      dot.style.color = 'var(--gold-bright)';
+      lbl.textContent = nostr.getPubkeyDisplay() ?? 'Connected';
+      btn.onclick = () => portal.open();
+    } else {
+      dot.textContent = '·';
+      dot.style.color = '';
+      lbl.textContent = 'Account';
+      btn.onclick = () => { window.location.href = 'index.html'; };
+    }
+  }
+  update();
+
+  // Portal close + disconnect
+  document.getElementById('portal-close')?.addEventListener('click', () => portal.close());
+  document.getElementById('portal-overlay')?.addEventListener('click', e => {
+    if (e.target === document.getElementById('portal-overlay')) portal.close();
+  });
+  document.getElementById('portal-disconnect-btn')?.addEventListener('click', async () => {
+    await nostr.disconnect();
+    portal.close();
+    update();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !document.getElementById('portal-overlay')?.hidden) portal.close();
+  });
+})();
 
 // Bridge: ELib compatibility layer over euler
 const ELib = {
