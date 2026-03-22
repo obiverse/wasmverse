@@ -1704,6 +1704,13 @@ async function init() {
     const bookId = params.get('book') || 'wasm';
     currentBookId = bookId;
 
+    // Phase 5: Discuss link → community.html?topic={bookId}
+    const discussLink = document.getElementById('discuss-link');
+    if (discussLink) {
+      discussLink.href = `community.html?topic=${bookId}`;
+      discussLink.hidden = false;
+    }
+
     // Signal SW to prefetch next books in compass path
     if (window.signalReading) window.signalReading(bookId);
 

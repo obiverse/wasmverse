@@ -350,6 +350,54 @@ export async function fetchProgress() {
 // ── Publishing ────────────────────────────────────────────────────────────
 
 /**
+ * Publish a KIND 30023 long-form post to the relay.
+ * Used by the community composer. Returns true on success.
+ */
+export async function publishPost(title, body, bookId) {
+  if (!_session?.user_npub || !_session?.eph_nsec) return false;
+  try {
+    await _connectRelay(_session.relay).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return false;
+    const tags = [
+      ['d',       `community/${Date.now()}`],
+      ['title',   title || body.slice(0, 80)],
+      ['summary', body.slice(0, 280)],
+      ['p',       _session.user_npub],
+      ['t',       'letterverse'],
+      ['t',       'letterverse-community'],
+      ['client',  'Letterverse'],
+    ];
+    if (bookId) tags.push(['t', `letterverse-${bookId}`]);
+    const event = JSON.parse(_wasm.sign_event(_session.eph_nsec, 30023, JSON.stringify(tags), body));
+    _ws.send(JSON.stringify(['EVENT', event]));
+    return true;
+  } catch { return false; }
+}
+
+/**
+ * Publish a KIND 1 reply to another event.
+ * Adds e (parent) and p (parent author) tags — standard NIP-10 reply.
+ * Returns true on success.
+ */
+export async function publishReply(parentId, parentAuthorPubkey, content) {
+  if (!_session?.user_npub || !_session?.eph_nsec) return false;
+  try {
+    await _connectRelay(_session.relay).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return false;
+    const tags = [
+      ['e', parentId, '', 'reply'],
+      ['p', parentAuthorPubkey],
+      ['p', _session.user_npub],
+      ['t', 'letterverse'],
+      ['client', 'Letterverse'],
+    ];
+    const event = JSON.parse(_wasm.sign_event(_session.eph_nsec, 1, JSON.stringify(tags), content));
+    _ws.send(JSON.stringify(['EVENT', event]));
+    return true;
+  } catch { return false; }
+}
+
+/**
  * Publish a KIND 1 note (short-form text note) to the relay.
  * Signed by the ephemeral key, tagged to the user's pubkey.
  * Used for sharing letter excerpts to the Nostr network.

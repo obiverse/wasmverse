@@ -1373,3 +1373,18 @@ body { font-size: var(--font-size, 19px); line-height: var(--line-height, 1.85);
   border-color: rgba(201,169,110,0.55);
   color: var(--gold-bright);
 }
+
+/* ── Discuss link — community shortcut in sidebar ── */
+.discuss-link {
+  display: inline-block;
+  font-family: var(--font-code);
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  margin-top: 0.35rem;
+  padding: 0.15rem 0;
+  transition: color 0.2s;
+}
+.discuss-link:hover { color: var(--gold-bright); }
+.discuss-link[hidden] { display: none; }

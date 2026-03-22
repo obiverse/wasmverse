@@ -1,31 +1,21 @@
 /* ═══════════════════════════════════════════════════════════════════════
    COMMUNITY — The Commons feed
 
-   Phase 1: Read-only feed, no auth required.
-   Fetches KIND 1 + KIND 30023 posts tagged ["t","letterverse"],
-   fetches KIND 9735 zap receipts + KIND 7 reactions + KIND 1 replies,
-   ranks by zap-weighted gravity (HN formula + economic weight),
-   renders Hot / New / Topics tabs.
-
-   Posting: the existing share button in reader.js (KIND 1, tagged
-   "letterverse") automatically seeds this feed — no composer needed yet.
+   Phase 1  Read-only feed, no auth. Hot/New/Topics tabs.
+   Phase 2  Zap button. LNURL-pay → bolt11 invoice → lightning: URI.
+   Phase 3  Thread view (?id=). Replies (KIND 1 with e/p tags).
+   Phase 4  Compose overlay. KIND 30023 long-form post. Auth required.
+   Phase 5  ?topic= URL param pre-filters feed. Reader links land here.
 
    Gravity: score = (sats^0.7 + replies*15 + reactions*5) / (age+2)^1.8
    ═══════════════════════════════════════════════════════════════════════ */
 
-const RELAYS = [
-  'wss://relay.primal.net',
-  'wss://nos.lol',
-  'wss://relay.nostr.band',
-];
+import * as nostr from './nostr-shell.js';
 
-// Tag that all Letterverse posts share (from reader.js publishNote)
-const TAG = 'letterverse';
-
-// Posts older than this are not fetched
+const RELAYS     = ['wss://relay.primal.net', 'wss://nos.lol', 'wss://relay.nostr.band'];
+const TAG        = 'letterverse';
 const SINCE_DAYS = 45;
 
-// Starter prompts shown in the empty state
 const STARTERS = [
   { topic: 'bitcoin',  text: 'How has understanding UTXOs changed how you think about digital ownership?' },
   { topic: 'rust',     text: 'What real problem did the Rust ownership model solve for you personally?' },
@@ -34,19 +24,34 @@ const STARTERS = [
   { topic: 'wealth',   text: 'How does M-Pesa\'s architecture compare structurally to the Lightning Network?' },
 ];
 
-// ── Relay ─────────────────────────────────────────────────────────────────
+const TOPIC_COLORS = {
+  bitcoin:'#f7931a', rust:'#ce412b',  wasm:'#654ff0',    math:'#4a90d9',
+  crypto: '#9b59b6', systems:'#27ae60',wealth:'#e67e22',  enterprise:'#2980b9',
+  governance:'#16a085', rhetoric:'#8e44ad', thought:'#2ecc71', algorithms:'#e74c3c',
+  pwa:'#3498db', euler:'#f39c12', making:'#1abc9c', messages:'#9b59b6',
+  industry:'#e74c3c', manufacturing:'#95a5a6', canvas:'#e91e63',
+};
 
-let _ws   = null;
-let _relay = null;
+// ── Module state ──────────────────────────────────────────────────────────
+let _ws      = null;
+let _relay   = null;
+const _profiles = new Map(); // pubkey → KIND 0 event (or null)
+
+const _state = {
+  posts: [], zapTotals: {}, replyCounts: {}, reactionCounts: {},
+  activeTopic: null,
+};
+
+// ── Relay ─────────────────────────────────────────────────────────────────
 
 async function connectRelay() {
   for (const url of RELAYS) {
     try {
-      await new Promise((resolve, reject) => {
+      await new Promise((res, rej) => {
         const ws = new WebSocket(url);
-        const t  = setTimeout(() => { ws.close(); reject(new Error('timeout')); }, 6000);
-        ws.onopen  = () => { clearTimeout(t); _ws = ws; _relay = url; resolve(); };
-        ws.onerror = () => { clearTimeout(t); reject(new Error('error')); };
+        const t  = setTimeout(() => { ws.close(); rej(); }, 6000);
+        ws.onopen  = () => { clearTimeout(t); _ws = ws; _relay = url; res(); };
+        ws.onerror = () => { clearTimeout(t); rej(); };
       });
       return;
     } catch {}
@@ -54,32 +59,23 @@ async function connectRelay() {
   throw new Error('All relays unreachable');
 }
 
-/**
- * Subscribe and collect events until EOSE (or 8s timeout).
- */
-function subscribe(filter) {
+function subscribe(filter, timeoutMs = 8000) {
   return new Promise(resolve => {
     const events = [];
     const subId  = Math.random().toString(36).slice(2, 10);
-    const timer  = setTimeout(() => {
-      cleanup();
-      resolve(events);
-    }, 8000);
+    const timer  = setTimeout(() => { cleanup(); resolve(events); }, timeoutMs);
 
-    function onMessage(e) {
-      let msg;
-      try { msg = JSON.parse(e.data); } catch { return; }
+    function onMsg(e) {
+      let msg; try { msg = JSON.parse(e.data); } catch { return; }
       if (!Array.isArray(msg)) return;
       if (msg[0] === 'EVENT' && msg[1] === subId && msg[2]) events.push(msg[2]);
-      if (msg[0] === 'EOSE' && msg[1] === subId) { clearTimeout(timer); cleanup(); resolve(events); }
+      if (msg[0] === 'EOSE'  && msg[1] === subId) { clearTimeout(timer); cleanup(); resolve(events); }
     }
-
     function cleanup() {
-      _ws.removeEventListener('message', onMessage);
+      _ws.removeEventListener('message', onMsg);
       try { _ws.send(JSON.stringify(['CLOSE', subId])); } catch {}
     }
-
-    _ws.addEventListener('message', onMessage);
+    _ws.addEventListener('message', onMsg);
     _ws.send(JSON.stringify(['REQ', subId, filter]));
   });
 }
@@ -89,146 +85,196 @@ function subscribe(filter) {
 const SINCE = () => Math.floor(Date.now() / 1000) - SINCE_DAYS * 86400;
 
 async function fetchPosts() {
-  const raw = await subscribe({
-    kinds: [30023, 1],
-    '#t': [TAG],
-    since: SINCE(),
-    limit: 100,
-  });
-
-  // Keep only top-level posts:
-  //   - no "e" tag (not a reply/comment)
-  //   - no "letterverse-attestation" t-tag (not an attestation event)
-  //   - no "book" tag (not a progress event)
+  const raw = await subscribe({ kinds: [30023, 1], '#t': [TAG], since: SINCE(), limit: 100 });
   return raw.filter(ev => {
     const tags  = ev.tags || [];
-    const eTags = tags.filter(t => t[0] === 'e');
-    if (eTags.length > 0) return false;
-    const tVals = tags.filter(t => t[0] === 't').map(t => t[1]);
-    if (tVals.includes('letterverse-attestation')) return false;
-    const hasBook = tags.some(t => t[0] === 'book');
-    if (hasBook) return false;
-    // Must have some content worth showing
+    if (tags.some(t => t[0] === 'e'))                            return false;
+    if (tags.some(t => t[0] === 't' && t[1] === 'letterverse-attestation')) return false;
+    if (tags.some(t => t[0] === 'book'))                         return false;
+    if (tags.some(t => t[0] === 'pct'))                          return false;
     return (ev.content || '').trim().length > 10;
   });
 }
 
-async function fetchInteractions(postIds) {
-  if (!postIds.length) return { zaps: [], reactions: [], replies: [] };
-
+async function fetchInteractions(ids) {
+  if (!ids.length) return { zaps: [], reactions: [], replies: [] };
   const [zaps, rest] = await Promise.all([
-    subscribe({ kinds: [9735], '#e': postIds, limit: 500 }),
-    subscribe({ kinds: [1, 7], '#e': postIds, limit: 500 }),
+    subscribe({ kinds: [9735], '#e': ids, limit: 500 }),
+    subscribe({ kinds: [1, 7], '#e': ids, limit: 500 }),
   ]);
+  return { zaps, reactions: rest.filter(e => e.kind === 7), replies: rest.filter(e => e.kind === 1) };
+}
 
-  const reactions = rest.filter(e => e.kind === 7);
-  const replies   = rest.filter(e => e.kind === 1);
-  return { zaps, reactions, replies };
+async function fetchReplies(parentId) {
+  return subscribe({ kinds: [1], '#e': [parentId], limit: 100 });
+}
+
+async function fetchProfile(pubkey) {
+  if (_profiles.has(pubkey)) return _profiles.get(pubkey);
+  const evs = await subscribe({ kinds: [0], authors: [pubkey], limit: 1 }, 4000);
+  const p = evs[0] || null;
+  _profiles.set(pubkey, p);
+  return p;
 }
 
 // ── Aggregation ───────────────────────────────────────────────────────────
 
 function aggregateZaps(zapEvents) {
-  // KIND 9735 zap receipt: amount is in the "amount" tag (millisats as string)
-  const totals = {};
+  const out = {};
   for (const ev of zapEvents) {
-    const eTag     = ev.tags?.find(t => t[0] === 'e');
-    const amtTag   = ev.tags?.find(t => t[0] === 'amount');
-    if (!eTag) continue;
-    const sats = Math.floor(parseInt(amtTag?.[1] || '0', 10) / 1000);
-    totals[eTag[1]] = (totals[eTag[1]] || 0) + sats;
+    const e = ev.tags?.find(t => t[0] === 'e');
+    const a = ev.tags?.find(t => t[0] === 'amount');
+    if (!e) continue;
+    out[e[1]] = (out[e[1]] || 0) + Math.floor(parseInt(a?.[1] || '0', 10) / 1000);
   }
-  return totals;
+  return out;
 }
 
 function aggregateCounts(events, kind) {
-  const counts = {};
+  const out = {};
   for (const ev of events) {
     if (ev.kind !== kind) continue;
-    const eTag = ev.tags?.find(t => t[0] === 'e');
-    if (!eTag) continue;
-    counts[eTag[1]] = (counts[eTag[1]] || 0) + 1;
+    const e = ev.tags?.find(t => t[0] === 'e');
+    if (!e) continue;
+    out[e[1]] = (out[e[1]] || 0) + 1;
   }
-  return counts;
+  return out;
 }
 
 // ── Ranking ───────────────────────────────────────────────────────────────
 
-function gravity(ev, zapTotals, replyCounts, reactionCounts) {
-  const sats      = zapTotals[ev.id]      || 0;
-  const replies   = replyCounts[ev.id]    || 0;
-  const reactions = reactionCounts[ev.id] || 0;
-  const ageHours  = (Date.now() / 1000 - ev.created_at) / 3600;
-  const signal    = Math.pow(sats, 0.7) + replies * 15 + reactions * 5;
-  return signal / Math.pow(ageHours + 2, 1.8);
+function gravity(ev) {
+  const sats      = _state.zapTotals[ev.id]      || 0;
+  const replies   = _state.replyCounts[ev.id]    || 0;
+  const reactions = _state.reactionCounts[ev.id] || 0;
+  const ageH      = (Date.now() / 1000 - ev.created_at) / 3600;
+  return (Math.pow(sats, 0.7) + replies * 15 + reactions * 5) / Math.pow(ageH + 2, 1.8);
 }
 
 // ── Event parsing ─────────────────────────────────────────────────────────
 
 function getTitle(ev) {
-  // KIND 30023: explicit title tag
   const t = ev.tags?.find(t => t[0] === 'title');
   if (t) return t[1];
-  // KIND 1: first non-empty line, stripped of markdown #
-  const first = (ev.content || '').trim().split('\n')
-    .find(l => l.trim().length > 0) || '';
-  const stripped = first.replace(/^#+\s*/, '').trim();
-  return stripped.length > 100 ? stripped.slice(0, 98) + '…' : stripped;
+  const first = (ev.content || '').trim().split('\n').find(l => l.trim()) || '';
+  const s = first.replace(/^#+\s*/, '').trim();
+  return s.length > 100 ? s.slice(0, 98) + '…' : s;
 }
 
 function getExcerpt(ev) {
-  // KIND 30023: use summary tag
   const s = ev.tags?.find(t => t[0] === 'summary');
   if (s) return s[1].slice(0, 220);
-  // Both: skip the first line (used as title), return the next 220 chars
-  const lines = (ev.content || '').trim().split('\n');
-  const rest  = lines.slice(1).join(' ').replace(/#+\s*/g, '').trim();
+  const rest = (ev.content || '').trim().split('\n').slice(1).join(' ').replace(/#+\s*/g, '').trim();
   return rest.length > 220 ? rest.slice(0, 218) + '…' : rest;
 }
 
 function getBookId(ev) {
-  const t = ev.tags?.find(
-    t => t[0] === 't' && t[1].startsWith('letterverse-') && t[1] !== 'letterverse-community'
-  );
+  const t = ev.tags?.find(t => t[0] === 't' && t[1].startsWith('letterverse-') && t[1] !== 'letterverse-community');
   return t ? t[1].replace('letterverse-', '') : null;
 }
 
-function ageStr(created_at) {
-  const h = (Date.now() / 1000 - created_at) / 3600;
-  if (h < 1)  return `${Math.round(h * 60)}m`;
+function getAuthor(ev) {
+  // Prefer the tagged user_npub (p tag from our publishNote/publishPost)
+  const p = ev.tags?.find(t => t[0] === 'p' && t[1] !== ev.pubkey);
+  return p ? p[1] : ev.pubkey;
+}
+
+function ageStr(ts) {
+  const h = (Date.now() / 1000 - ts) / 3600;
+  if (h < 1) return `${Math.round(h * 60)}m`;
   if (h < 24) return `${Math.round(h)}h`;
   return `${Math.round(h / 24)}d`;
 }
 
-function shortPubkey(pubkey) {
-  return pubkey ? pubkey.slice(0, 8) + '…' + pubkey.slice(-4) : '—';
+function short(pk) { return pk ? pk.slice(0, 8) + '…' + pk.slice(-4) : '—'; }
+function topicColor(id) { return TOPIC_COLORS[id] || 'var(--gold-dim)'; }
+
+// ── LNURL-pay (Phase 2) ───────────────────────────────────────────────────
+
+async function fetchBolt11(lnaddr, sats) {
+  const [user, domain] = (lnaddr || '').split('@');
+  if (!user || !domain) throw new Error('Invalid address');
+  const url = `https://${domain}/.well-known/lnurlp/${user}`;
+  const meta = await fetch(url).then(r => r.json());
+  const msats = sats * 1000;
+  if (msats < (meta.minSendable || 0) || msats > (meta.maxSendable || Infinity))
+    throw new Error(`Amount out of range (${meta.minSendable/1000}–${meta.maxSendable/1000} sats)`);
+  const inv = await fetch(`${meta.callback}?amount=${msats}`).then(r => r.json());
+  if (!inv.pr) throw new Error('No invoice returned');
+  return inv.pr;
 }
 
-// Subtle accent color per topic — gives each post a visual identity
-const TOPIC_COLORS = {
-  bitcoin:  '#f7931a', rust:       '#ce412b', wasm:         '#654ff0',
-  math:     '#4a90d9', crypto:     '#9b59b6', systems:      '#27ae60',
-  wealth:   '#e67e22', enterprise: '#2980b9', governance:   '#16a085',
-  rhetoric: '#8e44ad', thought:    '#2ecc71', algorithms:   '#e74c3c',
-  pwa:      '#3498db', euler:      '#f39c12', making:       '#1abc9c',
-  messages: '#9b59b6', industry:   '#e74c3c', manufacturing: '#95a5a6',
-  canvas:   '#e91e63',
-};
+// ── Zap sheet (Phase 2) ───────────────────────────────────────────────────
 
-function topicColor(bookId) {
-  return TOPIC_COLORS[bookId] || 'var(--gold-dim)';
+function openZapSheet(card, ev) {
+  document.querySelectorAll('.zap-sheet').forEach(s => s.remove());
+
+  const authorPubkey = getAuthor(ev);
+  const sheet = document.createElement('div');
+  sheet.className = 'zap-sheet';
+  sheet.innerHTML =
+    `<div class="zap-header">` +
+      `<span class="zap-title">&#9889; Zap ${short(authorPubkey)}</span>` +
+      `<button class="zap-close">✕</button>` +
+    `</div>` +
+    `<div class="zap-amounts">` +
+      `<button class="zap-amt" data-sats="21">21</button>` +
+      `<button class="zap-amt" data-sats="210">210</button>` +
+      `<button class="zap-amt" data-sats="2100">2100</button>` +
+      `<button class="zap-amt" data-sats="21000">21000</button>` +
+    `</div>` +
+    `<p class="zap-status" id="zap-status">Looking up Lightning address…</p>`;
+
+  card.appendChild(sheet);
+  sheet.querySelector('.zap-close').onclick = () => sheet.remove();
+
+  let lnaddr = null;
+
+  // Fetch author profile for lud16 (non-blocking)
+  fetchProfile(authorPubkey).then(profile => {
+    try {
+      const meta = JSON.parse(profile?.content || '{}');
+      lnaddr = meta.lud16 || meta.lud06 || null;
+    } catch {}
+    const statusEl = sheet.querySelector('#zap-status');
+    statusEl.textContent = lnaddr ? `⚡ ${lnaddr}` : `⚡ 120941092081@breez.tips (library)`;
+    if (!lnaddr) lnaddr = '120941092081@breez.tips';
+  }).catch(() => {
+    lnaddr = '120941092081@breez.tips';
+    sheet.querySelector('#zap-status').textContent = '⚡ 120941092081@breez.tips (library)';
+  });
+
+  sheet.querySelectorAll('.zap-amt').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const sats = parseInt(btn.dataset.sats, 10);
+      const addr = lnaddr || '120941092081@breez.tips';
+      const statusEl = sheet.querySelector('#zap-status');
+      statusEl.textContent = 'Fetching invoice…';
+      btn.disabled = true;
+
+      try {
+        const bolt11 = await fetchBolt11(addr, sats);
+        window.location.href = `lightning:${bolt11}`;
+        statusEl.textContent = `✓ Opening wallet for ${sats} sats…`;
+      } catch {
+        // Fallback: open address directly
+        window.location.href = `lightning:${addr}`;
+        statusEl.textContent = `Opening wallet…`;
+      }
+      setTimeout(() => sheet.remove(), 3000);
+    });
+  });
 }
 
 // ── Rendering ─────────────────────────────────────────────────────────────
 
-function renderCard(ev, zapTotals, replyCounts, reactionCounts) {
-  const title    = getTitle(ev);
-  const excerpt  = getExcerpt(ev);
-  const bookId   = getBookId(ev);
-  const sats     = zapTotals[ev.id] || 0;
-  const replies  = replyCounts[ev.id] || 0;
-  const color    = topicColor(bookId);
-  const nostrUrl = `https://njump.me/${ev.id}`;
+function renderCard(ev) {
+  const title   = getTitle(ev);
+  const excerpt = getExcerpt(ev);
+  const bookId  = getBookId(ev);
+  const sats    = _state.zapTotals[ev.id]   || 0;
+  const replies = _state.replyCounts[ev.id] || 0;
+  const color   = topicColor(bookId);
 
   const card = document.createElement('article');
   card.className = 'post-card';
@@ -237,43 +283,38 @@ function renderCard(ev, zapTotals, replyCounts, reactionCounts) {
 
   card.innerHTML =
     `<div class="post-meta-top">` +
-      `<span class="post-zaps${sats > 0 ? ' has-zaps' : ''}">&#9889; ${sats > 0 ? sats.toLocaleString() + ' sats' : '—'}</span>` +
-      `<span class="post-replies">◈ ${replies}</span>` +
+      `<button class="post-zap-btn${sats > 0 ? ' has-zaps' : ''}" data-action="zap">` +
+        `&#9889; ${sats > 0 ? sats.toLocaleString() + ' sats' : 'Zap'}` +
+      `</button>` +
+      `<button class="post-thread-btn" data-action="thread">◈ ${replies} repl${replies === 1 ? 'y' : 'ies'}</button>` +
       `<span class="post-age">${ageStr(ev.created_at)}</span>` +
     `</div>` +
     `<h2 class="post-title">${_esc(title)}</h2>` +
     (excerpt ? `<p class="post-excerpt">${_esc(excerpt)}</p>` : '') +
     `<div class="post-meta-bottom">` +
-      `<span class="post-author">${shortPubkey(ev.pubkey)}</span>` +
+      `<span class="post-author">${short(getAuthor(ev))}</span>` +
       (bookId ? `<span class="post-topic">#${bookId}</span>` : '') +
-      `<a class="post-nostr-link" href="${nostrUrl}" target="_blank" rel="noopener"` +
-        ` title="View on Nostr" onclick="event.stopPropagation()">&#9670;</a>` +
-    `</div>` +
-    `<div class="post-body" hidden>${_esc(ev.content)}</div>`;
+      `<a class="post-nostr-link" href="https://njump.me/${ev.id}" target="_blank"` +
+        ` rel="noopener" title="View on Nostr" onclick="event.stopPropagation()">&#9670;</a>` +
+    `</div>`;
 
-  // Toggle expanded body on click
-  card.addEventListener('click', () => {
-    const body = card.querySelector('.post-body');
-    const expanded = !body.hidden;
-    body.hidden = expanded;
-    card.classList.toggle('expanded', !expanded);
-    if (!expanded) {
-      const excerpt = card.querySelector('.post-excerpt');
-      if (excerpt) excerpt.style.display = 'none';
-    } else {
-      const excerpt = card.querySelector('.post-excerpt');
-      if (excerpt) excerpt.style.display = '';
-    }
+  card.querySelector('[data-action="zap"]').addEventListener('click', e => {
+    e.stopPropagation(); openZapSheet(card, ev);
   });
+  card.querySelector('[data-action="thread"]').addEventListener('click', e => {
+    e.stopPropagation(); openThread(ev);
+  });
+  card.addEventListener('click', () => openThread(ev));
 
   return card;
 }
 
-function renderFeed(posts, zapTotals, replyCounts, reactionCounts) {
-  const feed = document.getElementById('comm-feed');
+function renderFeed(posts) {
+  const feed  = document.getElementById('comm-feed');
+  const empty = document.getElementById('comm-empty');
   feed.innerHTML = '';
 
-  // Relay status bar
+  // Relay bar
   const bar = document.createElement('div');
   bar.className = 'comm-relay-bar';
   bar.innerHTML =
@@ -283,154 +324,360 @@ function renderFeed(posts, zapTotals, replyCounts, reactionCounts) {
   feed.appendChild(bar);
 
   if (!posts.length) {
-    document.getElementById('comm-empty').hidden = false;
-    document.getElementById('comm-feed').hidden = true;
+    empty.hidden = false;
     renderStarters();
     return;
   }
-
-  for (const ev of posts) {
-    feed.appendChild(renderCard(ev, zapTotals, replyCounts, reactionCounts));
-  }
+  empty.hidden = true;
+  posts.forEach(ev => feed.appendChild(renderCard(ev)));
 }
 
 function renderStarters() {
-  const el = document.getElementById('comm-starters');
-  el.innerHTML = STARTERS.map(s =>
+  document.getElementById('comm-starters').innerHTML = STARTERS.map(s =>
     `<div class="comm-starter">` +
-      `<span class="comm-starter-topic">#${s.topic}</span>` +
-      `${_esc(s.text)}` +
+      `<span class="comm-starter-topic">#${s.topic}</span>${_esc(s.text)}` +
     `</div>`
   ).join('');
 }
 
 function renderTopics(posts) {
   const counts = {};
-  for (const ev of posts) {
-    const id = getBookId(ev);
-    if (id) counts[id] = (counts[id] || 0) + 1;
-  }
-
+  posts.forEach(ev => { const id = getBookId(ev); if (id) counts[id] = (counts[id] || 0) + 1; });
   const grid = document.getElementById('comm-topic-grid');
   const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-
   if (!entries.length) {
-    grid.innerHTML = '<p class="comm-topics-label" style="opacity:0.5">No topic tags yet</p>';
+    grid.innerHTML = '<p class="comm-topics-label" style="opacity:0.4">No topics yet</p>';
     return;
   }
-
   grid.innerHTML = entries.map(([id, n]) =>
-    `<div class="comm-topic-tile" data-topic="${id}">` +
-      `<span class="comm-topic-name">#${id}</span>` +
+    `<div class="comm-topic-tile" data-topic="${id}" style="border-left:3px solid ${topicColor(id)}40">` +
+      `<span class="comm-topic-name" style="color:${topicColor(id)}">#${id}</span>` +
       `<span class="comm-topic-count">${n} post${n !== 1 ? 's' : ''}</span>` +
     `</div>`
   ).join('');
-
-  // Topic click → filter Hot tab
-  grid.querySelectorAll('.comm-topic-tile').forEach(tile => {
-    tile.addEventListener('click', () => {
-      window._commState.activeTopic = tile.dataset.topic;
-      switchTab('hot');
-    });
+  grid.querySelectorAll('.comm-topic-tile').forEach(t => {
+    t.addEventListener('click', () => { _state.activeTopic = t.dataset.topic; switchTab('hot'); });
   });
+}
+
+// ── Thread view (Phase 3) ─────────────────────────────────────────────────
+
+async function openThread(ev) {
+  // Push ?id= to URL without reload
+  history.pushState(null, '', `?id=${ev.id}`);
+  showThreadView(ev);
+  const replies = await fetchReplies(ev.id);
+  renderReplies(ev, replies);
+}
+
+function showThreadView(ev) {
+  const main = document.getElementById('comm-main');
+  // Hide feed, empty, topics — show thread
+  ['comm-feed','comm-empty','comm-topics-view','comm-loading'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.hidden = true;
+  });
+  document.getElementById('comm-tabs').style.display = 'none';
+
+  // Build thread container
+  let thread = document.getElementById('comm-thread');
+  if (!thread) {
+    thread = document.createElement('div');
+    thread.id = 'comm-thread';
+    main.appendChild(thread);
+  }
+  thread.hidden = false;
+
+  const bookId = getBookId(ev);
+  const color  = topicColor(bookId);
+
+  thread.innerHTML =
+    `<div class="thread-back">` +
+      `<button class="thread-back-btn" id="thread-back">&#8592; Back to feed</button>` +
+      (bookId ? `<span class="post-topic" style="border-color:${color}40;color:${color}">#${bookId}</span>` : '') +
+    `</div>` +
+    `<article class="thread-post" style="--post-color:${color}">` +
+      `<div class="post-meta-top">` +
+        `<button class="post-zap-btn" data-action="zap">&#9889; ${(_state.zapTotals[ev.id]||0).toLocaleString() || 'Zap'} sats</button>` +
+        `<span class="post-age">${ageStr(ev.created_at)}</span>` +
+      `</div>` +
+      `<h1 class="thread-title">${_esc(getTitle(ev))}</h1>` +
+      `<div class="thread-body">${_esc(ev.content)}</div>` +
+      `<div class="post-meta-bottom">` +
+        `<span class="post-author">${short(getAuthor(ev))}</span>` +
+        `<a class="post-nostr-link" href="https://njump.me/${ev.id}" target="_blank" rel="noopener">&#9670;</a>` +
+      `</div>` +
+    `</article>` +
+    `<div class="thread-replies-header">` +
+      `<span class="comm-relay-bar" style="border:none;padding:0;margin-bottom:0.75rem">` +
+        `<span class="comm-relay-dot live"></span> Replies &nbsp;` +
+        `<span id="reply-count" class="comm-post-count"></span>` +
+      `</span>` +
+      `${nostr.isConnected() ? '<button class="reply-open-btn" id="reply-open-btn">Reply ↗</button>' : '<p class="thread-auth-hint"><a href="index.html">Connect wallet</a> to reply</p>'}` +
+    `</div>` +
+    `<div id="thread-reply-form" hidden></div>` +
+    `<div id="thread-replies"><div class="comm-loading" style="padding:2rem"><div class="comm-spinner"></div></div></div>`;
+
+  // Wire up the zap on the thread post
+  const threadPost = thread.querySelector('.thread-post');
+  thread.querySelector('[data-action="zap"]')?.addEventListener('click', e => {
+    e.stopPropagation(); openZapSheet(threadPost, ev);
+  });
+
+  thread.querySelector('#thread-back').addEventListener('click', closeThread);
+
+  // Reply button
+  thread.querySelector('#reply-open-btn')?.addEventListener('click', () => {
+    openReplyForm(ev, thread.querySelector('#thread-reply-form'));
+  });
+}
+
+function renderReplies(parentEv, replies) {
+  const container = document.getElementById('thread-replies');
+  if (!container) return;
+  document.getElementById('reply-count').textContent = `${replies.length}`;
+
+  if (!replies.length) {
+    container.innerHTML = `<p class="thread-empty">No replies yet — be the first voice.</p>`;
+    return;
+  }
+
+  const sorted = [...replies].sort((a, b) => a.created_at - b.created_at);
+  container.innerHTML = '';
+  sorted.forEach(reply => {
+    const el = document.createElement('div');
+    el.className = 'thread-reply';
+    el.innerHTML =
+      `<div class="thread-reply-meta">` +
+        `<span class="post-author">${short(getAuthor(reply))}</span>` +
+        `<span class="post-age">${ageStr(reply.created_at)}</span>` +
+        `<a class="post-nostr-link" href="https://njump.me/${reply.id}" target="_blank" rel="noopener">&#9670;</a>` +
+      `</div>` +
+      `<div class="thread-reply-body">${_esc(reply.content)}</div>`;
+    container.appendChild(el);
+  });
+}
+
+function openReplyForm(parentEv, container) {
+  container.hidden = false;
+  container.innerHTML =
+    `<div class="reply-form">` +
+      `<textarea class="reply-textarea" placeholder="Your reply…"></textarea>` +
+      `<div class="reply-form-row">` +
+        `<button class="reply-submit-btn" id="reply-submit">Publish ↗</button>` +
+        `<button class="reply-cancel-btn" id="reply-cancel">Cancel</button>` +
+        `<span class="share-status" id="reply-status"></span>` +
+      `</div>` +
+    `</div>`;
+
+  container.querySelector('#reply-cancel').addEventListener('click', () => { container.hidden = true; });
+  container.querySelector('#reply-submit').addEventListener('click', async () => {
+    const text = container.querySelector('.reply-textarea').value.trim();
+    if (!text) return;
+    const statusEl = container.querySelector('#reply-status');
+    statusEl.textContent = 'Publishing…';
+    const ok = await nostr.publishReply(parentEv.id, parentEv.pubkey, text);
+    statusEl.textContent = ok ? '✓ Reply published' : 'Error — try again';
+    statusEl.style.color = ok ? 'var(--gold-bright)' : '';
+    if (ok) setTimeout(() => { container.hidden = true; container.innerHTML = ''; }, 2000);
+  });
+}
+
+function closeThread() {
+  const thread = document.getElementById('comm-thread');
+  if (thread) thread.hidden = true;
+  document.getElementById('comm-tabs').style.display = '';
+  history.pushState(null, '', location.pathname);
+  switchTab('hot');
+}
+
+// ── Compose overlay (Phase 4) ─────────────────────────────────────────────
+
+function openCompose() {
+  const overlay = document.getElementById('compose-overlay');
+  overlay.hidden = false;
+  document.body.style.overflow = 'hidden';
+  document.getElementById('compose-body').focus();
+}
+
+function closeCompose() {
+  document.getElementById('compose-overlay').hidden = true;
+  document.body.style.overflow = '';
+}
+
+async function populateTopicSelect() {
+  const sel = document.getElementById('compose-topic');
+  if (sel.options.length > 1) return; // already populated
+  try {
+    const manifest = await fetch('books/manifest.json').then(r => r.json());
+    manifest.books?.forEach(b => {
+      const opt = document.createElement('option');
+      opt.value = b.id; opt.textContent = b.id;
+      sel.appendChild(opt);
+    });
+  } catch {}
+}
+
+async function submitCompose() {
+  const title  = document.getElementById('compose-title').value.trim();
+  const body   = document.getElementById('compose-body').value.trim();
+  const bookId = document.getElementById('compose-topic').value || null;
+  const status = document.getElementById('compose-status');
+
+  if (!body) { status.textContent = 'Write something first.'; return; }
+  status.textContent = 'Publishing…';
+
+  const ok = await nostr.publishPost(title || body.slice(0, 80), body, bookId);
+  status.textContent = ok ? '✓ Published to Nostr — reloading feed…' : 'Error — try again';
+  status.style.color = ok ? 'var(--gold-bright)' : '';
+
+  if (ok) {
+    setTimeout(async () => {
+      closeCompose();
+      await reloadFeed();
+    }, 1500);
+  }
 }
 
 // ── Tab switching ─────────────────────────────────────────────────────────
 
 function switchTab(tab) {
-  document.querySelectorAll('.comm-tab').forEach(t =>
-    t.classList.toggle('active', t.dataset.tab === tab)
-  );
-
-  const feed      = document.getElementById('comm-feed');
+  document.querySelectorAll('.comm-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  const feed = document.getElementById('comm-feed');
   const topicsView = document.getElementById('comm-topics-view');
-  const empty     = document.getElementById('comm-empty');
+  const empty = document.getElementById('comm-empty');
 
-  feed.hidden       = false;
-  topicsView.hidden = true;
-  empty.hidden      = true;
-
-  const { posts, zapTotals, replyCounts, reactionCounts } = window._commState;
+  feed.hidden = false; topicsView.hidden = true; empty.hidden = true;
 
   if (tab === 'topics') {
-    feed.hidden       = true;
-    topicsView.hidden = false;
-    return;
+    feed.hidden = true; topicsView.hidden = false; return;
   }
 
-  let ordered = [...posts];
-
-  // Filter by active topic if one is selected (from topics tab click)
-  const activeTopic = window._commState.activeTopic;
-  if (activeTopic) {
-    ordered = ordered.filter(ev => getBookId(ev) === activeTopic);
-    window._commState.activeTopic = null; // clear after use
+  let posts = [..._state.posts];
+  if (_state.activeTopic) {
+    posts = posts.filter(ev => getBookId(ev) === _state.activeTopic);
+    _state.activeTopic = null;
   }
 
-  if (tab === 'hot') {
-    ordered.sort((a, b) =>
-      gravity(b, zapTotals, replyCounts, reactionCounts) -
-      gravity(a, zapTotals, replyCounts, reactionCounts)
-    );
-  } else if (tab === 'new') {
-    ordered.sort((a, b) => b.created_at - a.created_at);
-  }
+  posts.sort(tab === 'new'
+    ? (a, b) => b.created_at - a.created_at
+    : (a, b) => gravity(b) - gravity(a)
+  );
 
-  renderFeed(ordered, zapTotals, replyCounts, reactionCounts);
+  renderFeed(posts);
   feed.hidden = false;
+}
+
+// ── Reload feed data ──────────────────────────────────────────────────────
+
+async function reloadFeed() {
+  const posts = await fetchPosts();
+  const ids   = posts.map(e => e.id);
+  const { zaps, reactions, replies } = await fetchInteractions(ids);
+  Object.assign(_state, {
+    posts,
+    zapTotals:      aggregateZaps(zaps),
+    reactionCounts: aggregateCounts(reactions, 7),
+    replyCounts:    aggregateCounts(replies, 1),
+  });
+  renderTopics(posts);
+  switchTab(document.querySelector('.comm-tab.active')?.dataset.tab || 'hot');
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
 
-window._commState = { posts: [], zapTotals: {}, replyCounts: {}, reactionCounts: {}, activeTopic: null };
-
 async function init() {
-  // Update scroll progress bar
+  // Restore nostr session (for compose + reply buttons)
+  await nostr.restoreSession().catch(() => {});
+
+  // Scroll progress bar
   window.addEventListener('scroll', () => {
-    const el  = document.getElementById('comm-top-progress');
-    const dh  = document.documentElement.scrollHeight - window.innerHeight;
-    el.style.width = dh > 0 ? (window.scrollY / dh * 100) + '%' : '0%';
+    const dh = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('comm-top-progress').style.width = dh > 0 ? (scrollY/dh*100)+'%' : '0';
   }, { passive: true });
 
-  // Tab click handlers
-  document.querySelectorAll('.comm-tab').forEach(tab => {
-    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+  // Tab handlers
+  document.querySelectorAll('.comm-tab').forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+
+  // Compose overlay wiring
+  document.getElementById('compose-close')?.addEventListener('click', closeCompose);
+  document.getElementById('compose-overlay')?.addEventListener('click', e => {
+    if (e.target === document.getElementById('compose-overlay')) closeCompose();
+  });
+  document.getElementById('compose-publish')?.addEventListener('click', submitCompose);
+  document.getElementById('compose-body')?.addEventListener('input', () => {
+    const n = (document.getElementById('compose-body').value || '').length;
+    document.getElementById('compose-char-count').textContent = n;
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !document.getElementById('compose-overlay')?.hidden) closeCompose();
   });
 
+  // Show FAB + compose if authenticated
+  if (nostr.isConnected()) {
+    const fab = document.getElementById('compose-fab');
+    if (fab) { fab.hidden = false; fab.addEventListener('click', () => { populateTopicSelect(); openCompose(); }); }
+  }
+
   const loading = document.getElementById('comm-loading');
-  const error   = document.getElementById('comm-error');
+  const errEl   = document.getElementById('comm-error');
   const feed    = document.getElementById('comm-feed');
 
   try {
     await connectRelay();
+    const params = new URLSearchParams(location.search);
 
-    // Fetch posts
+    // Phase 5: ?topic= pre-filter
+    const topicParam = params.get('topic');
+    if (topicParam) _state.activeTopic = topicParam;
+
+    // Phase 3: ?id= thread view
+    const idParam = params.get('id');
+    if (idParam) {
+      loading.hidden = true; feed.hidden = false;
+      const evs = await subscribe({ ids: [idParam], limit: 1 });
+      if (evs[0]) {
+        showThreadView(evs[0]);
+        const replies = await fetchReplies(idParam);
+        renderReplies(evs[0], replies);
+      } else {
+        errEl.hidden = false;
+        document.querySelector('.comm-empty-title').textContent = 'Post not found';
+      }
+      return;
+    }
+
+    // Default: load feed
     const posts = await fetchPosts();
-    const postIds = posts.map(e => e.id);
+    const ids   = posts.map(e => e.id);
+    const { zaps, reactions, replies } = await fetchInteractions(ids);
 
-    // Fetch all interactions in parallel
-    const { zaps, reactions, replies } = await fetchInteractions(postIds);
+    Object.assign(_state, {
+      posts,
+      zapTotals:      aggregateZaps(zaps),
+      reactionCounts: aggregateCounts(reactions, 7),
+      replyCounts:    aggregateCounts(replies, 1),
+    });
 
-    const zapTotals      = aggregateZaps(zaps);
-    const reactionCounts = aggregateCounts(reactions, 7);
-    const replyCounts    = aggregateCounts(replies, 1);
-
-    // Store for tab switching
-    window._commState = { posts, zapTotals, replyCounts, reactionCounts, activeTopic: null };
-
-    // Pre-build topics view
     renderTopics(posts);
-
-    // Hide loading, show feed
     loading.hidden = true;
     feed.hidden = false;
+    switchTab(topicParam ? 'hot' : 'hot');
 
-    // Default: Hot tab
-    switchTab('hot');
+    // Show topic label if pre-filtered
+    if (topicParam) {
+      const bar = document.querySelector('.comm-relay-bar');
+      if (bar) {
+        const badge = document.createElement('span');
+        badge.className = 'post-topic';
+        badge.style.color = topicColor(topicParam);
+        badge.textContent = `#${topicParam}`;
+        bar.appendChild(badge);
+      }
+    }
 
   } catch (err) {
     loading.hidden = true;
-    error.hidden   = false;
+    errEl.hidden = false;
     console.error('[Community]', err);
   }
 }
