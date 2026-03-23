@@ -162,7 +162,21 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
 
       if (isMobile) { openBtn.href = uri; openBtn.hidden = false; }
 
-      const npub = await nostr.waitForGateAuth();
+      // On iOS, when the user taps "Open OBIVERSE" the browser goes to background.
+      // When they return, update status so they know we're still verifying.
+      const _onReturn = () => {
+        if (document.visibilityState === 'visible' && statusEl.textContent.includes('Scan')) {
+          statusEl.textContent = 'Verifying…';
+        }
+      };
+      document.addEventListener('visibilitychange', _onReturn);
+
+      let npub;
+      try {
+        npub = await nostr.waitForGateAuth();
+      } finally {
+        document.removeEventListener('visibilitychange', _onReturn);
+      }
 
       statusEl.textContent = '✓ Connected';
       statusEl.style.color = 'var(--gold-bright)';

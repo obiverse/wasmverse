@@ -402,7 +402,18 @@ async function startConnect() {
 
     setStatus('Waiting for wallet approval…');
 
-    const npub = await nostr.waitForGateAuth();
+    // iOS: when user returns from wallet app, update status to show we're verifying
+    const _onReturn = () => {
+      if (document.visibilityState === 'visible') setStatus('Verifying…');
+    };
+    document.addEventListener('visibilitychange', _onReturn);
+
+    let npub;
+    try {
+      npub = await nostr.waitForGateAuth();
+    } finally {
+      document.removeEventListener('visibilitychange', _onReturn);
+    }
     // Show ceremony before closing — let the reader see the math
     connView.hidden = true;
     doneView.hidden = false;

@@ -137,15 +137,33 @@ export async function waitForGateAuth(timeoutMs = 300_000) {
 
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
-      _gateResolve = null;
-      _gateReject  = null;
+      cleanup();
       reject(new Error('Timeout — wallet did not respond'));
     }, timeoutMs);
 
-    _gateResolve = async (event) => {
+    // ── iOS background fix ─────────────────────────────────────────────
+    // When the user taps "Open OBIVERSE" on mobile, iOS suspends the browser
+    // tab, killing the WebSocket. The wallet publishes KIND 22242 while we're
+    // asleep. When the user switches back, reconnect and re-subscribe with a
+    // 300-second lookback to catch the event we missed.
+    const _onVisibility = async () => {
+      if (document.visibilityState !== 'visible') return;
+      try {
+        await _connectRelay(_session.relay);
+        _subscribeForGate(300);
+      } catch {}
+    };
+    document.addEventListener('visibilitychange', _onVisibility);
+
+    function cleanup() {
       clearTimeout(timer);
+      document.removeEventListener('visibilitychange', _onVisibility);
       _gateResolve = null;
       _gateReject  = null;
+    }
+
+    _gateResolve = async (event) => {
+      cleanup();
       try {
         // Decrypt and verify nonce — proves wallet holds the private key.
         // Payload: "obiverse.net::{nonce}" (legacy)
@@ -175,9 +193,7 @@ export async function waitForGateAuth(timeoutMs = 300_000) {
     };
 
     _gateReject = (e) => {
-      clearTimeout(timer);
-      _gateResolve = null;
-      _gateReject  = null;
+      cleanup();
       reject(e);
     };
   });
@@ -284,7 +300,7 @@ async function _connectRelay(relayUrl) {
   throw lastErr ?? new Error('All relays failed');
 }
 
-function _subscribeForGate() {
+function _subscribeForGate(lookbackSeconds = 5) {
   if (!_ws || !_session?.eph_npub) return;
   const subId = Math.random().toString(36).slice(2, 10);
   _ws.send(JSON.stringify([
@@ -292,7 +308,7 @@ function _subscribeForGate() {
     {
       kinds: [22242],
       '#p':  [_session.eph_npub],
-      since: Math.floor(Date.now() / 1000) - 5,
+      since: Math.floor(Date.now() / 1000) - lookbackSeconds,
     },
   ]));
 }
