@@ -14,6 +14,7 @@
       "accent": "#c9a96e",
       "letters": 40,
       "parts": 10,
+      "topic": "WebAssembly",
       "description": "From the humblest transistor to infinite fractals running in a browser sandbox. What a computer actually is, why WebAssembly had to exist, and how the chain from silicon to screen remains faithful at every layer.",
       "category": "Technology",
       "next": [
@@ -31,6 +32,7 @@
       "accent": "#b87333",
       "letters": 36,
       "parts": 9,
+      "topic": "Rust Programming",
       "description": "Why every value must have an owner, why references must not outlive their referents, and how a compiler can prove the absence of an entire class of bugs that has plagued computing for fifty years.",
       "category": "Technology",
       "next": [
@@ -48,6 +50,7 @@
       "accent": "#f7931a",
       "letters": 48,
       "parts": 10,
+      "topic": "Bitcoin",
       "description": "From barter and clay tablets to elliptic curves and payment channels. What money actually is, why Bitcoin had to exist, and how a network of sovereign verification replaced the need to trust any single institution.",
       "category": "Finance",
       "next": [
@@ -65,6 +68,7 @@
       "accent": "#6e9ec9",
       "letters": 41,
       "parts": 10,
+      "topic": "Progressive Web Apps",
       "description": "From the humblest HTTP request to the service worker's interception, from the manifest's declaration to the cache's sovereignty. What a web app actually is, why Progressive Web Apps had to exist, and how a URL becomes an icon on your home screen.",
       "category": "Technology",
       "next": [
@@ -82,7 +86,8 @@
       "accent": "#4a9e6e",
       "letters": 31,
       "parts": 10,
-      "description": "The system explaining its own engine. Five general-purpose WASM modules \u2014 JSON, Store, Theme, Router, Search \u2014 composed into a framework that powers this very library. The reader who finishes understands not just the framework, but why it must be this way.",
+      "topic": "Euler Framework",
+      "description": "The system explaining its own engine. Five general-purpose WASM modules — JSON, Store, Theme, Router, Search — composed into a framework that powers this very library. The reader who finishes understands not just the framework, but why it must be this way.",
       "category": "Technology",
       "next": [
         "wasm",
@@ -99,7 +104,8 @@
       "accent": "#9b6ea5",
       "letters": 43,
       "parts": 8,
-      "description": "The system explaining itself. Every concept in software engineering \u2014 from files to deployment \u2014 taught through the actual code of this very library. The reader who finishes can fork the repo and build their own.",
+      "topic": "Software Engineering",
+      "description": "The system explaining itself. Every concept in software engineering — from files to deployment — taught through the actual code of this very library. The reader who finishes can fork the repo and build their own.",
       "category": "Technology",
       "next": [
         "euler",
@@ -116,6 +122,7 @@
       "accent": "#e07c3e",
       "letters": 42,
       "parts": 10,
+      "topic": "WhatsApp & Nostr",
       "description": "From the talking drum to the Signal Protocol, from the Onitsha marketplace to Nostr relays. How WhatsApp became Africa's digital economy, why it can serve as an event bus for peer-to-peer commerce, and how WebAssembly, Lightning, and cryptographic identity can make that economy sovereign.",
       "category": "Technology",
       "next": [
@@ -133,7 +140,8 @@
       "accent": "#4a6fa5",
       "letters": 35,
       "parts": 8,
-      "description": "Euler's own domain. From the shepherd's tally to the calculus of change, from compound interest to the bell curve. Mathematics as the African builder's birthright \u2014 the language that does not lie.",
+      "topic": "Mathematics",
+      "description": "Euler's own domain. From the shepherd's tally to the calculus of change, from compound interest to the bell curve. Mathematics as the African builder's birthright — the language that does not lie.",
       "category": "Science",
       "next": [
         "algorithms",
@@ -150,7 +158,8 @@
       "accent": "#d4764e",
       "letters": 35,
       "parts": 8,
-      "description": "From the village market to Flutterwave. Enterprise is Africa's oldest technology. The principles of value, revenue, growth, and endurance \u2014 taught from first principles through M-Pesa, Paystack, Andela, and the ancient traders of Timbuktu.",
+      "topic": "Entrepreneurship",
+      "description": "From the village market to Flutterwave. Enterprise is Africa's oldest technology. The principles of value, revenue, growth, and endurance — taught from first principles through M-Pesa, Paystack, Andela, and the ancient traders of Timbuktu.",
       "category": "Building",
       "next": [
         "wealth",
@@ -167,7 +176,8 @@
       "accent": "#e04a6e",
       "letters": 30,
       "parts": 7,
-      "description": "Kente patterns are algorithms. Adinkra symbols are visual programs. African design has always been computational. This treatise teaches creative coding through the lens of ancestral craft \u2014 the reader creates art that runs in the browser.",
+      "topic": "Creative Coding",
+      "description": "Kente patterns are algorithms. Adinkra symbols are visual programs. African design has always been computational. This treatise teaches creative coding through the lens of ancestral craft — the reader creates art that runs in the browser.",
       "category": "Creative",
       "next": [
         "wasm",
@@ -184,6 +194,7 @@
       "accent": "#2e8b57",
       "letters": 35,
       "parts": 8,
+      "topic": "Financial Literacy",
       "description": "Financial literacy is sovereignty. From M-Pesa to stock markets, from compound interest to chamas and stokvels, from budgeting to generational wealth. The African builder who understands money cannot be deceived.",
       "category": "Finance",
       "next": [
@@ -201,7 +212,8 @@
       "accent": "#6e8b9e",
       "letters": 30,
       "parts": 7,
-      "description": "The deep patterns that connect ecology, economics, technology, and governance. Why some cities thrive. Why some businesses scale. Why some interventions backfire. Euler saw the same laws everywhere \u2014 this book makes that vision explicit.",
+      "topic": "Systems Thinking",
+      "description": "The deep patterns that connect ecology, economics, technology, and governance. Why some cities thrive. Why some businesses scale. Why some interventions backfire. Euler saw the same laws everywhere — this book makes that vision explicit.",
       "category": "Science",
       "next": [
         "thought",
@@ -218,7 +230,8 @@
       "accent": "#7a5aaa",
       "letters": 35,
       "parts": 8,
-      "description": "AI is not magic \u2014 it is mathematics applied to pattern recognition. From the single perceptron to the transformer that powers language models, taught so the African builder creates AI, not just consumes it.",
+      "topic": "AI & Neural Networks",
+      "description": "AI is not magic — it is mathematics applied to pattern recognition. From the single perceptron to the transformer that powers language models, taught so the African builder creates AI, not just consumes it.",
       "category": "Science",
       "next": [
         "crypto",
@@ -235,7 +248,8 @@
       "accent": "#2e8b57",
       "letters": 35,
       "parts": 8,
-      "description": "The hydrogen atom of computer science. Sorting, searching, graphs, trees \u2014 the foundations under every program. With African examples: Kobo360 route optimization, M-Pesa network analysis, Jumia search.",
+      "topic": "Algorithms & Data Structures",
+      "description": "The hydrogen atom of computer science. Sorting, searching, graphs, trees — the foundations under every program. With African examples: Kobo360 route optimization, M-Pesa network analysis, Jumia search.",
       "category": "Science",
       "next": [
         "rust",
@@ -252,7 +266,8 @@
       "accent": "#4a6f8b",
       "letters": 35,
       "parts": 8,
-      "description": "From XOR to zero-knowledge proofs. The mathematics of trust between strangers \u2014 digital identity, encryption, signatures. In a continent leapfrogging to digital identity, this knowledge is sovereignty.",
+      "topic": "Cryptography",
+      "description": "From XOR to zero-knowledge proofs. The mathematics of trust between strangers — digital identity, encryption, signatures. In a continent leapfrogging to digital identity, this knowledge is sovereignty.",
       "category": "Science",
       "next": [
         "bitcoin",
@@ -269,7 +284,8 @@
       "accent": "#c9a96e",
       "letters": 30,
       "parts": 7,
-      "description": "The most undervalued skill in technology. How Euler himself wrote \u2014 and why the builder who can explain their work clearly will always outperform the one who can only code. Includes the African griot tradition and the power of proverbs.",
+      "topic": "Writing & Communication",
+      "description": "The most undervalued skill in technology. How Euler himself wrote — and why the builder who can explain their work clearly will always outperform the one who can only code. Includes the African griot tradition and the power of proverbs.",
       "category": "Building",
       "next": [
         "governance",
@@ -286,7 +302,8 @@
       "accent": "#8b6e4a",
       "letters": 30,
       "parts": 7,
-      "description": "Every shared resource needs governance. African traditions \u2014 Ubuntu, the palaver tree, age-grade systems, gacaca courts \u2014 as models for leading teams, governing open source, and building institutions that outlive their founders.",
+      "topic": "Leadership & Governance",
+      "description": "Every shared resource needs governance. African traditions — Ubuntu, the palaver tree, age-grade systems, gacaca courts — as models for leading teams, governing open source, and building institutions that outlive their founders.",
       "category": "Building",
       "next": [
         "rhetoric",
@@ -303,7 +320,8 @@
       "accent": "#8b5e3c",
       "letters": 43,
       "parts": 10,
-      "description": "The carpenter and the programmer are the same. Wood, metal, plastic, fabric, code \u2014 every material obeys the same universal pattern of making. From Aba's leather to Innoson's vehicles, from the jig to the CI/CD pipeline.",
+      "topic": "Manufacturing",
+      "description": "The carpenter and the programmer are the same. Wood, metal, plastic, fabric, code — every material obeys the same universal pattern of making. From Aba's leather to Innoson's vehicles, from the jig to the CI/CD pipeline.",
       "category": "Making",
       "next": [
         "industry",
@@ -320,7 +338,8 @@
       "accent": "#5a7a4a",
       "letters": 35,
       "parts": 8,
-      "description": "Nations that manufacture become sovereign. Supply chains, logistics, quality systems, energy infrastructure, and Industry 4.0 \u2014 the systems that make industrialization possible. Dangote, Hawassa, AfCFTA, and the African industrial renaissance.",
+      "topic": "Industrial Systems",
+      "description": "Nations that manufacture become sovereign. Supply chains, logistics, quality systems, energy infrastructure, and Industry 4.0 — the systems that make industrialization possible. Dangote, Hawassa, AfCFTA, and the African industrial renaissance.",
       "category": "Making",
       "next": [
         "manufacturing",
@@ -337,8 +356,9 @@
       "accent": "#e8c44a",
       "letters": 45,
       "parts": 10,
+      "topic": "Electricity & Energy",
       "category": "Science",
-      "description": "Electricity was always in the lightning, always in the spinning of the Earth. From charge and circuits to solar panels and microgrids \u2014 the reader finishes able to wire a building, design a solar system, and reason about grid architecture. Africa has more energy potential than any continent.",
+      "description": "Electricity was always in the lightning, always in the spinning of the Earth. From charge and circuits to solar panels and microgrids — the reader finishes able to wire a building, design a solar system, and reason about grid architecture. Africa has more energy potential than any continent.",
       "next": [
         "strength",
         "chemistry"
@@ -354,8 +374,9 @@
       "accent": "#d4a574",
       "letters": 40,
       "parts": 8,
+      "topic": "Digital Identity & Keys",
       "category": "Sovereignty",
-      "description": "Your key is your name, your signature, your passport, and your fortress gate \u2014 all in 32 bytes. From the elder's seal to HD wallets, from multisig councils to Nostr identity. The reader finishes holding their own keys with understanding, not faith.",
+      "description": "Your key is your name, your signature, your passport, and your fortress gate — all in 32 bytes. From the elder's seal to HD wallets, from multisig councils to Nostr identity. The reader finishes holding their own keys with understanding, not faith.",
       "next": [
         "lightning",
         "crypto"
@@ -371,8 +392,9 @@
       "accent": "#f5a623",
       "letters": 38,
       "parts": 9,
+      "topic": "Lightning Network",
       "category": "Sovereignty",
-      "description": "If Bitcoin is the courthouse where property is recorded, Lightning is the market where goods change hands a thousand times before anyone visits the clerk. From payment channels to Machankura \u2014 the African Lightning economy.",
+      "description": "If Bitcoin is the courthouse where property is recorded, Lightning is the market where goods change hands a thousand times before anyone visits the clerk. From payment channels to Machankura — the African Lightning economy.",
       "next": [
         "whispers",
         "bitcoin"
@@ -388,8 +410,9 @@
       "accent": "#9b59b6",
       "letters": 42,
       "parts": 10,
+      "topic": "Nostr Protocol",
       "category": "Sovereignty",
-      "description": "Before the telegraph, the Yoruba dundun drums carried messages across kingdoms. Nostr is the dundun of the digital age \u2014 anyone can drum, anyone can listen, no one controls the air. From events to relays to building your own client.",
+      "description": "Before the telegraph, the Yoruba dundun drums carried messages across kingdoms. Nostr is the dundun of the digital age — anyone can drum, anyone can listen, no one controls the air. From events to relays to building your own client.",
       "next": [
         "cloak",
         "messages"
@@ -405,8 +428,9 @@
       "accent": "#2c3e50",
       "letters": 35,
       "parts": 8,
+      "topic": "Privacy & Anonymity",
       "category": "Sovereignty",
-      "description": "Privacy is not secrecy. A merchant in Onitsha market need not announce his profit to conduct honest trade. From CoinJoin to silent payments, from Tor to zero-knowledge proofs \u2014 the mathematics of walking unseen.",
+      "description": "Privacy is not secrecy. A merchant in Onitsha market need not announce his profit to conduct honest trade. From CoinJoin to silent payments, from Tor to zero-knowledge proofs — the mathematics of walking unseen.",
       "next": [
         "fortress",
         "whispers"
@@ -422,8 +446,9 @@
       "accent": "#8b4513",
       "letters": 36,
       "parts": 9,
+      "topic": "Sovereign Infrastructure",
       "category": "Sovereignty",
-      "description": "A sovereign does not rent their castle. From Bitcoin nodes to Lightning nodes to Nostr relays \u2014 running your own infrastructure on a Raspberry Pi, powered by African sunlight. The reader finishes able to build their own fortress.",
+      "description": "A sovereign does not rent their castle. From Bitcoin nodes to Lightning nodes to Nostr relays — running your own infrastructure on a Raspberry Pi, powered by African sunlight. The reader finishes able to build their own fortress.",
       "next": [
         "cloak",
         "keys"
@@ -439,8 +464,9 @@
       "accent": "#7a6a5a",
       "letters": 40,
       "parts": 9,
+      "topic": "Structures & Materials",
       "category": "Making",
-      "description": "Why beams bend, why arches carry, why triangles are rigid. Forces, materials, stress, strain \u2014 from the lever to Great Zimbabwe's dry-stone walls. Euler's own buckling formula connects our voice to the subject.",
+      "description": "Why beams bend, why arches carry, why triangles are rigid. Forces, materials, stress, strain — from the lever to Great Zimbabwe's dry-stone walls. Euler's own buckling formula connects our voice to the subject.",
       "next": [
         "manufacturing",
         "electricity"
@@ -456,8 +482,9 @@
       "accent": "#5b8a6f",
       "letters": 35,
       "parts": 8,
+      "topic": "Chemistry",
       "category": "Science",
-      "description": "Why steel is strong, why concrete cures, why batteries work. The maker's chemistry \u2014 from Dangote's kilns to the lithium of the Congo.",
+      "description": "Why steel is strong, why concrete cures, why batteries work. The maker's chemistry — from Dangote's kilns to the lithium of the Congo.",
       "next": [
         "electricity",
         "manufacturing"
@@ -473,6 +500,7 @@
       "accent": "#6b8e23",
       "letters": 35,
       "parts": 8,
+      "topic": "Agriculture",
       "category": "Making",
       "description": "The farmer is a manufacturer whose factory is the soil. From Ethiopian teff to Ghanaian cocoa, from drip irrigation to agritech drones.",
       "next": [
@@ -490,6 +518,7 @@
       "accent": "#cd5c5c",
       "letters": 35,
       "parts": 8,
+      "topic": "Public Health",
       "category": "Building",
       "description": "Public health for communities. The body as system, nutrition, WASH, infectious disease, maternal health, mental health. Empowering builders to heal.",
       "next": [
@@ -507,6 +536,7 @@
       "accent": "#4a90d9",
       "letters": 35,
       "parts": 8,
+      "topic": "Water & Sanitation",
       "category": "Making",
       "description": "400 million Africans lack clean water. Wells, pumps, treatment, irrigation, sanitation. The builder who provides clean water saves more lives than any doctor.",
       "next": [
@@ -524,8 +554,9 @@
       "accent": "#e07c3e",
       "letters": 30,
       "parts": 7,
+      "topic": "Heat & Thermodynamics",
       "category": "Science",
-      "description": "Heat, engines, refrigeration, cooking. 3 billion cook with wood. The clean cooking revolution, biogas, solar thermal \u2014 Africa's thermal energy transition.",
+      "description": "Heat, engines, refrigeration, cooking. 3 billion cook with wood. The clean cooking revolution, biogas, solar thermal — Africa's thermal energy transition.",
       "next": [
         "electricity",
         "chemistry"
@@ -541,11 +572,30 @@
       "accent": "#8b7355",
       "letters": 30,
       "parts": 7,
+      "topic": "Surveying & GIS",
       "category": "Building",
       "description": "70% of African land is unregistered. Surveying, GPS, GIS, remote sensing. The builder who maps land creates wealth from nothing.",
       "next": [
         "agriculture",
         "manufacturing"
+      ]
+    },
+    {
+      "id": "android",
+      "title": "Letters on the Sovereign Device",
+      "subtitle": "A Treatise on Android Development, from Compound to Archmage",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/android.md",
+      "symbol": "sankofa",
+      "accent": "#3ddc84",
+      "letters": 23,
+      "parts": 7,
+      "topic": "Android Development",
+      "description": "From the Linux sandbox to Jetpack Compose, from the compound village to the Play Store. Android powers 90% of African smartphones. The builder who masters it can put a tool in more hands, at lower cost, on more continents, than any technology in history.",
+      "category": "Technology",
+      "next": [
+        "kotlin",
+        "making"
       ]
     },
     {
@@ -558,6 +608,7 @@
       "accent": "#9e6ec9",
       "letters": 30,
       "parts": 7,
+      "topic": "Design Thinking",
       "category": "Creative",
       "description": "How to design things people use. User research, prototyping, visual design, accessibility. M-Pesa's genius was design, not technology.",
       "next": [
