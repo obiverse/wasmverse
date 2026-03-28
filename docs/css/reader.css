@@ -748,8 +748,37 @@ body { font-size: var(--font-size, 19px); line-height: var(--line-height, 1.85);
 .sidebar-ctrl-btn:hover { border-color: var(--border); color: var(--text); }
 .sidebar-ctrl-btn.active { color: var(--gold); border-color: rgba(201,169,110,0.25); background: rgba(201,169,110,0.06); }
 
-#theme-panel, #typo-panel { display: none; padding: 0.6rem 1.3rem; border-bottom: 1px solid var(--border-subtle); }
-#theme-panel.open, #typo-panel.open { display: block; }
+#theme-panel, #typo-panel, #export-panel { display: none; padding: 0.6rem 1.3rem; border-bottom: 1px solid var(--border-subtle); }
+#theme-panel.open, #typo-panel.open, #export-panel.open { display: block; }
+
+.export-label {
+  font-family: var(--font-code);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+.export-options { display: flex; gap: 0.5rem; }
+.export-option-btn {
+  flex: 1;
+  padding: 0.45rem 0.6rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: 5px;
+  color: var(--text-dim);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.export-option-btn:hover {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+  background: rgba(201,169,110,0.06);
+}
 
 .theme-swatches { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
 .theme-swatch {
@@ -1162,7 +1191,8 @@ body { font-size: var(--font-size, 19px); line-height: var(--line-height, 1.85);
    ═══════════════════════════════════════════════ */
 @media print {
   #sidebar, #mobile-toggle, #back-to-top, #hero, #particles-canvas,
-  #top-progress, #chapter-indicator, #keyboard-hint,
+  #top-progress, #chapter-indicator, #keyboard-hint, #highlight-toolbar,
+  #portal-overlay, #export-panel,
   .sacred-divider, .chapter-marker, .code-copy, .demo-panel { display: none !important; }
   #app.visible { display: block !important; }
   #content { padding: 0 !important; }

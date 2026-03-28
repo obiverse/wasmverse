@@ -118,6 +118,13 @@ async function indexAllBooks() {
       })
     );
 
+    // Index book-level overview first (topic + description + subtitle).
+    // This lets users find a book by searching "bitcoin", "rust", "ai", etc.
+    for (const book of manifest.books) {
+      const overviewText = [book.topic, book.subtitle, book.description].filter(Boolean).join(' ');
+      euler.index_book(book.id + ':overview', book.title, overviewText);
+    }
+
     // Index chapters from successful fetches
     let totalChapters = 0;
     for (const result of fetchResults) {
@@ -187,11 +194,13 @@ function search(query) {
   focusIdx = -1;
 
   resultsEl.innerHTML = results.map((r, i) => {
-    // docId format: "bookId:chapter-slug"
+    // docId format: "bookId:chapter-slug" or "bookId:overview" for book-level docs
     const [bookId, ...chapterParts] = r.id.split(':');
     const chapterId = chapterParts.join(':');
     const bookTitle = bookTitles[bookId] || bookId;
-    const href = `read.html?book=${bookId}#${chapterId}`;
+    const href = chapterId && chapterId !== 'overview'
+      ? `read.html?book=${bookId}#${chapterId}`
+      : `read.html?book=${bookId}`;
 
     // Highlight query terms in snippet
     const snippet = highlightTerms(r.snippet, query);

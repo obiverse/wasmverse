@@ -388,11 +388,22 @@ async function startConnect() {
   qrCanvas.width = 0;
 
   try {
-    const { uri } = await nostr.generateGateUri({ origin: 'Letterverse' });
+    // Reuse a pending session if one exists (iOS killed the PWA mid-auth).
+    // Generating a new keypair would create a nonce the wallet never saw.
+    let uri;
+    if (nostr.hasPendingAuth()) {
+      uri = nostr.getPendingUri('Letterverse');
+      qrHint.textContent = 'Reconnecting…';
+      setStatus('Resuming sign-in…');
+    } else {
+      ({ uri } = await nostr.generateGateUri({ origin: 'Letterverse' }));
+    }
 
     // Render QR via WASM (no JS library)
     await nostr.renderQR(qrCanvas, uri, { scale: 4 });
-    qrHint.textContent = 'Scan with OBIVERSE wallet';
+    if (!qrHint.textContent.includes('Reconnect')) {
+      qrHint.textContent = 'Scan with OBIVERSE wallet';
+    }
 
     // Mobile: show deep link button
     if (isMobile()) {

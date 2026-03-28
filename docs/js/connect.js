@@ -154,11 +154,23 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
   // ── GATE flow ─────────────────────────────────────────────────────────
   (async () => {
     try {
-      const { uri } = await nostr.generateGateUri({ origin });
+      // If the page was killed mid-auth (iOS PWA), hasPendingAuth() is true.
+      // Reuse the same ephemeral keypair + nonce so the wallet's already-
+      // published KIND 22242 event can still be verified. Never generate a
+      // new session in this case — the old nonce is gone from the wallet.
+      let uri;
+      if (nostr.hasPendingAuth()) {
+        uri = nostr.getPendingUri(origin);
+        statusEl.textContent = 'Reconnecting…';
+      } else {
+        ({ uri } = await nostr.generateGateUri({ origin }));
+      }
 
       await nostr.renderQR(canvas, uri, { scale: 4 });
       canvas.style.display = 'block';
-      statusEl.textContent = 'Scan with OBIVERSE wallet…';
+      if (!statusEl.textContent.includes('Reconnect')) {
+        statusEl.textContent = 'Scan with OBIVERSE wallet…';
+      }
 
       if (isMobile) { openBtn.href = uri; openBtn.hidden = false; }
 
@@ -196,15 +208,33 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
 async function _fetchBolt11(addr, sats) {
   const [user, domain] = addr.split('@');
   if (!user || !domain) throw new Error('Invalid address');
-  const meta = await fetch(`https://${domain}/.well-known/lnurlp/${user}`)
-    .then(r => { if (!r.ok) throw new Error('Endpoint unreachable'); return r.json(); });
+
+  let meta;
+  try {
+    const res = await fetch(`https://${domain}/.well-known/lnurlp/${user}`);
+    if (res.status === 404) throw new Error(`Lightning address not found — verify ${addr} is active`);
+    if (!res.ok) throw new Error(`Service error (${res.status}) — try again later`);
+    meta = await res.json();
+  } catch (e) {
+    // TypeError = network failure or CORS block (browser policy, not an HTTP error)
+    if (e instanceof TypeError) throw new Error(`Cannot reach ${domain} from browser — use a Lightning wallet app directly`);
+    throw e;
+  }
+
+  if (!meta.callback) throw new Error('Invalid LNURL response — missing callback');
   const msats = sats * 1000;
   if (meta.minSendable && msats < meta.minSendable)
     throw new Error(`Min ${meta.minSendable / 1000} sats`);
   if (meta.maxSendable && msats > meta.maxSendable)
     throw new Error(`Max ${meta.maxSendable / 1000} sats`);
-  const inv = await fetch(`${meta.callback}?amount=${msats}`).then(r => r.json());
-  if (!inv.pr) throw new Error('No invoice returned');
+
+  let inv;
+  try {
+    inv = await fetch(`${meta.callback}?amount=${msats}`).then(r => r.json());
+  } catch {
+    throw new Error('Could not fetch invoice from callback — try again');
+  }
+  if (!inv.pr) throw new Error('No invoice in response');
   return inv.pr;
 }
 

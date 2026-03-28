@@ -10,7 +10,7 @@
    - No transform conflicts (CSS owns transform)
    ═══════════════════════════════════════════════ */
 
-import { boot, autoPersist, applyTheme, applyTypography } from '../euler-shell.js';
+import { boot, applyTheme, applyTypography } from '../euler-shell.js';
 import { drawAfricanBackground } from './african-patterns.js';
 import * as idb from './idb.js';
 import * as nostr from './nostr-shell.js';
@@ -391,10 +391,14 @@ async function loadLibrary() {
       card.innerHTML = `
         <div class="card-header" style="color:${book.accent || '#c9a96e'}">
           <div class="card-symbol">${symbol}</div>
-          ${pctLabel ? `<div class="card-pct">${pctLabel}</div>` : ''}
+          <div class="card-header-right">
+            ${book.topic ? `<div class="card-topic" style="color:${book.accent || '#c9a96e'}">${book.topic}</div>` : ''}
+            ${pctLabel ? `<div class="card-pct">${pctLabel}</div>` : ''}
+          </div>
         </div>
         <div class="card-body">
           <div class="card-title">${book.title}</div>
+          ${book.description ? `<div class="card-desc">${book.description}</div>` : ''}
           <div class="card-meta">
             <strong>${book.letters}</strong> letters &middot;
             <strong>${book.parts}</strong> parts

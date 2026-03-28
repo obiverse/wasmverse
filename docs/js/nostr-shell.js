@@ -107,11 +107,12 @@ export async function generateGateUri({ relay = RELAYS[0], origin = 'Letterverse
   const nonce   = _wasm.random_hex(16);
 
   _session = {
-    eph_nsec:  keypair.nsec_hex,
-    eph_npub:  keypair.npub_hex,
+    eph_nsec:   keypair.nsec_hex,
+    eph_npub:   keypair.npub_hex,
     nonce,
     relay,
-    user_npub: null,
+    user_npub:  null,
+    started_at: Date.now(),
   };
   await _saveSession();
 
@@ -132,8 +133,13 @@ export async function generateGateUri({ relay = RELAYS[0], origin = 'Letterverse
 export async function waitForGateAuth(timeoutMs = 300_000) {
   if (!_session?.eph_nsec) throw new Error('Call generateGateUri() first');
 
+  // If the session is old (page was killed and reloaded), use a proportionally
+  // longer lookback so we catch the wallet's event that was published while dead.
+  const ageSeconds = Math.ceil((Date.now() - (_session.started_at ?? Date.now())) / 1000);
+  const initialLookback = ageSeconds > 30 ? Math.min(ageSeconds + 60, 600) : 5;
+
   await _connectRelay(_session.relay);
-  _subscribeForGate();
+  _subscribeForGate(initialLookback);
 
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
@@ -201,13 +207,24 @@ export async function waitForGateAuth(timeoutMs = 300_000) {
 
 /**
  * Attempt to restore a previous session from IDB.
- * Returns the user npub if restored, null otherwise. No relay reconnect needed.
+ * Returns the user npub if fully authenticated, null otherwise.
+ *
+ * Side-effect: if a pending gate auth exists (eph keys present, no user_npub
+ * yet, started < 10 minutes ago), _session is restored so that
+ * hasPendingAuth() returns true and the caller can resume without regenerating.
  */
 export async function restoreSession() {
   try {
     await boot();
     const saved = await idb.loadNostrSession();
-    if (!saved?.user_npub) return null;
+    if (!saved?.user_npub) {
+      // Preserve a recent pending auth so the opener can resume it.
+      if (saved?.eph_nsec && saved?.nonce) {
+        const age = Date.now() - (saved.started_at ?? 0);
+        if (age < 10 * 60 * 1000) _session = saved;
+      }
+      return null;
+    }
     _session = saved;
     // Refresh profile in background if we don't already have it cached
     if (!_session.profile) {
@@ -215,6 +232,29 @@ export async function restoreSession() {
     }
     return _session.user_npub;
   } catch { return null; }
+}
+
+/**
+ * True if a gate auth was started (eph keys generated) but not yet completed.
+ * Used by overlays to resume a pending auth after a page kill.
+ */
+export function hasPendingAuth() {
+  return !!(_session?.eph_nsec && _session?.nonce && !_session?.user_npub);
+}
+
+/**
+ * Reconstruct the GATE URI from a pending session so the wallet can be
+ * re-scanned (or the deep link re-tapped) without starting over.
+ */
+export function getPendingUri(origin = 'Letterverse') {
+  if (!hasPendingAuth()) return null;
+  const params = new URLSearchParams({
+    relay:     _session.relay ?? RELAYS[0],
+    pubkey:    _session.eph_npub,
+    challenge: _session.nonce,
+    origin,
+  });
+  return `obiverse://gate?${params}`;
 }
 
 /**
@@ -328,9 +368,10 @@ function _handleRelayMessage(raw) {
     if (cb) { cb.onEvent?.(event); return; }
 
     // Default: GATE auth (KIND 22242)
+    // Note: we do NOT pre-filter on the challenge tag here. Not all wallets
+    // include it, and the nonce is already verified inside _gateResolve via
+    // NIP-44 decryption — a pre-tag check is redundant and silently drops events.
     if (event.kind !== 22242 || !event.content || !event.pubkey) return;
-    const challengeTag = event.tags?.find(t => Array.isArray(t) && t[0] === 'challenge');
-    if (challengeTag?.[1] !== _session?.nonce) return;
     _gateResolve?.(event);
 
   } else if (msg[0] === 'EOSE') {

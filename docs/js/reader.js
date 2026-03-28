@@ -84,6 +84,7 @@ const ELib = {
    ═══════════════════════════════════════════════ */
 let chapters = [];           // Parsed chapter objects from markdown
 let currentChapterIdx = 0;   // Index of the currently visible chapter
+let _rawMarkdown = '';       // Raw markdown for export
 let mouseX = 0, mouseY = 0;  // Mouse position for canvas interactions
 // Also: _scrollingTo (scrollspy guard), heroActive (hero scroll listener),
 // currentBookId (book ID from URL), _chapterEls (cached DOM), _activeNavEl (cached nav)
@@ -1362,6 +1363,8 @@ function initThemeEngine(book) {
     const panel = document.getElementById('theme-panel');
     const typoPanel = document.getElementById('typo-panel');
     typoPanel.classList.remove('open');
+    document.getElementById('export-panel')?.classList.remove('open');
+    document.getElementById('btn-export')?.classList.remove('active');
     panel.classList.toggle('open');
   });
 }
@@ -1406,7 +1409,44 @@ function initTypographyControls() {
     const panel = document.getElementById('typo-panel');
     const themePanel = document.getElementById('theme-panel');
     themePanel.classList.remove('open');
+    document.getElementById('export-panel')?.classList.remove('open');
+    document.getElementById('btn-export')?.classList.remove('active');
     panel.classList.toggle('open');
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   EXPORT — Download as Markdown or PDF
+   ═══════════════════════════════════════════════ */
+function initExportPanel(book) {
+  const btn = document.getElementById('btn-export');
+  const panel = document.getElementById('export-panel');
+  if (!btn || !panel) return;
+
+  btn.addEventListener('click', () => {
+    document.getElementById('theme-panel')?.classList.remove('open');
+    document.getElementById('typo-panel')?.classList.remove('open');
+    panel.classList.toggle('open');
+    btn.classList.toggle('active', panel.classList.contains('open'));
+  });
+
+  document.getElementById('export-md')?.addEventListener('click', () => {
+    if (!_rawMarkdown) return;
+    const blob = new Blob([_rawMarkdown], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${currentBookId}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+    panel.classList.remove('open');
+    btn.classList.remove('active');
+  });
+
+  document.getElementById('export-pdf')?.addEventListener('click', () => {
+    panel.classList.remove('open');
+    btn.classList.remove('active');
+    window.print();
   });
 }
 
@@ -1819,6 +1859,7 @@ async function init() {
       const etag = res.headers.get('etag') || res.headers.get('last-modified') || '';
       idb.cacheBook(bookId, md, etag); // fire-and-forget
     }
+    _rawMarkdown = md;
     chapters = parseTreatise(md);
     renderChapters(chapters);
     buildNavigation(chapters);
@@ -1831,6 +1872,7 @@ async function init() {
     initBookmarks();
     initHighlights();
     initStudyPanel(book);
+    initExportPanel(book);
 
     // Scroll priority: 1) URL hash fragment, 2) saved scroll position, 3) top
     const scrollTarget = hashTarget || euler.get_scroll_target(bookId);
