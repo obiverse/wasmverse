@@ -599,6 +599,24 @@
       ]
     },
     {
+      "id": "linux",
+      "title": "Letters on the Sovereign Machine",
+      "subtitle": "A Treatise on Linux, from Boot to Kernel, through the Lens of the ThinkPad X1 Yoga",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/linux.md",
+      "symbol": "fawohodie",
+      "accent": "#2d8659",
+      "letters": 46,
+      "parts": 10,
+      "topic": "Linux & Linux Mint",
+      "description": "The ThinkPad on your desk runs Linux Mint, and every electron obeys you — if you understand the sovereign machine. From first boot to custom kernels, from the terminal to systemd, from the filesystem to containers. The reader finishes as archmage of their own hardware.",
+      "category": "Technology",
+      "next": [
+        "fortress",
+        "rust"
+      ]
+    },
+    {
       "id": "design",
       "title": "Letters on the Language of Design",
       "subtitle": "A Treatise on Design Thinking, from Need to Solution",

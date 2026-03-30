@@ -69,6 +69,7 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Composition of Systems (Euler Framework) | 31 | euler.md |
 | Letters on the Making of the Library (Software Engineering) | 43 | making.md |
 | Letters on the Web of Messages (WhatsApp/Nostr/P2P) | 42 | messages.md |
+| Letters on the Sovereign Machine (Linux & Linux Mint) | 46 | linux.md |
 
 ### Science Wing
 | Book | Letters | File |
