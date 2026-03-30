@@ -22,7 +22,7 @@
    ═══════════════════════════════════════════════ */
 
 const DB_NAME = 'letterverse';
-const DB_VERSION = 2;  // v2: added nostr_session store
+const DB_VERSION = 3;  // v3: added curriculum store
 
 // Lazy singleton — one promise for the lifetime of the page
 let _dbPromise = null;
@@ -71,6 +71,10 @@ function openDB() {
       // {eph_nsec, eph_npub, bunker_npub, relay, user_npub, req_id}
       if (!db.objectStoreNames.contains('nostr_session'))
         db.createObjectStore('nostr_session');
+
+      // Curriculum — persisted learning plan from Apprenticeship quiz
+      if (!db.objectStoreNames.contains('curriculum'))
+        db.createObjectStore('curriculum');
     };
 
     req.onsuccess = e => resolve(e.target.result);
@@ -309,5 +313,38 @@ export async function clearNostrSession() {
   try {
     const db = await openDB();
     await idbDelete(db, 'nostr_session', 'singleton');
+  } catch {}
+}
+
+// ── Curriculum (Apprenticeship Engine) ───────────────────────────────────
+
+/**
+ * Persist the generated curriculum.
+ * Shape: { weeks: [{weekNum, books: [{id, title, letters, reason}]}], createdAt, answers }
+ */
+export async function saveCurriculum(data) {
+  try {
+    const db = await openDB();
+    await idbPut(db, 'curriculum', 'plan', data);
+  } catch {}
+}
+
+/**
+ * Load the persisted curriculum. Returns null if none saved.
+ */
+export async function loadCurriculum() {
+  try {
+    const db = await openDB();
+    return await idbGet(db, 'curriculum', 'plan');
+  } catch { return null; }
+}
+
+/**
+ * Remove the curriculum (retake quiz).
+ */
+export async function clearCurriculum() {
+  try {
+    const db = await openDB();
+    await idbDelete(db, 'curriculum', 'plan');
   } catch {}
 }

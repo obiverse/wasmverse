@@ -176,6 +176,11 @@
       <span class="compass-name">Thinker's Path</span>
       <span class="compass-trail">Systems → AI → Cryptography → Bitcoin</span>
     </a>
+    <a class="compass-pill quiz-pill" href="#" id="quiz-trigger">
+      <span class="compass-icon">&#10022;</span>
+      <span class="compass-name">Find Your Path</span>
+      <span class="compass-trail">5 questions &rarr; your curriculum</span>
+    </a>
     <a class="compass-pill lab-pill" href="#laboratory">
       <span class="compass-icon">&#9654;</span>
       <span class="compass-name">Laboratory</span>
@@ -312,6 +317,36 @@
       <button class="portal-disconnect-btn" id="portal-disconnect-btn">Disconnect Wallet</button>
     </section>
 
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SCROLL CERTIFICATE — Path completion celebration
+     ═══════════════════════════════════════════════ -->
+<div id="celebration-overlay" class="celebration-overlay" hidden>
+  <div class="celebration-modal">
+    <button class="celebration-close" aria-label="Close">&times;</button>
+    <canvas id="celebration-canvas" width="400" height="200"></canvas>
+    <div class="celebration-content" id="celebration-content">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     APPRENTICESHIP QUIZ — "Find Your Path" overlay
+     ═══════════════════════════════════════════════ -->
+<div id="quiz-overlay" class="quiz-overlay" hidden>
+  <div class="quiz-modal">
+    <button class="quiz-close" aria-label="Close">&times;</button>
+    <div class="quiz-header">
+      <div class="quiz-title">Find Your Path</div>
+      <div class="quiz-subtitle">Five questions. Your personalised curriculum.</div>
+    </div>
+    <div class="quiz-body" id="quiz-body">
+      <!-- Slides rendered by library.js -->
+    </div>
+    <div class="quiz-progress" id="quiz-progress"></div>
   </div>
 </div>
 

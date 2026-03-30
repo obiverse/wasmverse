@@ -717,6 +717,344 @@
 .continue-banner a:hover .continue-arrow { transform: translateX(3px); }
 
 /* ═══════════════════════════════════════════════
+   THE HERALD — What's New banner
+   ═══════════════════════════════════════════════ */
+.herald-banner {
+  max-width: 1100px;
+  margin: 0 auto 1rem;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0; transform: translateY(15px);
+  animation: fadeUp 0.6s 0.3s ease forwards;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.herald-summary {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold-dim);
+  border-radius: 10px;
+}
+.herald-icon {
+  font-size: 0.8rem; color: var(--gold);
+}
+.herald-text {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 0.78rem; color: var(--text-dim);
+}
+.herald-toggle, .herald-dismiss {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-dim); font-size: 0.8rem;
+  padding: 0.15rem 0.3rem; border-radius: 4px;
+  transition: color 0.2s ease;
+}
+.herald-toggle:hover, .herald-dismiss:hover { color: var(--gold); }
+.herald-details {
+  margin-top: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.herald-entry {
+  display: flex; gap: 0.8rem; align-items: baseline;
+  padding: 0.3rem 0;
+}
+.herald-entry + .herald-entry { border-top: 1px solid var(--border-subtle); }
+.herald-date {
+  font-family: var(--font-code);
+  font-size: 0.55rem; color: var(--gold-dim);
+  white-space: nowrap;
+}
+.herald-desc {
+  font-family: var(--font-body);
+  font-size: 0.72rem; color: var(--text);
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLL CERTIFICATE — Celebration overlay
+   ═══════════════════════════════════════════════ */
+.celebration-overlay {
+  position: fixed; inset: 0; z-index: 10001;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(12px);
+}
+.celebration-modal {
+  position: relative;
+  width: min(520px, 92vw);
+  background: var(--bg-elevated);
+  border: 1px solid var(--gold-dim);
+  border-radius: 16px;
+  padding: 0;
+  overflow: hidden;
+  text-align: center;
+}
+.celebration-close {
+  position: absolute; top: 0.8rem; right: 1rem; z-index: 1;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-dim); font-size: 1.4rem;
+  transition: color 0.2s;
+}
+.celebration-close:hover { color: var(--gold); }
+#celebration-canvas {
+  width: 100%; height: 120px;
+  display: block;
+}
+.celebration-content { padding: 0 2rem 1.5rem; }
+.celebration-title {
+  font-family: var(--font-code);
+  font-size: 0.6rem; color: var(--gold);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.celebration-path {
+  font-family: var(--font-display);
+  font-size: 1.8rem; color: var(--gold-bright);
+  margin-bottom: 0.8rem;
+}
+.celebration-books {
+  font-family: var(--font-heading);
+  font-size: 0.78rem; color: var(--text-dim);
+  line-height: 1.8;
+  margin-bottom: 0.6rem;
+}
+.celebration-book { white-space: nowrap; }
+.celebration-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.72rem; color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+.celebration-actions {
+  display: flex; gap: 0.6rem; justify-content: center;
+  margin-bottom: 1rem;
+}
+.celebration-download {
+  background: var(--gold-dim); color: var(--bg);
+  border: none; border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-family: var(--font-code);
+  font-size: 0.6rem; letter-spacing: 0.08em;
+  cursor: pointer; transition: background 0.2s;
+}
+.celebration-download:hover { background: var(--gold); }
+.celebration-download:disabled { opacity: 0.6; cursor: not-allowed; }
+.celebration-dismiss {
+  background: none; border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.5rem 1.2rem;
+  color: var(--text-dim);
+  font-family: var(--font-code);
+  font-size: 0.6rem; cursor: pointer;
+  transition: color 0.2s;
+}
+.celebration-dismiss:hover { color: var(--gold); }
+.celebration-lightning { margin-top: 0.5rem; }
+.celebration-zap {
+  font-family: var(--font-code);
+  font-size: 0.55rem; color: var(--gold-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.celebration-zap:hover { color: var(--gold-bright); }
+
+/* ═══════════════════════════════════════════════
+   APPRENTICESHIP QUIZ — "Find Your Path" overlay
+   ═══════════════════════════════════════════════ */
+.quiz-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+}
+.quiz-modal {
+  position: relative;
+  width: min(480px, 92vw);
+  max-height: 85vh; overflow-y: auto;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+}
+.quiz-close {
+  position: absolute; top: 0.8rem; right: 1rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-dim); font-size: 1.4rem;
+  transition: color 0.2s;
+}
+.quiz-close:hover { color: var(--gold); }
+.quiz-header { text-align: center; margin-bottom: 1.5rem; }
+.quiz-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem; color: var(--gold-bright);
+}
+.quiz-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.8rem; color: var(--text-dim); margin-top: 0.3rem;
+}
+.quiz-question {
+  font-family: var(--font-heading);
+  font-size: 1.15rem; color: var(--text-bright);
+  text-align: center; margin-bottom: 1.2rem;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+.quiz-option {
+  display: block; width: 100%;
+  padding: 0.7rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s;
+}
+.quiz-option:hover {
+  border-color: var(--gold-dim);
+  background: var(--bg-elevated);
+}
+.quiz-progress {
+  text-align: center; margin-top: 1rem;
+  font-family: var(--font-code);
+  font-size: 0.55rem; color: var(--text-dim);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+/* Quiz result */
+.quiz-result-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem; color: var(--gold-bright);
+  text-align: center;
+}
+.quiz-result-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.75rem; color: var(--text-dim);
+  text-align: center; margin: 0.3rem 0 1.2rem;
+}
+.quiz-weeks { display: flex; flex-direction: column; gap: 0.6rem; }
+.quiz-week {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.quiz-week-num {
+  font-family: var(--font-code);
+  font-size: 0.55rem; color: var(--gold-dim);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.quiz-week-book {
+  display: block;
+  padding: 0.3rem 0.6rem;
+  font-family: var(--font-heading);
+  font-size: 0.82rem; color: var(--text);
+  text-decoration: none;
+  border-left: 2px solid var(--card-accent, var(--gold-dim));
+  margin-bottom: 0.2rem;
+  transition: color 0.2s;
+}
+.quiz-week-book:hover { color: var(--gold-bright); }
+.quiz-week-letters {
+  font-family: var(--font-code);
+  font-size: 0.52rem; color: var(--text-dim);
+}
+.quiz-actions {
+  display: flex; gap: 0.6rem; margin-top: 1.2rem; justify-content: center;
+}
+.quiz-done {
+  background: var(--gold-dim) !important;
+  color: var(--bg) !important;
+  border-color: var(--gold) !important;
+  font-weight: 600;
+}
+.quiz-retake {
+  background: none; border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.5rem 1rem;
+  color: var(--text-dim); cursor: pointer;
+  font-family: var(--font-body); font-size: 0.75rem;
+  transition: color 0.2s;
+}
+.quiz-retake:hover { color: var(--gold); }
+
+/* ── Curriculum section (above book grid) ────── */
+.curriculum-section {
+  max-width: 1100px;
+  margin: 0 auto 1.5rem;
+  padding: 0 1rem;
+  position: relative; z-index: 1;
+  opacity: 0; transform: translateY(15px);
+  animation: fadeUp 0.6s 0.2s ease forwards;
+}
+.curriculum-header {
+  display: flex; align-items: center; gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+.curriculum-label {
+  font-family: var(--font-code);
+  font-size: 0.55rem; color: var(--gold);
+  letter-spacing: 0.15em; text-transform: uppercase;
+}
+.curriculum-meta {
+  font-family: var(--font-code);
+  font-size: 0.52rem; color: var(--text-dim);
+  flex: 1;
+}
+.curriculum-retake {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-dim); font-size: 0.9rem;
+  transition: color 0.2s;
+}
+.curriculum-retake:hover { color: var(--gold); }
+.curriculum-timeline {
+  display: flex; gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.3rem 0 0.6rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.curriculum-week {
+  flex: 0 0 auto;
+  min-width: 160px; max-width: 220px;
+  padding: 0.6rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.curriculum-week-marker {
+  font-family: var(--font-code);
+  font-size: 0.5rem; color: var(--gold-dim);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.curriculum-book {
+  display: flex; align-items: baseline; gap: 0.3rem;
+  padding: 0.25rem 0;
+  text-decoration: none;
+  border-left: 2px solid var(--card-accent, var(--gold-dim));
+  padding-left: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+.curriculum-book-title {
+  font-family: var(--font-heading);
+  font-size: 0.72rem; color: var(--text);
+  transition: color 0.2s;
+}
+.curriculum-book:hover .curriculum-book-title { color: var(--gold-bright); }
+.curriculum-book-pct {
+  font-family: var(--font-code);
+  font-size: 0.48rem; color: var(--gold);
+  white-space: nowrap;
+}
+
+/* Quiz pill glow */
+.quiz-pill { border-color: var(--gold-dim); }
+.quiz-pill .compass-icon { color: var(--gold); }
+
+/* ═══════════════════════════════════════════════
    LIBRARY CONTROLS
    ═══════════════════════════════════════════════ */
 .library-controls {

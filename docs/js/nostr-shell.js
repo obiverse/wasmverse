@@ -548,6 +548,192 @@ export async function publishNote(content) {
   } catch { return false; }
 }
 
+// ── Palaver Tree (per-chapter discussions) ───────────────────────────────
+
+/**
+ * Fetch discussion threads for a specific book chapter.
+ * Returns array of {id, pubkey, content, created_at, tags} sorted by created_at.
+ */
+export async function fetchChapterThreads(bookId, chapterId, limit = 50) {
+  try {
+    await _connectRelay(_session?.relay ?? RELAYS[0]).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return [];
+
+    return new Promise((resolve) => {
+      const results = [];
+      const subId = Math.random().toString(36).slice(2, 10);
+      const timer = setTimeout(() => {
+        _subCallbacks.delete(subId);
+        resolve(results);
+      }, 6000);
+
+      _subCallbacks.set(subId, {
+        onEvent(ev) {
+          if (ev.kind === 1 && ev.content) {
+            results.push({
+              id: ev.id,
+              pubkey: ev.pubkey,
+              content: ev.content,
+              created_at: ev.created_at,
+              tags: ev.tags || [],
+            });
+          }
+        },
+        onEose() {
+          clearTimeout(timer);
+          results.sort((a, b) => a.created_at - b.created_at);
+          resolve(results);
+        },
+      });
+
+      _ws.send(JSON.stringify([
+        'REQ', subId,
+        {
+          kinds: [1],
+          '#t': ['letterverse-palaver'],
+          '#d': [`${bookId}/${chapterId}`],
+          limit,
+        },
+      ]));
+    });
+  } catch { return []; }
+}
+
+/**
+ * Publish a reply in a chapter's Palaver Tree.
+ * Tags link the reply to the specific book and chapter.
+ * If parentId is provided, it's a threaded reply.
+ * Returns true on success.
+ */
+export async function publishChapterReply(bookId, chapterId, content, parentId, parentPubkey) {
+  if (!_session?.user_npub || !_session?.eph_nsec) return false;
+  try {
+    await _connectRelay(_session.relay).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return false;
+    const tags = [
+      ['d',       `${bookId}/${chapterId}`],
+      ['t',       'letterverse'],
+      ['t',       'letterverse-palaver'],
+      ['t',       `letterverse-${bookId}`],
+      ['p',       _session.user_npub],
+      ['client',  'Letterverse'],
+    ];
+    if (parentId) {
+      tags.push(['e', parentId, '', 'reply']);
+      if (parentPubkey) tags.push(['p', parentPubkey]);
+    }
+    const event = JSON.parse(_wasm.sign_event(_session.eph_nsec, 1, JSON.stringify(tags), content));
+    _ws.send(JSON.stringify(['EVENT', event]));
+    return true;
+  } catch { return false; }
+}
+
+// ── Margin Notes (paragraph annotations) ─────────────────────────────────
+
+/**
+ * Fetch annotations for a specific chapter.
+ * Returns array of {id, pubkey, content, created_at, paragraphHash}.
+ */
+export async function fetchAnnotations(bookId, chapterId) {
+  try {
+    await _connectRelay(_session?.relay ?? RELAYS[0]).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return [];
+
+    return new Promise((resolve) => {
+      const results = [];
+      const subId = Math.random().toString(36).slice(2, 10);
+      const timer = setTimeout(() => {
+        _subCallbacks.delete(subId);
+        resolve(results);
+      }, 6000);
+
+      _subCallbacks.set(subId, {
+        onEvent(ev) {
+          if (ev.kind === 1 && ev.content) {
+            // Extract paragraph hash from the d tag: bookId/chapterId/paragraphHash
+            const dTag = ev.tags?.find(t => t[0] === 'd')?.[1] || '';
+            const parts = dTag.split('/');
+            const paragraphHash = parts.length >= 3 ? parts.slice(2).join('/') : '';
+            results.push({
+              id: ev.id,
+              pubkey: ev.pubkey,
+              content: ev.content,
+              created_at: ev.created_at,
+              paragraphHash,
+            });
+          }
+        },
+        onEose() {
+          clearTimeout(timer);
+          resolve(results);
+        },
+      });
+
+      // Use prefix match: all annotations for this chapter
+      _ws.send(JSON.stringify([
+        'REQ', subId,
+        {
+          kinds: [1],
+          '#t': ['letterverse-annotation'],
+          '#d': [`${bookId}/${chapterId}`],
+          limit: 100,
+        },
+      ]));
+    });
+  } catch { return []; }
+}
+
+/**
+ * Publish a paragraph annotation. Max 280 chars.
+ * Returns true on success.
+ */
+export async function publishAnnotation(bookId, chapterId, paragraphHash, content) {
+  if (!_session?.user_npub || !_session?.eph_nsec) return false;
+  if (content.length > 280) content = content.slice(0, 280);
+  try {
+    await _connectRelay(_session.relay).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return false;
+    const tags = [
+      ['d',       `${bookId}/${chapterId}/${paragraphHash}`],
+      ['t',       'letterverse'],
+      ['t',       'letterverse-annotation'],
+      ['t',       `letterverse-${bookId}`],
+      ['p',       _session.user_npub],
+      ['client',  'Letterverse'],
+    ];
+    const event = JSON.parse(_wasm.sign_event(_session.eph_nsec, 1, JSON.stringify(tags), content));
+    _ws.send(JSON.stringify(['EVENT', event]));
+    return true;
+  } catch { return false; }
+}
+
+// ── Path Attestations (Scroll Certificate) ───────────────────────────────
+
+/**
+ * Publish a path completion attestation.
+ * Called when all books in a Compass path are completed.
+ * Returns true on success.
+ */
+export async function publishPathAttestation(pathName, bookIds) {
+  if (!_session?.user_npub || !_session?.eph_nsec) return false;
+  try {
+    await _connectRelay(_session.relay).catch(() => {});
+    if (_ws?.readyState !== WebSocket.OPEN) return false;
+    const tags = [
+      ['d',             `letterverse/path-attestation/${pathName}`],
+      ['p',             _session.user_npub],
+      ['t',             'letterverse-path-attestation'],
+      ['path',          pathName],
+      ['books',         bookIds.join(',')],
+      ['completed_at',  String(Math.floor(Date.now() / 1000))],
+      ['client',        'Letterverse'],
+    ];
+    const event = JSON.parse(_wasm.sign_event(_session.eph_nsec, 30078, JSON.stringify(tags), `Completed the ${pathName} path in the Letterverse`));
+    _ws.send(JSON.stringify(['EVENT', event]));
+    return true;
+  } catch { return false; }
+}
+
 /**
  * Return the active relay URL and current WebSocket connection state.
  * Used by the portal to display relay status.

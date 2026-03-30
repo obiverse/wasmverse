@@ -498,6 +498,15 @@ function renderChapters(chs) {
     'circuit-sim': 'Circuit Simulator — Ohm\'s Law Made Tangible',
   };
 
+  const labTitles = {
+    'math-graphing':      'Graphing Calculator',
+    'bitcoin-utxo':       'UTXO Visualizer',
+    'crypto-cipher':      'Cipher Playground',
+    'enterprise-unit-econ': 'Unit Economics Simulator',
+    'systems-feedback':   'Feedback Loop Simulator',
+    'rust-ownership':     'Ownership Visualizer',
+  };
+
   function demoReplace(_, demoId) {
     return `<div class="demo-panel" data-demo="${demoId}" id="demo-${demoId}">
       <div class="demo-header">
@@ -508,19 +517,35 @@ function renderChapters(chs) {
     </div>`;
   }
 
+  function labReplace(_, labId) {
+    return `<div class="lab-panel" data-lab="${labId}" id="lab-${labId}">
+      <div class="demo-header">
+        <span class="demo-title">${labTitles[labId] || labId}</span>
+        <span class="demo-badge lab-badge">interactive lab</span>
+      </div>
+      <div class="demo-content"><div class="demo-loading"><div class="spinner"></div>Loading lab\u2026</div></div>
+    </div>`;
+  }
+
   let html = '';
   chs.forEach((ch, i) => {
     // Replace demo markers BEFORE markdown parsing (marked passes HTML comments through invisibly)
     let raw = ch.lines.join('\n');
     raw = raw.replace(/<!--\s*DEMO:([\w-]+)\s*-->/g, demoReplace);
+    raw = raw.replace(/<!--\s*LAB:([\w-]+)\s*-->/g, labReplace);
     let rendered = marked.parse(raw);
     // Also catch the escaped form in case marked escapes it in some configurations
     rendered = rendered.replace(/&lt;!--\s*DEMO:([\w-]+)\s*--&gt;/g, demoReplace);
+    rendered = rendered.replace(/&lt;!--\s*LAB:([\w-]+)\s*--&gt;/g, labReplace);
 
     html += `<article class="chapter" id="${ch.id}" data-index="${i}">
       <div class="chapter-marker">${getAdinkraSVG(i)}</div>
       ${rendered}
     </article>`;
+    html += `<div class="palaver-footer" data-chapter="${ch.id}">
+      <button class="palaver-btn"><span class="palaver-icon">&#9776;</span> Join the Palaver <span class="palaver-count"></span></button>
+      <div class="palaver-thread" hidden></div>
+    </div>`;
     if (i < chs.length - 1) html += makeSacredDivider(i);
   });
 
@@ -817,19 +842,26 @@ function initDemos() {
       if (entry.isIntersecting && !entry.target.dataset.initialized) {
         entry.target.dataset.initialized = 'true';
         const demoId = entry.target.dataset.demo;
+        const labId = entry.target.dataset.lab;
         try {
           if (demoId === 'sorting-theater') await initSortingDemo(entry.target);
           else if (demoId === 'stack-machine') await initStackDemo(entry.target);
           else if (demoId === 'circuit-sim') await initCircuitDemo(entry.target);
+          else if (labId) await initLab(labId, entry.target);
         } catch (err) {
           entry.target.querySelector('.demo-content').innerHTML =
-            `<div class="demo-error">Failed to load demo: ${err.message}</div>`;
+            `<div class="demo-error">Failed to load: ${err.message}</div>`;
         }
       }
     }
   }, { rootMargin: '400px' });
 
-  document.querySelectorAll('.demo-panel').forEach(el => observer.observe(el));
+  document.querySelectorAll('.demo-panel, .lab-panel').forEach(el => observer.observe(el));
+}
+
+async function initLab(labId, panel) {
+  const { initScrollLab } = await import('./labs.js');
+  await initScrollLab(labId, panel);
 }
 
 /* ── Sorting Theater ─────────────────────────── */
@@ -1451,6 +1483,277 @@ function initExportPanel(book) {
 }
 
 /* ═══════════════════════════════════════════════
+   THE PALAVER TREE — Per-chapter Nostr discussions
+
+   Each chapter gets a "Join the Palaver" button.
+   Threads fetched from relay on demand, displayed
+   inline below the chapter.
+   ═══════════════════════════════════════════════ */
+const _palaverCache = new Map(); // chapterId → replies[]
+const PALAVER_RATE_KEY = 'lv_palaver_last_';
+
+function initPalaver(bookId) {
+  const content = document.getElementById('content');
+  if (!content) return;
+
+  content.addEventListener('click', async e => {
+    const btn = e.target.closest('.palaver-btn');
+    if (!btn) return;
+
+    const footer = btn.closest('.palaver-footer');
+    const chapterId = footer?.dataset.chapter;
+    if (!chapterId) return;
+
+    const thread = footer.querySelector('.palaver-thread');
+    if (!thread) return;
+
+    // Toggle
+    if (!thread.hidden) {
+      thread.hidden = true;
+      return;
+    }
+
+    thread.hidden = false;
+    thread.innerHTML = '<div class="palaver-loading">Loading discussion\u2026</div>';
+
+    // Fetch (or use cache)
+    let replies = _palaverCache.get(chapterId);
+    if (!replies) {
+      replies = await nostr.fetchChapterThreads(bookId, chapterId);
+      _palaverCache.set(chapterId, replies);
+    }
+
+    renderPalaverThread(thread, bookId, chapterId, replies);
+  });
+}
+
+function renderPalaverThread(container, bookId, chapterId, replies) {
+  const isConnected = nostr.isConnected();
+
+  let html = '';
+
+  // Compose area (only if authenticated)
+  if (isConnected) {
+    html += `<div class="palaver-compose">
+      <textarea class="palaver-input" placeholder="Share your insight, question, or local example\u2026" maxlength="500" rows="2"></textarea>
+      <div class="palaver-compose-actions">
+        <button class="palaver-submit">Publish</button>
+        <span class="palaver-status"></span>
+      </div>
+    </div>`;
+  }
+
+  if (replies.length === 0) {
+    html += `<div class="palaver-empty">No discussion yet. ${isConnected ? 'Be the first to share.' : 'Sign in to start.'}</div>`;
+  } else {
+    html += replies.map(r => `
+      <div class="palaver-reply" data-id="${r.id}" data-pubkey="${r.pubkey}">
+        <div class="palaver-reply-meta">
+          <span class="palaver-author">${r.pubkey.slice(0, 8)}\u2026</span>
+          <span class="palaver-time">${palaverAge(r.created_at)}</span>
+        </div>
+        <div class="palaver-reply-text">${escapeHtml(r.content)}</div>
+      </div>`).join('');
+  }
+
+  container.innerHTML = html;
+
+  // Wire compose
+  const submit = container.querySelector('.palaver-submit');
+  if (submit) {
+    submit.addEventListener('click', async () => {
+      const input = container.querySelector('.palaver-input');
+      const status = container.querySelector('.palaver-status');
+      const text = input?.value?.trim();
+      if (!text) return;
+
+      // Rate limit: 1 reply per chapter per 2 minutes
+      const rateKey = PALAVER_RATE_KEY + chapterId;
+      const lastPost = parseInt(localStorage.getItem(rateKey) || '0', 10);
+      if (Date.now() - lastPost < 120000) {
+        status.textContent = 'Wait 2 minutes between replies';
+        return;
+      }
+
+      status.textContent = 'Publishing\u2026';
+      submit.disabled = true;
+
+      const ok = await nostr.publishChapterReply(bookId, chapterId, text);
+      if (ok) {
+        localStorage.setItem(rateKey, String(Date.now()));
+        status.textContent = '\u2713 Published';
+        input.value = '';
+        // Add to cache and re-render
+        const cached = _palaverCache.get(chapterId) || [];
+        cached.push({
+          id: 'local-' + Date.now(),
+          pubkey: nostr.getPubkey() || 'you',
+          content: text,
+          created_at: Math.floor(Date.now() / 1000),
+          tags: [],
+        });
+        _palaverCache.set(chapterId, cached);
+        renderPalaverThread(container, bookId, chapterId, cached);
+      } else {
+        status.textContent = 'Failed \u2014 check connection';
+        submit.disabled = false;
+      }
+    });
+  }
+}
+
+function palaverAge(ts) {
+  const diff = Math.floor(Date.now() / 1000) - ts;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return `${Math.floor(diff / 60)}m`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
+  return `${Math.floor(diff / 86400)}d`;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* ═══════════════════════════════════════════════
+   MARGIN NOTES — Paragraph annotations via Nostr
+
+   Authenticated readers can annotate paragraphs.
+   Annotations displayed in right gutter (desktop)
+   or as expandable badges (mobile).
+   ═══════════════════════════════════════════════ */
+const _annotationCache = new Map(); // chapterId → annotations[]
+
+function paragraphHash(chapterId, textContent) {
+  const input = chapterId + ':' + textContent.trim().slice(0, 100);
+  let hash = 2166136261;
+  for (let i = 0; i < input.length; i++) {
+    hash ^= input.charCodeAt(i);
+    hash = (hash * 16777619) >>> 0;
+  }
+  return hash.toString(36);
+}
+
+function initMarginNotes(bookId) {
+  const content = document.getElementById('content');
+  if (!content) return;
+
+  // Tag paragraphs with hashes
+  content.querySelectorAll('.chapter').forEach(chapter => {
+    const chId = chapter.id;
+    chapter.querySelectorAll('p').forEach(p => {
+      if (p.textContent.trim().length < 20) return; // skip tiny paragraphs
+      p.dataset.phash = paragraphHash(chId, p.textContent);
+      p.dataset.chapter = chId;
+    });
+  });
+
+  // Lazy-load annotations per chapter via IntersectionObserver
+  const observed = new Set();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(async entry => {
+      if (!entry.isIntersecting) return;
+      const chapter = entry.target;
+      const chId = chapter.id;
+      if (observed.has(chId)) return;
+      observed.add(chId);
+
+      const annotations = await nostr.fetchAnnotations(bookId, chId);
+      if (annotations.length === 0) return;
+      _annotationCache.set(chId, annotations);
+
+      // Attach annotations to paragraphs
+      annotations.forEach(ann => {
+        if (!ann.paragraphHash) return;
+        const p = chapter.querySelector(`p[data-phash="${ann.paragraphHash}"]`);
+        if (!p) return;
+        appendMarginNote(p, ann);
+      });
+    });
+  }, { rootMargin: '400px' });
+
+  content.querySelectorAll('.chapter').forEach(ch => observer.observe(ch));
+
+  // Annotation creation: click "+" on paragraph hover
+  if (nostr.isConnected()) {
+    let activeInput = null;
+
+    content.addEventListener('click', e => {
+      const addBtn = e.target.closest('.margin-add-btn');
+      if (!addBtn) return;
+
+      const p = addBtn.closest('p');
+      if (!p || activeInput) return;
+
+      const chId = p.dataset.chapter;
+      const pHash = p.dataset.phash;
+      if (!chId || !pHash) return;
+
+      activeInput = document.createElement('div');
+      activeInput.className = 'margin-input';
+      activeInput.innerHTML = `
+        <textarea class="margin-textarea" placeholder="Your note (280 chars)\u2026" maxlength="280" rows="2"></textarea>
+        <div class="margin-input-actions">
+          <button class="margin-submit">Post</button>
+          <button class="margin-cancel">Cancel</button>
+        </div>`;
+
+      p.after(activeInput);
+
+      activeInput.querySelector('.margin-cancel').addEventListener('click', () => {
+        activeInput.remove();
+        activeInput = null;
+      });
+
+      activeInput.querySelector('.margin-submit').addEventListener('click', async () => {
+        const text = activeInput.querySelector('.margin-textarea').value.trim();
+        if (!text) return;
+
+        const ok = await nostr.publishAnnotation(bookId, chId, pHash, text);
+        if (ok) {
+          const ann = {
+            id: 'local-' + Date.now(),
+            pubkey: nostr.getPubkey() || 'you',
+            content: text,
+            created_at: Math.floor(Date.now() / 1000),
+            paragraphHash: pHash,
+          };
+          appendMarginNote(p, ann);
+          activeInput.remove();
+          activeInput = null;
+        }
+      });
+    });
+
+    // Add "+" buttons to paragraphs with hashes
+    content.querySelectorAll('p[data-phash]').forEach(p => {
+      const btn = document.createElement('button');
+      btn.className = 'margin-add-btn';
+      btn.textContent = '+';
+      btn.title = 'Add a note';
+      p.style.position = 'relative';
+      p.appendChild(btn);
+    });
+  }
+}
+
+function appendMarginNote(p, ann) {
+  let container = p.querySelector('.margin-notes');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'margin-notes';
+    p.style.position = 'relative';
+    p.appendChild(container);
+  }
+
+  const note = document.createElement('div');
+  note.className = 'margin-note';
+  note.innerHTML = `
+    <span class="margin-note-author">${ann.pubkey.slice(0, 8)}\u2026</span>
+    <span class="margin-note-text">${escapeHtml(ann.content)}</span>`;
+  container.appendChild(note);
+}
+
+/* ═══════════════════════════════════════════════
    SIDEBAR TABS — Contents / Study
    ═══════════════════════════════════════════════ */
 function initSidebarTabs() {
@@ -1873,6 +2176,8 @@ async function init() {
     initHighlights();
     initStudyPanel(book);
     initExportPanel(book);
+    initPalaver(bookId);
+    initMarginNotes(bookId);
 
     // Scroll priority: 1) URL hash fragment, 2) saved scroll position, 3) top
     const scrollTarget = hashTarget || euler.get_scroll_target(bookId);

@@ -12,6 +12,7 @@
 
 import { boot, applyTheme, applyTypography } from '../euler-shell.js';
 import { drawAfricanBackground } from './african-patterns.js';
+import { generateCertificate } from './certificate.js';
 import * as idb from './idb.js';
 import * as nostr from './nostr-shell.js';
 
@@ -217,6 +218,85 @@ function initContinueBanner(manifest) {
 }
 
 /* ═══════════════════════════════════════════════
+   THE HERALD — What's New banner for returning readers
+
+   Fetches changelog.json, compares version against
+   last-seen, shows a banner with new entries.
+   Fire-and-forget: offline or fetch failure = silent.
+   ═══════════════════════════════════════════════ */
+const HERALD_KEY = 'letterverse_herald_v';
+
+async function initHerald() {
+  try {
+    const resp = await fetch('changelog.json');
+    if (!resp.ok) return;
+    const log = await resp.json();
+
+    const seen = parseInt(localStorage.getItem(HERALD_KEY) || '0', 10);
+
+    // First visit: store current version, no banner
+    if (!seen) {
+      localStorage.setItem(HERALD_KEY, String(log.version));
+      return;
+    }
+
+    // Nothing new
+    if (log.version <= seen) return;
+
+    const fresh = log.entries.filter(e => e.v > seen);
+    if (!fresh.length) return;
+
+    const banner = document.createElement('div');
+    banner.className = 'herald-banner';
+    banner.innerHTML = `
+      <div class="herald-summary">
+        <span class="herald-icon">&#9881;</span>
+        <span class="herald-text">${heraldSummary(fresh)}</span>
+        <button class="herald-toggle" aria-label="Expand details">&#9662;</button>
+        <button class="herald-dismiss" aria-label="Dismiss">&times;</button>
+      </div>
+      <div class="herald-details" hidden>
+        ${fresh.map(e => `
+          <div class="herald-entry">
+            <span class="herald-date">${e.date}</span>
+            <span class="herald-desc">${e.summary}</span>
+          </div>`).join('')}
+      </div>`;
+
+    // Toggle details
+    banner.querySelector('.herald-toggle').addEventListener('click', () => {
+      const details = banner.querySelector('.herald-details');
+      const btn = banner.querySelector('.herald-toggle');
+      const open = details.hidden;
+      details.hidden = !open;
+      btn.textContent = open ? '\u25B4' : '\u25BE';
+    });
+
+    // Dismiss
+    banner.querySelector('.herald-dismiss').addEventListener('click', () => {
+      localStorage.setItem(HERALD_KEY, String(log.version));
+      banner.style.opacity = '0';
+      banner.style.transform = 'translateY(-10px)';
+      setTimeout(() => banner.remove(), 300);
+    });
+
+    const section = document.querySelector('.books-section');
+    section.parentNode.insertBefore(banner, section);
+  } catch (_) { /* offline or error — silent */ }
+}
+
+function heraldSummary(entries) {
+  if (entries.length === 1) return entries[0].summary;
+  const bookType = entries.filter(e => e.type === 'book').length;
+  const letterType = entries.filter(e => e.type === 'letters').length;
+  const parts = [];
+  if (bookType) parts.push(`${bookType} new treatise${bookType > 1 ? 's' : ''}`);
+  if (letterType) parts.push(`new letters in ${letterType} book${letterType > 1 ? 's' : ''}`);
+  if (!parts.length) return `${entries.length} updates since your last visit`;
+  return parts.join(' &middot; ') + ' since your last visit';
+}
+
+/* ═══════════════════════════════════════════════
    LIBRARY CONTROLS — Sort, Filter, Search
    ═══════════════════════════════════════════════ */
 function initControls(manifest) {
@@ -411,11 +491,13 @@ async function loadLibrary() {
 
     initCardReveal();
     initContinueBanner(manifest);
+    initHerald();
     initControls(manifest);
     initCompass();
     initViewTransitions();
     warmRecentBooks(manifest); // fire-and-forget — never blocks render
     initSovereignCompass(manifest); // fire-and-forget — personalises after auth
+    initApprenticeship(manifest); // fire-and-forget — quiz + curriculum
 
   } catch (err) {
     document.getElementById('books-grid').innerHTML =
@@ -523,6 +605,9 @@ async function initSovereignCompass(manifest) {
       }
     });
 
+    // Check for completed compass paths → celebration
+    checkPathCompletions(completed, manifest);
+
     // Add "Your Path" pill to the compass if not already there
     const compassScroll = document.querySelector('.compass-scroll');
     if (compassScroll && !document.getElementById('compass-your-path')) {
@@ -559,6 +644,421 @@ async function initSovereignCompass(manifest) {
       compassScroll.prepend(pill);
     }
   } catch {}
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLL CERTIFICATE — Path completion celebration
+
+   Detects when all books in a Compass path are
+   completed. Shows celebration overlay. Offers
+   downloadable PNG certificate.
+   ═══════════════════════════════════════════════ */
+const CELEBRATED_KEY = 'letterverse_celebrated_paths';
+
+function getCelebratedPaths() {
+  try { return JSON.parse(localStorage.getItem(CELEBRATED_KEY) || '[]'); } catch { return []; }
+}
+
+function markPathCelebrated(pathName) {
+  const paths = getCelebratedPaths();
+  if (!paths.includes(pathName)) {
+    paths.push(pathName);
+    localStorage.setItem(CELEBRATED_KEY, JSON.stringify(paths));
+  }
+}
+
+function checkPathCompletions(completedBooks, manifest) {
+  const celebrated = getCelebratedPaths();
+
+  for (const [pathName, bookIds] of Object.entries(COMPASS_PATHS)) {
+    if (celebrated.includes(pathName)) continue;
+    if (!bookIds.every(id => completedBooks.has(id))) continue;
+
+    // Path completed! Show celebration
+    const books = bookIds
+      .map(id => manifest.books.find(b => b.id === id))
+      .filter(Boolean)
+      .map(b => ({ title: b.title, symbol: b.symbol, accent: b.accent }));
+
+    showCelebration(pathName, books);
+    break; // One celebration at a time
+  }
+}
+
+async function showCelebration(pathName, books) {
+  const overlay = document.getElementById('celebration-overlay');
+  const content = document.getElementById('celebration-content');
+  if (!overlay || !content) return;
+
+  const pathTitle = pathName.charAt(0).toUpperCase() + pathName.slice(1) + '\u2019s Path';
+  const profile = nostr.getProfile?.() || {};
+  const readerName = profile.name || nostr.getPubkeyDisplay?.() || 'Sovereign Reader';
+  const pubkey = nostr.getPubkey?.() || '';
+  const dateStr = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  content.innerHTML = `
+    <div class="celebration-title">Path Complete</div>
+    <div class="celebration-path">${pathTitle}</div>
+    <div class="celebration-books">
+      ${books.map(b => `<span class="celebration-book" style="color:${b.accent || '#c9a96e'}">${b.title}</span>`).join(' \u2192 ')}
+    </div>
+    <div class="celebration-subtitle">Your attestation is on the Nostr relay.</div>
+    <div class="celebration-actions">
+      <button class="celebration-download" id="cert-download">Download Certificate</button>
+      <button class="celebration-dismiss" id="cert-dismiss">Continue</button>
+    </div>
+    <div class="celebration-lightning">
+      <a href="#" data-lightning="letterverse@breez.tips" class="celebration-zap">
+        &#9889; Support the library \u2014 5000 sats
+      </a>
+    </div>`;
+
+  overlay.hidden = false;
+
+  // Publish path attestation
+  nostr.publishPathAttestation(pathName, books.map(b => b.title));
+
+  // Animate celebration canvas
+  const canvas = document.getElementById('celebration-canvas');
+  if (canvas) drawCelebrationParticles(canvas);
+
+  // Download certificate
+  document.getElementById('cert-download')?.addEventListener('click', async () => {
+    const btn = document.getElementById('cert-download');
+    btn.textContent = 'Generating\u2026';
+    btn.disabled = true;
+    try {
+      const blob = await generateCertificate({
+        pathName,
+        readerName,
+        books,
+        pubkey,
+        date: dateStr,
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `letterverse-${pathName}-certificate.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+      btn.textContent = '\u2713 Downloaded';
+    } catch {
+      btn.textContent = 'Failed \u2014 try again';
+      btn.disabled = false;
+    }
+  });
+
+  // Dismiss
+  document.getElementById('cert-dismiss')?.addEventListener('click', () => {
+    markPathCelebrated(pathName);
+    overlay.hidden = true;
+  });
+
+  overlay.querySelector('.celebration-close')?.addEventListener('click', () => {
+    markPathCelebrated(pathName);
+    overlay.hidden = true;
+  });
+
+  // Wire lightning link if connect.js is available
+  try {
+    const { wireLightningLinks } = await import('./connect.js');
+    wireLightningLinks('.celebration-lightning [data-lightning]');
+  } catch {}
+}
+
+function drawCelebrationParticles(canvas) {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width;
+  const h = canvas.height;
+  const particles = Array.from({ length: 30 }, () => ({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    r: 1 + Math.random() * 2,
+    dx: (Math.random() - 0.5) * 0.5,
+    dy: -0.3 - Math.random() * 0.5,
+    a: 0.3 + Math.random() * 0.5,
+  }));
+
+  let frame = 0;
+  function draw() {
+    if (frame > 200 || canvas.closest('[hidden]')) return;
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      p.x += p.dx;
+      p.y += p.dy;
+      p.a *= 0.995;
+      if (p.y < 0) { p.y = h; p.a = 0.3 + Math.random() * 0.5; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(201,169,110,${p.a})`;
+      ctx.fill();
+    });
+    frame++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ═══════════════════════════════════════════════
+   APPRENTICESHIP ENGINE — "Find Your Path" quiz
+
+   5 questions → personalised 8/12/16 week curriculum.
+   Persisted to IDB. Displayed above book grid on
+   return visits.
+   ═══════════════════════════════════════════════ */
+
+const QUIZ_QUESTIONS = [
+  {
+    id: 'builds',
+    text: 'What do you build?',
+    options: [
+      { label: 'Software & Apps',       tags: ['wasm', 'rust', 'pwa', 'algorithms', 'making'] },
+      { label: 'Hardware & Electronics', tags: ['electricity', 'strength', 'manufacturing', 'industry'] },
+      { label: 'Businesses & Teams',     tags: ['enterprise', 'wealth', 'governance', 'rhetoric'] },
+      { label: 'Ideas & Writing',        tags: ['rhetoric', 'thought', 'systems', 'canvas'] },
+      { label: 'Nothing yet — show me',  tags: ['math', 'enterprise', 'bitcoin'] },
+    ]
+  },
+  {
+    id: 'learn',
+    text: 'What do you most want to understand?',
+    options: [
+      { label: 'How money really works',           tags: ['bitcoin', 'wealth', 'lightning', 'keys'] },
+      { label: 'How to build things that last',     tags: ['rust', 'wasm', 'algorithms', 'euler', 'making'] },
+      { label: 'How to protect my digital life',    tags: ['crypto', 'keys', 'whispers', 'cloak', 'fortress'] },
+      { label: 'How systems and societies work',    tags: ['systems', 'governance', 'thought', 'rhetoric'] },
+      { label: 'How the physical world works',      tags: ['electricity', 'strength', 'manufacturing', 'math'] },
+    ]
+  },
+  {
+    id: 'math',
+    text: 'How comfortable are you with mathematics?',
+    options: [
+      { label: 'Very — I enjoy proofs',       tags: ['math', 'algorithms', 'crypto'] },
+      { label: 'Somewhat — I can follow along', tags: ['math'] },
+      { label: 'Not yet — start from zero',    tags: ['enterprise', 'rhetoric'] },
+    ]
+  },
+  {
+    id: 'time',
+    text: 'How much time per week can you dedicate?',
+    options: [
+      { label: '1\u20132 hours',  planSize: 8 },
+      { label: '3\u20135 hours',  planSize: 12 },
+      { label: '5+ hours',       planSize: 16 },
+    ]
+  },
+  {
+    id: 'goal',
+    text: 'What is your ultimate goal?',
+    options: [
+      { label: 'Build a product',           tags: ['wasm', 'pwa', 'rust', 'enterprise', 'making'] },
+      { label: 'Financial sovereignty',      tags: ['bitcoin', 'lightning', 'keys', 'wealth'] },
+      { label: 'Deep understanding',         tags: ['math', 'systems', 'thought', 'euler', 'crypto'] },
+      { label: 'Career transformation',      tags: ['rust', 'algorithms', 'wasm', 'pwa', 'enterprise'] },
+    ]
+  }
+];
+
+function initApprenticeship(manifest) {
+  const trigger = document.getElementById('quiz-trigger');
+  const overlay = document.getElementById('quiz-overlay');
+  if (!trigger || !overlay) return;
+
+  // Check for existing curriculum and render it
+  idb.loadCurriculum().then(plan => {
+    if (plan) renderCurriculum(plan, manifest);
+  });
+
+  trigger.addEventListener('click', e => {
+    e.preventDefault();
+    idb.loadCurriculum().then(existing => {
+      if (existing) {
+        // Scroll to curriculum if it exists
+        const el = document.querySelector('.curriculum-section');
+        if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+      }
+      openQuiz(manifest);
+    });
+  });
+
+  overlay.querySelector('.quiz-close').addEventListener('click', () => {
+    overlay.hidden = true;
+  });
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.hidden = true;
+  });
+}
+
+function openQuiz(manifest) {
+  const overlay = document.getElementById('quiz-overlay');
+  const body = document.getElementById('quiz-body');
+  const progress = document.getElementById('quiz-progress');
+  overlay.hidden = false;
+
+  let step = 0;
+  const answers = {};
+
+  function renderStep() {
+    const q = QUIZ_QUESTIONS[step];
+    progress.textContent = `${step + 1} of ${QUIZ_QUESTIONS.length}`;
+
+    body.innerHTML = `
+      <div class="quiz-question">${q.text}</div>
+      <div class="quiz-options">
+        ${q.options.map((opt, i) =>
+          `<button class="quiz-option" data-idx="${i}">${opt.label}</button>`
+        ).join('')}
+      </div>`;
+
+    body.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const opt = q.options[parseInt(btn.dataset.idx)];
+        answers[q.id] = opt;
+        step++;
+        if (step < QUIZ_QUESTIONS.length) {
+          renderStep();
+        } else {
+          finishQuiz(manifest, answers);
+        }
+      });
+    });
+  }
+
+  renderStep();
+}
+
+function finishQuiz(manifest, answers) {
+  const overlay = document.getElementById('quiz-overlay');
+  const body = document.getElementById('quiz-body');
+  const progress = document.getElementById('quiz-progress');
+  progress.textContent = '';
+
+  // Score books by tag overlap
+  const tagCounts = {};
+  for (const ans of Object.values(answers)) {
+    if (ans.tags) ans.tags.forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; });
+  }
+
+  const planSize = answers.time?.planSize || 12;
+  const scored = manifest.books.map(book => {
+    let score = 0;
+    // Direct tag match (book.id matches a tag)
+    if (tagCounts[book.id]) score += tagCounts[book.id] * 3;
+    // Category match
+    const cat = (book.category || '').toLowerCase();
+    if (tagCounts[cat]) score += tagCounts[cat];
+    // Next-field overlap (books recommended by high-scored books get a boost)
+    if (book.next) book.next.forEach(n => { if (tagCounts[n]) score += 1; });
+    return { ...book, score };
+  });
+
+  // Sort by score, take top N
+  scored.sort((a, b) => b.score - a.score);
+  const selected = scored.slice(0, planSize).filter(b => b.score > 0);
+
+  // Respect prerequisites: if A.next contains B, A should come before B
+  selected.sort((a, b) => {
+    if (a.next?.includes(b.id)) return -1;
+    if (b.next?.includes(a.id)) return 1;
+    return b.score - a.score;
+  });
+
+  // Group into weeks (1-2 books/week based on letter count)
+  const weeks = [];
+  let weekBooks = [];
+  let weekLetters = 0;
+  const lettersPerWeek = Math.ceil(selected.reduce((s, b) => s + b.letters, 0) / Math.ceil(selected.length / 1.5));
+
+  selected.forEach(book => {
+    weekBooks.push({ id: book.id, title: book.title, letters: book.letters, accent: book.accent, symbol: book.symbol });
+    weekLetters += book.letters;
+    if (weekLetters >= lettersPerWeek || weekBooks.length >= 2) {
+      weeks.push({ weekNum: weeks.length + 1, books: weekBooks });
+      weekBooks = [];
+      weekLetters = 0;
+    }
+  });
+  if (weekBooks.length) weeks.push({ weekNum: weeks.length + 1, books: weekBooks });
+
+  const plan = { weeks, createdAt: Date.now(), answers: Object.fromEntries(
+    Object.entries(answers).map(([k, v]) => [k, v.label])
+  )};
+
+  // Save to IDB
+  idb.saveCurriculum(plan);
+
+  // Show result in quiz modal
+  body.innerHTML = `
+    <div class="quiz-result">
+      <div class="quiz-result-title">Your ${weeks.length}-Week Curriculum</div>
+      <div class="quiz-result-subtitle">${selected.length} treatises selected for you</div>
+      <div class="quiz-weeks">
+        ${weeks.map(w => `
+          <div class="quiz-week">
+            <div class="quiz-week-num">Week ${w.weekNum}</div>
+            ${w.books.map(b => `
+              <a href="read.html?book=${b.id}" class="quiz-week-book" style="--card-accent:${b.accent || '#c9a96e'}">
+                ${b.title} <span class="quiz-week-letters">${b.letters} letters</span>
+              </a>`).join('')}
+          </div>`).join('')}
+      </div>
+      <div class="quiz-actions">
+        <button class="quiz-option quiz-done">Begin the Journey</button>
+        <button class="quiz-retake">Retake Quiz</button>
+      </div>
+    </div>`;
+
+  body.querySelector('.quiz-done')?.addEventListener('click', () => {
+    overlay.hidden = true;
+    renderCurriculum(plan, manifest);
+  });
+
+  body.querySelector('.quiz-retake')?.addEventListener('click', () => {
+    idb.clearCurriculum();
+    const existing = document.querySelector('.curriculum-section');
+    if (existing) existing.remove();
+    openQuiz(manifest);
+  });
+}
+
+function renderCurriculum(plan, manifest) {
+  // Remove existing curriculum section if any
+  document.querySelector('.curriculum-section')?.remove();
+
+  const section = document.createElement('div');
+  section.className = 'curriculum-section';
+
+  const allBooks = plan.weeks.flatMap(w => w.books);
+  section.innerHTML = `
+    <div class="curriculum-header">
+      <div class="curriculum-label">Your Curriculum</div>
+      <div class="curriculum-meta">${plan.weeks.length} weeks &middot; ${allBooks.length} treatises</div>
+      <button class="curriculum-retake" title="Retake quiz">&#8634;</button>
+    </div>
+    <div class="curriculum-timeline">
+      ${plan.weeks.map(w => `
+        <div class="curriculum-week">
+          <div class="curriculum-week-marker">W${w.weekNum}</div>
+          ${w.books.map(b => {
+            const prog = euler.get_book_progress_pct(b.id);
+            const pct = Math.round(prog * 100);
+            return `<a href="read.html?book=${b.id}" class="curriculum-book" style="--card-accent:${b.accent || '#c9a96e'}">
+              <span class="curriculum-book-title">${b.title}</span>
+              ${pct > 0 ? `<span class="curriculum-book-pct">${pct}%</span>` : ''}
+            </a>`;
+          }).join('')}
+        </div>`).join('')}
+    </div>`;
+
+  section.querySelector('.curriculum-retake').addEventListener('click', () => {
+    idb.clearCurriculum();
+    section.remove();
+    openQuiz(manifest);
+  });
+
+  const booksSection = document.querySelector('.books-section');
+  booksSection.parentNode.insertBefore(section, booksSection);
 }
 
 loadLibrary();
