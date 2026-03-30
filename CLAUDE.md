@@ -70,6 +70,8 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Making of the Library (Software Engineering) | 43 | making.md |
 | Letters on the Web of Messages (WhatsApp/Nostr/P2P) | 42 | messages.md |
 | Letters on the Sovereign Machine (Linux & Linux Mint) | 46 | linux.md |
+| Letters on the Sovereign Intelligence (Claude & AI) | 25 | claude-ai.md |
+| Letters on the Nine Scrolls (9S Substrate) | 25 | nine-scrolls.md |
 
 ### Science Wing
 | Book | Letters | File |

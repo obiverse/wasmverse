@@ -633,6 +633,42 @@
         "canvas",
         "making"
       ]
+    },
+    {
+      "id": "claude-ai",
+      "title": "Letters on the Sovereign Intelligence",
+      "subtitle": "A Treatise on Claude, from Prompt to Agent, through the Lens of the Builder Who Thinks With Machines",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/claude-ai.md",
+      "symbol": "nsoromma",
+      "accent": "#d97706",
+      "letters": 25,
+      "parts": 5,
+      "topic": "Claude & AI",
+      "description": "Intelligence is now an API call. From first prompt to multi-agent systems, from tool use to sovereign AI infrastructure. The builder who masters Claude can automate what took teams, reason at scale, and build tools that serve the builder, not the platform.",
+      "category": "Technology",
+      "next": [
+        "nine-scrolls",
+        "thought"
+      ]
+    },
+    {
+      "id": "nine-scrolls",
+      "title": "Letters on the Nine Scrolls",
+      "subtitle": "A Treatise on 9S, the Substrate of Sovereign Computing",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/nine-scrolls.md",
+      "symbol": "matemasie",
+      "accent": "#0ea5e9",
+      "letters": 25,
+      "parts": 5,
+      "topic": "9S Substrate",
+      "description": "Everything is a Scroll. Five operations. Never a sixth. From the indivisible atom of data to complete sovereign systems built on paths, effects, and agents. The scroll was always there — 9S simply names it.",
+      "category": "Technology",
+      "next": [
+        "claude-ai",
+        "euler"
+      ]
     }
   ]
 }
