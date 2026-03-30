@@ -12,7 +12,7 @@
 
 import * as nostr  from './nostr-shell.js';
 import * as portal from './portal.js';
-import { openConnectOverlay, wireLightningLinks, showLightningDialog, lnurlEncode, LIGHTNING_ADDR } from './connect.js';
+import { openConnectOverlay, wireLightningLinks, showLightningDialog, lnurlEncode, LIGHTNING_ADDR, fetchBolt11 } from './connect.js';
 
 const RELAYS     = ['wss://relay.primal.net', 'wss://nos.lol', 'wss://relay.nostr.band'];
 const TAG        = 'letterverse';
@@ -191,22 +191,7 @@ function ageStr(ts) {
 function short(pk) { return pk ? pk.slice(0, 8) + '…' + pk.slice(-4) : '—'; }
 function topicColor(id) { return TOPIC_COLORS[id] || 'var(--gold-dim)'; }
 
-// ── LNURL-pay (Phase 2) ───────────────────────────────────────────────────
-
-async function fetchBolt11(lnaddr, sats) {
-  const [user, domain] = (lnaddr || '').split('@');
-  if (!user || !domain) throw new Error('Invalid address');
-  const url = `https://${domain}/.well-known/lnurlp/${user}`;
-  const meta = await fetch(url).then(r => r.json());
-  const msats = sats * 1000;
-  if (msats < (meta.minSendable || 0) || msats > (meta.maxSendable || Infinity))
-    throw new Error(`Amount out of range (${meta.minSendable/1000}–${meta.maxSendable/1000} sats)`);
-  const inv = await fetch(`${meta.callback}?amount=${msats}`).then(r => r.json());
-  if (!inv.pr) throw new Error('No invoice returned');
-  return inv.pr;
-}
-
-// ── Zap sheet (Phase 2) ───────────────────────────────────────────────────
+// ── Zap sheet (Phase 2) — uses fetchBolt11 from connect.js ───────────────
 
 function openZapSheet(card, ev) {
   document.querySelectorAll('.zap-sheet').forEach(s => s.remove());
@@ -217,52 +202,64 @@ function openZapSheet(card, ev) {
   sheet.innerHTML =
     `<div class="zap-header">` +
       `<span class="zap-title">&#9889; Zap ${short(authorPubkey)}</span>` +
-      `<button class="zap-close">✕</button>` +
+      `<button class="zap-close">\u2715</button>` +
     `</div>` +
     `<div class="zap-amounts">` +
-      `<button class="zap-amt" data-sats="21">21</button>` +
-      `<button class="zap-amt" data-sats="210">210</button>` +
-      `<button class="zap-amt" data-sats="2100">2100</button>` +
-      `<button class="zap-amt" data-sats="21000">21000</button>` +
+      `<button class="zap-amt" data-sats="21" disabled>21</button>` +
+      `<button class="zap-amt" data-sats="210" disabled>210</button>` +
+      `<button class="zap-amt" data-sats="2100" disabled>2100</button>` +
+      `<button class="zap-amt" data-sats="21000" disabled>21000</button>` +
     `</div>` +
-    `<p class="zap-status" id="zap-status">Looking up Lightning address…</p>`;
+    `<p class="zap-status" id="zap-status">Looking up author\u2019s Lightning address\u2026</p>`;
 
   card.appendChild(sheet);
   sheet.querySelector('.zap-close').onclick = () => sheet.remove();
 
-  let lnaddr = null;
+  // Safe default — updated when profile arrives
+  let lnaddr = LIGHTNING_ADDR;
 
-  // Fetch author profile for lud16 (non-blocking)
+  // Fetch author profile for lud16, enable buttons when done
   fetchProfile(authorPubkey).then(profile => {
     try {
       const meta = JSON.parse(profile?.content || '{}');
-      lnaddr = meta.lud16 || meta.lud06 || null;
+      const authorAddr = meta.lud16 || meta.lud06 || null;
+      if (authorAddr) lnaddr = authorAddr;
     } catch {}
     const statusEl = sheet.querySelector('#zap-status');
-    statusEl.textContent = lnaddr ? `⚡ ${lnaddr}` : `⚡ ${LIGHTNING_ADDR} (library)`;
-    if (!lnaddr) lnaddr = LIGHTNING_ADDR;
+    if (lnaddr !== LIGHTNING_ADDR) {
+      statusEl.textContent = `\u26A1 ${lnaddr}`;
+    } else {
+      statusEl.textContent = `\u26A1 ${LIGHTNING_ADDR} (library)`;
+    }
+    sheet.querySelectorAll('.zap-amt').forEach(b => { b.disabled = false; });
   }).catch(() => {
     lnaddr = LIGHTNING_ADDR;
-    sheet.querySelector('#zap-status').textContent = `⚡ ${LIGHTNING_ADDR} (library)`;
+    const statusEl = sheet.querySelector('#zap-status');
+    statusEl.textContent = `\u26A1 ${LIGHTNING_ADDR} (library)`;
+    sheet.querySelectorAll('.zap-amt').forEach(b => { b.disabled = false; });
   });
 
   sheet.querySelectorAll('.zap-amt').forEach(btn => {
     btn.addEventListener('click', async () => {
       const sats = parseInt(btn.dataset.sats, 10);
-      const addr = lnaddr || LIGHTNING_ADDR;
+      const addr = lnaddr;
       const statusEl = sheet.querySelector('#zap-status');
-      statusEl.textContent = 'Fetching invoice…';
+      statusEl.textContent = 'Fetching invoice\u2026';
       btn.disabled = true;
 
       try {
         const bolt11 = await fetchBolt11(addr, sats);
-        statusEl.textContent = `✓ Invoice for ${sats} sats — scan or copy`;
-        // Show invoice QR in the sheet itself
+        statusEl.textContent = `\u2713 Invoice for ${sats} sats \u2014 scan or copy`;
         _showInvoiceQr(sheet, bolt11, sats);
-      } catch {
-        // Fallback: show address dialog (no invoice, but still wallet-agnostic)
-        sheet.remove();
-        showLightningDialog(addr);
+      } catch (e) {
+        statusEl.textContent = e.message || 'Could not fetch invoice';
+        // Fallback: show address dialog
+        setTimeout(() => {
+          sheet.remove();
+          showLightningDialog(addr);
+        }, 1500);
+      } finally {
+        btn.disabled = false;
       }
     });
   });
@@ -295,10 +292,21 @@ function _showInvoiceQr(sheet, bolt11, sats) {
   wrap.querySelector('#zap-copy-btn').addEventListener('click', async function() {
     try {
       await navigator.clipboard.writeText(bolt11);
-      this.textContent = '✓';
+      this.textContent = '\u2713';
       setTimeout(() => { this.textContent = 'Copy'; }, 2000);
     } catch { this.textContent = 'Err'; }
   });
+
+  // Done button — provides closure (we can't verify payment without a backend)
+  const doneBtn = document.createElement('button');
+  doneBtn.textContent = 'Done';
+  doneBtn.style.cssText = 'margin-top:0.5rem;background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:var(--gold);font-family:var(--font-code);font-size:0.6rem;padding:0.3rem 0.8rem;cursor:pointer;letter-spacing:0.06em';
+  doneBtn.addEventListener('click', () => {
+    const statusEl = sheet.querySelector('.zap-status');
+    if (statusEl) statusEl.textContent = 'Zap sent \u2014 thank you!';
+    setTimeout(() => sheet.remove(), 1200);
+  });
+  wrap.appendChild(doneBtn);
 }
 
 // ── Rendering ─────────────────────────────────────────────────────────────
@@ -447,7 +455,7 @@ function showThreadView(ev) {
         `<span class="comm-relay-dot live"></span> Replies &nbsp;` +
         `<span id="reply-count" class="comm-post-count"></span>` +
       `</span>` +
-      `${nostr.isConnected() ? '<button class="reply-open-btn" id="reply-open-btn">Reply ↗</button>' : '<p class="thread-auth-hint"><a href="index.html">Connect wallet</a> to reply</p>'}` +
+      `${nostr.isConnected() ? '<button class="reply-open-btn" id="reply-open-btn">Reply \u2197</button>' : '<button class="reply-open-btn thread-auth-btn" id="thread-auth-btn">Sign in to reply</button>'}` +
     `</div>` +
     `<div id="thread-reply-form" hidden></div>` +
     `<div id="thread-replies"><div class="comm-loading" style="padding:2rem"><div class="comm-spinner"></div></div></div>`;
@@ -460,9 +468,19 @@ function showThreadView(ev) {
 
   thread.querySelector('#thread-back').addEventListener('click', closeThread);
 
-  // Reply button
+  // Reply button (authenticated)
   thread.querySelector('#reply-open-btn')?.addEventListener('click', () => {
     openReplyForm(ev, thread.querySelector('#thread-reply-form'));
+  });
+
+  // Sign in to reply (unauthenticated — inline connect, preserve thread context)
+  thread.querySelector('#thread-auth-btn')?.addEventListener('click', () => {
+    openConnectOverlay({
+      onSuccess: () => {
+        showThreadView(ev);
+        fetchReplies(ev.id).then(replies => renderReplies(ev, replies));
+      },
+    });
   });
 }
 
@@ -509,9 +527,10 @@ function openReplyForm(parentEv, container) {
     const text = container.querySelector('.reply-textarea').value.trim();
     if (!text) return;
     const statusEl = container.querySelector('#reply-status');
-    statusEl.textContent = 'Publishing…';
+    if (!navigator.onLine) { statusEl.textContent = 'You are offline \u2014 check your connection.'; return; }
+    statusEl.textContent = 'Publishing\u2026';
     const ok = await nostr.publishReply(parentEv.id, parentEv.pubkey, text);
-    statusEl.textContent = ok ? '✓ Reply published' : 'Error — try again';
+    statusEl.textContent = ok ? '\u2713 Reply published' : 'Relay rejected \u2014 try again';
     statusEl.style.color = ok ? 'var(--gold-bright)' : '';
     if (ok) setTimeout(() => { container.hidden = true; container.innerHTML = ''; }, 2000);
   });
@@ -559,10 +578,27 @@ async function submitCompose() {
   const status = document.getElementById('compose-status');
 
   if (!body) { status.textContent = 'Write something first.'; return; }
-  status.textContent = 'Publishing…';
+
+  if (!navigator.onLine) {
+    status.textContent = 'You are offline \u2014 check your connection.';
+    return;
+  }
+
+  if (!nostr.isConnected()) {
+    status.textContent = 'Sign in first to publish.';
+    status.style.cursor = 'pointer';
+    status.onclick = () => {
+      openConnectOverlay({
+        onSuccess: () => { status.textContent = 'Signed in \u2014 try again.'; status.style.cursor = ''; status.onclick = null; }
+      });
+    };
+    return;
+  }
+
+  status.textContent = 'Publishing\u2026';
 
   const ok = await nostr.publishPost(title || body.slice(0, 80), body, bookId);
-  status.textContent = ok ? '✓ Published to Nostr — reloading feed…' : 'Error — try again';
+  status.textContent = ok ? '\u2713 Published to Nostr \u2014 reloading feed\u2026' : 'Relay rejected \u2014 try again';
   status.style.color = ok ? 'var(--gold-bright)' : '';
 
   if (ok) {

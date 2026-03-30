@@ -127,6 +127,9 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
         <a class="lv-connect-get-link" href="${OBIVERSE_WALLET_URL}" target="_blank" rel="noopener">
           Get OBIVERSE on TestFlight &nearr;
         </a>
+        <p style="font-family:var(--font-body);font-size:0.62rem;color:var(--text-dim);margin:0.4rem 0 0;opacity:0.7;text-align:center">
+          The Letterverse is an OBIVERSE-first experience. More wallets coming soon.
+        </p>
       </div>
     </div>
   `;
@@ -169,16 +172,24 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
       await nostr.renderQR(canvas, uri, { scale: 4 });
       canvas.style.display = 'block';
       if (!statusEl.textContent.includes('Reconnect')) {
-        statusEl.textContent = 'Scan with OBIVERSE wallet…';
+        statusEl.textContent = 'Scan with OBIVERSE wallet\u2026';
+        statusEl.style.animation = 'lv-pulse 2s ease-in-out infinite';
       }
 
       if (isMobile) { openBtn.href = uri; openBtn.hidden = false; }
+
+      // "Still waiting" feedback after 30 seconds
+      const waitingTimer = setTimeout(() => {
+        if (statusEl.textContent.includes('Scan') || statusEl.textContent.includes('Verifying')) {
+          statusEl.textContent = 'Still waiting \u2014 keep the wallet open\u2026';
+        }
+      }, 30_000);
 
       // On iOS, when the user taps "Open OBIVERSE" the browser goes to background.
       // When they return, update status so they know we're still verifying.
       const _onReturn = () => {
         if (document.visibilityState === 'visible' && statusEl.textContent.includes('Scan')) {
-          statusEl.textContent = 'Verifying…';
+          statusEl.textContent = 'Verifying\u2026';
         }
       };
       document.addEventListener('visibilitychange', _onReturn);
@@ -187,15 +198,18 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
       try {
         npub = await nostr.waitForGateAuth();
       } finally {
+        clearTimeout(waitingTimer);
         document.removeEventListener('visibilitychange', _onReturn);
+        statusEl.style.animation = '';
       }
 
-      statusEl.textContent = '✓ Connected';
+      statusEl.textContent = '\u2713 Connected';
       statusEl.style.color = 'var(--gold-bright)';
       setTimeout(() => { close(); onSuccess?.(npub); }, 700);
 
     } catch (err) {
-      statusEl.textContent = err?.message || 'Connection failed — try again';
+      statusEl.style.animation = '';
+      statusEl.textContent = err?.message || 'Connection failed \u2014 try again';
     }
   })();
 }
@@ -205,7 +219,7 @@ export function openConnectOverlay({ onSuccess, origin = 'Letterverse' } = {}) {
 // Step 1: fetch metadata + callback from /.well-known/lnurlp/{user}
 // Step 2: call callback?amount={msats} → get bolt11 invoice
 // MUUN can scan the resulting bolt11 QR code.
-async function _fetchBolt11(addr, sats) {
+export async function fetchBolt11(addr, sats) {
   const [user, domain] = addr.split('@');
   if (!user || !domain) throw new Error('Invalid address');
 
@@ -341,7 +355,7 @@ export function showLightningDialog(addr = LIGHTNING_ADDR) {
       muunCopy.style.display = 'none';
       _bolt11 = null;
       try {
-        _bolt11 = await _fetchBolt11(addr, sats);
+        _bolt11 = await fetchBolt11(addr, sats);
         statusEl.textContent = `${sats} sats — scan or copy`;
         await nostr.renderQR(muunQr, _bolt11, { scale: 3 });
         muunQr.style.display = 'block';

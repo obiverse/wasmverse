@@ -221,7 +221,7 @@ export async function restoreSession() {
       // Preserve a recent pending auth so the opener can resume it.
       if (saved?.eph_nsec && saved?.nonce) {
         const age = Date.now() - (saved.started_at ?? 0);
-        if (age < 10 * 60 * 1000) _session = saved;
+        if (age < 30 * 60 * 1000) _session = saved;
       }
       return null;
     }
@@ -381,6 +381,28 @@ function _handleRelayMessage(raw) {
   }
 }
 
+/**
+ * Wait for relay OK acknowledgment for a published event.
+ * Nostr protocol: relay sends ["OK", event_id, true/false, "message"].
+ * Returns true if relay accepted, false on timeout or rejection.
+ */
+function _waitForOk(eventId, timeoutMs = 5000) {
+  if (!_ws || _ws.readyState !== WebSocket.OPEN) return Promise.resolve(false);
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => { _ws.removeEventListener('message', handler); resolve(false); }, timeoutMs);
+    function handler(e) {
+      let msg;
+      try { msg = JSON.parse(e.data); } catch { return; }
+      if (Array.isArray(msg) && msg[0] === 'OK' && msg[1] === eventId) {
+        clearTimeout(timer);
+        _ws.removeEventListener('message', handler);
+        resolve(msg[2] === true);
+      }
+    }
+    _ws.addEventListener('message', handler);
+  });
+}
+
 // ── Progress & Attestations ───────────────────────────────────────────────
 
 /**
@@ -496,14 +518,14 @@ export async function publishPost(title, body, bookId) {
     if (bookId) tags.push(['t', `letterverse-${bookId}`]);
     const event = JSON.parse(_wasm.sign_event(_session.eph_nsec, 30023, JSON.stringify(tags), body));
     _ws.send(JSON.stringify(['EVENT', event]));
-    return true;
+    return await _waitForOk(event.id);
   } catch { return false; }
 }
 
 /**
  * Publish a KIND 1 reply to another event.
  * Adds e (parent) and p (parent author) tags — standard NIP-10 reply.
- * Returns true on success.
+ * Returns true on relay acknowledgment.
  */
 export async function publishReply(parentId, parentAuthorPubkey, content) {
   if (!_session?.user_npub || !_session?.eph_nsec) return false;
@@ -519,7 +541,7 @@ export async function publishReply(parentId, parentAuthorPubkey, content) {
     ];
     const event = JSON.parse(_wasm.sign_event(_session.eph_nsec, 1, JSON.stringify(tags), content));
     _ws.send(JSON.stringify(['EVENT', event]));
-    return true;
+    return await _waitForOk(event.id);
   } catch { return false; }
 }
 
@@ -544,7 +566,7 @@ export async function publishNote(content) {
       content
     ));
     _ws.send(JSON.stringify(['EVENT', event]));
-    return true;
+    return await _waitForOk(event.id);
   } catch { return false; }
 }
 

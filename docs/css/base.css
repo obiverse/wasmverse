@@ -526,3 +526,7 @@ body {
   .book-card { opacity: 1 !important; transform: none !important; }
   canvas { display: none !important; }
 }
+
+/* Auth + Zap UX animations */
+@keyframes lv-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+.zap-amt:disabled { opacity: 0.35; cursor: not-allowed; }

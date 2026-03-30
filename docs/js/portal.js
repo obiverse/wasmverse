@@ -108,13 +108,28 @@ async function _render() {
   // ── Shelf ─────────────────────────────────────────────────────────────
   _renderShelf(lettersByBook, attestations);
 
-  // ── Lightning QR ───────────────────────────────────────────────────────
+  // ── Lightning QR + Copy ─────────────────────────────────────────────────
   const qrCanvas = document.getElementById('portal-zap-qr');
   if (qrCanvas) {
     try {
       await nostr.renderQR(qrCanvas, lnurlEncode(LIGHTNING_ADDR), { scale: 3, light: 0xffffff });
       qrCanvas.style.display = 'block';
     } catch {}
+    // Add copy button if not already present
+    if (!document.getElementById('portal-zap-copy')) {
+      const copyBtn = document.createElement('button');
+      copyBtn.id = 'portal-zap-copy';
+      copyBtn.style.cssText = 'display:block;margin:0.4rem auto 0;background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:var(--gold-dim);font-family:var(--font-code);font-size:0.6rem;padding:0.3rem 0.7rem;cursor:pointer';
+      copyBtn.innerHTML = '&#9889;&ensp;Copy Address';
+      copyBtn.addEventListener('click', async function() {
+        try {
+          await navigator.clipboard.writeText(LIGHTNING_ADDR);
+          this.innerHTML = '\u2713&ensp;Copied!';
+          setTimeout(() => { this.innerHTML = '&#9889;&ensp;Copy Address'; }, 2000);
+        } catch { this.textContent = 'Error'; }
+      });
+      qrCanvas.parentElement.appendChild(copyBtn);
+    }
   }
 
   // ── Attestations list ─────────────────────────────────────────────────
