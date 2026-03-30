@@ -1,6 +1,6 @@
 # Letters on the Making of the Library
 
-### A Treatise on Software Engineering, from First File to Sovereign Application, through the Lens of the Epistolary Library Itself
+### A Treatise on Software Engineering, from First File to Sovereign Application, through the Lens of the Letterverse Itself
 
 *In the manner of Euler's Letters to a German Princess*
 
@@ -14,7 +14,7 @@ This is not a book about coding. It is a book about the art of organizing comple
 
 I have chosen this approach because I believe the greatest barrier to understanding software is not difficulty but invisibility. When you read a novel, you can hold the physical book, feel the paper, see the binding. When you use a web application, the machinery is hidden. Every layer -- the HTML that structures the page, the CSS that paints it, the JavaScript that animates it, the Rust that computes within it, the WebAssembly that bridges the two worlds, the service worker that guards it all -- is invisible unless someone peels back the curtain. That is what these letters shall do.
 
-The Epistolary Library is a real software project. Its source code lives in a repository called `wasmverse`. It consists of Rust crates that compile to WebAssembly, HTML pages that render treatises, a shared JavaScript module that manages your reading state, a build script that orchestrates compilation, and a manifest that catalogs every book. You are inside it right now. Every concept I teach, I will demonstrate with a file you can open, a function you can read, a line you can trace from source to screen. By the time you finish this first half of the treatise, you will understand not only how software is built, but how *this* software was built -- and the two are the same understanding.
+The Letterverse is a real software project. Its source code lives in a repository called `wasmverse`. It consists of Rust crates that compile to WebAssembly, HTML pages that render treatises, a shared JavaScript module that manages your reading state, a build script that orchestrates compilation, and a manifest that catalogs every book. You are inside it right now. Every concept I teach, I will demonstrate with a file you can open, a function you can read, a line you can trace from source to screen. By the time you finish this first half of the treatise, you will understand not only how software is built, but how *this* software was built -- and the two are the same understanding.
 
 Let us begin.
 
@@ -28,7 +28,7 @@ My dear reader, let us begin with the humblest thing in computing: the file. A f
 
 This may seem a trivial observation, but it is the foundation upon which everything rests. Every program, every image, every treatise, every compiled WebAssembly module is a file. The entire wasmverse project is a tree of files organized into directories. At the top level, you will find `Cargo.toml`, `build.sh`, and three directories: `crates/`, `docs/`, and `web/`. The `crates/` directory contains Rust source code. The `docs/` directory contains the web application you are using right now. The `build.sh` file is a shell script that transforms the former into artifacts consumed by the latter.
 
-The filesystem is the oldest and most enduring abstraction in computing. It predates graphical interfaces, predates the web, predates object-oriented programming. And yet it remains the substrate of all software. When you open `docs/index.html` in a browser, the browser reads the bytes from the filesystem (or from a network, which merely moves files between machines), interprets them as HTML, and renders them as the golden-titled portal of the Epistolary Library. The file itself is inert text. The browser is the interpreter that gives it life. This separation -- between the inert description and the active interpreter -- is the first principle of software engineering, and we shall see it repeated at every layer of this system.
+The filesystem is the oldest and most enduring abstraction in computing. It predates graphical interfaces, predates the web, predates object-oriented programming. And yet it remains the substrate of all software. When you open `docs/index.html` in a browser, the browser reads the bytes from the filesystem (or from a network, which merely moves files between machines), interprets them as HTML, and renders them as the golden-titled portal of the Letterverse. The file itself is inert text. The browser is the interpreter that gives it life. This separation -- between the inert description and the active interpreter -- is the first principle of software engineering, and we shall see it repeated at every layer of this system.
 
 Consider the path `docs/books/manifest.json`. This file contains a JSON object that describes every book in the Library: its identifier, its title, its subtitle, the path to its markdown file, its accent color, its number of letters and parts. The file does not *do* anything. It merely *describes*. And yet from this single description, the entire Library hub is generated -- every card, every progress ring, every animated canvas. The data is inert; the code that reads it is active. The file system holds both, distinguished only by name and path.
 
@@ -50,13 +50,13 @@ I cannot overstate this: if you learn only one tool from this treatise, let it b
 
 ### Letter 3: On Markup and the Separation of Concerns
 
-The page you are reading is rendered from three distinct languages, each responsible for a single concern. HTML provides structure -- what elements exist and how they relate. CSS provides presentation -- how those elements look. JavaScript provides behavior -- how those elements respond to your actions. This separation is not an accident of history but a deliberate architectural principle, and the Epistolary Library demonstrates it at every turn.
+The page you are reading is rendered from three distinct languages, each responsible for a single concern. HTML provides structure -- what elements exist and how they relate. CSS provides presentation -- how those elements look. JavaScript provides behavior -- how those elements respond to your actions. This separation is not an accident of history but a deliberate architectural principle, and the Letterverse demonstrates it at every turn.
 
 Open `docs/index.html` in your mind. Near the bottom of the file, you will find the body of the page:
 
 ```html
 <section class="hero">
-  <h1>The Epistolary Library</h1>
+  <h1>The Letterverse</h1>
   <p class="tagline">Treatises in the manner of Euler's Letters to a German Princess</p>
   <p class="credit">For builders who love the universe</p>
 </section>
@@ -194,7 +194,7 @@ wasm-bindgen = "0.2"
 
 The `crate-type = ["cdylib", "rlib"]` line tells Rust to produce both a dynamic library (for WebAssembly compilation) and a regular library (for testing). The only dependency is `wasm-bindgen`, the bridge between Rust and JavaScript. The entire sorting theater -- six algorithms, visualization state, zero-copy memory access -- depends on nothing but the Rust standard library and one bridging crate. This minimalism is not accidental. It is a consequence of Rust's philosophy: provide powerful primitives in the standard library and let crates compose from them.
 
-We chose Rust for the Epistolary Library because WebAssembly demands it. Wasm modules run in a sandbox with no garbage collector, no runtime, and strict memory constraints. Languages with heavy runtimes (Java, Python, Go) produce Wasm modules that are bloated with runtime overhead. Rust produces Wasm modules that are small, fast, and free of runtime surprises -- because Rust was designed from the beginning to need no runtime at all.
+We chose Rust for the Letterverse because WebAssembly demands it. Wasm modules run in a sandbox with no garbage collector, no runtime, and strict memory constraints. Languages with heavy runtimes (Java, Python, Go) produce Wasm modules that are bloated with runtime overhead. Rust produces Wasm modules that are small, fast, and free of runtime surprises -- because Rust was designed from the beginning to need no runtime at all.
 
 ### Letter 7: On Functions and the Contract
 
@@ -299,7 +299,7 @@ pub fn step(&mut self) -> bool { ... }
 
 The `wasm-bindgen` tool generates a JavaScript function that calls into the WebAssembly module, passes arguments across the boundary, and returns the result. From JavaScript's perspective, it is calling a normal method on a normal object. From the WebAssembly module's perspective, it is executing native-speed compiled code. The boundary is nearly invisible, and the cost of crossing it is minimal.
 
-Why does this matter for the Epistolary Library? Because some computations are poorly suited to JavaScript. Sorting 48 elements with step-by-step visualization requires tight loops, mutable state, and predictable memory layout -- all things that Rust and WebAssembly handle with grace and that JavaScript handles with overhead. The sorting theater runs each step in microseconds because the inner loop is compiled Rust, not interpreted JavaScript. The stack machine executes instructions in a tight `match` over opcodes because pattern matching over byte values is what Rust does best. WebAssembly lets us write the performance-critical core in the right language and let JavaScript handle what it does best: the DOM, the event system, and the user interface.
+Why does this matter for the Letterverse? Because some computations are poorly suited to JavaScript. Sorting 48 elements with step-by-step visualization requires tight loops, mutable state, and predictable memory layout -- all things that Rust and WebAssembly handle with grace and that JavaScript handles with overhead. The sorting theater runs each step in microseconds because the inner loop is compiled Rust, not interpreted JavaScript. The stack machine executes instructions in a tight `match` over opcodes because pattern matching over byte values is what Rust does best. WebAssembly lets us write the performance-critical core in the right language and let JavaScript handle what it does best: the DOM, the event system, and the user interface.
 
 ### Letter 10: On Zero-Copy and the Glass Wall
 
@@ -396,7 +396,7 @@ The hero section of the Library hub is a case study in semantic HTML:
 
 ```html
 <section class="hero">
-  <h1>The Epistolary Library</h1>
+  <h1>The Letterverse</h1>
   <p class="tagline">Treatises in the manner of Euler's Letters to a German Princess</p>
   <p class="credit">For builders who love the universe</p>
 </section>
@@ -429,7 +429,7 @@ HTML is not a programming language. It does not compute. It describes. And that 
 
 ### Letter 13: On CSS and the Painter's Palette
 
-If HTML is the skeleton, CSS is the skin, the clothing, and the light in the room. Cascading Style Sheets control every visual aspect of the page: colors, fonts, spacing, layout, animation, and responsiveness to different screen sizes. The Epistolary Library's visual identity -- the dark midnight background, the golden typography, the glowing particle fields -- is entirely the work of CSS.
+If HTML is the skeleton, CSS is the skin, the clothing, and the light in the room. Cascading Style Sheets control every visual aspect of the page: colors, fonts, spacing, layout, animation, and responsiveness to different screen sizes. The Letterverse's visual identity -- the dark midnight background, the golden typography, the glowing particle fields -- is entirely the work of CSS.
 
 The foundation is the `:root` block in `docs/index.html`, which defines CSS custom properties (variables):
 
@@ -481,7 +481,7 @@ On screens narrower than 480 pixels, the grid collapses to a single column, the 
 
 ### Letter 14: On JavaScript and the Animator
 
-HTML provides the skeleton. CSS provides the appearance. JavaScript provides the *life* -- the ability to respond to events, to fetch data, to create elements, to animate, to remember. In the Epistolary Library, JavaScript is the unseen hand that builds the bookshelf, tracks your reading, and orchestrates the demos.
+HTML provides the skeleton. CSS provides the appearance. JavaScript provides the *life* -- the ability to respond to events, to fetch data, to create elements, to animate, to remember. In the Letterverse, JavaScript is the unseen hand that builds the bookshelf, tracks your reading, and orchestrates the demos.
 
 The `loadLibrary()` function in `docs/index.html` is the entry point. When the page loads, this function runs:
 
@@ -521,7 +521,7 @@ The `try/catch` block at the outermost level is the error boundary. If the manif
 
 ### Letter 15: On the Canvas and the Pixel
 
-There are two ways to draw on a web page. The first is through the DOM: create HTML elements and let the browser render them. The second is through the `<canvas>` element: a raw pixel surface where you draw shapes, lines, and colors frame by frame, like an animator painting on celluloid. The Epistolary Library uses both, but the canvas is where the magic lives.
+There are two ways to draw on a web page. The first is through the DOM: create HTML elements and let the browser render them. The second is through the `<canvas>` element: a raw pixel surface where you draw shapes, lines, and colors frame by frame, like an animator painting on celluloid. The Letterverse uses both, but the canvas is where the magic lives.
 
 The hero background is a full-screen canvas (`<canvas id="bg-canvas">`) that renders an interactive particle field with sacred geometry. Sixty particles drift across the screen, attracted toward the mouse cursor, connected by faint lines when they pass close to each other. At the center, a Seed of Life pattern breathes slowly -- seven interlocking circles that rotate and pulse. This is not a video. It is computed and drawn every frame by JavaScript.
 
@@ -587,7 +587,7 @@ The beauty of Markdown is its dual readability. Open any `.md` file in a text ed
 My dear reader, let us begin at the very bottom...
 ```
 
-Open the same file in a Markdown renderer (such as the one built into the Epistolary Library's reader), and you see formatted text with headings, paragraphs, code blocks, and emphasis. The format is the same. The interpretation differs. This is the separation of content from presentation applied to the author's workflow: write once in plain text, render in any style the reader prefers.
+Open the same file in a Markdown renderer (such as the one built into the Letterverse's reader), and you see formatted text with headings, paragraphs, code blocks, and emphasis. The format is the same. The interpretation differs. This is the separation of content from presentation applied to the author's workflow: write once in plain text, render in any style the reader prefers.
 
 The Library uses `marked.js`, a JavaScript Markdown parser, to convert the raw text into HTML at runtime. The reader page (`docs/read.html`) fetches the Markdown file, parses it, and injects the resulting HTML into the DOM. This means the books are stored as plain text files -- lightweight, versionable, diffable with Git, and editable with any text editor in the world. No proprietary format. No binary blob. Just text, with conventions.
 
@@ -627,7 +627,7 @@ Note the `id` generation: `title.toLowerCase().replace(/[^a-z0-9]+/g, '-').repla
 
 ### Letter 18: On Lazy Loading and the Just-in-Time Library
 
-When you open a treatise in the Epistolary Library, the page does not immediately load every WebAssembly demo. That would be wasteful: the sorting theater demo might be in Letter 23, and if you are reading Letter 1, there is no reason to download and initialize a Wasm module you will not see for twenty chapters. Instead, the Library uses a technique called lazy loading, powered by the browser's IntersectionObserver API.
+When you open a treatise in the Letterverse, the page does not immediately load every WebAssembly demo. That would be wasteful: the sorting theater demo might be in Letter 23, and if you are reading Letter 1, there is no reason to download and initialize a Wasm module you will not see for twenty chapters. Instead, the Library uses a technique called lazy loading, powered by the browser's IntersectionObserver API.
 
 The `initDemos()` function in `docs/read.html` sets up the mechanism:
 
@@ -674,12 +674,12 @@ This is the fundamental principle of lazy loading: defer work until it is necess
 
 ### Letter 19: On the Manifest and the Catalog
 
-Every library needs a catalog -- a single document that lists every book, its location on the shelf, and its essential attributes. In the Epistolary Library, this catalog is `docs/books/manifest.json`:
+Every library needs a catalog -- a single document that lists every book, its location on the shelf, and its essential attributes. In the Letterverse, this catalog is `docs/books/manifest.json`:
 
 ```json
 {
   "library": {
-    "title": "The Epistolary Library",
+    "title": "The Letterverse",
     "subtitle": "Treatises in the manner of Euler, for builders who love the universe"
   },
   "books": [
@@ -765,17 +765,17 @@ This is parameterization at work. Instead of four separate reader pages (one per
 
 ### Letter 21: On State and the localStorage Kingdom
 
-When you read a treatise in the Epistolary Library, your progress is remembered. If you close the browser and return tomorrow, the Library knows which letter you read last, how far you progressed, and which theme you preferred. This memory lives not on a server, not in a database, but in your browser's `localStorage` -- a key-value store that persists on your device, entirely under your control.
+When you read a treatise in the Letterverse, your progress is remembered. If you close the browser and return tomorrow, the Library knows which letter you read last, how far you progressed, and which theme you preferred. This memory lives not on a server, not in a database, but in your browser's `localStorage` -- a key-value store that persists on your device, entirely under your control.
 
 The `docs/lib.js` module manages all persistent state through a clean set of functions:
 
 ```javascript
 const KEYS = {
-  progress:   'epistolary_progress',
-  theme:      'epistolary_theme',
-  typography: 'epistolary_typography',
-  bookmarks:  'epistolary_bookmarks',
-  highlights: 'epistolary_highlights',
+  progress:   'letterverse_progress',
+  theme:      'letterverse_theme',
+  typography: 'letterverse_typography',
+  bookmarks:  'letterverse_bookmarks',
+  highlights: 'letterverse_highlights',
 };
 
 function _get(key, fallback) {
@@ -823,7 +823,7 @@ The `try/catch` in `_get` is a small but crucial detail. `localStorage` can fail
 
 ### Letter 22: On Composition and the Fibonacci Principle
 
-The Epistolary Library is not a monolith. It is a composition of small, independent pieces that combine to produce something greater than their sum. This composition follows a pattern I call the Fibonacci principle: each level of the system is composed from the two levels below it, and never skips a level.
+The Letterverse is not a monolith. It is a composition of small, independent pieces that combine to produce something greater than their sum. This composition follows a pattern I call the Fibonacci principle: each level of the system is composed from the two levels below it, and never skips a level.
 
 At the lowest level are atoms: CSS variables (`--gold`, `--font-heading`), individual HTML elements (`<h1>`, `<canvas>`), and JavaScript primitives (a single function like `_get()`, a single event listener). These are the units that cannot be meaningfully subdivided.
 
@@ -875,7 +875,7 @@ The full pipeline, in one sentence: Rust defines the algorithm, `wasm-pack` comp
 
 ### Letter 24: On Error Boundaries and the Graceful Failure
 
-The mark of professional engineering is not the absence of failure but the presence of designed responses to failure. Every system fails -- networks go down, files are missing, modules fail to compile, browsers lack features. The question is not *whether* failure occurs but *what happens when it does*. The Epistolary Library answers this question at every layer.
+The mark of professional engineering is not the absence of failure but the presence of designed responses to failure. Every system fails -- networks go down, files are missing, modules fail to compile, browsers lack features. The question is not *whether* failure occurs but *what happens when it does*. The Letterverse answers this question at every layer.
 
 At the demo layer, the `initDemos()` function wraps each initialization in a try/catch:
 
@@ -933,7 +933,7 @@ Error boundaries are the architectural equivalent of bulkheads in a ship. A leak
 
 ### Letter 25: On the Service Worker and the Loyal Steward
 
-Between every web application and the network there sits an invisible intermediary, a script that the browser installs in a special, privileged position. This script is the service worker, and it is unlike any other JavaScript you have encountered. It does not run in the page. It does not have access to the DOM. It runs in its own thread, and it persists even after the page is closed. Its sole purpose is to intercept network requests and decide, for each one, whether to fetch from the network, serve from a local cache, or do some combination of the two. Open `docs/sw.js` and study the first two lines: `const VERSION = 'epistolary-v7';` and `const BASE = '/wasmverse/';`. Everything that follows descends from these two declarations — the version names the cache generation, and the base path anchors every URL to the GitHub Pages subdirectory where the site lives.
+Between every web application and the network there sits an invisible intermediary, a script that the browser installs in a special, privileged position. This script is the service worker, and it is unlike any other JavaScript you have encountered. It does not run in the page. It does not have access to the DOM. It runs in its own thread, and it persists even after the page is closed. Its sole purpose is to intercept network requests and decide, for each one, whether to fetch from the network, serve from a local cache, or do some combination of the two. Open `docs/sw.js` and study the first two lines: `const VERSION = 'letterverse-v7';` and `const BASE = '/wasmverse/';`. Everything that follows descends from these two declarations — the version names the cache generation, and the base path anchors every URL to the GitHub Pages subdirectory where the site lives.
 
 Consider the `install` event listener at line 22. When the browser first registers this service worker, it opens a cache named by `VERSION` and pre-fetches every resource in the `PRECACHE` array: `index.html`, `read.html`, `books/manifest.json`, `icon.svg`, `manifest.webmanifest`, `pwa.js`, and `lib.js`. These are the bones of the application — the minimum set of files required for the Library to function offline. Notice that the books themselves are not in this list. They are too large and too numerous to block installation; they will be cached on first access, using a different strategy. The call to `self.skipWaiting()` at line 26 ensures the new service worker takes control immediately, without waiting for the user to close all tabs.
 
@@ -961,7 +961,7 @@ There is one more subtlety. The `?purge` escape hatch at lines 59-62 bypasses al
 
 Open `docs/manifest.webmanifest` and you will find a JSON document that is, in essence, a declaration of identity. It tells the browser: "I am not a website. I am an application. Here is my name, my icon, my starting point, my scope, and the manner in which I wish to be displayed."
 
-The `name` field — "The Epistolary Library — OBIVERSE" — is what appears in the operating system's app switcher, in the installation dialog, and on the splash screen. The `short_name` — "Epistolary" — is what appears beneath the icon on the home screen, where space is limited. The `description` provides context for app stores and installation prompts. These are not decorative metadata; they are the application's self-introduction to the operating system.
+The `name` field — "The Letterverse — OBIVERSE" — is what appears in the operating system's app switcher, in the installation dialog, and on the splash screen. The `short_name` — "Letterverse" — is what appears beneath the icon on the home screen, where space is limited. The `description` provides context for app stores and installation prompts. These are not decorative metadata; they are the application's self-introduction to the operating system.
 
 The `start_url` and `scope` fields are both set to `/wasmverse/`, which is the base path on GitHub Pages. The `start_url` determines which page opens when the user taps the home screen icon. The `scope` determines which URLs the PWA considers "inside" itself — navigating outside the scope breaks out of the standalone window and opens the system browser. Together, these two fields define the application's territory: everything under `/wasmverse/` is sovereign ground.
 
@@ -989,9 +989,9 @@ The online/offline listeners at lines 399-400 complete the picture. When the net
 
 There is a deep problem with service workers that every PWA developer eventually confronts: the chicken-and-egg problem of stale code. A service worker controls which version of the application the user sees. But the service worker itself is a file that must be fetched from the network. If the service worker is stale and aggressively caches everything, it may serve a stale version of itself, creating an infinite loop of staleness. The user sees old content, the old service worker intercepts the update check, and the application is trapped in the past.
 
-The Epistolary Library solves this with a self-healing mechanism that lives outside the service worker's control. Open `docs/index.html` and examine the inline script in the `<head>`, starting at line 9. This script is embedded directly in the HTML — it is not an external file, so the service worker cannot intercept or cache a stale version of it independently of the page. The script declares `var V = 'v7'` (which must match the `VERSION` suffix in `sw.js`) and reads `epistolary_sw_version` from localStorage. If the stored version does not match the current version — or if the URL contains `?purge` — the script performs a nuclear reset: it deletes all caches, unregisters all service workers, and reloads the page.
+The Letterverse solves this with a self-healing mechanism that lives outside the service worker's control. Open `docs/index.html` and examine the inline script in the `<head>`, starting at line 9. This script is embedded directly in the HTML — it is not an external file, so the service worker cannot intercept or cache a stale version of it independently of the page. The script declares `var V = 'v7'` (which must match the `VERSION` suffix in `sw.js`) and reads `letterverse_sw_version` from localStorage. If the stored version does not match the current version — or if the URL contains `?purge` — the script performs a nuclear reset: it deletes all caches, unregisters all service workers, and reloads the page.
 
-The flow is precise. Lines 19-44 of `index.html` check: is the stored version different from the expected version? If yes, delete `epistolary_sw_version` and `epistolary_pwa` from localStorage, enumerate all caches and delete them, enumerate all service worker registrations and unregister them, then reload. The reload fetches the page fresh from the network (since there is no service worker to intercept), the fresh page contains the fresh inline script with the current version, the fresh page registers the fresh `sw.js`, and the cycle is restored.
+The flow is precise. Lines 19-44 of `index.html` check: is the stored version different from the expected version? If yes, delete `letterverse_sw_version` and `letterverse_pwa` from localStorage, enumerate all caches and delete them, enumerate all service worker registrations and unregister them, then reload. The reload fetches the page fresh from the network (since there is no service worker to intercept), the fresh page contains the fresh inline script with the current version, the fresh page registers the fresh `sw.js`, and the cycle is restored.
 
 The same inline script is duplicated in `docs/read.html` at lines 9-40. Both pages carry the self-healing payload, so regardless of which page the user visits first, the version check runs. This is the constitutional amendment mechanism: the application's founding document (HTML) contains the authority to dissolve and reconstitute its own government (the service worker).
 
@@ -1001,13 +1001,13 @@ A sovereign application must be able to reconstitute itself without human interv
 
 ### Letter 30: On GitHub Pages and the Free Embassy
 
-The Epistolary Library lives at `obiverse.github.io/wasmverse/`. This URL is not a coincidence — it is a consequence of how GitHub Pages works. When you push the `docs/` directory of a repository named `wasmverse` to the `master` branch, GitHub automatically builds and serves the contents at `https://{username}.github.io/{reponame}/`. The `docs/` directory becomes the document root, and the repository name becomes the base path.
+The Letterverse lives at `obiverse.github.io/wasmverse/`. This URL is not a coincidence — it is a consequence of how GitHub Pages works. When you push the `docs/` directory of a repository named `wasmverse` to the `master` branch, GitHub automatically builds and serves the contents at `https://{username}.github.io/{reponame}/`. The `docs/` directory becomes the document root, and the repository name becomes the base path.
 
 This base path — `/wasmverse/` — permeates every file in the distribution. In `sw.js`, `const BASE = '/wasmverse/'` prefixes every URL in the precache list. In `manifest.webmanifest`, the `start_url`, `scope`, and `id` are all `/wasmverse/`. In `pwa.js`, the service worker registration at line 45 specifies both the script path (`/wasmverse/sw.js`) and the scope (`/wasmverse/`). If any of these paths were wrong — if they omitted the `/wasmverse/` prefix or used a relative path that resolved incorrectly — the service worker would fail to install, the manifest would not be recognized, or the PWA scope would be wrong. This was one of the first bugs we fixed, as commit `5bdbe34` ("Fix PWA scope for GitHub Pages subdirectory") attests.
 
 The deployment process is the simplest imaginable. The developer pushes to the `master` branch. GitHub detects the push, builds the Pages site from `docs/`, and deploys it to its CDN. There is no CI/CD pipeline, no build step on the server, no containerization. The `build.sh` script compiles the Rust crates locally with `wasm-pack build --target web`, copies the resulting `.wasm` and `.js` files to `docs/pkg/` via the `build_docs` function, and the developer commits the compiled artifacts alongside the source. This is intentional: the repository is self-contained, and the deployment is a simple `git push`.
 
-Think of GitHub Pages as a free embassy. The Epistolary Library is sovereign software — it works offline, it owns its data in localStorage, it heals itself when corrupted. But it needs a place to be discovered, a public address where new readers can find it. GitHub Pages provides this: sovereign territory on foreign soil. The Library's code runs on GitHub's servers, but the moment it installs on a user's device, it no longer depends on those servers. The embassy is the point of first contact, not the seat of government.
+Think of GitHub Pages as a free embassy. The Letterverse is sovereign software — it works offline, it owns its data in localStorage, it heals itself when corrupted. But it needs a place to be discovered, a public address where new readers can find it. GitHub Pages provides this: sovereign territory on foreign soil. The Library's code runs on GitHub's servers, but the moment it installs on a user's device, it no longer depends on those servers. The embassy is the point of first contact, not the seat of government.
 
 The economics deserve mention. GitHub Pages is free for public repositories. The CDN is global. The HTTPS certificate is automatic. The bandwidth is sufficient for a library of treatises and Wasm binaries. For a project that exists to teach — that has no monetization model, no analytics, no user accounts — this is the ideal hosting arrangement. The Library pays nothing to serve knowledge to the world, and the world pays nothing to receive it.
 
@@ -1016,11 +1016,11 @@ The economics deserve mention. GitHub Pages is free for public repositories. The
 
 ### Letter 31: On Git Commits and the Chapter of History
 
-Every software project has an autobiography, and it is written in its commit log. Run `git log --oneline` in the wasmverse repository and you will read the story of how the Epistolary Library came into being, told in reverse chronological order.
+Every software project has an autobiography, and it is written in its commit log. Run `git log --oneline` in the wasmverse repository and you will read the story of how the Letterverse came into being, told in reverse chronological order.
 
 The story begins with `f920b90`: "Letters on the Universal Machine — initial commit." This is the moment of genesis — a single Markdown treatise on WebAssembly and the bare scaffolding to present it. Then `91fc560`: "Add sacred scroll GitHub Pages site for the treatise." The treatise needed a home, so `docs/index.html` was born. Then `868eea5`: "Energize the scroll — cinematic UX overhaul." The plain HTML grew into something with particle fields, smooth scrolling, and the midnight-gold aesthetic.
 
-The plot thickens. `0b9b46c`: "Add live TAOCP demos: sorting theater + stack machine in Wasm." Now the treatise is not just text — it contains interactive demonstrations compiled from the Rust crates in `crates/sorting-theater/` and `crates/stack-machine/`. The reader can watch bubble sort proceed step by step, or push values onto a stack machine and observe the Wasm memory directly. `18fd9d3`: "Transform into Epistolary Library with Rust treatise." One treatise becomes two, and `index.html` transforms from a single-scroll reader into a hub with book cards. `c5edb05`: "Energize library hub — living canvas, card animations, progress tracking." The hub gains animated canvas backgrounds for each card, reading progress rings, and the `lib.js` shared state module.
+The plot thickens. `0b9b46c`: "Add live TAOCP demos: sorting theater + stack machine in Wasm." Now the treatise is not just text — it contains interactive demonstrations compiled from the Rust crates in `crates/sorting-theater/` and `crates/stack-machine/`. The reader can watch bubble sort proceed step by step, or push values onto a stack machine and observe the Wasm memory directly. `18fd9d3`: "Transform into Letterverse with Rust treatise." One treatise becomes two, and `index.html` transforms from a single-scroll reader into a hub with book cards. `c5edb05`: "Energize library hub — living canvas, card animations, progress tracking." The hub gains animated canvas backgrounds for each card, reading progress rings, and the `lib.js` shared state module.
 
 The Bitcoin treatise arrives at `f3366c8`: forty-eight letters from barter to the Lightning Network. Then the PWA arc begins: `5bdbe34` fixes the scope for GitHub Pages, `55bbc41` makes the PWA seamless, `551697e` adds the self-healing script, `a823eb3` adds a letter to the PWA treatise documenting that very self-healing mechanism. The most recent commits — `8de4daa` and `8d492e9` — fix a subtle but critical bug: `lib.js` was not committed to git, causing a 404 on the service worker's precache and preventing offline installation entirely.
 
@@ -1040,7 +1040,7 @@ The real insight is this: the sorting theater's testability comes from its archi
 
 ### Letter 33: On Deployment and the Ship That Sails
 
-Deployment in the Epistolary Library is not a ceremony — it is a continuous act that begins with `./build.sh docs` and ends with `git push origin master`.
+Deployment in the Letterverse is not a ceremony — it is a continuous act that begins with `./build.sh docs` and ends with `git push origin master`.
 
 The build script at `build.sh` is sixty lines of shell that orchestrate the entire pipeline. The `build_sorting` and `build_stack` functions invoke `wasm-pack build --target web` on their respective crates, producing `.wasm` and `.js` files in each crate's `pkg/` directory. The `build_docs` function at line 55 copies these artifacts into `docs/pkg/sorting-theater/` and `docs/pkg/stack-machine/`, where they become part of the GitHub Pages site. It also copies `TREATISE.md` to `docs/TREATISE.md`. The developer commits the updated `docs/` directory and pushes.
 
@@ -1052,7 +1052,7 @@ The entire deployment pipeline has no server-side build step, no Docker containe
 
 ### Letter 34: On Debugging and the Detective's Art
 
-Every bug teaches something that working code cannot. The Epistolary Library's commit history is also a history of bugs discovered and resolved, and each one illuminates a principle of software engineering.
+Every bug teaches something that working code cannot. The Letterverse's commit history is also a history of bugs discovered and resolved, and each one illuminates a principle of software engineering.
 
 The first category of bug is the missing file. Commit `8de4daa` — "Add lib.js — fixes SW install failure (404 on precache)" — tells a cautionary tale. The `lib.js` module was created and referenced in `index.html` and included in the service worker's `PRECACHE` array, but it was never committed to git. Locally, everything worked — the developer's machine had the file. But when pushed to GitHub Pages, the file was absent, the service worker's `cache.addAll(PRECACHE)` encountered a 404, the entire `install` event failed, and the service worker never activated. The fix was trivial (add the file to git), but the lesson was profound: the service worker's precache is an all-or-nothing operation. If any single URL returns an error, the entire installation fails silently. There is no partial success.
 
@@ -1064,7 +1064,7 @@ Each of these bugs followed the same pattern: something worked in one context (l
 
 ### Letter 35: On Refactoring and the Renovation
 
-The Epistolary Library was not designed — it was grown. Each stage of growth preserved existing functionality while adding new capability, like renovating a house one room at a time without ever making it uninhabitable.
+The Letterverse was not designed — it was grown. Each stage of growth preserved existing functionality while adding new capability, like renovating a house one room at a time without ever making it uninhabitable.
 
 The first stage was a single `index.html` containing one treatise rendered as scrollable Markdown. The entire site was one file plus a `TREATISE.md`. The second stage split the site into a hub and a reader: `index.html` became the library entrance, and `read.html` became the reading room. The hub fetched `books/manifest.json` to know which books existed, and the reader accepted a `?book=wasm` parameter to know which book to load. This split required extracting the Markdown rendering logic from the hub into the reader, and creating the manifest as a single source of truth for the book catalog.
 
@@ -1081,7 +1081,7 @@ Each stage was a renovation, not a demolition. The hub still loads `manifest.jso
 
 ### Letter 36: On Separation of Concerns and the Division of Labor
 
-The Epistolary Library separates its concerns at every level of the architecture, and the consistency of this separation is what makes the system comprehensible.
+The Letterverse separates its concerns at every level of the architecture, and the consistency of this separation is what makes the system comprehensible.
 
 At the highest level, the Rust crates in `crates/` are separated from the web frontend in `docs/`. The sorting theater does not know it will be rendered in a browser. It exposes a `step()` function, a `data_ptr()` for zero-copy memory access, and accessor functions for `comparisons`, `swaps`, `highlight_a`, and `highlight_b`. The rendering — the canvas, the colors, the animation loop — lives entirely in `read.html`'s `initSortingDemo` function at line 1986. This separation means the sorting theater could be rendered in a terminal, a native desktop application, or a different web framework without changing a single line of Rust.
 
@@ -1095,19 +1095,19 @@ This is the restaurant analogy from the Wasm treatise made real: the kitchen (Ru
 
 Contradiction is the enemy of reliable software, and the cure for contradiction is the single source of truth: for every fact in the system, there is exactly one place where that fact is defined, and every other reference to that fact is derived from that one place.
 
-In the Epistolary Library, `books/manifest.json` is the single source of truth for the book catalog. The hub reads it to build the card grid. The reader reads it to look up book metadata. The service worker does not hardcode book URLs — it uses a dynamic strategy (stale-while-revalidate) for anything under `books/`. If the manifest says there are four books, there are four books. If it says the Bitcoin treatise has 48 letters and an accent color of `#f7931a`, that is what the hub displays and what the reader uses for its theme accent.
+In the Letterverse, `books/manifest.json` is the single source of truth for the book catalog. The hub reads it to build the card grid. The reader reads it to look up book metadata. The service worker does not hardcode book URLs — it uses a dynamic strategy (stale-while-revalidate) for anything under `books/`. If the manifest says there are four books, there are four books. If it says the Bitcoin treatise has 48 letters and an accent color of `#f7931a`, that is what the hub displays and what the reader uses for its theme accent.
 
 The CSS `:root` block is the single source of truth for the visual design system. Every color, font family, and spacing value used in the application traces back to a custom property defined in `:root`. When the `applyTheme` function changes `--bg-deep` from `#06060e` (midnight) to `#efe8d8` (parchment), every element that references `--bg-deep` updates simultaneously. There is no list of selectors to update, no search-and-replace across stylesheets. The truth changes in one place and propagates everywhere.
 
-The `VERSION` constant in `sw.js` — currently `'epistolary-v7'` — is the single source of truth for the cache generation. When this string changes, the `activate` handler deletes all old caches, and the `install` handler creates a new one. The inline self-healing script in `index.html` and `read.html` references the suffix `'v7'` — and the comment on line 14 of `index.html` reminds the developer: "Must match sw.js VERSION suffix." This is a manual synchronization point, and it is the one place in the system where the single-source-of-truth principle is imperfectly realized. A future improvement might derive both values from a single constant, but for now the comment serves as the bridge.
+The `VERSION` constant in `sw.js` — currently `'letterverse-v7'` — is the single source of truth for the cache generation. When this string changes, the `activate` handler deletes all old caches, and the `install` handler creates a new one. The inline self-healing script in `index.html` and `read.html` references the suffix `'v7'` — and the comment on line 14 of `index.html` reminds the developer: "Must match sw.js VERSION suffix." This is a manual synchronization point, and it is the one place in the system where the single-source-of-truth principle is imperfectly realized. A future improvement might derive both values from a single constant, but for now the comment serves as the bridge.
 
-The `lib.js` module is the single source of truth for persistent state. Every piece of data that survives a page reload — reading progress, theme preference, typography settings, bookmarks, highlights — is read and written through `lib.js`'s exported functions. The `KEYS` object at line 7 centralizes all localStorage key names. If you want to know where the user's reading progress is stored, you look at `KEYS.progress` — `'epistolary_progress'` — and you have your answer. There is no second place to check.
+The `lib.js` module is the single source of truth for persistent state. Every piece of data that survives a page reload — reading progress, theme preference, typography settings, bookmarks, highlights — is read and written through `lib.js`'s exported functions. The `KEYS` object at line 7 centralizes all localStorage key names. If you want to know where the user's reading progress is stored, you look at `KEYS.progress` — `'letterverse_progress'` — and you have your answer. There is no second place to check.
 
 When there is one place where the truth lives, contradiction is impossible. When there are two places, contradiction is inevitable. The discipline of the single source of truth is the discipline of knowing, for every fact, where the master ledger is.
 
 ### Letter 38: On the Observer Pattern and the Watchful Eye
 
-The observer pattern — "tell me when X happens" instead of "check every millisecond whether X happened" — appears three times in the Epistolary Library's reader, and each instance solves a different problem with the same elegant structure.
+The observer pattern — "tell me when X happens" instead of "check every millisecond whether X happened" — appears three times in the Letterverse's reader, and each instance solves a different problem with the same elegant structure.
 
 The first instance is scrollspy: detecting which chapter the reader is currently viewing in order to highlight the corresponding entry in the sidebar's table of contents. In `read.html` at line 1782, an `IntersectionObserver` named `spy` watches every `.chapter` element. When a chapter enters the viewport (specifically, when it crosses the threshold defined by `rootMargin: '-15% 0px -65% 0px'`), the observer fires its callback, which highlights the corresponding sidebar link, updates the floating chapter indicator, and saves the reading progress. Without this observer, the only alternative would be a `scroll` event listener that, on every pixel of scrolling, iterates over all chapters, measures their positions with `getBoundingClientRect()`, and compares them to the viewport. The observer does this work in the browser's native code, at a fraction of the performance cost.
 
@@ -1119,7 +1119,7 @@ The observer pattern transforms imperative polling into declarative subscription
 
 ### Letter 39: On Progressive Enhancement and the Humble Beginning
 
-The Epistolary Library works at five different levels of capability, and at each level, the reader can still use the site. This is progressive enhancement — the web's greatest architectural principle, and the one most often violated.
+The Letterverse works at five different levels of capability, and at each level, the reader can still use the site. This is progressive enhancement — the web's greatest architectural principle, and the one most often violated.
 
 At the first level, the Markdown treatises exist as plain text files in `docs/books/`. A reader with `curl` or any text editor can read them directly. The content is all there — the letters, the analogies, the code examples. No browser required.
 
@@ -1135,7 +1135,7 @@ Each layer adds capability without requiring the layers below to change. The Mar
 
 ### Letter 40: On the Recursive System and the Library That Teaches Itself
 
-We arrive at the deepest pattern in the Epistolary Library, the one that contains all the others: the system is recursive. The Library teaches how to build the Library.
+We arrive at the deepest pattern in the Letterverse, the one that contains all the others: the system is recursive. The Library teaches how to build the Library.
 
 The Wasm treatise in `books/wasm.md` explains the chain from Rust source to Wasm binary. The actual chain is visible in `crates/sorting-theater/src/lib.rs` (the Rust source), `build.sh` (the compilation command), `docs/pkg/sorting-theater/sorting_theater_bg.wasm` (the compiled binary), and `read.html` (the JavaScript that loads and renders it). The treatise does not describe a hypothetical system — it describes the system the reader is using to read the treatise.
 
@@ -1143,7 +1143,7 @@ The PWA treatise in `books/pwa.md` explains service workers, caching strategies,
 
 This meta-treatise — "Letters on the Making of the Library" — explains how the code is structured, how the deployment works, how the caching strategies were chosen, and how the bugs were fixed. The code it references is the code that serves the meta-treatise to the reader. The service worker it describes is the service worker that cached this page. The deployment strategy it explains is the strategy that deployed this page.
 
-The recursion is not ornamental. It is pedagogically essential. When a student reads a textbook about bridge engineering, they learn about bridges but they do not stand on the bridge the textbook describes. When a reader reads the Epistolary Library, they are standing on the bridge. The service worker described in Letter 25 is intercepting the request for Letter 25. The caching strategy described in Letter 26 determined whether Letter 26 was served from the network or the cache. The self-healing mechanism described in Letter 29 protects the reader's ability to read Letter 29.
+The recursion is not ornamental. It is pedagogically essential. When a student reads a textbook about bridge engineering, they learn about bridges but they do not stand on the bridge the textbook describes. When a reader reads the Letterverse, they are standing on the bridge. The service worker described in Letter 25 is intercepting the request for Letter 25. The caching strategy described in Letter 26 determined whether Letter 26 was served from the network or the cache. The self-healing mechanism described in Letter 29 protects the reader's ability to read Letter 29.
 
 This means the reader can verify every claim. Does the service worker use network-first for navigation? Open `sw.js` and check. Does the manifest declare standalone display mode? Open `manifest.webmanifest` and check. Does the sorting theater expose a `step()` function? Open `crates/sorting-theater/src/lib.rs` and check. The system that teaches is the system that is taught, and the reader who finishes can fork the repository, modify the code, and watch their changes propagate through the very mechanisms the treatise described.
 
@@ -1154,7 +1154,7 @@ A library that teaches itself is a library that cannot become obsolete. When the
 
 ### Letter 41: On the Eulerian Voice and the Architecture of Explanation
 
-Every treatise in the Epistolary Library is written in a specific voice — the voice of Leonhard Euler as he wrote his *Letters to a German Princess*, adapted for the age of computation. This voice is not an affectation. It is an architectural choice with five principles, and those principles determine how every concept is presented.
+Every treatise in the Letterverse is written in a specific voice — the voice of Leonhard Euler as he wrote his *Letters to a German Princess*, adapted for the age of computation. This voice is not an affectation. It is an architectural choice with five principles, and those principles determine how every concept is presented.
 
 The first principle is generosity: assume the reader is intelligent but uninformed. Euler never condescended to the Princess, and we never condescend to the reader. The second principle is concreteness: every abstraction is accompanied by a physical analogy. A service worker is a loyal steward. A cache is a pantry. A deployment is a ship that sails. These analogies are not simplifications — they are structural isomorphisms that map the unfamiliar onto the familiar. The third principle is progression: begin with what the reader knows and build, one step at a time, toward what they do not yet know. Letter 1 of the Wasm treatise starts with a light switch; Letter 40 arrives at fractals running in a browser sandbox. Every step along the way was small enough that the reader never felt lost.
 
@@ -1176,7 +1176,7 @@ Aesthetics matter in technical education because attention is the prerequisite f
 
 ### Letter 43: On Sovereignty and the Builder's Obligation
 
-The Epistolary Library is a sovereign application. It works offline. It lives on your home screen. It stores your reading progress, bookmarks, and highlights in your browser's localStorage — not on a server, not in a cloud database, not behind an authentication wall. No analytics track your reading habits. No cookies identify you across sessions. No third-party scripts phone home. The only network requests are to Google Fonts (for the typefaces) and to GitHub Pages (for content updates). Everything else is local.
+The Letterverse is a sovereign application. It works offline. It lives on your home screen. It stores your reading progress, bookmarks, and highlights in your browser's localStorage — not on a server, not in a cloud database, not behind an authentication wall. No analytics track your reading habits. No cookies identify you across sessions. No third-party scripts phone home. The only network requests are to Google Fonts (for the typefaces) and to GitHub Pages (for content updates). Everything else is local.
 
 This sovereignty is not accidental — it is the application's central design commitment, and it imposes obligations on the builder.
 
@@ -1184,14 +1184,14 @@ The first obligation is reliability. A sovereign application cannot show a spinn
 
 The second obligation is self-healing. A sovereign application cannot tell the user to "clear your browser cache" when something goes wrong. The inline version-check script in `index.html` and `read.html` detects version mismatches and automatically purges stale caches. The `?purge` escape hatch provides a manual override for cases the automatic system does not catch. These mechanisms exist because a PWA that installs on the user's home screen has made a promise: "I will work." Breaking that promise — by serving stale content, by failing silently, by requiring technical intervention — is a betrayal of the user's trust.
 
-The third obligation is transparency. The user should understand what the application does with their data. The Library stores reading progress so you can continue where you left off. It stores theme and typography preferences so your reading environment is consistent. It stores bookmarks and highlights so you can annotate your study. All of this data lives in `localStorage` under keys prefixed with `epistolary_` — and the `lib.js` module's `KEYS` object at line 7 enumerates every single one. There are no hidden stores, no IndexedDB tables, no opaque blobs. A developer with access to the browser console can inspect every piece of data the Library has ever stored.
+The third obligation is transparency. The user should understand what the application does with their data. The Library stores reading progress so you can continue where you left off. It stores theme and typography preferences so your reading environment is consistent. It stores bookmarks and highlights so you can annotate your study. All of this data lives in `localStorage` under keys prefixed with `letterverse_` — and the `lib.js` module's `KEYS` object at line 7 enumerates every single one. There are no hidden stores, no IndexedDB tables, no opaque blobs. A developer with access to the browser console can inspect every piece of data the Library has ever stored.
 
-The builder's obligation, in the end, is to make the system trustworthy enough to deserve the user's home screen. A home screen icon is an act of trust. The user is saying: "I value this application enough to give it permanent space on my most personal device." That trust must be honored with reliability, self-healing, transparency, and respect for the user's sovereignty over their own data and device. The Epistolary Library strives to honor that trust, and every architectural decision in these forty-three letters was made in service of that goal.
+The builder's obligation, in the end, is to make the system trustworthy enough to deserve the user's home screen. A home screen icon is an act of trust. The user is saying: "I value this application enough to give it permanent space on my most personal device." That trust must be honored with reliability, self-healing, transparency, and respect for the user's sovereignty over their own data and device. The Letterverse strives to honor that trust, and every architectural decision in these forty-three letters was made in service of that goal.
 
 
 ## Epilogue: On the Making of Makers
 
-This treatise was not written to make the reader admire the Epistolary Library. It was written to make the reader capable of building their own.
+This treatise was not written to make the reader admire the Letterverse. It was written to make the reader capable of building their own.
 
 The tools are all open. Rust is free. `wasm-pack` is free. HTML, CSS, and JavaScript require no license. Git is free. GitHub Pages is free. Service workers are a web standard implemented in every modern browser. The Wasm compilation target is supported by Rust, C, C++, Go, AssemblyScript, and a growing list of other languages. There is no proprietary technology anywhere in this stack.
 

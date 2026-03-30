@@ -288,7 +288,7 @@ The critical implication is this: **the service worker has no persistent in-memo
 ```javascript
 // sw.js — The complete lifecycle
 
-const CACHE_NAME = 'epistolary-v1';
+const CACHE_NAME = 'letterverse-v1';
 
 const APP_SHELL = [
   '/',
@@ -365,8 +365,8 @@ But unlike a physical library, the Cache API can hold *multiple named caches*. T
 
 ```javascript
 // Each version gets its own cache
-const CACHE_V1 = 'epistolary-v1';
-const CACHE_V2 = 'epistolary-v2';
+const CACHE_V1 = 'letterverse-v1';
+const CACHE_V2 = 'letterverse-v2';
 
 // During activation of v2, delete v1:
 caches.keys().then(keys =>
@@ -556,7 +556,7 @@ The App Shell is cached during the service worker's install phase. On subsequent
 
 This is the same principle that makes a native application feel fast. When you open your email app, you see the interface immediately — the inbox list, the toolbar, the compose button. The emails themselves load a moment later. The shell is the app; the content is the data. By separating them, you guarantee that the app *always opens*.
 
-In our Epistolary Library, the app shell is `index.html` and `read.html` — the structure, the styles, the navigation. The content is the markdown files (`wasm.md`, `rust.md`) and the book manifest. The shell is cached during installation. The content is cached on first read. The result: after one visit, the entire library works offline. You carry Euler's letters in your pocket, sovereign over your own reading, independent of any network.
+In our Letterverse, the app shell is `index.html` and `read.html` — the structure, the styles, the navigation. The content is the markdown files (`wasm.md`, `rust.md`) and the book manifest. The shell is cached during installation. The content is cached on first read. The result: after one visit, the entire library works offline. You carry Euler's letters in your pocket, sovereign over your own reading, independent of any network.
 
 ---
 
@@ -568,7 +568,7 @@ A service worker gives a website the *ability* to behave like an application. Th
 
 ```json
 {
-  "name": "The Epistolary Library",
+  "name": "The Letterverse",
   "short_name": "Library",
   "description": "Treatises for builders who love the universe",
   "start_url": "/",
@@ -827,7 +827,7 @@ A PWA can achieve the same through the manifest's `background_color` and `theme_
     │  │        │            │                │    │
     │  │        └────────────┘                │    │
     │  │                                      │    │
-    │  │     "The Epistolary Library"          │    │
+    │  │     "The Letterverse"          │    │
     │  │        ← name from manifest          │    │
     │  │                                      │    │
     │  └──────────────────────────────────────┘    │
@@ -999,7 +999,7 @@ Whichever signal fires first triggers the prompt. The user who reads slowly will
 
 ### Letter 18: On the Custom Install Banner
 
-The browser's default install banner (on Chrome) is functional but generic. It appears at the bottom of the screen in the browser's own visual language, not yours. It says "Add The Epistolary Library to Home screen" in the browser's font, with the browser's button styles. It is like receiving an invitation to a gala printed on a gas station receipt.
+The browser's default install banner (on Chrome) is functional but generic. It appears at the bottom of the screen in the browser's own visual language, not yours. It says "Add The Letterverse to Home screen" in the browser's font, with the browser's button styles. It is like receiving an invitation to a gala printed on a gas station receipt.
 
 A custom install banner, by contrast, speaks in the application's own voice:
 
@@ -1087,7 +1087,7 @@ The first standalone launch should include a brief welcome — a moment of recog
     │           (app icon,                     │
     │        fades in, scales up)              │
     │                                          │
-    │     The Epistolary Library               │
+    │     The Letterverse               │
     │                                          │
     │   Treatises for builders who             │
     │        love the universe                 │
@@ -1282,7 +1282,7 @@ The versioned cache strategy handles this:
 
 ```javascript
 // In sw.js — version 2
-const CACHE = 'epistolary-v2';  // New version name
+const CACHE = 'letterverse-v2';  // New version name
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -1309,7 +1309,7 @@ self.addEventListener('activate', event => {
 });
 ```
 
-The key is the cache name. By changing `epistolary-v1` to `epistolary-v2`, the new service worker creates a completely new cache and, upon activation, deletes the old one. The transition is clean: one moment the user is on v1, the next moment (after closing all tabs) they are on v2, with a fresh cache containing all the new resources.
+The key is the cache name. By changing `letterverse-v1` to `letterverse-v2`, the new service worker creates a completely new cache and, upon activation, deletes the old one. The transition is clean: one moment the user is on v1, the next moment (after closing all tabs) they are on v2, with a fresh cache containing all the new resources.
 
 The `self.clients.claim()` call in the activate event is a subtle but important step. By default, a newly activated service worker only controls pages that are *loaded after activation*. The currently open page was loaded under the old worker and will remain uncontrolled until the user navigates or refreshes. `self.clients.claim()` forces the new worker to take control of all existing pages immediately. Combined with `skipWaiting()`, this ensures that the update propagates as quickly as possible.
 
@@ -1330,7 +1330,7 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
 });
 ```
 
-For our Epistolary Library, where the user may be deep in a treatise, the most graceful approach is to show a small toast at the top of the screen: "A new letter has arrived. Refresh to see it." This maintains the literary metaphor while communicating the technical reality. The user can refresh at their leisure or simply continue reading — the update will take effect naturally when they next navigate.
+For our Letterverse, where the user may be deep in a treatise, the most graceful approach is to show a small toast at the top of the screen: "A new letter has arrived. Refresh to see it." This maintains the literary metaphor while communicating the technical reality. The user can refresh at their leisure or simply continue reading — the update will take effect naturally when they next navigate.
 
 ### Letter 26b: On the Self-Healing Application and the Chicken-and-Egg Problem
 
@@ -1662,7 +1662,7 @@ This inversion changes everything about how you think about data flow:
 
 In the offline-first model, the user always sees a response instantly. The network is used to *improve* the response (by fetching fresher data), not to *provide* it. This is why the stale-while-revalidate strategy is the default for content-heavy PWAs: the user gets the cached version now and the network version next time.
 
-For our Epistolary Library, the offline-first architecture is natural. The treatises are long-form text that changes rarely. Once cached, they are valid indefinitely. The user downloads a treatise once and reads it at their leisure — on the subway, on a plane, in a park, wherever they happen to be. The network is needed only for the initial download and for checking if new treatises have been added.
+For our Letterverse, the offline-first architecture is natural. The treatises are long-form text that changes rarely. Once cached, they are valid indefinitely. The user downloads a treatise once and reads it at their leisure — on the subway, on a plane, in a park, wherever they happen to be. The network is needed only for the initial download and for checking if new treatises have been added.
 
 ### Letter 32: On IndexedDB and the Sovereign's Archive
 
@@ -1673,7 +1673,7 @@ IndexedDB is a transactional, indexed, key-value database built into every moder
 ```javascript
 // Open a database
 const db = await new Promise((resolve, reject) => {
-  const request = indexedDB.open('EpistolaryLibrary', 1);
+  const request = indexedDB.open('Letterverse', 1);
   request.onupgradeneeded = event => {
     const db = event.target.result;
     db.createObjectStore('progress', { keyPath: 'bookId' });
@@ -2011,7 +2011,7 @@ The Progressive Web App is an escape from this model. A PWA is installed from a 
 
 This is not a technical curiosity. This is a *political fact*. The PWA represents a vision of computing where the user and the developer interact directly, without a feudal lord extracting tribute from every transaction. It is the web's answer to the app store's walled garden: an open field where anyone may build, anyone may visit, and the only gatekeeper is the browser itself — which is, unlike the app store, governed by open standards and available from multiple competing vendors.
 
-The Epistolary Library you hold in your hands — or rather, on your home screen — is a small example of this sovereignty. It was built with open web technologies. It is distributed through a URL. It works offline. It installs without permission from any corporation. It will continue to function as long as browsers support open standards, which is to say, as long as the web exists.
+The Letterverse you hold in your hands — or rather, on your home screen — is a small example of this sovereignty. It was built with open web technologies. It is distributed through a URL. It works offline. It installs without permission from any corporation. It will continue to function as long as browsers support open standards, which is to say, as long as the web exists.
 
 Euler wrote to the Princess of Anhalt-Dessau because he believed that understanding should not be locked behind the gates of the academy. The Progressive Web App exists because a community of engineers believed that software should not be locked behind the gates of the app store.
 

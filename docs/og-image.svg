@@ -8,7 +8,7 @@
     <circle cx="40" cy="-69.3" r="80"/><circle cx="-40" cy="-69.3" r="80"/>
   </g>
   <!-- Title -->
-  <text x="600" y="240" text-anchor="middle" fill="#e4c98a" font-family="Georgia,serif" font-size="52" font-weight="700">The Epistolary Library</text>
+  <text x="600" y="240" text-anchor="middle" fill="#e4c98a" font-family="Georgia,serif" font-size="52" font-weight="700">The Letterverse</text>
   <text x="600" y="290" text-anchor="middle" fill="#9e9684" font-family="Georgia,serif" font-size="22" font-style="italic">Treatises in the manner of Euler, for builders who love the universe</text>
   <!-- Stats -->
   <text x="600" y="370" text-anchor="middle" fill="#c9a96e" font-family="monospace" font-size="16" letter-spacing="2">33 TREATISES · 1,195 LETTERS · LIVE WASM DEMOS · WORKS OFFLINE</text>

@@ -16,7 +16,7 @@ This is not an accident. It is the deepest test of any framework: *can it explai
 
 Leonhard Euler — the mathematician, not the framework — spent his life finding the general principle behind specific problems. He did not solve the Bridges of Königsberg; he invented graph theory, of which Königsberg was the first exercise. He did not merely sum the reciprocals of squares; he discovered zeta functions, of which π²/6 was the first evaluation. He found the *universal* that made the *particular* trivial.
 
-The Euler framework follows this method. It does not solve one web application's state management problem. It provides five general modules — JSON, Store, Theme, Router, Search — from which any web application's state management follows as a corollary. The Epistolary Library is the first proof. But a todo application, a dashboard, a game, a medical records system — each is another proof of the same theorems.
+The Euler framework follows this method. It does not solve one web application's state management problem. It provides five general modules — JSON, Store, Theme, Router, Search — from which any web application's state management follows as a corollary. The Letterverse is the first proof. But a todo application, a dashboard, a game, a medical records system — each is another proof of the same theorems.
 
 I shall teach you these theorems from the ground up. Not as API documentation — you can read the source code for that — but as *understanding*. Why does state need a version counter? Why must JSON be hand-written rather than generated? Why is a theme an array of pairs rather than a struct with named fields? Each design choice traces back to a principle, and each principle appears in domains far beyond computing.
 
@@ -398,7 +398,7 @@ const MIDNIGHT: Theme = Theme {
 };
 ```
 
-Why pairs instead of named fields? Because **a framework cannot know what variables an application will need.** The Epistolary Library needs `--bg-deep`, `--gold-glow`, `--border-subtle`. A music application might need `--waveform-color`, `--playhead`, `--beat-grid`. A medical dashboard might need `--alert-critical`, `--vitals-normal`, `--chart-bg`.
+Why pairs instead of named fields? Because **a framework cannot know what variables an application will need.** The Letterverse needs `--bg-deep`, `--gold-glow`, `--border-subtle`. A music application might need `--waveform-color`, `--playhead`, `--beat-grid`. A medical dashboard might need `--alert-critical`, `--vitals-normal`, `--chart-bg`.
 
 By using pairs, the theme engine becomes domain-agnostic. Any application defines its own vocabulary of CSS variables. The framework provides the *mechanism* (store themes, switch between them, generate CSS JSON, apply overrides) without dictating the *vocabulary*.
 
@@ -406,7 +406,7 @@ This is the generalization principle. Euler the mathematician did not define sep
 
 ### Letter 12: On the Override and the Book's Accent
 
-Each book in the Epistolary Library has an accent color. The WebAssembly treatise is gold (#c9a96e). The Rust treatise is copper (#b87333). The Bitcoin treatise is orange (#f7931a). The Euler framework treatise — the one you are reading — is emerald.
+Each book in the Letterverse has an accent color. The WebAssembly treatise is gold (#c9a96e). The Rust treatise is copper (#b87333). The Bitcoin treatise is orange (#f7931a). The Euler framework treatise — the one you are reading — is emerald.
 
 When you switch from one book to another, the accent color changes, but the theme stays the same. The Midnight theme with a gold accent is different from the Midnight theme with a copper accent, but they share the same background, text, and border colors.
 
@@ -643,16 +643,16 @@ The shell does not make decisions. It does not hold state. It does not compute d
 
 ### Letter 20: On the Migration and the Backward-Compatible Archive
 
-When the Epistolary Library upgraded from `lib.js` (the old JavaScript state management) to Euler (the new WASM framework), every existing reader's data had to survive the transition. Their reading progress, bookmarks, highlights, and theme preferences were stored in five separate localStorage keys:
+When the Letterverse upgraded from `lib.js` (the old JavaScript state management) to Euler (the new WASM framework), every existing reader's data had to survive the transition. Their reading progress, bookmarks, highlights, and theme preferences were stored in five separate localStorage keys:
 
 ```
     OLD FORMAT (lib.js)
 
-    epistolary_progress:  {"wasm":{"chaptersRead":12,...}}
-    epistolary_theme:     "midnight"
-    epistolary_typography: {"fontSize":19,...}
-    epistolary_bookmarks: {"wasm":[...]}
-    epistolary_highlights: {"wasm":[...]}
+    letterverse_progress:  {"wasm":{"chaptersRead":12,...}}
+    letterverse_theme:     "midnight"
+    letterverse_typography: {"fontSize":19,...}
+    letterverse_bookmarks: {"wasm":[...]}
+    letterverse_highlights: {"wasm":[...]}
 
     NEW FORMAT (euler)
 
@@ -667,11 +667,11 @@ This is the principle of *backward compatibility*: new systems must respect the 
 
 ---
 
-## Part VIII: The First Proof — The Epistolary Library
+## Part VIII: The First Proof — The Letterverse
 
 ### Letter 21: On the Application Layer
 
-The five modules are theorems. The application layer — `lib.rs` — is the first proof: the Epistolary Library, a reading application for technical treatises.
+The five modules are theorems. The application layer — `lib.rs` — is the first proof: the Letterverse, a reading application for technical treatises.
 
 The application defines its domain types:
 

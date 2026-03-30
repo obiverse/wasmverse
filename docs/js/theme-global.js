@@ -8,7 +8,12 @@ import { get as getEuler, applyTheme, autoPersist } from '../euler-shell.js';
 
 const MODES = ['dark', 'light', 'system'];
 const MODE_TO_THEME = { dark: 'midnight', light: 'parchment' };
-const STORE_KEY = 'epistolary_theme_mode';
+const STORE_KEY = 'letterverse_theme_mode';
+
+// Migrate old key
+if (!localStorage.getItem('letterverse_theme_mode') && localStorage.getItem('epistolary_theme_mode')) {
+  localStorage.setItem('letterverse_theme_mode', localStorage.getItem('epistolary_theme_mode'));
+}
 
 let currentMode = localStorage.getItem(STORE_KEY) || 'dark';
 

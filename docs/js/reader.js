@@ -1821,7 +1821,7 @@ function _openSharePopover(anchorBtn, chObj, chapterId) {
   document.querySelectorAll('.share-popover').forEach(p => p.remove());
 
   const url  = `${location.origin}${location.pathname}?book=${currentBookId}#${chapterId}`;
-  const text = `"${chObj?.title ?? chapterId}"\n— from The Epistolary Library\n\n${url}`;
+  const text = `"${chObj?.title ?? chapterId}"\n— from The Letterverse\n\n${url}`;
 
   const pop = document.createElement('div');
   pop.className = 'share-popover';

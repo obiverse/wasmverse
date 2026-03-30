@@ -1,6 +1,6 @@
 {
   "library": {
-    "title": "The Epistolary Library",
+    "title": "The Letterverse",
     "subtitle": "Treatises in the manner of Euler, for builders who love the universe"
   },
   "books": [
@@ -97,7 +97,7 @@
     {
       "id": "making",
       "title": "Letters on the Making of the Library",
-      "subtitle": "A Treatise on Software Engineering, through the Lens of the Epistolary Library Itself",
+      "subtitle": "A Treatise on Software Engineering, through the Lens of the Letterverse Itself",
       "manner": "In the manner of Euler's Letters to a German Princess",
       "file": "books/making.md",
       "symbol": "sankofa",

@@ -10,7 +10,7 @@
 //!   router — URL parsing
 //!   search — full-text TF-IDF index
 //!
-//! This file (the proof): The Epistolary Library,
+//! This file (the proof): The Letterverse,
 //! the first application built on euler.
 
 pub mod json;
@@ -25,7 +25,7 @@ use store::Versioned;
 use wasm_bindgen::prelude::*;
 
 // ═══════════════════════════════════════════════
-// DOMAIN TYPES — Specific to the Epistolary Library
+// DOMAIN TYPES — Specific to the Letterverse
 // ═══════════════════════════════════════════════
 
 #[derive(Clone, Default)]
