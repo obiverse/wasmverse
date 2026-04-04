@@ -80,6 +80,7 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Architecture of Thought (AI/Neural Networks) | 35 | thought.md |
 | Letters on the Shape of Data (Algorithms) | 35 | algorithms.md |
 | Letters on the Cryptography of Trust | 35 | crypto.md |
+| Letters on the Direction of Prayer (Geometry & Sensors) | 25 | qibla.md |
 | Letters on the Patterns of Nature (Systems Thinking) | 30 | systems.md |
 
 ### Building Wing

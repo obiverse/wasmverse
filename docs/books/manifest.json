@@ -669,6 +669,24 @@
         "claude-ai",
         "euler"
       ]
+    },
+    {
+      "id": "qibla",
+      "title": "Letters on the Direction of Prayer",
+      "subtitle": "A Treatise on Spherical Geometry, Sensors, and the Art of Finding the Sacred Direction",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/qibla.md",
+      "symbol": "nsoromma",
+      "accent": "#d4af37",
+      "letters": 25,
+      "parts": 5,
+      "topic": "Geometry & Sensors",
+      "description": "From the forward azimuth formula to AR overlays — the mathematics, physics, and engineering of direction-finding applications. Inspired by a 1,136-line Qibla compass app. The reader emerges able to build any application that orients, navigates, or measures the physical world.",
+      "category": "Science",
+      "next": [
+        "math",
+        "earth"
+      ]
     }
   ]
 }
