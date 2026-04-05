@@ -44,6 +44,84 @@ This is the logarithm base 2: log2(n) is the number of times you must halve n to
 
 The guessing game I described is called binary search, and it is one of the most important algorithms in all of computer science. Given a sorted collection of n items, binary search finds any item in O(log n) steps. Consider the Jumia product catalog: millions of items, sorted by identifier. A linear search through every item would be intolerable. But binary search finds any product in about 20 comparisons. Twenty. This is why sorted data is so valuable -- it enables logarithmic access.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px" font-family="sans-serif">
+  <!-- Row 1: Full sorted array of 16 -->
+  <text x="5" y="22" fill="#9e9684" font-size="10">Step 0</text>
+  <rect x="55" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="69" y="23" text-anchor="middle" fill="#9e9684" font-size="9">2</text>
+  <rect x="83" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="97" y="23" text-anchor="middle" fill="#9e9684" font-size="9">5</text>
+  <rect x="111" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="125" y="23" text-anchor="middle" fill="#9e9684" font-size="9">8</text>
+  <rect x="139" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="153" y="23" text-anchor="middle" fill="#9e9684" font-size="9">12</text>
+  <rect x="167" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="181" y="23" text-anchor="middle" fill="#9e9684" font-size="9">15</text>
+  <rect x="195" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="209" y="23" text-anchor="middle" fill="#9e9684" font-size="9">19</text>
+  <rect x="223" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="237" y="23" text-anchor="middle" fill="#9e9684" font-size="9">22</text>
+  <rect x="251" y="8" width="28" height="22" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="1"/>
+  <text x="265" y="23" text-anchor="middle" fill="#48a6a6" font-size="9" font-weight="bold">mid:27</text>
+  <rect x="279" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="293" y="23" text-anchor="middle" fill="#9e9684" font-size="9">31</text>
+  <rect x="307" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="321" y="23" text-anchor="middle" fill="#9e9684" font-size="9">35</text>
+  <rect x="335" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="349" y="23" text-anchor="middle" fill="#9e9684" font-size="9">38</text>
+  <rect x="363" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="377" y="23" text-anchor="middle" fill="#9e9684" font-size="9">42</text>
+  <rect x="391" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="405" y="23" text-anchor="middle" fill="#9e9684" font-size="9">47</text>
+  <rect x="419" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="433" y="23" text-anchor="middle" fill="#9e9684" font-size="9">51</text>
+  <rect x="447" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="461" y="23" text-anchor="middle" fill="#9e9684" font-size="9">56</text>
+  <rect x="475" y="8" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="489" y="23" text-anchor="middle" fill="#9e9684" font-size="9">60</text>
+  <!-- target label -->
+  <text x="510" y="23" fill="#c9a96e" font-size="10">find: 42</text>
+  <!-- Row 2: Right half highlighted -->
+  <text x="5" y="72" fill="#9e9684" font-size="10">Step 1</text>
+  <text x="165" y="72" fill="#9e9684" font-size="10" text-anchor="middle">... discarded ...</text>
+  <rect x="279" y="58" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="293" y="73" text-anchor="middle" fill="#9e9684" font-size="9">31</text>
+  <rect x="307" y="58" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="321" y="73" text-anchor="middle" fill="#9e9684" font-size="9">35</text>
+  <rect x="335" y="58" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="349" y="73" text-anchor="middle" fill="#9e9684" font-size="9">38</text>
+  <rect x="363" y="58" width="28" height="22" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="1"/>
+  <text x="377" y="73" text-anchor="middle" fill="#48a6a6" font-size="9" font-weight="bold">mid:42</text>
+  <rect x="391" y="58" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="405" y="73" text-anchor="middle" fill="#9e9684" font-size="9">47</text>
+  <rect x="419" y="58" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="433" y="73" text-anchor="middle" fill="#9e9684" font-size="9">51</text>
+  <rect x="447" y="58" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="461" y="73" text-anchor="middle" fill="#9e9684" font-size="9">56</text>
+  <rect x="475" y="58" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="489" y="73" text-anchor="middle" fill="#9e9684" font-size="9">60</text>
+  <!-- Row 3: Quarter highlighted -->
+  <text x="5" y="122" fill="#9e9684" font-size="10">Step 2</text>
+  <text x="340" y="122" fill="#9e9684" font-size="10" text-anchor="middle">... discarded ...</text>
+  <rect x="279" y="108" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="293" y="123" text-anchor="middle" fill="#9e9684" font-size="9">31</text>
+  <rect x="307" y="108" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="321" y="123" text-anchor="middle" fill="#9e9684" font-size="9">35</text>
+  <rect x="335" y="108" width="28" height="22" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="1"/>
+  <text x="349" y="123" text-anchor="middle" fill="#48a6a6" font-size="9" font-weight="bold">mid:38</text>
+  <rect x="363" y="108" width="28" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="1"/>
+  <text x="377" y="123" text-anchor="middle" fill="#9e9684" font-size="9">42</text>
+  <!-- Row 4: Found -->
+  <text x="5" y="172" fill="#c9a96e" font-size="10" font-weight="bold">Found!</text>
+  <text x="340" y="172" fill="#9e9684" font-size="10" text-anchor="middle">... discarded ...</text>
+  <rect x="363" y="158" width="28" height="22" fill="#c9a96e" fill-opacity="0.2" stroke="#c9a96e" stroke-width="2" rx="1"/>
+  <text x="377" y="173" text-anchor="middle" fill="#c9a96e" font-size="10" font-weight="bold">42</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Binary search narrowing a sorted array: each step halves the search space until the target is found.</figcaption>
+</figure>
+
+
 The halving strategy appears everywhere. When you look up a word in a physical dictionary, you do not start at page one. You open to the middle, see whether your word comes before or after, and repeat. When a technician at an MTN network operations center diagnoses a routing fault, she tests the midpoint of the path to determine which half contains the failure. When a farmer in the Ethiopian highlands searches for the optimal planting date within a two-month window, each trial halving the remaining interval, the logarithm governs the number of trials needed.
 
 Binary search requires one critical precondition: the data must be sorted. This is not a trivial requirement. As we shall see in later letters, sorting itself costs O(n log n) at best. But once sorted, the data yields logarithmic search forever after. This tradeoff -- pay a one-time cost to sort, reap repeated logarithmic searches -- is one of the fundamental bargains of computer science. Know it well.
@@ -88,6 +166,40 @@ Picture a row of market stalls at Kariakoo Market in Dar es Salaam. The stalls a
 
 An array in computer memory works identically. It is a contiguous block of memory cells, each the same size, indexed by integers starting from zero. To access element i, the computer computes the memory address as: base_address + i * element_size. This is a single arithmetic operation, hence O(1). No data structure can beat the array for direct access by index. It is the fastest possible way to retrieve an item when you know its position.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px" font-family="sans-serif">
+  <!-- Boxes -->
+  <rect x="10" y="10" width="56" height="44" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <rect x="70" y="10" width="56" height="44" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <rect x="130" y="10" width="56" height="44" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <rect x="190" y="10" width="56" height="44" fill="#c9a96e" fill-opacity="0.15" stroke="#c9a96e" stroke-width="2" rx="2"/>
+  <rect x="250" y="10" width="56" height="44" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <rect x="310" y="10" width="56" height="44" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <rect x="370" y="10" width="56" height="44" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <rect x="430" y="10" width="56" height="44" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <!-- Values -->
+  <text x="38" y="38" text-anchor="middle" fill="#ddd5c4" font-size="15" font-weight="bold">23</text>
+  <text x="98" y="38" text-anchor="middle" fill="#ddd5c4" font-size="15" font-weight="bold">7</text>
+  <text x="158" y="38" text-anchor="middle" fill="#ddd5c4" font-size="15" font-weight="bold">42</text>
+  <text x="218" y="38" text-anchor="middle" fill="#c9a96e" font-size="15" font-weight="bold">15</text>
+  <text x="278" y="38" text-anchor="middle" fill="#ddd5c4" font-size="15" font-weight="bold">8</text>
+  <text x="338" y="38" text-anchor="middle" fill="#ddd5c4" font-size="15" font-weight="bold">31</text>
+  <text x="398" y="38" text-anchor="middle" fill="#ddd5c4" font-size="15" font-weight="bold">4</text>
+  <text x="458" y="38" text-anchor="middle" fill="#ddd5c4" font-size="15" font-weight="bold">19</text>
+  <!-- Indices -->
+  <text x="38" y="72" text-anchor="middle" fill="#9e9684" font-size="11">0</text>
+  <text x="98" y="72" text-anchor="middle" fill="#9e9684" font-size="11">1</text>
+  <text x="158" y="72" text-anchor="middle" fill="#9e9684" font-size="11">2</text>
+  <text x="218" y="72" text-anchor="middle" fill="#c9a96e" font-size="11">3</text>
+  <text x="278" y="72" text-anchor="middle" fill="#9e9684" font-size="11">4</text>
+  <text x="338" y="72" text-anchor="middle" fill="#9e9684" font-size="11">5</text>
+  <text x="398" y="72" text-anchor="middle" fill="#9e9684" font-size="11">6</text>
+  <text x="458" y="72" text-anchor="middle" fill="#9e9684" font-size="11">7</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">An array of 8 elements, indexed 0 through 7. Element at index 3 highlighted.</figcaption>
+</figure>
+
+
 But the array's strength is also its constraint. Because the stalls are contiguous and numbered, inserting a new stall in the middle requires shifting all subsequent stalls down by one -- an O(n) operation. Deleting from the middle similarly requires shifting stalls up to close the gap. Only insertion and deletion at the end are cheap, and even these require occasional resizing, as we discussed in our letter on amortized analysis. The array is magnificent for reading and appending, but clumsy for insertion and deletion at arbitrary positions.
 
 Consider a practical example. Jumia's product catalog might store its "top trending products" as an array of identifiers. Since the list is accessed far more often than it is modified, and access is always by position ("show me the 5th trending product"), the array is the ideal choice. But if the list were frequently reordered -- items inserted and removed from the middle constantly -- the array would suffer. Every insertion would cascade into shifts, and the O(n) cost would accumulate.
@@ -101,6 +213,54 @@ One more point deserves mention: multi-dimensional arrays. A two-dimensional arr
 If the array is a row of numbered stalls, the linked list is a chain of messengers, each knowing only the location of the next. Imagine a relay system in pre-colonial Dahomey, where the king sends a message through a chain of runners. Each runner waits at a station and knows only the location of the next station. To deliver a message, the first runner passes it to the second, who passes it to the third, and so on. No runner knows where the fifth station is; he knows only his own station and the next.
 
 A linked list is exactly this structure. Each element -- called a node -- contains a value and a pointer to the next node. The first node is called the head. To access the k-th element, you must follow k pointers from the head, making access O(k) in general and O(n) in the worst case. This is much slower than the array's O(1). But the linked list has a compensating virtue: insertion and deletion at any known position are O(1). If a messenger is removed from the chain, his predecessor simply learns the location of his successor. No other messengers need move.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px" font-family="sans-serif">
+  <!-- Head label -->
+  <text x="10" y="20" fill="#c9a96e" font-size="11" font-weight="bold">HEAD</text>
+  <line x1="32" y1="24" x2="32" y2="32" stroke="#c9a96e" stroke-width="1.5"/>
+  <polygon points="28,32 36,32 32,38" fill="#c9a96e"/>
+  <!-- Node 1 -->
+  <rect x="10" y="40" width="70" height="30" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="6"/>
+  <line x1="50" y1="40" x2="50" y2="70" stroke="#48a6a6" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="30" y="60" text-anchor="middle" fill="#ddd5c4" font-size="14" font-weight="bold">12</text>
+  <text x="60" y="58" text-anchor="middle" fill="#9e9684" font-size="9">next</text>
+  <!-- Arrow 1 -->
+  <line x1="80" y1="55" x2="110" y2="55" stroke="#9e9684" stroke-width="1.5"/>
+  <polygon points="108,51 116,55 108,59" fill="#9e9684"/>
+  <!-- Node 2 -->
+  <rect x="116" y="40" width="70" height="30" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="6"/>
+  <line x1="156" y1="40" x2="156" y2="70" stroke="#48a6a6" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="136" y="60" text-anchor="middle" fill="#ddd5c4" font-size="14" font-weight="bold">7</text>
+  <text x="166" y="58" text-anchor="middle" fill="#9e9684" font-size="9">next</text>
+  <!-- Arrow 2 -->
+  <line x1="186" y1="55" x2="216" y2="55" stroke="#9e9684" stroke-width="1.5"/>
+  <polygon points="214,51 222,55 214,59" fill="#9e9684"/>
+  <!-- Node 3 -->
+  <rect x="222" y="40" width="70" height="30" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="6"/>
+  <line x1="262" y1="40" x2="262" y2="70" stroke="#48a6a6" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="242" y="60" text-anchor="middle" fill="#ddd5c4" font-size="14" font-weight="bold">23</text>
+  <text x="272" y="58" text-anchor="middle" fill="#9e9684" font-size="9">next</text>
+  <!-- Arrow 3 -->
+  <line x1="292" y1="55" x2="322" y2="55" stroke="#9e9684" stroke-width="1.5"/>
+  <polygon points="320,51 328,55 320,59" fill="#9e9684"/>
+  <!-- Node 4 -->
+  <rect x="328" y="40" width="70" height="30" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="6"/>
+  <line x1="368" y1="40" x2="368" y2="70" stroke="#48a6a6" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="348" y="60" text-anchor="middle" fill="#ddd5c4" font-size="14" font-weight="bold">42</text>
+  <text x="378" y="58" text-anchor="middle" fill="#9e9684" font-size="9">next</text>
+  <!-- Arrow 4 -->
+  <line x1="398" y1="55" x2="428" y2="55" stroke="#9e9684" stroke-width="1.5"/>
+  <polygon points="426,51 434,55 426,59" fill="#9e9684"/>
+  <!-- Node 5 -->
+  <rect x="434" y="40" width="70" height="30" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="6"/>
+  <line x1="474" y1="40" x2="474" y2="70" stroke="#48a6a6" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="454" y="60" text-anchor="middle" fill="#ddd5c4" font-size="14" font-weight="bold">9</text>
+  <text x="487" y="58" text-anchor="middle" fill="#c0392b" font-size="9" font-weight="bold">null</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">A singly linked list: each node holds data and a pointer to the next. The last node points to null.</figcaption>
+</figure>
+
 
 There are several variants. A singly linked list has pointers going only forward. A doubly linked list has pointers in both directions, allowing traversal from tail to head as well. A circular linked list connects the last node back to the first, forming a ring. Each variant trades a small amount of additional memory (for the extra pointers) for additional flexibility in traversal.
 
@@ -392,6 +552,47 @@ We now enter the most general and powerful of all data structures: the graph. A 
 
 Consider a map of roads in Nigeria. Cities are vertices; roads are edges. Lagos is connected to Ibadan by the Lagos-Ibadan Expressway, Ibadan to Abuja by the A2, and so on. The graph captures the connectivity of the road network. If roads are one-way, we have a directed graph (digraph); if two-way, an undirected graph. If each road has a distance or travel time associated with it, we have a weighted graph. The graph is the universal language for describing things that are connected.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px" font-family="sans-serif">
+  <defs>
+    <marker id="arrowG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#9e9684"/>
+    </marker>
+  </defs>
+  <!-- Undirected edges (no arrows) -->
+  <line x1="100" y1="60" x2="300" y2="60" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="200" y="50" text-anchor="middle" fill="#48a6a6" font-size="11" font-weight="bold">4</text>
+  <line x1="100" y1="60" x2="60" y2="170" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="68" y="112" text-anchor="middle" fill="#48a6a6" font-size="11" font-weight="bold">2</text>
+  <line x1="300" y1="60" x2="340" y2="170" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="332" y="112" text-anchor="middle" fill="#48a6a6" font-size="11" font-weight="bold">7</text>
+  <line x1="60" y1="170" x2="200" y2="260" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="118" y="224" text-anchor="middle" fill="#48a6a6" font-size="11" font-weight="bold">5</text>
+  <!-- Directed edges (with arrows) -->
+  <line x1="108" y1="72" x2="188" y2="248" stroke="#9e9684" stroke-width="1.5" marker-end="url(#arrowG)"/>
+  <text x="138" y="165" text-anchor="middle" fill="#48a6a6" font-size="11" font-weight="bold">6</text>
+  <line x1="300" y1="72" x2="212" y2="248" stroke="#9e9684" stroke-width="1.5" marker-end="url(#arrowG)"/>
+  <text x="268" y="165" text-anchor="middle" fill="#48a6a6" font-size="11" font-weight="bold">3</text>
+  <line x1="340" y1="182" x2="212" y2="255" stroke="#9e9684" stroke-width="1.5" marker-end="url(#arrowG)"/>
+  <text x="288" y="224" text-anchor="middle" fill="#48a6a6" font-size="11" font-weight="bold">1</text>
+  <!-- Nodes -->
+  <circle cx="100" cy="60" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="100" y="66" text-anchor="middle" fill="#c9a96e" font-size="15" font-weight="bold">A</text>
+  <circle cx="300" cy="60" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="300" y="66" text-anchor="middle" fill="#c9a96e" font-size="15" font-weight="bold">B</text>
+  <circle cx="60" cy="170" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="60" y="176" text-anchor="middle" fill="#c9a96e" font-size="15" font-weight="bold">C</text>
+  <circle cx="340" cy="170" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="340" y="176" text-anchor="middle" fill="#c9a96e" font-size="15" font-weight="bold">D</text>
+  <circle cx="200" cy="260" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="200" y="266" text-anchor="middle" fill="#c9a96e" font-size="15" font-weight="bold">E</text>
+  <circle cx="200" cy="160" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="200" y="166" text-anchor="middle" fill="#c9a96e" font-size="15" font-weight="bold">F</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">A weighted graph with 6 vertices. Straight lines are undirected edges; arrows are directed. Numbers are edge weights.</figcaption>
+</figure>
+
+
 Two representations dominate. The adjacency matrix is a two-dimensional array where entry (i, j) is 1 if there is an edge from vertex i to vertex j, and 0 otherwise (or the weight of the edge in a weighted graph). The adjacency list stores, for each vertex, a list of its neighbors. The matrix uses O(V^2) space (where V is the number of vertices) and allows O(1) edge lookup. The adjacency list uses O(V + E) space (where E is the number of edges) and requires O(degree) time to check for a specific edge. For sparse graphs (few edges relative to vertices), the adjacency list is more efficient. For dense graphs, the matrix may be preferable.
 
 Real-world graphs are almost always sparse. The road network of Kenya has thousands of cities but each city connects to only a handful of others. The social network of M-Pesa users has millions of vertices but each user transacts with a small number of others. The internet's routing graph has millions of routers but each connects to a few peers. In all these cases, the adjacency list is the appropriate representation.
@@ -493,6 +694,67 @@ The elegance of quicksort lies in the partition. After partitioning, the pivot i
 Mergesort takes the opposite approach from quicksort: it does the hard work after the recursive calls, not before. The idea is simple and old -- it was one of the first algorithms programmed on an electronic computer, by John von Neumann in 1945.
 
 Divide the array into two halves. Recursively sort each half. Then merge the two sorted halves into one sorted array. The merge step walks through both halves simultaneously, always taking the smaller of the two current elements. This produces the sorted result in O(n) time. Since the array is halved at each level and there are O(log n) levels, the total time is O(n log n) -- in the worst case, not just the average.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px" font-family="sans-serif">
+  <!-- DIVIDE PHASE (top half) -->
+  <text x="10" y="15" fill="#9e9684" font-size="10">DIVIDE</text>
+  <!-- Level 0: full array -->
+  <rect x="135" y="20" width="250" height="24" fill="none" stroke="#c9a96e" stroke-width="1.5" rx="3"/>
+  <text x="260" y="37" text-anchor="middle" fill="#c9a96e" font-size="11" font-weight="bold">38  27  43  3  9  82  10</text>
+  <!-- Split arrows -->
+  <line x1="210" y1="44" x2="155" y2="62" stroke="#9e9684" stroke-width="1"/>
+  <line x1="310" y1="44" x2="375" y2="62" stroke="#9e9684" stroke-width="1"/>
+  <!-- Level 1: two halves -->
+  <rect x="80" y="64" width="155" height="22" fill="none" stroke="#48a6a6" stroke-width="1.2" rx="3"/>
+  <text x="157" y="79" text-anchor="middle" fill="#ddd5c4" font-size="11">38  27  43  3</text>
+  <rect x="290" y="64" width="130" height="22" fill="none" stroke="#48a6a6" stroke-width="1.2" rx="3"/>
+  <text x="355" y="79" text-anchor="middle" fill="#ddd5c4" font-size="11">9  82  10</text>
+  <!-- Split arrows -->
+  <line x1="120" y1="86" x2="90" y2="104" stroke="#9e9684" stroke-width="1"/>
+  <line x1="195" y1="86" x2="215" y2="104" stroke="#9e9684" stroke-width="1"/>
+  <line x1="325" y1="86" x2="305" y2="104" stroke="#9e9684" stroke-width="1"/>
+  <line x1="385" y1="86" x2="410" y2="104" stroke="#9e9684" stroke-width="1"/>
+  <!-- Level 2: four parts -->
+  <rect x="45" y="106" width="85" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="3"/>
+  <text x="87" y="121" text-anchor="middle" fill="#ddd5c4" font-size="11">38  27</text>
+  <rect x="175" y="106" width="85" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="3"/>
+  <text x="217" y="121" text-anchor="middle" fill="#ddd5c4" font-size="11">43  3</text>
+  <rect x="275" y="106" width="65" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="3"/>
+  <text x="307" y="121" text-anchor="middle" fill="#ddd5c4" font-size="11">9  82</text>
+  <rect x="385" y="106" width="50" height="22" fill="none" stroke="#9e9684" stroke-width="1" rx="3"/>
+  <text x="410" y="121" text-anchor="middle" fill="#ddd5c4" font-size="11">10</text>
+  <!-- MERGE PHASE (bottom half) -->
+  <text x="10" y="160" fill="#9e9684" font-size="10">MERGE</text>
+  <!-- Level 2 merged -->
+  <rect x="45" y="166" width="85" height="22" fill="none" stroke="#48a6a6" stroke-width="1.2" rx="3"/>
+  <text x="87" y="181" text-anchor="middle" fill="#48a6a6" font-size="11">27  38</text>
+  <rect x="175" y="166" width="85" height="22" fill="none" stroke="#48a6a6" stroke-width="1.2" rx="3"/>
+  <text x="217" y="181" text-anchor="middle" fill="#48a6a6" font-size="11">3  43</text>
+  <rect x="275" y="166" width="65" height="22" fill="none" stroke="#48a6a6" stroke-width="1.2" rx="3"/>
+  <text x="307" y="181" text-anchor="middle" fill="#48a6a6" font-size="11">9  82</text>
+  <rect x="385" y="166" width="50" height="22" fill="none" stroke="#48a6a6" stroke-width="1.2" rx="3"/>
+  <text x="410" y="181" text-anchor="middle" fill="#48a6a6" font-size="11">10</text>
+  <!-- Merge arrows up -->
+  <line x1="90" y1="188" x2="150" y2="210" stroke="#9e9684" stroke-width="1"/>
+  <line x1="215" y1="188" x2="170" y2="210" stroke="#9e9684" stroke-width="1"/>
+  <line x1="305" y1="188" x2="355" y2="210" stroke="#9e9684" stroke-width="1"/>
+  <line x1="410" y1="188" x2="385" y2="210" stroke="#9e9684" stroke-width="1"/>
+  <!-- Level 1 merged -->
+  <rect x="80" y="212" width="155" height="22" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="3"/>
+  <text x="157" y="227" text-anchor="middle" fill="#ddd5c4" font-size="11">3  27  38  43</text>
+  <rect x="290" y="212" width="130" height="22" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="3"/>
+  <text x="355" y="227" text-anchor="middle" fill="#ddd5c4" font-size="11">9  10  82</text>
+  <!-- Final merge arrows -->
+  <line x1="157" y1="234" x2="220" y2="258" stroke="#9e9684" stroke-width="1"/>
+  <line x1="355" y1="234" x2="300" y2="258" stroke="#9e9684" stroke-width="1"/>
+  <!-- Level 0 merged: fully sorted -->
+  <rect x="135" y="260" width="250" height="26" fill="#c9a96e" fill-opacity="0.12" stroke="#c9a96e" stroke-width="2" rx="3"/>
+  <text x="260" y="278" text-anchor="middle" fill="#c9a96e" font-size="12" font-weight="bold">3  9  10  27  38  43  82</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Merge sort: divide the array into halves recursively, then merge sorted halves back together.</figcaption>
+</figure>
+
 
 The guaranteed O(n log n) worst case is mergesort's great advantage over quicksort. No input can make mergesort perform poorly. This makes it the algorithm of choice when predictability matters -- in real-time systems, for instance, where a sudden spike in sorting time could cause a deadline miss.
 
