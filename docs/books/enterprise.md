@@ -138,6 +138,8 @@ I counsel you to operate, especially in the early years, with what I call the di
 
 The concept of burn rate --- the rate at which your enterprise spends cash beyond what it earns --- is particularly relevant if you have taken investment. If you have one million dollars in the bank and you spend 100,000 dollars per month more than you earn, you have ten months of runway. When that runway ends, your enterprise dies unless you have reached profitability or secured more funding. Many promising African startups have died not because their product was bad or their market was small, but because they burned cash faster than they could replace it. The lean kitchen does not guarantee survival, but it extends your runway, and in enterprise, time is the most valuable resource of all.
 
+<!-- LAB:enterprise-unit-econ -->
+
 ---
 
 ### Letter 8: On Margins and the Space Between

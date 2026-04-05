@@ -46,6 +46,38 @@ Now, on a flat surface, this problem is trivial. Draw a straight line between th
 
 Consider a person in Lagos, Nigeria (6.5°N, 3.4°E). On a flat Mercator map, Makkah appears to be roughly due east. A naive observer might face east to pray. But the actual great-circle bearing from Lagos to Makkah is approximately 63.3° — nearly northeast. The difference is not subtle; it is more than twenty degrees. The Mercator projection, which stretches the polar regions and distorts all directions except along the equator, has deceived the eye. Only the mathematics of the sphere tells the truth.
 
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 400" width="100%" style="max-width:520px">
+  <!-- Earth circle -->
+  <circle cx="260" cy="200" r="150" fill="none" stroke="#c9a96e" stroke-width="1.5" opacity="0.4"/>
+  <!-- Great circle arc from You to Kaaba -->
+  <path d="M 134 132 Q 260 80 386 132" fill="none" stroke="#c9a96e" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <!-- You dot -->
+  <circle cx="134" cy="132" r="6" fill="#48a6a6"/>
+  <text x="94" y="120" fill="#ddd5c4" font-family="sans-serif" font-size="13" text-anchor="middle">You</text>
+  <!-- Kaaba dot (diamond) -->
+  <g transform="translate(386,132)">
+    <rect x="-6" y="-6" width="12" height="12" fill="#c9a96e" transform="rotate(45)"/>
+  </g>
+  <text x="426" y="120" fill="#ddd5c4" font-family="sans-serif" font-size="13" text-anchor="middle">Kaaba</text>
+  <!-- North arrow at You -->
+  <line x1="134" y1="132" x2="134" y2="52" stroke="#c0392b" stroke-width="1.5"/>
+  <polygon points="134,52 129,62 139,62" fill="#c0392b"/>
+  <text x="144" y="55" fill="#c0392b" font-family="sans-serif" font-size="11">N</text>
+  <!-- Bearing arrow from You toward Kaaba direction -->
+  <line x1="134" y1="132" x2="196" y2="72" stroke="#c9a96e" stroke-width="2"/>
+  <polygon points="196,72 186,80 193,86" fill="#c9a96e"/>
+  <!-- Angle arc -->
+  <path d="M 134,102 A 30,30 0 0,1 160,90" fill="none" stroke="#ddd5c4" stroke-width="1.2"/>
+  <text x="158" y="86" fill="#ddd5c4" font-family="sans-serif" font-size="13" font-style="italic">θ</text>
+  <!-- Label -->
+  <text x="260" y="380" fill="#9e9684" font-family="sans-serif" font-size="12" text-anchor="middle">The initial bearing θ from North — the great-circle direction to Makkah</text>
+  <!-- Sphere shading hint -->
+  <ellipse cx="260" cy="340" rx="150" ry="15" fill="none" stroke="#c9a96e" stroke-width="0.7" opacity="0.3"/>
+</svg>
+</figure>
+
+
 This problem — finding the initial bearing of the great-circle path between two points on a sphere — was solved centuries ago by mathematicians and navigators who needed it for precisely the reasons we need it now: to find direction across vast distances on a curved surface. The Polynesian navigators who crossed the Pacific Ocean without compass or chart understood this geometry intuitively, encoding it in the positions of stars, the patterns of ocean swells, and the flight paths of birds. They could not write the formula, but they *lived* it. The formula merely encodes what their bodies already knew: that the shortest path on a sphere curves, and the direction you must face at the start is not the direction a flat map would suggest.
 
 The Kaaba's coordinates — 21.4225°N, 39.8262°E — are fixed. They do not change. They have not changed in fourteen centuries. This constancy is what makes the Qibla problem so elegant: one endpoint is universal and eternal. Only your own position varies. And so the entire problem reduces to a function of two variables — your latitude and your longitude — producing one output: a bearing in degrees from true north. A function. Pure mathematics. And mathematics, as we shall see in the letters that follow, delivers the answer with a beauty that takes the breath away.
@@ -65,6 +97,44 @@ The coordinate system is latitude and longitude, and it is worth understanding t
 **Latitude** is the angle between a point on the Earth's surface and the equatorial plane, measured from the center of the Earth. The equator has latitude 0°. The North Pole has latitude 90°N (or +90°). The South Pole has latitude 90°S (or -90°). Every point on the same latitude traces a circle around the Earth parallel to the equator — hence the name "parallels." Lagos sits at about 6.5°N, meaning a line from the center of the Earth to Lagos makes an angle of 6.5° with the equatorial plane. Makkah sits at 21.4225°N.
 
 **Longitude** is the angle between a point's meridian (its north-south line) and the Prime Meridian, which passes through Greenwich, England. Longitude runs from 180°W to 180°E. Lagos sits at about 3.4°E. Makkah sits at 39.8262°E. The choice of Greenwich as the zero meridian is arbitrary — a relic of British naval dominance in the 19th century — but the system itself is universal.
+
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" style="max-width:500px">
+  <!-- Sphere outline -->
+  <circle cx="250" cy="250" r="190" fill="none" stroke="#9e9684" stroke-width="1" opacity="0.5"/>
+  <!-- Latitude lines (small circles) -->
+  <ellipse cx="250" cy="155" rx="155" ry="22" fill="none" stroke="#9e9684" stroke-width="0.5" opacity="0.3"/>
+  <ellipse cx="250" cy="200" rx="175" ry="28" fill="none" stroke="#9e9684" stroke-width="0.5" opacity="0.3"/>
+  <ellipse cx="250" cy="300" rx="175" ry="28" fill="none" stroke="#9e9684" stroke-width="0.5" opacity="0.3"/>
+  <ellipse cx="250" cy="345" rx="155" ry="22" fill="none" stroke="#9e9684" stroke-width="0.5" opacity="0.3"/>
+  <!-- Equator (bold gold) -->
+  <ellipse cx="250" cy="250" rx="190" ry="35" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <text x="455" y="248" fill="#c9a96e" font-family="sans-serif" font-size="11">Equator</text>
+  <!-- Longitude lines (meridians as ellipses) -->
+  <ellipse cx="250" cy="250" rx="50" ry="190" fill="none" stroke="#9e9684" stroke-width="0.5" opacity="0.3"/>
+  <ellipse cx="250" cy="250" rx="120" ry="190" fill="none" stroke="#9e9684" stroke-width="0.5" opacity="0.3"/>
+  <ellipse cx="250" cy="250" rx="160" ry="190" fill="none" stroke="#9e9684" stroke-width="0.5" opacity="0.3"/>
+  <!-- Prime Meridian (bold gold) -->
+  <ellipse cx="250" cy="250" rx="0.5" ry="190" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- Lagos dot at approx 6.5°N, 3.4°E — near equator, near prime meridian -->
+  <circle cx="254" cy="237" r="5" fill="#48a6a6"/>
+  <text x="274" y="230" fill="#48a6a6" font-family="sans-serif" font-size="12">Lagos</text>
+  <text x="274" y="244" fill="#48a6a6" font-family="sans-serif" font-size="10">6.5°N, 3.4°E</text>
+  <!-- Dashed lines to axes -->
+  <line x1="254" y1="237" x2="254" y2="252" stroke="#48a6a6" stroke-width="1" stroke-dasharray="3,2" opacity="0.7"/>
+  <line x1="254" y1="237" x2="250" y2="237" stroke="#48a6a6" stroke-width="1" stroke-dasharray="3,2" opacity="0.7"/>
+  <!-- Latitude label φ -->
+  <text x="232" y="248" fill="#ddd5c4" font-family="sans-serif" font-size="12" font-style="italic">φ</text>
+  <!-- Longitude label λ -->
+  <text x="254" y="264" fill="#ddd5c4" font-family="sans-serif" font-size="12" font-style="italic">λ</text>
+  <!-- North pole label -->
+  <text x="250" y="50" fill="#9e9684" font-family="sans-serif" font-size="11" text-anchor="middle">N</text>
+  <text x="250" y="465" fill="#9e9684" font-family="sans-serif" font-size="11" text-anchor="middle">S</text>
+  <!-- Caption -->
+  <text x="250" y="490" fill="#9e9684" font-family="sans-serif" font-size="12" text-anchor="middle">Latitude φ and longitude λ address every point on the sphere</text>
+</svg>
+</figure>
+
 
 Together, latitude and longitude give every point on Earth a unique two-number address. This is no different in principle from the way an African compound has an address system: "the chief's compound, third courtyard, second room on the left" specifies a location through a hierarchy of increasingly precise references. Latitude and longitude do the same — latitude narrows you to a band around the Earth, longitude narrows you to a point within that band. The combination is exact.
 
@@ -95,6 +165,40 @@ Why is the great-circle arc the shortest path? Consider two points on the sphere
 
 This fact has a profound practical consequence: the shortest flight path from Lagos to Makkah is *not* a straight line on a Mercator map. On a Mercator map, the shortest-looking path from Lagos (6.5°N, 3.4°E) to Makkah (21.4225°N, 39.8262°E) appears to run nearly due east. But the actual great-circle route curves northeastward, passing over the Sahara, clipping the southern edge of Libya, and crossing the Red Sea. The Mercator projection preserves angles locally but distorts distances and shortest paths globally. A straight line on a Mercator map is a *rhumb line* (or loxodrome) — a path of constant compass bearing — and it is almost always longer than the great-circle route.
 
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 380" width="100%" style="max-width:560px">
+  <!-- Mercator rectangle -->
+  <rect x="30" y="20" width="500" height="300" fill="none" stroke="#9e9684" stroke-width="1" opacity="0.3" rx="2"/>
+  <!-- Simplified Africa outline -->
+  <path d="M 130,110 L 140,90 L 155,85 L 175,82 L 200,80 L 215,85 L 220,80 L 240,78 L 250,82 L 248,88 L 252,95 L 255,82 L 268,80 L 275,88 L 272,100 L 268,110 L 262,120 L 255,130 L 250,145 L 248,160 L 252,175 L 250,190 L 240,210 L 228,228 L 218,240 L 210,248 L 195,252 L 185,248 L 178,242 L 175,230 L 168,218 L 160,195 L 148,170 L 140,150 L 135,135 L 130,120 Z" fill="none" stroke="#9e9684" stroke-width="1.2" opacity="0.5"/>
+  <!-- Arabian Peninsula hint -->
+  <path d="M 275,88 L 290,82 L 310,78 L 320,85 L 315,100 L 305,110 L 295,115 L 285,108 L 275,100" fill="none" stroke="#9e9684" stroke-width="1.2" opacity="0.5"/>
+  <!-- Red Sea hint -->
+  <line x1="265" y1="95" x2="275" y2="115" stroke="#9e9684" stroke-width="0.8" opacity="0.3"/>
+  <!-- Lagos dot -->
+  <circle cx="145" cy="135" r="5" fill="#48a6a6"/>
+  <text x="108" y="150" fill="#48a6a6" font-family="sans-serif" font-size="11">Lagos</text>
+  <!-- Makkah dot -->
+  <circle cx="298" cy="95" r="5" fill="#c9a96e"/>
+  <text x="308" y="93" fill="#c9a96e" font-family="sans-serif" font-size="11">Makkah</text>
+  <!-- Rhumb line (straight on Mercator) -->
+  <line x1="145" y1="135" x2="298" y2="95" stroke="#48a6a6" stroke-width="2" opacity="0.8"/>
+  <!-- Great circle (curves north on Mercator) -->
+  <path d="M 145,135 Q 210,60 298,95" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- Labels -->
+  <text x="175" y="68" fill="#c9a96e" font-family="sans-serif" font-size="11" font-weight="bold">Great Circle</text>
+  <text x="175" y="82" fill="#c9a96e" font-family="sans-serif" font-size="10">(shorter on the globe)</text>
+  <text x="195" y="132" fill="#48a6a6" font-family="sans-serif" font-size="11" font-weight="bold">Rhumb Line</text>
+  <text x="195" y="146" fill="#48a6a6" font-family="sans-serif" font-size="10">(longer on the globe)</text>
+  <!-- Equator reference -->
+  <line x1="30" y1="160" x2="530" y2="160" stroke="#9e9684" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.3"/>
+  <text x="535" y="163" fill="#9e9684" font-family="sans-serif" font-size="9" opacity="0.5">Eq.</text>
+  <!-- Caption -->
+  <text x="280" y="355" fill="#9e9684" font-family="sans-serif" font-size="12" text-anchor="middle">On a Mercator map, the straight line is NOT the shortest path</text>
+</svg>
+</figure>
+
+
 This distortion is not merely academic. It is the reason why flights from New York to Tokyo route over Alaska rather than across the Pacific along a line of latitude. It is the reason why the Qibla direction from a given city is often not what a glance at a flat map would suggest. And it is the reason why we need spherical trigonometry rather than flat-plane geometry to solve our problem.
 
 Let us be precise about what we need. Given two points on the sphere — your location (φ₁, λ₁) and the Kaaba (φ₂, λ₂) — we seek the *initial bearing* of the great-circle arc from your location to the Kaaba. The initial bearing is the angle, measured clockwise from true north, of the direction you would face if you began walking along this arc. It is the direction of the Qibla. It is what the compass needle must point toward.
@@ -119,6 +223,54 @@ y = sin(θ)
 ```
 
 This is the *definition* of cosine and sine: they are the x-coordinate and y-coordinate, respectively, of a point on the unit circle at angle θ. When θ = 0, the point is at (1, 0) — cos(0) = 1, sin(0) = 0. When θ = π/2 (90°), the point is at (0, 1) — cos(90°) = 0, sin(90°) = 1. When θ = π (180°), the point is at (-1, 0). The functions trace out a smooth oscillation as θ increases, which is why they describe waves, vibrations, and circles — and why they are exactly what we need for the geometry of the sphere.
+
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" style="max-width:500px">
+  <!-- Axes -->
+  <line x1="50" y1="250" x2="450" y2="250" stroke="#9e9684" stroke-width="1"/>
+  <line x1="250" y1="450" x2="250" y2="50" stroke="#9e9684" stroke-width="1"/>
+  <!-- Axis arrows -->
+  <polygon points="450,250 440,245 440,255" fill="#9e9684"/>
+  <polygon points="250,50 245,60 255,60" fill="#9e9684"/>
+  <text x="460" y="254" fill="#9e9684" font-family="sans-serif" font-size="13">x</text>
+  <text x="254" y="44" fill="#9e9684" font-family="sans-serif" font-size="13">y</text>
+  <!-- Unit circle -->
+  <circle cx="250" cy="250" r="160" fill="none" stroke="#ddd5c4" stroke-width="1.5" opacity="0.6"/>
+  <!-- Angle θ ≈ 55° -->
+  <!-- Point on circle: cos(55°)=0.574, sin(55°)=0.819 → (250+92, 250-131) = (342, 119) -->
+  <circle cx="342" cy="119" r="5" fill="#ddd5c4"/>
+  <!-- Radius line -->
+  <line x1="250" y1="250" x2="342" y2="119" stroke="#ddd5c4" stroke-width="1.5"/>
+  <!-- cos(θ) horizontal projection -->
+  <line x1="250" y1="250" x2="342" y2="250" stroke="#48a6a6" stroke-width="2.5"/>
+  <text x="290" y="272" fill="#48a6a6" font-family="sans-serif" font-size="13" text-anchor="middle">cos(θ)</text>
+  <!-- sin(θ) vertical projection -->
+  <line x1="342" y1="250" x2="342" y2="119" stroke="#c9a96e" stroke-width="2.5"/>
+  <text x="365" y="190" fill="#c9a96e" font-family="sans-serif" font-size="13">sin(θ)</text>
+  <!-- Dashed projection lines -->
+  <line x1="342" y1="119" x2="342" y2="250" stroke="#9e9684" stroke-width="0.7" stroke-dasharray="3,3" opacity="0.4"/>
+  <line x1="342" y1="119" x2="250" y2="119" stroke="#9e9684" stroke-width="0.7" stroke-dasharray="3,3" opacity="0.4"/>
+  <!-- Angle arc -->
+  <path d="M 290,250 A 40,40 0 0,0 273,222" fill="none" stroke="#ddd5c4" stroke-width="1.5"/>
+  <text x="298" y="234" fill="#ddd5c4" font-family="sans-serif" font-size="14" font-style="italic">θ</text>
+  <!-- Quadrant labels -->
+  <text x="350" y="150" fill="#9e9684" font-family="sans-serif" font-size="12" opacity="0.5">I</text>
+  <text x="140" y="150" fill="#9e9684" font-family="sans-serif" font-size="12" opacity="0.5">II</text>
+  <text x="140" y="370" fill="#9e9684" font-family="sans-serif" font-size="12" opacity="0.5">III</text>
+  <text x="350" y="370" fill="#9e9684" font-family="sans-serif" font-size="12" opacity="0.5">IV</text>
+  <!-- atan2 ranges -->
+  <text x="380" y="165" fill="#9e9684" font-family="sans-serif" font-size="9" opacity="0.5">(0, π/2)</text>
+  <text x="100" y="165" fill="#9e9684" font-family="sans-serif" font-size="9" opacity="0.5">(π/2, π)</text>
+  <text x="90" y="385" fill="#9e9684" font-family="sans-serif" font-size="9" opacity="0.5">(−π, −π/2)</text>
+  <text x="370" y="385" fill="#9e9684" font-family="sans-serif" font-size="9" opacity="0.5">(−π/2, 0)</text>
+  <!-- (1,0) label -->
+  <text x="415" y="266" fill="#9e9684" font-family="sans-serif" font-size="11">1</text>
+  <text x="255" y="96" fill="#9e9684" font-family="sans-serif" font-size="11">1</text>
+  <!-- Caption -->
+  <text x="250" y="485" fill="#9e9684" font-family="sans-serif" font-size="12" text-anchor="middle">The unit circle: sin and cos as coordinates, atan2 returns the full angle</text>
+</svg>
+</figure>
+
 
 The tangent function is the ratio: tan(θ) = sin(θ) / cos(θ). It represents the slope of the line from the origin to the point on the unit circle.
 
@@ -164,6 +316,38 @@ The formula is called the **forward azimuth**, and it is derived from spherical 
 where Δλ = λ₂ − λ₁ is the difference in longitude.
 
 Let us read this formula aloud. The atan2 function takes two arguments. The first (the "y" component) is `sin(Δλ) · cos(φ₂)` — this captures the east-west component of the direction to the Kaaba, adjusted for the latitude of the destination. The second (the "x" component) is `cos(φ₁) · sin(φ₂) − sin(φ₁) · cos(φ₂) · cos(Δλ)` — this captures the north-south component, accounting for the curvature of the sphere.
+
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 440" width="100%" style="max-width:500px">
+  <!-- Tangent plane (tilted rectangle) -->
+  <path d="M 100,320 L 250,180 L 440,210 L 290,350 Z" fill="#9e9684" fill-opacity="0.06" stroke="#9e9684" stroke-width="0.8" opacity="0.4"/>
+  <!-- Sphere hint (arc below) -->
+  <path d="M 80,360 Q 250,420 420,360" fill="none" stroke="#9e9684" stroke-width="0.8" opacity="0.3"/>
+  <path d="M 120,340 Q 250,390 380,340" fill="none" stroke="#9e9684" stroke-width="0.5" opacity="0.2"/>
+  <!-- User position dot -->
+  <circle cx="250" cy="280" r="6" fill="#48a6a6"/>
+  <text x="215" y="305" fill="#48a6a6" font-family="sans-serif" font-size="12">Your position</text>
+  <!-- North arrow (true north, straight up) -->
+  <line x1="250" y1="280" x2="250" y2="120" stroke="#c0392b" stroke-width="2"/>
+  <polygon points="250,120 244,135 256,135" fill="#c0392b"/>
+  <text x="258" y="115" fill="#c0392b" font-family="sans-serif" font-size="13" font-weight="bold">N</text>
+  <!-- Qibla direction arrow (at ~63° from north) -->
+  <!-- 63° clockwise from north: dx = sin(63°)*160 ≈ 142, dy = -cos(63°)*160 ≈ -73 -->
+  <line x1="250" y1="280" x2="392" y2="207" stroke="#c9a96e" stroke-width="2.5"/>
+  <polygon points="392,207 378,210 382,222" fill="#c9a96e"/>
+  <text x="400" y="200" fill="#c9a96e" font-family="sans-serif" font-size="12" font-weight="bold">Qibla</text>
+  <!-- Angle arc from North to Qibla direction -->
+  <path d="M 250,230 A 50,50 0 0,1 290,238" fill="none" stroke="#ddd5c4" stroke-width="1.8"/>
+  <text x="276" y="222" fill="#ddd5c4" font-family="sans-serif" font-size="15" font-style="italic">θ</text>
+  <!-- Tangent plane label -->
+  <text x="380" y="350" fill="#9e9684" font-family="sans-serif" font-size="10" opacity="0.6">tangent plane</text>
+  <!-- Formula below -->
+  <text x="250" y="400" fill="#ddd5c4" font-family="sans-serif" font-size="12" text-anchor="middle">θ = atan2( sin(Δλ)·cos(φ₂),  cos(φ₁)·sin(φ₂) − sin(φ₁)·cos(φ₂)·cos(Δλ) )</text>
+  <!-- Caption -->
+  <text x="250" y="425" fill="#9e9684" font-family="sans-serif" font-size="11" text-anchor="middle">The forward azimuth: bearing θ from true north on the tangent plane</text>
+</svg>
+</figure>
+
 
 The result θ is in radians, in the range (-π, π]. To convert to a compass bearing in degrees — a number from 0 to 360 where 0 is north, 90 is east, 180 is south, and 270 is west — we apply:
 
@@ -255,6 +439,41 @@ where Δφ = φ₂ − φ₁ is the difference in latitude, Δλ = λ₂ − λ�
 
 The intermediate value `a` is the square of the half-chord length between the two points. The value `c` is the angular distance in radians — the angle, measured from the center of the Earth, subtended by the great-circle arc between the two points. Multiplying by R converts this angular distance to a physical distance in kilometers.
 
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="100%" style="max-width:460px">
+  <!-- Earth circle -->
+  <circle cx="230" cy="200" r="160" fill="none" stroke="#9e9684" stroke-width="1" opacity="0.4"/>
+  <!-- Center dot -->
+  <circle cx="230" cy="200" r="3" fill="#9e9684" opacity="0.5"/>
+  <!-- Radius lines to two points -->
+  <!-- Point A: ~30° from top-left → (230 + 160cos(130°), 200 - 160sin(130°)) ≈ (127, 77) -->
+  <!-- Point B: ~330° → (230 + 160cos(30°), 200 - 160sin(30°)) ≈ (369, 120) -->
+  <line x1="230" y1="200" x2="127" y2="77" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="230" y1="200" x2="369" y2="120" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <!-- R labels -->
+  <text x="168" y="148" fill="#9e9684" font-family="sans-serif" font-size="12" font-style="italic" transform="rotate(-50,168,148)">R</text>
+  <text x="308" y="155" fill="#9e9684" font-family="sans-serif" font-size="12" font-style="italic" transform="rotate(-25,308,155)">R</text>
+  <!-- Point A -->
+  <circle cx="127" cy="77" r="6" fill="#48a6a6"/>
+  <text x="90" y="68" fill="#48a6a6" font-family="sans-serif" font-size="12">P₁</text>
+  <!-- Point B -->
+  <circle cx="369" cy="120" r="6" fill="#c9a96e"/>
+  <text x="385" y="112" fill="#c9a96e" font-family="sans-serif" font-size="12">P₂</text>
+  <!-- Great circle arc between points -->
+  <path d="M 127,77 A 160,160 0 0,1 369,120" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- Arc label "d" -->
+  <text x="260" y="55" fill="#c9a96e" font-family="sans-serif" font-size="16" font-weight="bold" font-style="italic">d</text>
+  <!-- Central angle arc -->
+  <path d="M 185,150 A 55,55 0 0,1 270,165" fill="none" stroke="#ddd5c4" stroke-width="1.5"/>
+  <text x="228" y="142" fill="#ddd5c4" font-family="sans-serif" font-size="15" font-style="italic">c</text>
+  <!-- Formula -->
+  <text x="230" y="385" fill="#ddd5c4" font-family="sans-serif" font-size="13" text-anchor="middle" font-style="italic">d = R · c</text>
+  <!-- Caption -->
+  <text x="230" y="410" fill="#9e9684" font-family="sans-serif" font-size="12" text-anchor="middle">The haversine: central angle c gives arc distance d on a sphere of radius R</text>
+</svg>
+</figure>
+
+
 In Dart:
 
 ```dart
@@ -332,6 +551,46 @@ GPS tells us *where* we are. But the Qibla app needs to know something else: whi
 
 The Earth has a magnetic field, generated by convection currents in its liquid iron outer core. This field is roughly dipolar — it behaves approximately as if a giant bar magnet were embedded at the Earth's center, tilted about 11° from the rotation axis. The field lines emerge from the southern hemisphere, arc through space, and re-enter the northern hemisphere. At the equator, the field is roughly horizontal and points north. At the magnetic poles, it is vertical.
 
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 480" width="100%" style="max-width:500px">
+  <!-- Earth circle -->
+  <circle cx="250" cy="240" r="120" fill="none" stroke="#9e9684" stroke-width="1.2" opacity="0.5"/>
+  <!-- Equator -->
+  <ellipse cx="250" cy="240" rx="120" ry="18" fill="none" stroke="#9e9684" stroke-width="0.6" opacity="0.3"/>
+  <!-- Magnetic field lines (symmetric curves from S to N) -->
+  <path d="M 250,360 C 130,360 60,300 60,240 C 60,180 130,120 250,120" fill="none" stroke="#48a6a6" stroke-width="1" opacity="0.35"/>
+  <path d="M 250,360 C 160,370 30,310 30,240 C 30,170 160,110 250,120" fill="none" stroke="#48a6a6" stroke-width="1" opacity="0.25"/>
+  <path d="M 250,360 C 100,380 0,320 0,240 C 0,160 100,100 250,120" fill="none" stroke="#48a6a6" stroke-width="1" opacity="0.15"/>
+  <!-- Right side field lines -->
+  <path d="M 250,360 C 370,360 440,300 440,240 C 440,180 370,120 250,120" fill="none" stroke="#48a6a6" stroke-width="1" opacity="0.35"/>
+  <path d="M 250,360 C 340,370 470,310 470,240 C 470,170 340,110 250,120" fill="none" stroke="#48a6a6" stroke-width="1" opacity="0.25"/>
+  <path d="M 250,360 C 400,380 500,320 500,240 C 500,160 400,100 250,120" fill="none" stroke="#48a6a6" stroke-width="1" opacity="0.15"/>
+  <!-- Small arrows on field lines showing direction (S to N outside Earth) -->
+  <polygon points="155,132 160,126 165,136" fill="#48a6a6" opacity="0.4"/>
+  <polygon points="345,132 340,126 335,136" fill="#48a6a6" opacity="0.4"/>
+  <polygon points="155,348 160,354 165,344" fill="#48a6a6" opacity="0.4"/>
+  <polygon points="345,348 340,354 335,344" fill="#48a6a6" opacity="0.4"/>
+  <!-- True North axis (red, straight up through geographic pole) -->
+  <line x1="250" y1="240" x2="250" y2="50" stroke="#c0392b" stroke-width="2"/>
+  <polygon points="250,50 245,62 255,62" fill="#c0392b"/>
+  <text x="260" y="45" fill="#c0392b" font-family="sans-serif" font-size="12" font-weight="bold">True North</text>
+  <!-- Magnetic North axis (teal, tilted ~11°) -->
+  <!-- 11° tilt: dx = sin(11°)*190 ≈ 36, dy = cos(11°)*190 ≈ 187 -->
+  <line x1="250" y1="240" x2="225" y2="55" stroke="#48a6a6" stroke-width="2"/>
+  <polygon points="225,55 219,67 230,65" fill="#48a6a6"/>
+  <text x="170" y="50" fill="#48a6a6" font-family="sans-serif" font-size="12" font-weight="bold">Magnetic North</text>
+  <!-- Declination angle arc -->
+  <path d="M 250,100 A 140,140 0 0,0 237,102" fill="none" stroke="#ddd5c4" stroke-width="1.5"/>
+  <text x="223" y="88" fill="#ddd5c4" font-family="sans-serif" font-size="14" font-style="italic">δ</text>
+  <!-- Pole labels on Earth -->
+  <text x="250" y="110" fill="#9e9684" font-family="sans-serif" font-size="10" text-anchor="middle" opacity="0.6">N</text>
+  <text x="250" y="380" fill="#9e9684" font-family="sans-serif" font-size="10" text-anchor="middle" opacity="0.6">S</text>
+  <!-- Caption -->
+  <text x="250" y="455" fill="#9e9684" font-family="sans-serif" font-size="12" text-anchor="middle">Magnetic declination δ — the angle between true and magnetic north</text>
+</svg>
+</figure>
+
+
 A magnetometer measures the strength and direction of this field. In a smartphone, the magnetometer is a MEMS (Micro-Electro-Mechanical System) chip that measures the magnetic field along three perpendicular axes: x, y, and z. By combining these measurements with knowledge of the device's orientation (provided by the accelerometer and gyroscope), the system computes the *heading* — the compass direction the device's top edge is pointing.
 
 ```
@@ -363,6 +622,39 @@ Dear Reader,
 We have a problem. The magnetometer gives us a compass heading, but that heading jitters. Raw readings swing ±5-10° between consecutive samples. If we animate the compass needle directly from these raw values, the needle twitches like a frightened bird — distracting, anxiety-inducing, and useless for precise orientation. We need to *smooth* the signal, retaining the true heading while filtering out the noise.
 
 The standard tool for this is the **exponential moving average**, also called a **low-pass filter**. The idea is simple: instead of snapping to each new reading, blend the new reading with the previous smoothed value. If the smoothed heading was 45° and the new raw reading is 48°, the smoothed value moves a little toward 48° — perhaps to 45.9°. If the next reading is 44°, the smoothed value moves a little back — to 45.3°. Large, rapid fluctuations (noise) are damped out. Slow, sustained changes (the user actually turning) pass through. Hence "low-pass" — low-frequency signals pass, high-frequency noise is blocked.
+
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 300" width="100%" style="max-width:540px">
+  <!-- Axes -->
+  <line x1="60" y1="250" x2="510" y2="250" stroke="#9e9684" stroke-width="1"/>
+  <line x1="60" y1="250" x2="60" y2="30" stroke="#9e9684" stroke-width="1"/>
+  <!-- Axis labels -->
+  <text x="280" y="280" fill="#9e9684" font-family="sans-serif" font-size="12" text-anchor="middle">Time</text>
+  <text x="25" y="140" fill="#9e9684" font-family="sans-serif" font-size="12" text-anchor="middle" transform="rotate(-90,25,140)">Heading (°)</text>
+  <!-- Y-axis ticks -->
+  <line x1="55" y1="60" x2="65" y2="60" stroke="#9e9684" stroke-width="0.8"/>
+  <text x="48" y="64" fill="#9e9684" font-family="sans-serif" font-size="10" text-anchor="end">80°</text>
+  <line x1="55" y1="155" x2="65" y2="155" stroke="#9e9684" stroke-width="0.8"/>
+  <text x="48" y="159" fill="#9e9684" font-family="sans-serif" font-size="10" text-anchor="end">60°</text>
+  <line x1="55" y1="250" x2="65" y2="250" stroke="#9e9684" stroke-width="0.8"/>
+  <text x="48" y="254" fill="#9e9684" font-family="sans-serif" font-size="10" text-anchor="end">40°</text>
+  <!-- Noisy signal (thin gold, jagged) — oscillating around ~63° with ±10° noise -->
+  <polyline points="70,160 85,140 100,172 115,135 130,168 145,148 160,175 175,130 190,165 205,142 220,170 235,138 250,162 265,150 280,168 295,128 310,160 325,145 340,155 355,140 370,165 385,132 400,158 415,145 430,160 445,135 460,150 475,148 490,155" fill="none" stroke="#c9a96e" stroke-width="1" opacity="0.6"/>
+  <!-- Smoothed signal (thick teal, smooth curve) -->
+  <path d="M 70,158 C 100,156 130,155 160,154 C 190,153 220,154 250,153 C 280,152 310,150 340,150 C 370,149 400,150 430,150 C 460,149 480,150 490,150" fill="none" stroke="#48a6a6" stroke-width="3"/>
+  <!-- Legend -->
+  <line x1="320" y1="45" x2="350" y2="45" stroke="#c9a96e" stroke-width="1" opacity="0.6"/>
+  <text x="355" y="49" fill="#c9a96e" font-family="sans-serif" font-size="11">Raw signal</text>
+  <line x1="320" y1="65" x2="350" y2="65" stroke="#48a6a6" stroke-width="3"/>
+  <text x="355" y="69" fill="#48a6a6" font-family="sans-serif" font-size="11">Filtered (α = 0.3)</text>
+  <!-- Arrow to smooth line -->
+  <line x1="470" y1="110" x2="460" y2="145" stroke="#ddd5c4" stroke-width="0.8"/>
+  <polygon points="460,145 456,136 464,136" fill="#ddd5c4"/>
+  <text x="480" y="108" fill="#ddd5c4" font-family="sans-serif" font-size="10" text-anchor="middle">Filtered</text>
+  <text x="480" y="120" fill="#ddd5c4" font-family="sans-serif" font-size="10" text-anchor="middle">output</text>
+</svg>
+</figure>
+
 
 The blending is controlled by a parameter α (alpha), between 0 and 1:
 
@@ -437,6 +729,51 @@ In this state, the app provides feedback: a golden glow radiates from the compas
 
 This fusion — two sensors, one formula, one direction — is a pattern that appears everywhere in engineering. An augmented reality app fuses camera images with gyroscope data. A drone controller fuses GPS with accelerometer and barometer. A weather station fuses thermometer, barometer, hygrometer, and wind vane into a forecast. The principle is always the same: each sensor measures one aspect of reality, and the combination reveals what no single sensor could. The GPS knows where you are but not where you're facing. The magnetometer knows where you're facing but not where you are. Together, they answer the question: "Am I facing Makkah?"
 
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 260" width="100%" style="max-width:560px">
+  <!-- GPS box -->
+  <rect x="20" y="30" width="100" height="45" rx="5" fill="none" stroke="#48a6a6" stroke-width="1.5"/>
+  <text x="70" y="57" fill="#48a6a6" font-family="sans-serif" font-size="13" text-anchor="middle" font-weight="bold">GPS</text>
+  <!-- Arrow GPS → Bearing Calculator -->
+  <line x1="120" y1="52" x2="170" y2="52" stroke="#9e9684" stroke-width="1.2"/>
+  <polygon points="170,52 162,47 162,57" fill="#9e9684"/>
+  <text x="145" y="44" fill="#9e9684" font-family="sans-serif" font-size="8">(φ₁, λ₁)</text>
+  <!-- Qibla Bearing Calculator box -->
+  <rect x="172" y="22" width="145" height="60" rx="5" fill="none" stroke="#c9a96e" stroke-width="1.5"/>
+  <text x="244" y="48" fill="#c9a96e" font-family="sans-serif" font-size="11" text-anchor="middle" font-weight="bold">Qibla Bearing</text>
+  <text x="244" y="64" fill="#c9a96e" font-family="sans-serif" font-size="11" text-anchor="middle" font-weight="bold">Calculator</text>
+  <!-- Arrow Bearing Calculator → Qibla Angle -->
+  <line x1="317" y1="52" x2="353" y2="115" stroke="#9e9684" stroke-width="1.2"/>
+  <polygon points="353,115 344,112 350,105" fill="#9e9684"/>
+  <text x="348" y="78" fill="#9e9684" font-family="sans-serif" font-size="8">bearing</text>
+  <!-- Magnetometer box -->
+  <rect x="420" y="30" width="120" height="45" rx="5" fill="none" stroke="#48a6a6" stroke-width="1.5"/>
+  <text x="480" y="57" fill="#48a6a6" font-family="sans-serif" font-size="12" text-anchor="middle" font-weight="bold">Magnetometer</text>
+  <!-- Compass Heading box -->
+  <rect x="420" y="105" width="120" height="45" rx="5" fill="none" stroke="#48a6a6" stroke-width="1.5"/>
+  <text x="480" y="125" fill="#48a6a6" font-family="sans-serif" font-size="11" text-anchor="middle">Compass</text>
+  <text x="480" y="140" fill="#48a6a6" font-family="sans-serif" font-size="11" text-anchor="middle">Heading</text>
+  <!-- Arrow Magnetometer → Compass Heading -->
+  <line x1="480" y1="75" x2="480" y2="105" stroke="#9e9684" stroke-width="1.2"/>
+  <polygon points="480,105 475,97 485,97" fill="#9e9684"/>
+  <!-- Qibla Angle box (central, gold) -->
+  <rect x="280" y="100" width="130" height="50" rx="8" fill="#c9a96e" fill-opacity="0.1" stroke="#c9a96e" stroke-width="2"/>
+  <text x="345" y="122" fill="#c9a96e" font-family="sans-serif" font-size="12" text-anchor="middle" font-weight="bold">Qibla Angle</text>
+  <text x="345" y="138" fill="#c9a96e" font-family="sans-serif" font-size="10" text-anchor="middle">bearing − heading</text>
+  <!-- Arrow Compass Heading → Qibla Angle -->
+  <line x1="420" y1="127" x2="410" y2="127" stroke="#9e9684" stroke-width="1.2"/>
+  <polygon points="410,127 418,122 418,132" fill="#9e9684"/>
+  <text x="415" y="118" fill="#9e9684" font-family="sans-serif" font-size="8">heading</text>
+  <!-- Arrow Qibla Angle → Display -->
+  <line x1="345" y1="150" x2="345" y2="190" stroke="#9e9684" stroke-width="1.2"/>
+  <polygon points="345,190 340,182 350,182" fill="#9e9684"/>
+  <!-- Display/Arrow box -->
+  <rect x="280" y="192" width="130" height="45" rx="8" fill="none" stroke="#ddd5c4" stroke-width="1.5"/>
+  <text x="345" y="219" fill="#ddd5c4" font-family="sans-serif" font-size="13" text-anchor="middle" font-weight="bold">Display ↗</text>
+</svg>
+</figure>
+
+
 There is a deeper lesson here about the nature of knowledge itself. No single source of information is sufficient. The GPS coordinates alone are useless without the bearing formula. The bearing formula is useless without the compass heading. The compass heading is useless without the smoothing filter. And all of these are useless without the moment of rendering — the arrow on the screen that the human eye can read. Knowledge is not a single measurement. It is the *fusion* of measurements, the *composition* of computations, the *rendering* of results into a form that the mind can grasp.
 
 The Qibla app, in its 1,136 lines of code, embodies this principle completely. Sensor data flows in. Mathematics transforms it. The canvas renders it. And a human being, holding a phone in their hand, knows which way to turn. From silicon to soul in a fraction of a second.
@@ -456,6 +793,85 @@ Dear Reader,
 We have the mathematics. We have the sensor fusion. Now we must *show* it — render the Qibla direction as a visual compass that a human being can read at a glance. This is the domain of custom painting, and in Flutter, the instrument for it is the `CustomPainter` class.
 
 A `CustomPainter` is given a canvas — an infinite drawing surface — and a size (the dimensions of the widget it fills). On this canvas, you can draw anything: lines, circles, arcs, text, paths, gradients, shadows. The compass of the Qibla app is built entirely from these primitives. There is no image file, no SVG asset, no pre-rendered bitmap. Every line, every tick mark, every letter, every glow is computed and drawn in code. This means the compass can be rendered at any size, on any device, at any pixel density, and it will always be sharp. It also means the compass can be animated — rotated, scaled, pulsed — because every element is a mathematical description, not a fixed image.
+
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" style="max-width:400px">
+  <defs>
+    <radialGradient id="qiblaglow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c9a96e" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#c9a96e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Subtle glow -->
+  <circle cx="200" cy="200" r="130" fill="url(#qiblaglow)"/>
+  <!-- Compass ring -->
+  <circle cx="200" cy="200" r="150" fill="none" stroke="#9e9684" stroke-width="2" opacity="0.6"/>
+  <circle cx="200" cy="200" r="148" fill="none" stroke="#9e9684" stroke-width="0.5" opacity="0.3"/>
+  <!-- Tick marks: every 5° = 72 ticks. Major every 15°, Cardinal every 90° -->
+  <!-- 0° (N) -->
+  <line x1="200" y1="52" x2="200" y2="72" stroke="#c0392b" stroke-width="2.5"/>
+  <!-- 90° (E) -->
+  <line x1="348" y1="200" x2="328" y2="200" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- 180° (S) -->
+  <line x1="200" y1="348" x2="200" y2="328" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- 270° (W) -->
+  <line x1="52" y1="200" x2="72" y2="200" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- 15° ticks (major) -->
+  <line x1="239" y1="54" x2="236" y2="68" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="275" y1="63" x2="269" y2="76" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="306" y1="80" x2="298" y2="91" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="330" y1="104" x2="320" y2="112" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="346" y1="134" x2="334" y2="139" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="353" y1="167" x2="340" y2="169" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <!-- 5° minor ticks (selection) -->
+  <line x1="213" y1="51" x2="212" y2="59" stroke="#9e9684" stroke-width="0.6" opacity="0.4"/>
+  <line x1="226" y1="51" x2="225" y2="59" stroke="#9e9684" stroke-width="0.6" opacity="0.4"/>
+  <line x1="252" y1="55" x2="250" y2="63" stroke="#9e9684" stroke-width="0.6" opacity="0.4"/>
+  <line x1="264" y1="58" x2="261" y2="66" stroke="#9e9684" stroke-width="0.6" opacity="0.4"/>
+  <line x1="287" y1="67" x2="283" y2="74" stroke="#9e9684" stroke-width="0.6" opacity="0.4"/>
+  <line x1="296" y1="72" x2="292" y2="79" stroke="#9e9684" stroke-width="0.6" opacity="0.4"/>
+  <!-- More ticks around compass -->
+  <line x1="346" y1="233" x2="333" y2="231" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="337" y1="265" x2="326" y2="260" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="320" y1="296" x2="310" y2="288" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="296" y1="320" x2="288" y2="310" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="265" y1="337" x2="260" y2="326" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="233" y1="346" x2="231" y2="333" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="167" y1="346" x2="169" y2="333" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="134" y1="337" x2="139" y2="326" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="104" y1="320" x2="112" y2="310" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="80" y1="296" x2="91" y2="288" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="63" y1="265" x2="76" y2="260" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="54" y1="233" x2="68" y2="231" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="54" y1="167" x2="68" y2="169" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="63" y1="134" x2="76" y2="139" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="80" y1="104" x2="91" y2="112" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="104" y1="80" x2="112" y2="91" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="134" y1="63" x2="139" y2="76" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <line x1="161" y1="54" x2="164" y2="68" stroke="#ddd5c4" stroke-width="1.2" opacity="0.6"/>
+  <!-- Cardinal labels -->
+  <text x="200" y="42" fill="#c0392b" font-family="sans-serif" font-size="18" text-anchor="middle" font-weight="bold">N</text>
+  <text x="362" y="205" fill="#ddd5c4" font-family="sans-serif" font-size="16" text-anchor="middle">E</text>
+  <text x="200" y="370" fill="#ddd5c4" font-family="sans-serif" font-size="16" text-anchor="middle">S</text>
+  <text x="38" y="205" fill="#ddd5c4" font-family="sans-serif" font-size="16" text-anchor="middle">W</text>
+  <!-- Qibla arrow pointing at ~63° (Lagos→Makkah) -->
+  <!-- 63° from north clockwise: dx=sin(63°)*120≈107, dy=-cos(63°)*120≈-54 -->
+  <g>
+    <line x1="200" y1="200" x2="307" y2="146" stroke="#c9a96e" stroke-width="3" opacity="0.9"/>
+    <polygon points="307,146 293,143 296,156" fill="#c9a96e"/>
+    <!-- Qibla arrow glow at tip -->
+    <circle cx="307" cy="146" r="8" fill="#c9a96e" opacity="0.15"/>
+  </g>
+  <!-- Kaaba diamond at center -->
+  <g transform="translate(200,200)">
+    <rect x="-7" y="-7" width="14" height="14" fill="#c9a96e" transform="rotate(45)" opacity="0.8"/>
+    <rect x="-5" y="-5" width="10" height="10" fill="#1a1a2e" transform="rotate(45)"/>
+  </g>
+  <!-- Degree label at ~63° -->
+  <text x="315" y="138" fill="#c9a96e" font-family="sans-serif" font-size="11" font-weight="bold">63°</text>
+</svg>
+</figure>
+
 
 Let me walk you through the layers of the compass, from back to front.
 
@@ -744,6 +1160,84 @@ Let us begin with the simplest. **Cartesian coordinates** name a point by its pe
 
 But the Earth is not flat, and many problems are not straight. When a potter shapes clay on a wheel, every point on the rim is best described not by (x, y) but by (r, θ) — a distance from the center and an angle from some reference direction. These are **polar coordinates**, and they are the natural language of rotation, cycles, and anything that spins. The conversion is a breath of trigonometry: x = r·cos(θ), y = r·sin(θ). The point has not moved. Only the language has changed.
 
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" width="100%" style="max-width:600px">
+  <!-- Panel 1: Cartesian -->
+  <g transform="translate(0,0)">
+    <text x="95" y="18" fill="#ddd5c4" font-family="sans-serif" font-size="12" text-anchor="middle" font-weight="bold">Cartesian</text>
+    <!-- Axes -->
+    <line x1="30" y1="190" x2="175" y2="190" stroke="#9e9684" stroke-width="1"/>
+    <line x1="30" y1="190" x2="30" y2="30" stroke="#9e9684" stroke-width="1"/>
+    <text x="180" y="194" fill="#9e9684" font-family="sans-serif" font-size="11">x</text>
+    <text x="24" y="28" fill="#9e9684" font-family="sans-serif" font-size="11">y</text>
+    <!-- Grid lines -->
+    <line x1="30" y1="150" x2="175" y2="150" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <line x1="30" y1="110" x2="175" y2="110" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <line x1="30" y1="70" x2="175" y2="70" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <line x1="70" y1="30" x2="70" y2="190" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <line x1="110" y1="30" x2="110" y2="190" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <line x1="150" y1="30" x2="150" y2="190" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <!-- Point at (3,4) → mapped to (30+3*40, 190-4*40) = (150, 30) → use (150, 30) → actually (3,4) at pixel (30+3*33, 190-4*33) -->
+    <!-- Scale: 1 unit = 40px, point at (3,4) → pixel (30+120, 190-160) = (150, 30) — too high, let's use scale 35 -->
+    <!-- point (3,4) → (30+105, 190-140) = (135, 50) -->
+    <circle cx="135" cy="50" r="5" fill="#c9a96e"/>
+    <!-- Dashed projections -->
+    <line x1="135" y1="50" x2="135" y2="190" stroke="#48a6a6" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+    <line x1="135" y1="50" x2="30" y2="50" stroke="#c9a96e" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+    <text x="135" y="205" fill="#48a6a6" font-family="sans-serif" font-size="10" text-anchor="middle">3</text>
+    <text x="18" y="54" fill="#c9a96e" font-family="sans-serif" font-size="10">4</text>
+    <text x="142" y="44" fill="#ddd5c4" font-family="sans-serif" font-size="10">(3, 4)</text>
+  </g>
+  <!-- Panel 2: Polar -->
+  <g transform="translate(200,0)">
+    <text x="95" y="18" fill="#ddd5c4" font-family="sans-serif" font-size="12" text-anchor="middle" font-weight="bold">Polar</text>
+    <!-- Concentric circles -->
+    <circle cx="75" cy="145" r="30" fill="none" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <circle cx="75" cy="145" r="60" fill="none" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <circle cx="75" cy="145" r="90" fill="none" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <circle cx="75" cy="145" r="120" fill="none" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <!-- Radial lines -->
+    <line x1="75" y1="145" x2="195" y2="145" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <line x1="75" y1="145" x2="75" y2="25" stroke="#9e9684" stroke-width="0.3" opacity="0.3"/>
+    <line x1="75" y1="145" x2="160" y2="60" stroke="#9e9684" stroke-width="0.3" opacity="0.2"/>
+    <!-- Center dot -->
+    <circle cx="75" cy="145" r="2" fill="#9e9684" opacity="0.5"/>
+    <!-- Point at r=5, θ=53° → scale r: 5 units at 22px/unit = 110px -->
+    <!-- 53° from x-axis: dx=110*cos(53°)≈66, dy=-110*sin(53°)≈-88 -->
+    <!-- pixel: (75+66, 145-88) = (141, 57) -->
+    <circle cx="141" cy="57" r="5" fill="#c9a96e"/>
+    <!-- Radius line -->
+    <line x1="75" y1="145" x2="141" y2="57" stroke="#c9a96e" stroke-width="1.5" opacity="0.7"/>
+    <!-- Angle arc -->
+    <path d="M 105,145 A 30,30 0 0,0 93,124" fill="none" stroke="#48a6a6" stroke-width="1.2"/>
+    <text x="108" y="126" fill="#48a6a6" font-family="sans-serif" font-size="10">53°</text>
+    <text x="100" y="96" fill="#c9a96e" font-family="sans-serif" font-size="10" font-style="italic">r=5</text>
+    <text x="148" y="52" fill="#ddd5c4" font-family="sans-serif" font-size="10">(5, 53°)</text>
+    <text x="65" y="205" fill="#9e9684" font-family="sans-serif" font-size="10" font-style="italic">r, θ</text>
+  </g>
+  <!-- Panel 3: Geographic / Globe -->
+  <g transform="translate(400,0)">
+    <text x="95" y="18" fill="#ddd5c4" font-family="sans-serif" font-size="12" text-anchor="middle" font-weight="bold">Geographic</text>
+    <!-- Globe circle -->
+    <circle cx="95" cy="120" r="85" fill="none" stroke="#9e9684" stroke-width="1" opacity="0.4"/>
+    <!-- Equator -->
+    <ellipse cx="95" cy="120" rx="85" ry="14" fill="none" stroke="#9e9684" stroke-width="0.6" opacity="0.4"/>
+    <!-- Prime meridian -->
+    <ellipse cx="95" cy="120" rx="0.5" ry="85" fill="none" stroke="#9e9684" stroke-width="0.6" opacity="0.4"/>
+    <!-- A couple lat lines -->
+    <ellipse cx="95" cy="95" rx="78" ry="10" fill="none" stroke="#9e9684" stroke-width="0.3" opacity="0.25"/>
+    <ellipse cx="95" cy="145" rx="78" ry="10" fill="none" stroke="#9e9684" stroke-width="0.3" opacity="0.25"/>
+    <!-- Lagos dot near equator, near meridian -->
+    <circle cx="98" cy="112" r="5" fill="#c9a96e"/>
+    <text x="112" y="108" fill="#ddd5c4" font-family="sans-serif" font-size="9">6.5°N, 3.4°E</text>
+    <text x="82" y="205" fill="#9e9684" font-family="sans-serif" font-size="10" font-style="italic">φ, λ</text>
+  </g>
+  <!-- Caption -->
+  <text x="300" y="218" fill="#9e9684" font-family="sans-serif" font-size="11" text-anchor="middle">Three coordinate systems, one point — the language changes, the location does not</text>
+</svg>
+</figure>
+
+
 Extend this to three dimensions and you reach **spherical coordinates**: (r, θ, φ) — a radius, a polar angle from the vertical, and an azimuthal angle around the horizontal. This is the language of stars, radar, and satellite dishes. It is also, with a change of notation, the language of the Earth. Geographic coordinates (latitude φ, longitude λ, altitude h) are spherical coordinates measured from the equator and the Prime Meridian rather than from the North Pole and an arbitrary axis. Every GPS receiver speaks this language.
 
 ```python
@@ -793,6 +1287,41 @@ Every flat map you have ever seen is a lie. This is not a moral failing of carto
 The question, then, is not whether to distort, but *what* to distort, and the answer depends on what you need from the map.
 
 The **Mercator projection**, created by Gerardus Mercator in 1569, preserves angles. A straight line on a Mercator map crosses every meridian at the same angle — a property called conformality that made it invaluable for sea navigation. If you draw a line from Lagos to Lisbon on a Mercator chart and measure its angle with a protractor, you can set your compass to that heading and sail straight there. But the price of conformality is grotesque distortion of area. On a Mercator map, Greenland appears roughly the size of Africa. In truth, Africa is fourteen times larger. The continent of your birth, Dear Reader — 30.37 million square kilometers of savanna, desert, forest, and mountain — is shrunk to visual equivalence with an arctic island. This is not innocent. Maps shape perception, and perception shapes policy.
+
+<figure style="text-align:center;margin:2em 0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 310" width="100%" style="max-width:580px">
+  <!-- Left panel: Mercator -->
+  <g transform="translate(0,0)">
+    <text x="140" y="20" fill="#ddd5c4" font-family="sans-serif" font-size="13" text-anchor="middle" font-weight="bold">Mercator</text>
+    <rect x="15" y="30" width="250" height="220" fill="none" stroke="#9e9684" stroke-width="0.8" opacity="0.3" rx="3"/>
+    <!-- Greenland (large on Mercator) -->
+    <path d="M 95,50 L 115,45 L 140,48 L 155,55 L 160,70 L 150,85 L 135,90 L 115,88 L 100,78 L 90,65 Z" fill="#48a6a6" fill-opacity="0.3" stroke="#48a6a6" stroke-width="1.2"/>
+    <text x="125" y="105" fill="#48a6a6" font-family="sans-serif" font-size="10" text-anchor="middle">Greenland</text>
+    <!-- Africa (small on Mercator — distorted) -->
+    <path d="M 120,130 L 135,125 L 155,122 L 170,128 L 175,140 L 172,155 L 165,170 L 155,185 L 145,195 L 135,200 L 125,195 L 118,185 L 112,170 L 108,155 L 110,140 Z" fill="#c9a96e" fill-opacity="0.3" stroke="#c9a96e" stroke-width="1.2"/>
+    <text x="142" y="215" fill="#c9a96e" font-family="sans-serif" font-size="10" text-anchor="middle">Africa</text>
+    <!-- Equator line -->
+    <line x1="15" y1="145" x2="265" y2="145" stroke="#9e9684" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.3"/>
+  </g>
+  <!-- Right panel: Equal-area -->
+  <g transform="translate(295,0)">
+    <text x="140" y="20" fill="#ddd5c4" font-family="sans-serif" font-size="13" text-anchor="middle" font-weight="bold">Equal-Area</text>
+    <rect x="15" y="30" width="250" height="220" fill="none" stroke="#9e9684" stroke-width="0.8" opacity="0.3" rx="3"/>
+    <!-- Greenland (small — true proportion) -->
+    <path d="M 110,52 L 120,50 L 132,52 L 137,58 L 134,66 L 125,70 L 115,68 L 108,62 Z" fill="#48a6a6" fill-opacity="0.3" stroke="#48a6a6" stroke-width="1.2"/>
+    <text x="123" y="82" fill="#48a6a6" font-family="sans-serif" font-size="10" text-anchor="middle">Greenland</text>
+    <!-- Africa (large — true proportion) -->
+    <path d="M 105,100 L 130,92 L 160,88 L 185,96 L 192,115 L 188,140 L 178,165 L 162,190 L 148,210 L 132,220 L 115,215 L 102,200 L 92,178 L 85,155 L 82,135 L 85,115 Z" fill="#c9a96e" fill-opacity="0.3" stroke="#c9a96e" stroke-width="1.2"/>
+    <text x="138" y="238" fill="#c9a96e" font-family="sans-serif" font-size="10" text-anchor="middle">Africa</text>
+    <!-- Equator line -->
+    <line x1="15" y1="145" x2="265" y2="145" stroke="#9e9684" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.3"/>
+  </g>
+  <!-- Caption -->
+  <text x="290" y="280" fill="#ddd5c4" font-family="sans-serif" font-size="12" text-anchor="middle">Africa is 14× larger than Greenland.</text>
+  <text x="290" y="298" fill="#9e9684" font-family="sans-serif" font-size="12" text-anchor="middle">Mercator makes them look equal.</text>
+</svg>
+</figure>
+
 
 The **Gall-Peters projection** and the **Mollweide projection** take the opposite trade: they preserve area at the expense of shape. Africa appears in its true proportion — vast, dominant, central. But the shapes of the continents are distorted, stretched vertically near the poles, compressed near the equator. A circle on the Earth becomes an ellipse on the map.
 

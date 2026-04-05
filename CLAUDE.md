@@ -58,9 +58,9 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 - `### Letter N: On Title` — individual chapters
 - `## Epilogue: On Title` — closing chapter
 
-## Current Library (19 books, 689+ letters)
+## Current Library (38 books, 1,339 letters)
 
-### Technology Wing
+### Technology Wing (10 books, 352 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Universal Machine (WebAssembly) | 40 | wasm.md |
@@ -68,44 +68,63 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Sovereign Application (PWA) | 41 | pwa.md |
 | Letters on the Composition of Systems (Euler Framework) | 31 | euler.md |
 | Letters on the Making of the Library (Software Engineering) | 43 | making.md |
-| Letters on the Web of Messages (WhatsApp/Nostr/P2P) | 42 | messages.md |
+| Letters on the Web of Messages (WhatsApp & Nostr) | 42 | messages.md |
+| Letters on the Sovereign Device (Android) | 23 | android.md |
 | Letters on the Sovereign Machine (Linux & Linux Mint) | 46 | linux.md |
 | Letters on the Sovereign Intelligence (Claude & AI) | 25 | claude-ai.md |
 | Letters on the Nine Scrolls (9S Substrate) | 25 | nine-scrolls.md |
 
-### Science Wing
+### Science Wing (9 books, 305 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Mathematics of Reality | 35 | math.md |
-| Letters on the Architecture of Thought (AI/Neural Networks) | 35 | thought.md |
+| Letters on the Patterns of Nature (Systems Thinking) | 30 | systems.md |
+| Letters on the Architecture of Thought (AI & Neural Networks) | 35 | thought.md |
 | Letters on the Shape of Data (Algorithms) | 35 | algorithms.md |
 | Letters on the Cryptography of Trust | 35 | crypto.md |
+| Letters on the Power of Nature (Electricity) | 45 | electricity.md |
+| Letters on the Chemistry of Matter | 35 | chemistry.md |
+| Letters on the Warmth of Fire (Thermodynamics) | 30 | heat.md |
 | Letters on the Direction of Prayer (Geometry & Sensors) | 25 | qibla.md |
-| Letters on the Patterns of Nature (Systems Thinking) | 30 | systems.md |
 
-### Building Wing
+### Finance Wing (2 books, 83 letters)
+| Book | Letters | File |
+|------|---------|------|
+| Letters on the Sovereignty of Value (Bitcoin) | 48 | bitcoin.md |
+| Letters on the Architecture of Wealth (Finance) | 35 | wealth.md |
+
+### Building Wing (5 books, 160 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Sovereign Enterprise (Entrepreneurship) | 35 | enterprise.md |
+| Letters on the Rhetoric of Clarity (Communication) | 30 | rhetoric.md |
 | Letters on the Governance of the Commons (Leadership) | 30 | governance.md |
-| Letters on the Rhetoric of Clarity (Writing/Communication) | 30 | rhetoric.md |
+| Letters on the Healing of the Body (Public Health) | 35 | health.md |
+| Letters on the Map of the Earth (Surveying & GIS) | 30 | earth.md |
 
-### Finance Wing
+### Making Wing (5 books, 188 letters)
 | Book | Letters | File |
 |------|---------|------|
-| Letters on the Sovereignty of Value (Bitcoin/Lightning) | 48 | bitcoin.md |
-| Letters on the Architecture of Wealth (Finance/Economics) | 35 | wealth.md |
+| Letters on the Manufacturing of Worlds | 43 | manufacturing.md |
+| Letters on the Engine of Industry | 35 | industry.md |
+| Letters on the Strength of Things (Structures) | 40 | strength.md |
+| Letters on the Nourishment of Nations (Agriculture) | 35 | agriculture.md |
+| Letters on the Flow of Water (Sanitation) | 35 | water.md |
 
-### Making Wing
+### Creative Wing (2 books, 60 letters)
 | Book | Letters | File |
 |------|---------|------|
-| Letters on the Manufacturing of Worlds (Making) | 43 | manufacturing.md |
-| Letters on the Engine of Industry (Industrial Systems) | 35 | industry.md |
+| Letters on the Generative Canvas (Creative Coding) | 30 | canvas.md |
+| Letters on the Language of Design | 30 | design.md |
 
-### Creative Wing
+### Sovereignty Wing (5 books, 191 letters)
 | Book | Letters | File |
 |------|---------|------|
-| Letters on the Generative Canvas (Art/Creative Coding) | 30 | canvas.md |
+| Letters on the Sovereignty of Keys (Digital Identity) | 40 | keys.md |
+| Letters on the Lightning of Exchange | 38 | lightning.md |
+| Letters on the Protocol of Whispers (Nostr) | 42 | whispers.md |
+| Letters on the Invisible Cloak (Privacy) | 35 | cloak.md |
+| Letters on the Fortress of the Self (Infrastructure) | 36 | fortress.md |
 
 ## Architecture
 

@@ -862,6 +862,8 @@ Notice a profound consequence: there is no "balance update" operation. No number
 
 The UTXO model has several advantages. First, it enables *parallel validation*: since each UTXO can only be spent once, independent transactions can be verified simultaneously without risk of conflict. Second, it provides natural *privacy*: since change is typically sent to a new address, the graph of money flow is obscured. Third, it makes *double-spend detection* trivial: a UTXO is either unspent or spent, with no ambiguity. The entire set of all unspent outputs — the *UTXO set* — is the authoritative record of who owns what on the Bitcoin network.
 
+<!-- LAB:bitcoin-utxo -->
+
 ### Letter 17: On the Mempool and the Post Office Sorting Room
 
 Dear Reader,

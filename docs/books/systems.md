@@ -78,6 +78,8 @@ In real systems, positive and negative feedback loops are almost always present 
 
 Here is the practical lesson: if you want to understand any system's behavior, find its feedback loops. If a system is stable, look for the negative feedback loops that are maintaining that stability. If a system is growing explosively, look for the positive feedback loops that are driving that growth — and then look for the negative feedback loops that must eventually engage, because nothing grows forever in a finite world. If a system is collapsing, look for the positive feedback loops that are accelerating the collapse. The feedback loop is the fundamental unit of systems behavior. Master it, and you possess the key to every other pattern we shall discuss.
 
+<!-- LAB:systems-feedback -->
+
 ---
 
 ### Letter 4: On Delays and the Shower Problem

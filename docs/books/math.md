@@ -148,6 +148,8 @@ Functions can be combined. If f(x) = 2x + 3 and g(x) = x squared, then their com
 
 Let me leave you with one more idea: the inverse function. If f(x) = 2x + 3, then its inverse f-inverse undoes what f does. Since f takes x and returns 2x + 3, the inverse takes y and returns (y - 3)/2. Not every function has an inverse — f(x) = x squared does not, because both 3 and -3 map to 9, so given 9, you cannot uniquely recover the input. A function has an inverse only if it is one-to-one: each output comes from exactly one input. This concept will matter greatly when we meet logarithms, which are the inverses of exponential functions, and when we meet the fundamental theorem of calculus, which establishes that differentiation and integration are inverses of each other.
 
+<!-- LAB:math-graphing -->
+
 ---
 
 ## Part III: The Geometry of Space

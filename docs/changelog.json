@@ -1,11 +1,39 @@
 {
-  "version": 1,
+  "version": 5,
   "entries": [
+    {
+      "v": 5,
+      "date": "2026-04-04",
+      "type": "book",
+      "summary": "New treatise: Letters on the Direction of Prayer (25 letters on spherical geometry, sensors, and finding the sacred direction)",
+      "books": ["qibla"]
+    },
+    {
+      "v": 4,
+      "date": "2026-04-04",
+      "type": "book",
+      "summary": "Two new treatises: Letters on the Sovereign Intelligence (Claude & AI) and Letters on the Nine Scrolls (9S Substrate)",
+      "books": ["claude-ai", "nine-scrolls"]
+    },
+    {
+      "v": 3,
+      "date": "2026-03-30",
+      "type": "book",
+      "summary": "New treatise: Letters on the Sovereign Machine (46 letters on Linux, from boot to custom kernel)",
+      "books": ["linux"]
+    },
+    {
+      "v": 2,
+      "date": "2026-03-30",
+      "type": "feature",
+      "summary": "Six new platform features: Herald, Apprenticeship Engine, Palaver Tree, Margin Notes, Scroll Certificates, Scroll Laboratories",
+      "books": []
+    },
     {
       "v": 1,
       "date": "2026-03-30",
       "type": "feature",
-      "summary": "The Herald, Apprenticeship Engine, Palaver Tree, Margin Notes, Scroll Certificates, and Scroll Laboratories are coming to the Letterverse",
+      "summary": "App renamed from The Epistolary Library to The Letterverse",
       "books": []
     }
   ]

@@ -36,6 +36,8 @@ The lesson is profound and applies to all of cryptography: the *structure* of th
 
 Let us carry this lesson forward. Caesar's cipher fails because it preserves too much structure — letter frequencies, word boundaries, the sequential relationships between characters. Our next challenge is to find a cipher that destroys all structure whatsoever. Such a cipher exists, and it is the subject of our next letter.
 
+<!-- LAB:crypto-cipher -->
+
 ---
 
 ### Letter 2: On XOR and the Perfect Mask

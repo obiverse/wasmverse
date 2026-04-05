@@ -70,6 +70,8 @@ let t = s;       // Move -- only t is valid now
 
 This is the first foundation. Every value has one owner. Ownership can be transferred but not duplicated. When the owner is done, the value is cleaned up. From this single principle, Rust derives its immunity to an entire class of bugs that have plagued computing since its inception.
 
+<!-- LAB:rust-ownership -->
+
 ### Letter 2: On Borrowing and the Library Card
 
 If ownership were the only mechanism, Rust would be insufferably rigid. Imagine a world where, to show someone your house, you had to sign the deed over to them, let them look around, and then have them sign it back. For every function call, you would move data in and then move it back out. Programs would be an endless chain of transfers, each one a bureaucratic ordeal.
