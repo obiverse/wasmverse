@@ -705,6 +705,24 @@
         "qibla",
         "math"
       ]
+    },
+    {
+      "id": "oga-plastic",
+      "title": "Oga Plastic",
+      "subtitle": "A Manga on Water, Industry, and the Crossing of Oceans",
+      "manner": "A manga in the manner of Vinland Saga and Dr. Stone",
+      "file": "books/oga-plastic.md",
+      "symbol": "dwennimmen",
+      "accent": "#1a1a1a",
+      "letters": 6,
+      "parts": 1,
+      "topic": "Manga",
+      "description": "From a dream in Edinau, Cameroon to a factory with gold letters in Ugep, Nigeria. Oga Plastic crossed the Atlantic in a speed boat to buy three water tanks — then crossed two oceans to learn how to manufacture them. 50,000+ tanks. 36 states. The drums are finished.",
+      "category": "Graphic Novel",
+      "next": [
+        "manufacturing",
+        "enterprise"
+      ]
     }
   ]
 }
