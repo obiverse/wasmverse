@@ -18,17 +18,11 @@ This is the story of Oga Plastic.
 
 ### Letter 1: The Dream of Water
 
-**[BLACK TITLE PAGE]**
-
 > *Pure black. A single drop of water falling through void. Inside the drop — refracted, dreamlike — the face of a young man, eyes closed. The drop is about to hit a surface we cannot see.*
 
 > *Title text, white, bottom right:* **Chapter 1: The Dream of Water**
 
 ---
-
-**Page 1 — SPLASH PAGE (silent)**
-
-PANEL: Full bleed. Aerial view of Edinau at the edge of the world. The village clings to the Atlantic coast of Cameroon like a barnacle on a hull — tin roofs rusting in the salt air, packed-earth paths between cinder-block houses, fishing pirogues beached on dark volcanic sand. Mount Cameroon rises in the deep background, shrouded in cloud, volcanic and immense — the mountain that reminds this coast that the earth is alive and restless.
 
 The Atlantic stretches south and west to infinity. The horizon is a blade.
 
@@ -114,47 +108,30 @@ Dawn. Cook-fire smoke rising in thin columns. The ocean breathing: SHHHHHH.
 </svg>
 </figure>
 
-
 ---
-
-**Page 2**
-
-PANEL 1 (wide, establishing): Interior of a small rented room. Bare concrete walls. A thin mattress on the floor. A wooden stool serves as a nightstand — on it, a kerosene lamp burning low, a glass of water, and a notebook with a pen clipped to its cover. Through the window — wooden shutters cracked open, no glass — pre-dawn light leaks in blue-grey. The sound of the Atlantic is everywhere.
 
 > CAPTION (top left): *Edinau. Near Limbe. Atlantic coast of Cameroon.*
 
 > CAPTION (bottom right): *December 2012.*
 
-PANEL 2 (medium close): A young man sleeps. One arm across his face, the other hand open on the mattress as if reaching for something. This is OGA PLASTIC. He is not yet Oga Plastic — he is just a young man in a rented room with a notebook and a dream he hasn't had yet. Mid-twenties. Lean. The kerosene light carves his face into planes of gold and shadow.
+<div class="narrator-box">He has no factory. No engineering degree. No investors. No political connections. No machines.</div>
 
-> CAPTION: *He has no factory. No engineering degree. No investors. No political connections. No machines.*
+<div class="narrator-box">He has thirteen hours of sleep debt, forty-two thousand francs CFA, and a feeling in his chest that won't let him rest.</div>
 
-PANEL 3 (close): The kerosene flame gutters in a draft from the window. Outside, the Atlantic exhales against the volcanic shore.
-
-> CAPTION: *He has thirteen hours of sleep debt, forty-two thousand francs CFA, and a feeling in his chest that won't let him rest.*
-
-PANEL 4 (extreme close — just his closed eyes, the lids trembling with REM):
-
-> CAPTION: *Tonight, God sends him a dream.*
+<div class="narrator-box">Tonight, God sends him a dream.</div>
 
 ---
 
-**Page 3 — DREAM SEQUENCE BEGINS**
-
 *The art style SHIFTS. Hard manga lines dissolve into watercolor. Edges bleed. Gravity becomes optional. We have entered a space that is not Edinau, not Cameroon, not the physical world.*
 
-PANEL 1 (full width, top half): Oga Plastic stands in a vast landscape that is neither land nor sea nor sky. The ground beneath his feet is transparent as glass, and through it — flowing in every direction like the circulatory system of the earth itself — water. Rivers branching into capillaries, capillaries feeding aquifers, aquifers pooling into underground oceans. The water glows faintly blue, pulsing, alive. He is standing on the nervous system of the planet.
-
-> VOICE (no source — the words form in the water itself, letter by letter, like sediment settling): **"Water is life."**
-
-PANEL 2 (full width, bottom half): The perspective DROPS — we are now BENEATH the glass ground, looking UP at Oga Plastic's silhouette above us. The water surrounds us, flows through us. And in the water, images materialize like photographs developing in a darkroom:
+<div class="narrator-box"><em>"Water is life."</em></div>
 
 - A woman walking a red laterite road with a yellow jerrycan on her head. The jerrycan is cracked. Water drips from the crack, marking the dust behind her.
 - A child — a girl, maybe five — drinking from a rusted chemical drum. The faded label is visible: **SODIUM HYDROXIDE**. She drinks with her eyes closed, trusting.
 - An old man filling a rubber basin from a brown stream. Cattle drink upstream.
 - A school. A concrete block building with "GOVERNMENT PRIMARY SCHOOL" painted on the wall. Behind it, the water source: a single standpipe that hasn't worked in three years, and beside it, two chemical drums.
 
-> VOICE: **"But they drink from poison."**
+<div class="narrator-box"><em>"But they drink from poison."</em></div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -240,27 +217,18 @@ PANEL 2 (full width, bottom half): The perspective DROPS — we are now BENEATH 
 </svg>
 </figure>
 
-
 ---
-
-**Page 4**
-
-PANEL 1 (medium): The dream shifts. The images in the water dissolve. Oga Plastic kneels — slowly, reverently, as if approaching an altar — and cups the glowing water in his hands.
 
 It is the purest thing he has ever touched. It is water as God made it before the first man found the first stream. It is clean beyond clean — it is the IDEA of water.
 
-PANEL 2 (close — just his cupped hands): The water leaks through his fingers. No matter how tightly he presses his palms together, it escapes. His hands are not the vessel. His hands were never meant to be the vessel.
-
-> VOICE: **"You cannot carry water in your hands."**
-
-PANEL 3 (wide — and here the manga DETONATES): Before him, rising from the glass ground like a monument emerging from the earth, a massive cylindrical shape materializes. Black. Ribbed. Engineered. A water tank — but in this dreamscape, it is the size of a cathedral. It stands like a pillar between earth and heaven, matte black against the luminous water-sky, and it is PERFECT. Every rib calculated. Every curve structural. The threaded manhole at the top like a crown. The embossed letters down the side, catching light that has no source:
+<div class="narrator-box"><em>"You cannot carry water in your hands."</em></div>
 
 > **ITALIA SERBATOI**
 > **BY OGA PLASTIC**
 
 *He does not yet understand these words. He does not yet have a brand. He does not yet know what rotomoulding is, or LLDPE, or UV stabilization. But the dream shows him the finished thing — the way a prophet sees the city before the first brick is laid.*
 
-> VOICE: **"Build the vessel."**
+<div class="narrator-box"><em>"Build the vessel."</em></div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -349,42 +317,25 @@ PANEL 3 (wide — and here the manga DETONATES): Before him, rising from the gla
 </svg>
 </figure>
 
+<div class="narrator-box"><strong>Oga Plastic:</strong> "...where? How? I don't — I don't know how to—"</div>
 
-PANEL 4 (close — Oga Plastic's face. Eyes wide. Tears running but not from sadness — from RECOGNITION. The face of a man who has just been shown his life's work, complete, in a single image):
-
-> OGA PLASTIC (whisper, trembling): *"...where? How? I don't — I don't know how to—"*
-
-PANEL 5 (the tank begins to dissolve into particles of light. The particles scatter across the dreamscape like seeds, like stars, like polyethylene powder falling into a mould):
-
-> VOICE: **"Cross the water to find the water."**
+<div class="narrator-box"><em>"Cross the water to find the water."</em></div>
 
 ---
 
-**Page 5**
-
-PANEL 1 (the dream collapses — reality smashes back in):
-
-> SFX: **KPAM!**
+<div class="narrator-box"><strong>SFX:</strong> </div>KPAM!**
 
 The wooden shutters slam open in the offshore wind. Dawn crashes into the room like a wave. Oga Plastic jolts upright on the mattress, chest heaving, drenched in sweat. The kerosene lamp has gone out. Golden Atlantic light floods everything.
 
-PANEL 2 (medium — he sits on the edge of the mattress, elbows on knees, head bowed. Breathing. The room is real. The concrete walls are real. The empty glass on the stool is real. But the dream—):
+<div class="narrator-box"><strong>Oga Plastic:</strong> I can still feel the water in my hands.</div>
 
-> OGA PLASTIC (internal): *I can still feel the water in my hands.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I can still see the letters on the tank. Letters I've never read. A thing I've never seen. A name I don't have.</div>
 
-PANEL 3 (close — his hands. Open. Empty. Trembling slightly):
+<div class="narrator-box"><strong>Oga Plastic:</strong> "Cross the water to find the water."</div>
 
-> OGA PLASTIC (internal): *I can still see the letters on the tank. Letters I've never read. A thing I've never seen. A name I don't have.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> The dream spoke in a language older than words. I don't understand it yet. But I understand this much:</div>
 
-PANEL 4 (he looks up — through the open shutters — the Atlantic. Endless. The direction of Nigeria. The morning sun sits on the water like a coin on a mirror):
-
-> OGA PLASTIC (internal): *"Cross the water to find the water."*
-
-PANEL 5 (small, quiet — he reaches for the notebook on the stool. Opens it. The pen is in his hand before he's made the decision to write. Some things write themselves):
-
-> OGA PLASTIC (internal): *The dream spoke in a language older than words. I don't understand it yet. But I understand this much:*
-
-> OGA PLASTIC (internal): *Water is life. And the life here is stored in chemical drums.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Water is life. And the life here is stored in chemical drums.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -473,130 +424,75 @@ PANEL 5 (small, quiet — he reaches for the notebook on the stool. Opens it. Th
 </svg>
 </figure>
 
-
 ---
-
-**Page 6 — THE CHEMICAL DRUMS (the world as it is)**
-
-PANEL 1 (wide — morning in Edinau. Oga Plastic walks through the village with new eyes. The dream has rewritten his vision. He sees what he has always seen, but now he sees it as a PROBLEM — not as normal):
 
 *He passes a row of houses. Behind each one, the water storage situation:*
 
-PANEL 2 (medium): Three blue industrial drums behind a house. Faded stencil labels: **INDUSTRIAL SOLVENT**. **TOLUENE**. **SODIUM HYDROXIDE**. The drums have been "cleaned" — rinsed with water and soap — and repurposed. A woman pours water from one into a cooking pot.
+<div class="narrator-box">This was normal.</div>
 
-> CAPTION: *This was normal.*
+<div class="narrator-box">In 2012, across Cameroon, across Central Africa, there were no purpose-built water storage tanks. None. The industry did not exist.</div>
 
-PANEL 3 (medium): A concrete block cistern, cracked at the base, patched with cement that is already crumbling. Algae climbs the inside walls. The water is green-brown.
-
-> CAPTION: *In 2012, across Cameroon, across Central Africa, there were no purpose-built water storage tanks. None. The industry did not exist.*
-
-PANEL 4 (close — devastating): A little girl, maybe six, dips a plastic cup into a chemical drum. The water is cloudy. She drinks with her eyes closed, the way the girl in the dream drank. The same image. The dream was not a metaphor. The dream was a photograph.
-
-> CAPTION: *No one manufactured them. No one imported them in meaningful quantity. No one had solved this problem — not because it was unsolvable, but because no one had decided it was theirs to solve.*
+<div class="narrator-box">No one manufactured them. No one imported them in meaningful quantity. No one had solved this problem — not because it was unsolvable, but because no one had decided it was theirs to solve.</div>
 
 ---
 
-**Page 7**
+<div class="narrator-box">It was as if the entire nation dreamed of flight — in an era before the bicycle had been invented.</div>
 
-PANEL 1 (wide, panoramic — this is the THESIS PAGE): A full-width panel showing a street. Every house has its improvised water storage solution: chemical drums, cracked concrete, stacked jerrycans, a bathtub set on blocks to catch rainwater, a rubber basin patched with melted plastic. Each one is a small monument to human ingenuity and systemic failure.
+<div class="narrator-box">The Wright Brothers had not yet looked at birds. Benz had not yet imagined the engine. The problem was not a lack of intelligence — it was a gap in the world where an industry should have been.</div>
 
-> CAPTION: *It was as if the entire nation dreamed of flight — in an era before the bicycle had been invented.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I used to see drums. Now I see disease waiting. I used to see water. Now I see mercy with no container.</div>
 
-> CAPTION: *The Wright Brothers had not yet looked at birds. Benz had not yet imagined the engine. The problem was not a lack of intelligence — it was a gap in the world where an industry should have been.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> The tank I saw in the dream — black, ribbed, perfect — it exists. It HAS to exist. Someone, somewhere, is already making them.</div>
 
-PANEL 2 (medium — Oga Plastic standing still in the street, looking at it all):
-
-> OGA PLASTIC (internal): *I used to see drums. Now I see disease waiting. I used to see water. Now I see mercy with no container.*
-
-PANEL 3 (close — his jaw sets. His hand forms a fist at his side. This is the panel where the hero's resolve crystallizes — the manga beat where the reader sees the fire catch):
-
-> OGA PLASTIC (internal): *The tank I saw in the dream — black, ribbed, perfect — it exists. It HAS to exist. Someone, somewhere, is already making them.*
-
-PANEL 4 (his eyes — sharp, calculating, the look of a man who has stopped wondering and started planning):
-
-> OGA PLASTIC (internal): *Nigeria.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Nigeria.</div>
 
 ---
 
-**Page 8 — PAPA EMMANUEL**
+<div class="narrator-box"><strong>Oga Plastic:</strong> Papa Emmanuel. The plastic tanks — the real ones, for water storage. Black, big, factory-made. Smooth. Not drums. You've seen them?</div>
 
-PANEL 1 (establishing): A roadside hardware shop in Limbe. Corrugated roof, open front, shelves stacked with PVC pipes, taps, cement bags, wire, nails. Behind a wooden counter sits PAPA EMMANUEL — sixties, thick forearms, reading glasses perched on his forehead, the kind of man who has sold hardware for forty years and knows what every building in the region is made of.
+<div class="narrator-box"><strong>PAPA EMMANUEL:</strong> Eh! My brother in Lagos brought one. Five thousand liters. Beautiful thing. Keeps the water clean-clean. No smell, no rust, no algae. Twenty years he says it will last. Twenty years!</div>
 
-> OGA PLASTIC: *Papa Emmanuel. The plastic tanks — the real ones, for water storage. Black, big, factory-made. Smooth. Not drums. You've seen them?*
+<div class="narrator-box"><strong>PAPA EMMANUEL:</strong> But you can't get them this side. Nobody manufactures. And to bring from Nigeria — the road through Mamfe will crack them before you reach. My brother's own arrived with a fault. He STILL uses it. That's how good it is — even broken, it's better than what we have.</div>
 
-PANEL 2 (Papa Emmanuel's face — he brightens with recognition):
 
-> PAPA EMMANUEL: *Eh! My brother in Lagos brought one. Five thousand liters. Beautiful thing. Keeps the water clean-clean. No smell, no rust, no algae. Twenty years he says it will last. Twenty years!*
+<div class="narrator-box"><strong>Oga Plastic:</strong> What about by sea?</div>
 
-PANEL 3 (he leans forward, voice dropping, the way older men share practical truth):
+<div class="narrator-box"><strong>PAPA EMMANUEL:</strong> By sea? You mean the boats? The speed boats that go from here to Calabar?</div>
 
-> PAPA EMMANUEL: *But you can't get them this side. Nobody manufactures. And to bring from Nigeria — the road through Mamfe will crack them before you reach. My brother's own arrived with a fault. He STILL uses it. That's how good it is — even broken, it's better than what we have.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Yes.</div>
 
-PANEL 4:
 
-> OGA PLASTIC: *What about by sea?*
+<div class="narrator-box"><strong>PAPA EMMANUEL:</strong> My son. Those boats carry people and small-small goods. Dried fish. Crayfish. Phone accessories. You want to carry WATER TANKS — on a speed boat? Across the open Atlantic?</div>
 
-PANEL 5 (Papa Emmanuel removes his glasses. Stares.):
-
-> PAPA EMMANUEL: *By sea? You mean the boats? The speed boats that go from here to Calabar?*
-
-> OGA PLASTIC: *Yes.*
-
-PANEL 6:
-
-> PAPA EMMANUEL: *My son. Those boats carry people and small-small goods. Dried fish. Crayfish. Phone accessories. You want to carry WATER TANKS — on a speed boat? Across the open Atlantic?*
-
-PANEL 7 (and here it is — the MANGA HERO SMILE. Not the grin of a madman. The quiet, lopsided smile of someone who has already seen the end of the story and is simply walking toward it):
-
-> OGA PLASTIC: *Just one, Papa. Maybe three. To start.*
-
-PANEL 8 (Papa Emmanuel sets down his glasses. Looks at this young man. Really looks. And in his old eyes — not mockery, not dismissal, but the terrified recognition of an elder who sees a young man about to do something either brilliant or suicidal):
+<div class="narrator-box"><strong>Oga Plastic:</strong> Just one, Papa. Maybe three. To start.</div>
 
 > PAPA EMMANUEL (quiet): *You remind me of my father. He walked to Lagos in 1948. On his feet. Three weeks. Because he heard they were hiring at the port.*
 
-> PAPA EMMANUEL: *He got the job.*
+<div class="narrator-box"><strong>PAPA EMMANUEL:</strong> He got the job.</div>
 
 > PAPA EMMANUEL (beat): *...Go and come back, my son.*
 
 ---
 
-**Page 9 — THE SHORE**
+<div class="narrator-box"><strong>Oga Plastic:</strong> The sea between Edinau and Calabar is roughly 120 kilometers of open Atlantic. Five to seven hours in a speed boat, depending on the mood of the water. No land between. No rescue. No law.</div>
 
-PANEL 1 (wide): That evening. The beach at Edinau. The sun is setting into the Gulf of Guinea, turning the water into hammered copper. Fishing pirogues are being pulled up onto the dark volcanic sand. The smell of smoke and drying fish. The sound of the Atlantic — always the Atlantic.
-
-PANEL 2 (medium): Oga Plastic stands at the waterline. His feet in the surf. He faces west — the direction the sun is dying, the direction of Nigeria, the direction of everything he needs and nothing he has.
-
-PANEL 3 (close — his face in profile against the sunset. He is not afraid. He is not brave. He is DECIDED. There is a difference):
-
-> OGA PLASTIC (internal): *The sea between Edinau and Calabar is roughly 120 kilometers of open Atlantic. Five to seven hours in a speed boat, depending on the mood of the water. No land between. No rescue. No law.*
-
-> OGA PLASTIC (internal): *On the other side — a country of 170 million people. The largest economy in Africa. A place where, if something can be manufactured, someone is manufacturing it.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> On the other side — a country of 170 million people. The largest economy in Africa. A place where, if something can be manufactured, someone is manufacturing it.</div>
 
 ---
 
-**Page 10 — SPLASH PAGE**
+<div class="narrator-box">In 1903, two brothers in Dayton, Ohio, watched birds and decided that men should fly. They did not have an aerospace degree. They had a bicycle shop.</div>
 
-PANEL: FULL PAGE SPREAD. Oga Plastic on the beach, small against the enormity of the ocean. The horizon is infinite. The sky is on fire with sunset. His shadow stretches behind him, impossibly long, reaching all the way back to the village — as if his past is trying to hold him. But he faces forward.
+<div class="narrator-box">In 1976, two young men in a garage in Los Altos decided a computer should fit on a desk. They did not have a business plan. They had a circuit board and a dream.</div>
 
-> CAPTION: *In 1903, two brothers in Dayton, Ohio, watched birds and decided that men should fly. They did not have an aerospace degree. They had a bicycle shop.*
+<div class="narrator-box">In 2012, a young man on the volcanic coast of Cameroon looked at the Atlantic Ocean and decided that on the other side of that water was the answer to water itself.</div>
 
-> CAPTION: *In 1976, two young men in a garage in Los Altos decided a computer should fit on a desk. They did not have a business plan. They had a circuit board and a dream.*
-
-> CAPTION: *In 2012, a young man on the volcanic coast of Cameroon looked at the Atlantic Ocean and decided that on the other side of that water was the answer to water itself.*
-
-> CAPTION: *Every revolution begins the same way: someone looks at what everyone accepts and refuses.*
+<div class="narrator-box">Every revolution begins the same way: someone looks at what everyone accepts and refuses.</div>
 
 ---
 
-**Page 11 — THE NOTEBOOK**
+<div class="narrator-box">He did not have a business plan. He did not have market research. He did not have a feasibility study.</div>
 
-PANEL 1 (night — the rented room. Kerosene lamp. Oga Plastic sits cross-legged on the mattress with the notebook open on his knees. He writes with the focused intensity of a man composing a will):
-
-> CAPTION: *He did not have a business plan. He did not have market research. He did not have a feasibility study.*
-
-> CAPTION: *He had a dream, a notebook, and a pen that was almost out of ink.*
-
-PANEL 2 (CLOSE ON THE NOTEBOOK — we see his handwriting. Not neat, not rough — urgent. The handwriting of a man transcribing a vision before it fades):
+<div class="narrator-box">He had a dream, a notebook, and a pen that was almost out of ink.</div>
 
 ```
 THE PLAN:
@@ -611,62 +507,40 @@ THE PLAN:
 9. Make them myself
 ```
 
-PANEL 3 (medium — he stares at the list. A small, private smile. He knows how it reads):
+<div class="narrator-box"><strong>Oga Plastic:</strong> Every empire starts with a list this stupid.</div>
 
-> OGA PLASTIC (internal): *Every empire starts with a list this stupid.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Step 1: Buy a boat ticket. Step 9: Build a factory.</div>
 
-PANEL 4 (he closes the notebook. Reaches for the kerosene lamp. His thumb on the knob):
+<div class="narrator-box"><strong>Oga Plastic:</strong> The eight steps between those two are where men are made or broken.</div>
 
-> OGA PLASTIC (internal): *Step 1: Buy a boat ticket. Step 9: Build a factory.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Tomorrow I cross the water.</div>
 
-> OGA PLASTIC (internal): *The eight steps between those two are where men are made or broken.*
+<div class="narrator-box">He could not have known that this list — scrawled by kerosene light in a rented room in Edinau — was the first page of an industry that would deliver over fifty thousand tanks across thirty-six states.</div>
 
-PANEL 5 (he turns down the lamp. Darkness swallows the room. Just the sound of the sea):
+<div class="narrator-box">He could not have known that the same Cross River State he was sailing toward would one day hold his factory, his name in gold on its roof, his machines turning inside it.</div>
 
-> OGA PLASTIC (internal): *Tomorrow I cross the water.*
-
-PANEL 6 (black panel — just text, white on black):
-
-> CAPTION: *He could not have known that this list — scrawled by kerosene light in a rented room in Edinau — was the first page of an industry that would deliver over fifty thousand tanks across thirty-six states.*
-
-> CAPTION: *He could not have known that the same Cross River State he was sailing toward would one day hold his factory, his name in gold on its roof, his machines turning inside it.*
-
-> CAPTION: *He only knew: tomorrow, the boat.*
+<div class="narrator-box">He only knew: tomorrow, the boat.</div>
 
 ---
 
-**Page 12 — THE DEPARTURE**
-
-PANEL 1 (dawn — the boat landing at Edinau): The beach transformed into a departure point. Speed boats and wooden pirogues nose the sand like animals at a trough. Outboard motors glint with oil and salt. Fishermen load nets. Traders carry bags of crayfish, groundnuts, dried pepper. Engine oil sheens the shallows. The air tastes of diesel and the sea.
-
-> SFX: *PRRRRRR... PRRRRRR...* (outboard motors idling, low, patient)
-
-PANEL 2 (medium): Oga Plastic arrives. A bag over one shoulder — inside it, a change of clothes, the notebook, his phone, and all the money he has. He walks toward the boats with the measured pace of a man who has burned his alternatives.
+<div class="narrator-box"><strong>SFX:</strong> PRRRRRR... PRRRRRR...</div> (outboard motors idling, low, patient)
 
 He approaches a boat captain — **CAPTAIN NJOH** — a man in his fifties whose body is a record of the sea. Arms like mooring ropes. Skin darkened and creased by decades of sun and salt. Eyes permanently squinted against glare. He sits on the gunwale of a 25-foot fiberglass speed boat, two Yamaha outboards tilted up behind him, smoking a cigarette with the patient contempt of a man who has seen the Atlantic kill.
 
-> OGA PLASTIC: *Calabar. Today.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Calabar. Today.</div>
 
 > CAPTAIN NJOH (without looking up): *Fifteen thousand. We leave when I have twelve passengers. You are number four.*
 
-PANEL 3 (Oga Plastic looks at the boat — really looks): The fiberglass is sun-bleached and patched in places. The wooden bench seats are worn smooth by a thousand crossings. The two Yamaha outboards are old but maintained — Captain Njoh's livelihood hangs on those engines. There is no life jacket visible. There is no radio. There is no GPS. There is the captain, the sea, and the knowledge between them.
-
-> OGA PLASTIC (internal): *This is the vessel that will carry me to my vessel.*
-
-PANEL 4 (he pays. Takes a seat on the middle bench. Waits): Other passengers trickle in over the next hours. Each one is a portrait:
+<div class="narrator-box"><strong>Oga Plastic:</strong> This is the vessel that will carry me to my vessel.</div>
 
 - **A TRADER WOMAN** with three massive bags of smoked crayfish bound for the Calabar market. She has done this crossing forty times. She sits like a queen on her throne of crayfish.
 - **A STUDENT** — young, nervous, clutching a backpack. First crossing. His hands are shaking but he's pretending they're not.
 - **A PASTOR** with a Bible and a thermos of tea. His lips move silently — prayer or practice for Sunday's sermon, hard to tell.
 - **A SPARE PARTS DEALER** with a box of phone screens and chargers, heading to source inventory.
 
-> CAPTION: *He sat in that boat for four hours, waiting for it to fill. Four hours of sun and doubt.*
+<div class="narrator-box">He sat in that boat for four hours, waiting for it to fill. Four hours of sun and doubt.</div>
 
 ---
-
-**Page 13 — THE DOUBT**
-
-PANEL 1 (tight sequence — four narrow vertical panels side by side, each showing Oga Plastic's face at a slightly different angle, each paired with an internal thought. The visual rhythm of anxiety):
 
 > *What if the tanks are too big for the boat coming back?*
 
@@ -676,17 +550,13 @@ PANEL 1 (tight sequence — four narrow vertical panels side by side, each showi
 
 > *What if this is just a dream — ONLY a dream — and I come back broke and broken, and my mother was right that I should have stayed in school?*
 
-PANEL 2 (wide — the doubt breaks): The twelfth passenger climbs in. A market woman with a baby strapped to her back. She sits. Captain Njoh flicks his cigarette into the surf. Stands. Tilts the Yamaha engines down into the water with the practiced ease of a man unhitching a horse.
+<div class="narrator-box"><strong>CAPTAIN NJOH:</strong> Make yourselves comfortable. Next land you see is Nigeria.</div>
 
-> CAPTAIN NJOH: *Make yourselves comfortable. Next land you see is Nigeria.*
+<div class="narrator-box"><strong>SFX:</strong> </div>BRRAAAAAAAAA** (both engines firing — a sound like tearing canvas, amplified by the water)
 
-> SFX: **BRRAAAAAAAAA** (both engines firing — a sound like tearing canvas, amplified by the water)
+<div class="narrator-box">He did not look back.</div>
 
-PANEL 3 (the boat pulls away from shore — movement lines, spray erupting from the hull): Edinau shrinks. The volcanic sand. The tin roofs. The cook-fire smoke. The chemical drums behind the houses. All of it gets smaller.
-
-> CAPTION: *He did not look back.*
-
-> CAPTION: *Not because he wasn't afraid. Because looking back is how you lose your nerve.*
+<div class="narrator-box">Not because he wasn't afraid. Because looking back is how you lose your nerve.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -748,78 +618,44 @@ PANEL 3 (the boat pulls away from shore — movement lines, spray erupting from 
 </svg>
 </figure>
 
-
 ---
 
-**Page 14 — HALF-PAGE SPREAD: THE OPEN ATLANTIC**
 
-PANEL (top half, full width): The speed boat cutting across open water. The sea is immense and indifferent. The boat is a splinter. Twelve passengers hunched against the wind and spray. Captain Njoh stands at the stern, one hand on the tiller, reading the water like text. And in the middle of the boat, gripping the bench with both hands, salt spray soaking his shirt — Oga Plastic, facing forward, always forward.
+<div class="narrator-box">The distance from Edinau to Calabar is roughly 120 kilometers of open Atlantic. In a fiberglass speed boat with two outboard engines, it takes five to seven hours — depending on the temperament of the sea.</div>
 
-> CAPTION: *The distance from Edinau to Calabar is roughly 120 kilometers of open Atlantic. In a fiberglass speed boat with two outboard engines, it takes five to seven hours — depending on the temperament of the sea.*
+<div class="narrator-box">Five to seven hours of no land. No coastguard. No rescue. No radio. Just the boat, the water, the engines, and prayer.</div>
 
-> CAPTION: *Five to seven hours of no land. No coastguard. No rescue. No radio. Just the boat, the water, the engines, and prayer.*
-
-PANEL 2 (bottom left — the sea getting rough. Waves slapping the hull with increasing violence):
-
-> SFX: **GWAM! GWAM! GWAM!**
-
-PANEL 3 (bottom right — reactions): The trader woman grips her crayfish bags and prays under her breath. The pastor reads his Bible with performative calm but his knuckles are white. The student has his eyes closed. The baby on the market woman's back is crying.
+<div class="narrator-box"><strong>SFX:</strong> </div>GWAM! GWAM! GWAM!**
 
 But Oga Plastic — he's looking at the water.
 
 ---
 
-**Page 15**
+<div class="narrator-box"><strong>Oga Plastic:</strong> This water. This same water that is trying to kill me right now — this is the water my people don't have clean enough to drink.</div>
 
-PANEL 1 (close on Oga Plastic's face — soaked, salt-crusted, wind-blasted): The sea tries to shake the thought out of him. It fails.
+<div class="narrator-box"><strong>SFX:</strong> </div>BRAAASHH!**
 
-> OGA PLASTIC (internal): *This water. This same water that is trying to kill me right now — this is the water my people don't have clean enough to drink.*
-
-PANEL 2 (a massive wave — the boat lifts, hangs at the crest for an eternal second, and DROPS):
-
-> SFX: **BRAAASHH!**
-
-> PASSENGERS: **EH! JESUS! AH!**
-
-PANEL 3 (Captain Njoh — unmoved, adjusting the tiller with micro-corrections, the way a surgeon adjusts a scalpel. He has surfed this crossing a thousand times. The sea is his commute):
+<div class="narrator-box"><strong>PASSENGERS:</strong> </div>EH! JESUS! AH!**
 
 > CAPTAIN NJOH (to nobody in particular): *Small water. We dey go.*
 
-PANEL 4 (close on Oga Plastic — soaked, terrified, and GRINNING. The manga hero grin — not bravado, not madness, but the joy of a man who has found the thing worth being afraid for):
+<div class="narrator-box"><strong>Oga Plastic:</strong> I'm crossing water... to solve water.</div>
 
-> OGA PLASTIC (internal): *I'm crossing water... to solve water.*
-
-> OGA PLASTIC (internal): *God has a sense of humor. And I am the punchline.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> God has a sense of humor. And I am the punchline.</div>
 
 ---
 
-**Page 16**
+<div class="narrator-box"><strong>CAPTAIN NJOH:</strong> </div>"Calabar."**
 
-PANEL 1 (hours later — the sea has exhaled. The afternoon sun presses down like a hot iron. Everyone is drained: dehydrated, salt-crusted, sun-beaten, silent. The engines drone. The wake stretches behind them like a white scar on blue skin):
+<div class="narrator-box">Nigeria.</div>
 
-PANEL 2 (Captain Njoh speaks — and the single word changes the air in the boat):
+<div class="narrator-box">One hundred and seventy million people. The largest economy on the continent. The country where, if something can be manufactured, someone is manufacturing it — and if it can be sold, someone is selling it, and if it can be improved, someone is arguing about the improvement over pepper soup.</div>
 
-> CAPTAIN NJOH: **"Calabar."**
+<div class="narrator-box"><strong>Oga Plastic:</strong> Somewhere in this country, there is a factory that makes what I saw in my dream.</div>
 
-PANEL 3 (wide — everyone looks forward. On the horizon, emerging from the haze like a developing photograph: LAND. Trees first — dark green, mangrove, then palm. Then structures. Then smoke. Then the brown-green mouth of the Calabar River meeting the Atlantic):
-
-PANEL 4 (Oga Plastic stands. He can't help it. The boat rocks but he stands anyway, knees flexing with the swell. Captain Njoh doesn't tell him to sit down. Some moments require standing):
-
-> CAPTION: *Nigeria.*
-
-> CAPTION: *One hundred and seventy million people. The largest economy on the continent. The country where, if something can be manufactured, someone is manufacturing it — and if it can be sold, someone is selling it, and if it can be improved, someone is arguing about the improvement over pepper soup.*
-
-PANEL 5 (close — Oga Plastic's eyes, fixed on the approaching coast with the intensity of a man sighting the promised land):
-
-> OGA PLASTIC (internal): *Somewhere in this country, there is a factory that makes what I saw in my dream.*
-
-> OGA PLASTIC (internal): *And I will find it.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> And I will find it.</div>
 
 ---
-
-**Page 17 — CHAPTER END SPLASH**
-
-PANEL: Full page. The speed boat entering the Calabar River estuary. The water changes — from the deep honest blue of the Atlantic to the silty brown-green of the river. The banks close in. Suddenly there are boats everywhere: fishing canoes, cargo barges, passenger ferries, a rusted trawler. The sounds change — from the singular roar of the open sea to a CHORUS: horns, engines, voices shouting in Efik, Pidgin, Hausa, Igbo. Calabar rises on both banks — a city of three million transactions happening simultaneously.
 
 And in the middle of this cacophony, in a salt-crusted speed boat, soaking wet, with nothing but a bag and a notebook — Oga Plastic arrives in Nigeria for the first time in his life.
 
@@ -828,8 +664,6 @@ He is still standing.
 > CHAPTER TITLE (bottom, large, bold): **Chapter 1: The Dream of Water**
 
 > TAG (small, bottom corner): *Next: Chapter 2 — "The Markets of Calabar"*
-
----
 
 ---
 
@@ -845,35 +679,21 @@ He is still standing.
 
 ---
 
-**Page 1**
+<div class="narrator-box">First lesson of Nigeria: the ground moves even after you leave the water.</div>
 
-PANEL 1 (wide — establishing): Calabar waterfront. Oga Plastic steps off the speed boat onto a concrete jetty slick with fish scales and engine oil. His legs are unsteady — five hours of open Atlantic. His clothes are stiff with dried salt. He smells like the sea.
+<div class="narrator-box"><strong>Oga Plastic:</strong> Cameroon is a country. Nigeria is a FORCE.</div>
 
-> CAPTION: *First lesson of Nigeria: the ground moves even after you leave the water.*
-
-PANEL 2 (the jetty gives way to a road. The road gives way to the city): The SCALE hits him. Calabar is not Edinau. Calabar is not Limbe. Calabar is a machine built for commerce — every square meter is a transaction. Phone card sellers, money changers, taxi drivers shouting destinations, women with trays of fried plantain on their heads, a man selling belts from a suitcase, another selling sunglasses from a board.
-
-> OGA PLASTIC (internal): *Cameroon is a country. Nigeria is a FORCE.*
-
-PANEL 3 (he approaches a commercial motorcycle — an okada driver):
-
-> OGA PLASTIC: *Watt Market. How much?*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Watt Market. How much?</div>
 
 > OKADA DRIVER (sizing him up — the accent, the salt-crusted clothes): *Oga, na five hundred.*
 
-> OGA PLASTIC: *Two hundred.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Two hundred.</div>
 
 > OKADA DRIVER (grinning): *Oga, you be Camer man? You sabi bargain well-well. Three hundred last.*
 
-PANEL 4 (on the back of the okada, weaving through traffic — the city is a living entity): Oga Plastic holds on and watches Calabar scroll past. Construction everywhere. Business everywhere. Energy that borders on violence.
-
-> OGA PLASTIC (internal): *Everything I need is in this city. I just have to find the right market and ask the right question.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Everything I need is in this city. I just have to find the right market and ask the right question.</div>
 
 ---
-
-**Page 2-3 — DOUBLE PAGE SPREAD: WATT MARKET**
-
-PANEL: Full spread. The visual ASSAULT of Watt Market, Calabar. One of the largest markets in southern Nigeria. The artist must capture: a LABYRINTH of stalls, corridors, and open-air sections stretching to the horizon. Thousands of people. Mountains of goods. The market is organized by a logic that takes years to learn — hardware here, textiles there, foodstuffs beyond, electronics further, building materials in the deep interior.
 
 Sound effects scattered across the spread:
 > *"COME BUY!"*
@@ -885,9 +705,9 @@ Sound effects scattered across the spread:
 
 And in the middle of this magnificent chaos — Oga Plastic, small, foreign, searching.
 
-> CAPTION: *Watt Market. Heart of Calabar commerce. A city within a city. Every material thing that sustains human life is sold here — and several things that don't.*
+<div class="narrator-box">Watt Market. Heart of Calabar commerce. A city within a city. Every material thing that sustains human life is sold here — and several things that don't.</div>
 
-> OGA PLASTIC (internal): *I am looking for a thing most people here don't even know is a category. I am looking for the future of water storage.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I am looking for a thing most people here don't even know is a category. I am looking for the future of water storage.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -1002,28 +822,19 @@ And in the middle of this magnificent chaos — Oga Plastic, small, foreign, sea
 </svg>
 </figure>
 
-
 ---
 
-**Page 4**
-
-PANEL 1 (Oga Plastic stops at a hardware stall — pipes, valves, fittings):
-
-> OGA PLASTIC: *Please — where can I find plastic water tanks? The big ones. Factory-made. For storing water.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Please — where can I find plastic water tanks? The big ones. Factory-made. For storing water.</div>
 
 > HARDWARE SELLER (pointing vaguely deeper into the market): *Building materials section. Ask for Alhaji Sule. He sells everything for water.*
 
-PANEL 2 (he goes deeper. Asks again. Gets pointed further):
+<div class="narrator-box"><strong>Oga Plastic:</strong> Water tanks. Plastic. Not drums — TANKS.</div>
 
-> OGA PLASTIC: *Water tanks. Plastic. Not drums — TANKS.*
+<div class="narrator-box"><strong>SECOND SELLER:</strong> Ah, the GeePee tanks? Go inside-inside, past the cement people, you go see one yard.</div>
 
-> SECOND SELLER: *Ah, the GeePee tanks? Go inside-inside, past the cement people, you go see one yard.*
+<div class="narrator-box">He asked seven people. Each one pointed him deeper into the market. Each one knew what he was talking about. Each one had seen these tanks. None of them found it strange that such a thing existed.</div>
 
-PANEL 3 (he goes deeper still. The corridors narrow. The ceiling drops — tarpaulin and zinc. The air thickens with dust and commerce):
-
-> CAPTION: *He asked seven people. Each one pointed him deeper into the market. Each one knew what he was talking about. Each one had seen these tanks. None of them found it strange that such a thing existed.*
-
-> CAPTION: *In Nigeria, it was NORMAL.*
+<div class="narrator-box">In Nigeria, it was NORMAL.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -1129,26 +940,18 @@ PANEL 3 (he goes deeper still. The corridors narrow. The ceiling drops — tarpa
 </svg>
 </figure>
 
+<div class="narrator-box">In Cameroon, it was science fiction.</div>
 
-> CAPTION: *In Cameroon, it was science fiction.*
-
-PANEL 4 (he turns a corner — and stops):
-
-> OGA PLASTIC (internal): *...*
+<div class="narrator-box"><strong>Oga Plastic:</strong> ...</div>
 
 ---
 
-**Page 5 — THE FIRST TOUCH**
-
-**SPLASH PAGE.**
-
-PANEL: Full page. Oga Plastic has found the yard. An open space behind the market stalls, surrounded by a corrugated fence, and inside — TANKS. Dozens of them. Stacked, standing, lying on their sides. Black, green, blue. 500 liters. 1,000 liters. 2,000. 3,000. 5,000. **10,000 liters** — standing like monuments, taller than a man. Smooth. Ribbed. Factory-perfect. The sun catches them and they gleam like the hulls of ships.
 
 The YARD OWNER — a heavyset man in a singlet, sitting on a plastic chair, drinking Coca-Cola — watches this young Cameroonian walk into his yard and stop dead.
 
-> CAPTION: *He had crossed 120 kilometers of open Atlantic to find this.*
+<div class="narrator-box">He had crossed 120 kilometers of open Atlantic to find this.</div>
 
-> CAPTION: *And here it was. Not rare. Not precious. Not under guard. Stacked like firewood.*
+<div class="narrator-box">And here it was. Not rare. Not precious. Not under guard. Stacked like firewood.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -1279,52 +1082,38 @@ The YARD OWNER — a heavyset man in a singlet, sitting on a plastic chair, drin
 </svg>
 </figure>
 
-
 ---
 
-**Page 6**
+<div class="narrator-box"><strong>Oga Plastic:</strong> No weld lines. No seams. It's one piece. One continuous piece of plastic, shaped by — by what? What machine does this?</div>
 
-PANEL 1 (Oga Plastic walks among the tanks. He is a pilgrim in a cathedral): His hand reaches out — slowly, the way you reach for something sacred or something you're afraid will vanish — and touches the surface of a 1,000-liter tank. His fingers trace the ribs. The plastic is warm from the sun. Smooth. Engineered. Seamless.
+<div class="narrator-box"><strong>Oga Plastic:</strong> Threaded fittings. Outlet port — 1.5 inches. The walls are thick — uniform. This isn't handmade. This is ENGINEERED.</div>
 
-> OGA PLASTIC (internal): *No weld lines. No seams. It's one piece. One continuous piece of plastic, shaped by — by what? What machine does this?*
+<div class="narrator-box"><strong>Oga Plastic:</strong> How much for the one-thousand-liter?</div>
 
-PANEL 2 (he crouches, looks at the base — the moulded support cradles, the outlet port):
+<div class="narrator-box"><strong>Yard Owner:</strong> Which one? Geepee? Or the other brand?</div>
 
-> OGA PLASTIC (internal): *Threaded fittings. Outlet port — 1.5 inches. The walls are thick — uniform. This isn't handmade. This is ENGINEERED.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> The best one.</div>
 
-PANEL 3 (he straightens. Faces the yard owner):
+<div class="narrator-box"><strong>Yard Owner:</strong> Twelve thousand naira. But you no look like say you dey build house for Calabar. Where you wan carry am go?</div>
 
-> OGA PLASTIC: *How much for the one-thousand-liter?*
 
-> YARD OWNER: *Which one? Geepee? Or the other brand?*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Cameroon.</div>
 
-> OGA PLASTIC: *The best one.*
+<div class="narrator-box"><strong>Yard Owner:</strong> ...</div>
 
-> YARD OWNER (small smile — a man who respects a customer who says "the best"): *Twelve thousand naira. But you no look like say you dey build house for Calabar. Where you wan carry am go?*
+<div class="narrator-box"><strong>Yard Owner:</strong> By road?</div>
 
-PANEL 4:
+<div class="narrator-box"><strong>Oga Plastic:</strong> By sea.</div>
 
-> OGA PLASTIC: *Cameroon.*
+<div class="narrator-box"><strong>Yard Owner:</strong> My brother. The speed boat?</div>
 
-> YARD OWNER: *...*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Yes.</div>
 
-> YARD OWNER: *By road?*
+<div class="narrator-box"><strong>Yard Owner:</strong> You wan carry water tank... on top speed boat... cross the sea.</div>
 
-> OGA PLASTIC: *By sea.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Three of them.</div>
 
-PANEL 5 (the yard owner puts down his Coca-Cola. Sits forward. Looks at Oga Plastic the way Captain Njoh looked at him, the way Papa Emmanuel looked at him — that mixture of concern and awe):
-
-> YARD OWNER: *My brother. The speed boat?*
-
-> OGA PLASTIC: *Yes.*
-
-> YARD OWNER: *You wan carry water tank... on top speed boat... cross the sea.*
-
-> OGA PLASTIC: *Three of them.*
-
-PANEL 6 (beat. The yard owner bursts out laughing — not mockery, genuine disbelieving delight):
-
-> YARD OWNER: *AH! Camer people! Una no dey fear! Come, come — make I help you pick the ones wey light pass. Na the one-thousand go fit enter that boat. MAYBE.*
+<div class="narrator-box"><strong>Yard Owner:</strong> AH! Camer people! Una no dey fear! Come, come — make I help you pick the ones wey light pass. Na the one-thousand go fit enter that boat. MAYBE.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -1412,30 +1201,22 @@ PANEL 6 (beat. The yard owner bursts out laughing — not mockery, genuine disbe
 </svg>
 </figure>
 
-
 ---
 
-**Page 7-8 — THE NEGOTIATION AND THE LOADING**
+<div class="narrator-box"><strong>Yard Owner:</strong> Three pieces, one-thousand liter each. I give you thirty-three thousand for three. Friendly price. Because any man wey fit cross sea for this thing — him dey serious.</div>
 
-PANEL 1 (the negotiation — Oga Plastic and the yard owner, seated, talking price): The yard owner likes him. This is important. In West African commerce, being liked is worth more than being rich.
+<div class="narrator-box"><strong>SFX:</strong> SNAP</div>
 
-> YARD OWNER: *Three pieces, one-thousand liter each. I give you thirty-three thousand for three. Friendly price. Because any man wey fit cross sea for this thing — him dey serious.*
-
-PANEL 2 (they shake hands — the West African handshake, fingers interlocking, the snap at the end):
-
-> SFX: *SNAP*
-
-PANEL 3-6 (the LOADING SEQUENCE — this is the comedy-and-tension set piece of the chapter):
 
 - **Panel 3:** Three black 1000-liter tanks sitting in the yard. They are taller than Oga Plastic. He stands next to them, doing the math in his head. The math is not encouraging.
 
 - **Panel 4:** At the jetty. The tanks have been transported by truck (paid extra). Now they sit on the dock. The speed boat — the same type as Captain Njoh's, 25 feet of fiberglass and prayer — bobs alongside. A DIFFERENT CAPTAIN stares at the tanks. Stares at Oga Plastic. Stares at the tanks again.
 
-> CAPTAIN 2: *No.*
+<div class="narrator-box"><strong>CAPTAIN 2:</strong> No.</div>
 
-> OGA PLASTIC: *I will pay double.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I will pay double.</div>
 
-> CAPTAIN 2: *...How double?*
+<div class="narrator-box"><strong>CAPTAIN 2:</strong> ...How double?</div>
 
 - **Panel 5:** Engineering. Oga Plastic, the captain, and two dock workers figuring out how to fit three 1000-liter tanks on a speed boat that was designed for twelve humans. The solution: one tank inside the boat (taking up half the passenger space), two lashed to the outside with rope — one on each side, like pontoons. It is insane. It is beautiful. It is the kind of solution that makes engineers weep and safety inspectors quit.
 
@@ -1443,17 +1224,11 @@ PANEL 3-6 (the LOADING SEQUENCE — this is the comedy-and-tension set piece of 
 
 > CAPTAIN 2 (to no one): *God dey. Na God dey.*
 
-**Page 8:**
-
-PANEL 1 (the boat pulls away from the Calabar jetty. Other boats slow to look. People on the dock point and laugh — but it's the laughter of admiration, not contempt):
-
 > DOCK WORKER (shouting after them): *OGA PLASTIC! DEM GO CALL YOU OGA PLASTIC!*
 
-PANEL 2 (close on Oga Plastic — he hears it. The name. HIS name. Given to him by a stranger on a dock in Calabar. It sticks to him like salt spray):
+<div class="narrator-box">A dock worker in Calabar gave him the name that would one day be written in gold letters on a factory roof.</div>
 
-> CAPTION: *A dock worker in Calabar gave him the name that would one day be written in gold letters on a factory roof.*
-
-> CAPTION: *He didn't choose it. The work chose it for him.*
+<div class="narrator-box">He didn't choose it. The work chose it for him.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -1541,100 +1316,47 @@ PANEL 2 (close on Oga Plastic — he hears it. The name. HIS name. Given to him 
 </svg>
 </figure>
 
+<div class="narrator-box"><strong>Oga Plastic:</strong> I came to Nigeria with nothing. I'm going home with three tanks, no money, and a new name.</div>
 
-PANEL 3 (the boat heading out to sea — the same 120 kilometers, the same open Atlantic, but now with three massive tanks turning every wave into a potential catastrophe):
-
-> OGA PLASTIC (internal): *I came to Nigeria with nothing. I'm going home with three tanks, no money, and a new name.*
-
-> OGA PLASTIC (internal): *I'll take it.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I'll take it.</div>
 
 ---
 
-**Page 9-10 — THE RETURN CROSSING**
+<div class="narrator-box"><em>GWAM! SPLASH! CREEAK!</em></div>
 
-PANEL 1 (the open Atlantic — but now the stakes are different): Every wave that hits the boat shifts the tanks. Every gust of wind catches the outer tanks like sails. The captain fights the tiller. Oga Plastic holds the rope lashing with both hands, bracing himself against the tank inside the boat.
+<div class="narrator-box"><strong>Oga Plastic:</strong> If this rope breaks, the tank goes into the sea. If the tank goes, the boat tips. If the boat tips—</div>
 
-> SFX: **GWAM! SPLASH! CREEAK!** (waves, water, rope straining)
+<div class="narrator-box"><strong>Oga Plastic:</strong> The rope holds.</div>
 
-PANEL 2 (tight close-up — his hands on the rope, knuckles white, salt water running over them):
+<div class="narrator-box"><strong>CAPTAIN 2:</strong> Cameroon.</div>
 
-> OGA PLASTIC (internal): *If this rope breaks, the tank goes into the sea. If the tank goes, the boat tips. If the boat tips—*
+<div class="narrator-box"><strong>FISHERMAN ON SHORE:</strong> Wetin be dat? Na what dat man carry?</div>
 
-PANEL 3 (he doesn't finish the thought. He pulls the rope tighter):
+<div class="narrator-box"><strong>WOMAN IN CROWD:</strong> Na for water? Dis one fit hold water?</div>
 
-> OGA PLASTIC (internal): *The rope holds.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> One thousand liters. Clean. No chemical. No rust. No crack. Twenty-five years.</div>
 
-PANEL 4 (hours pass — visual montage of the crossing): Sun moving across the sky. The sea changing moods — angry, calm, sulking, indifferent. The captain adjusting. The tanks shifting. Oga Plastic adjusting the ropes, bailing water, watching the horizon for the coast of home.
-
-PANEL 5 (late afternoon — through the spray and exhaustion, a coastline emerges):
-
-> CAPTAIN 2: *Cameroon.*
-
-**Page 10:**
-
-PANEL 1 (WIDE — the loaded boat approaching the shore of Edinau): The same beach he left from. The same volcanic sand. The same pirogues. But the boat is different now — it carries the future.
-
-PANEL 2 (people on the shore see the boat coming and stop what they're doing. They have never seen a speed boat carrying three massive black cylinders. It looks alien. It looks impossible):
-
-> FISHERMAN ON SHORE: *Wetin be dat? Na what dat man carry?*
-
-PANEL 3 (the boat beaches. Oga Plastic jumps out into the surf. His legs nearly buckle — exhaustion, adrenaline, relief):
-
-PANEL 4 (the tanks are unloaded. Three black 1000-liter water tanks sitting on the dark volcanic sand of Edinau. The crowd gathers. People touch them. Knock on them. Look inside the manhole opening. Children peer in):
-
-> WOMAN IN CROWD: *Na for water? Dis one fit hold water?*
-
-> OGA PLASTIC (exhausted, salt-crusted, grinning): *One thousand liters. Clean. No chemical. No rust. No crack. Twenty-five years.*
-
-PANEL 5 (the woman looks at the tank. Looks at the chemical drum behind her house. Looks back at the tank):
-
-> WOMAN: *How much?*
+<div class="narrator-box"><strong>WOMAN:</strong> How much?</div>
 
 ---
 
-**Page 11 — THE FIRST SALE**
+<div class="narrator-box"><strong>SFX:</strong> GLUG... GLUG... GLUG...</div>
 
-PANEL 1 (small, quiet): Money changes hands.
-
-PANEL 2 (the tank is carried — by four men, rolling it — to the woman's compound. The chemical drum behind her house stands in the yard like a condemned prisoner):
-
-PANEL 3 (medium — the new tank is set up on a platform. A pipe is connected from the rainwater gutter to the tank inlet. The first clean rainwater flows in):
-
-> SFX: *GLUG... GLUG... GLUG...*
-
-PANEL 4 (wide — the woman opens the outlet valve. Water flows into a basin. She cups it in her hands. Lifts it. Drinks):
-
-> CAPTION: *Clean water. From a vessel made for water. Not from a drum that held sodium hydroxide. Not from a cracked concrete cistern. Not from a patched rubber basin.*
-
-PANEL 5 (close — her face. She is crying. Not dramatically — just tears, quiet, running down her cheeks into the water in her hands):
+<div class="narrator-box">Clean water. From a vessel made for water. Not from a drum that held sodium hydroxide. Not from a cracked concrete cistern. Not from a patched rubber basin.</div>
 
 > WOMAN (whisper): *Eh-heh. Na so water suppose taste.*
 
-PANEL 6 (Oga Plastic watches. His throat is tight. This is why. THIS IS WHY):
-
-PANEL 7 (behind them — her children. The little girl from page 6 — the one who drank from the chemical drum. She is drinking from the new tank's water. Her eyes are open this time):
-
-> CAPTION: *One tank. One home. One family drinking clean water for the first time.*
+<div class="narrator-box">One tank. One home. One family drinking clean water for the first time.</div>
 
 ---
 
-**Page 12 — THE CHEMICAL DRUM**
+<div class="narrator-box"><strong>SFX:</strong> SPLUSSSH</div>
 
-PANEL 1 (the woman's husband drags the old chemical drum to the edge of the compound):
+<div class="narrator-box"><strong>HUSBAND:</strong> Good riddance. Poison barrel.</div>
 
-PANEL 2 (he tips it over. The residual water — cloudy, faintly chemical-smelling — pours out onto the dirt):
+<div class="narrator-box">The first drum fell in December 2012.</div>
 
-> SFX: *SPLUSSSH*
-
-PANEL 3 (he kicks it. The drum rolls into the drainage ditch):
-
-> HUSBAND: *Good riddance. Poison barrel.*
-
-PANEL 4 (wide — the chemical drum lying on its side in the ditch, faded label facing up: SODIUM HYDROXIDE. A relic of the old world):
-
-> CAPTION: *The first drum fell in December 2012.*
-
-> CAPTION: *In a decade, fifty thousand tanks would rise in their place.*
+<div class="narrator-box">In a decade, fifty thousand tanks would rise in their place.</div>
 
 **CHAPTER END CARD:**
 
@@ -1643,8 +1365,6 @@ PANEL 4 (wide — the chemical drum lying on its side in the ditch, faded label 
 > **Chapter 2: The Markets of Calabar — END**
 
 > *Next: Chapter 3 — "The Arithmetic of Revolution"*
-
----
 
 ---
 
@@ -1660,15 +1380,9 @@ PANEL 4 (wide — the chemical drum lying on its side in the ditch, faded label 
 
 ---
 
-**Page 1**
+<div class="narrator-box">He went back. And back. And back.</div>
 
-PANEL 1 (wide — weeks later. Oga Plastic has made the crossing three more times): We see a MONTAGE of the journeys compressed into a single panoramic panel: four speed boats, each carrying tanks, each crossing the same water. The visual rhythm of repetition.
-
-> CAPTION: *He went back. And back. And back.*
-
-> CAPTION: *Each crossing, the same five-to-seven hours. Each crossing, the same lashing of tanks to boats. Each crossing, the same negotiation with a captain who said "no" before saying "how much?"*
-
-PANEL 2 (a column of numbers — superimposed over the panel):
+<div class="narrator-box">Each crossing, the same five-to-seven hours. Each crossing, the same lashing of tanks to boats. Each crossing, the same negotiation with a captain who said "no" before saying "how much?"</div>
 
 ```
 Trip 1: 3 tanks
@@ -1678,17 +1392,11 @@ Trip 4: 3 tanks
 Total: 11 tanks in 6 weeks
 ```
 
-PANEL 3 (close — all eleven tanks: SOLD. Every one. The demand is instant and total. He cannot bring them fast enough):
-
-> OGA PLASTIC (internal): *They sell before I finish unloading the boat. People are WAITING for these. They've been waiting for years. They just didn't know what they were waiting for until they saw it.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> They sell before I finish unloading the boat. People are WAITING for these. They've been waiting for years. They just didn't know what they were waiting for until they saw it.</div>
 
 ---
 
-**Page 2**
-
-PANEL 1 (night — the notebook again. But now the numbers are different. Now he's thinking at a different scale):
-
-> CAPTION: *But euphoria is a liar. The numbers tell the truth.*
+<div class="narrator-box">But euphoria is a liar. The numbers tell the truth.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -1745,9 +1453,6 @@ PANEL 1 (night — the notebook again. But now the numbers are different. Now he
 </svg>
 </figure>
 
-
-PANEL 2 (CLOSE ON THE NOTEBOOK — the arithmetic of despair):
-
 ```
 DEMAND:
 - Limbe alone: ~50,000 households
@@ -1771,13 +1476,9 @@ TIME TO SUPPLY CAMEROON:
 
 *The pen has stopped. There is an ink blot where the pen rested while the answer sank in.*
 
-PANEL 3 (Oga Plastic staring at the notebook. The number 694 stares back):
+<div class="narrator-box"><strong>Oga Plastic:</strong> Six hundred and ninety-four years. If I carry three tanks on a speed boat twice a month for six hundred and ninety-four years, I can supply ONE CITY.</div>
 
-> OGA PLASTIC (internal): *Six hundred and ninety-four years. If I carry three tanks on a speed boat twice a month for six hundred and ninety-four years, I can supply ONE CITY.*
-
-PANEL 4 (he flips back to the first page of the notebook — the original plan. Item 7: "Find the factory that MAKES them." Item 9: "Make them myself"):
-
-> OGA PLASTIC (internal): *I wrote these words in the kerosene dark thinking they were the end of the plan. They're not the end. They're the ONLY part that matters.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I wrote these words in the kerosene dark thinking they were the end of the plan. They're not the end. They're the ONLY part that matters.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -1839,60 +1540,43 @@ PANEL 4 (he flips back to the first page of the notebook — the original plan. 
 </svg>
 </figure>
 
-
 ---
 
-**Page 3 — THE REVELATION**
+<div class="narrator-box"><strong>Oga Plastic:</strong> I am not a trader. A trader carries what others make. I have been thinking like a trader.</div>
 
-PANEL 1 (full width — the visual metaphor that crystallizes the chapter): Split panel. On the left: Oga Plastic in a speed boat, carrying 3 tanks across the Atlantic. On the right: a factory assembly line, a machine rotating, tanks emerging one every twenty minutes. The LEFT is courage. The RIGHT is industry. Courage without industry is a man carrying water in his hands.
+<div class="narrator-box"><strong>Oga Plastic:</strong> I need to think like a MANUFACTURER.</div>
 
-> OGA PLASTIC (internal): *I am not a trader. A trader carries what others make. I have been thinking like a trader.*
-
-> OGA PLASTIC (internal): *I need to think like a MANUFACTURER.*
-
-PANEL 2 (medium — Oga Plastic at an internet cafe in Limbe. The year is 2013. The screens are old CRTs. The connection is slow. He types with two fingers):
-
-> SEARCH: *"how are plastic water tanks made"*
-
-PANEL 3 (the screen loads. And the word appears — the word that will change everything):
+<div class="narrator-box"><strong>SEARCH:</strong> "how are plastic water tanks made"</div>
 
 > **ROTATIONAL MOULDING**
 
 ---
 
-**Page 4-5 — THE EDUCATION (manga technical breakdown — full Dr. Stone energy)**
-
 DOUBLE SPREAD: The rotomoulding process, illustrated manga-style — dynamic, beautiful, technical. This is the "science chapter" moment where the manga becomes a textbook and the textbook becomes art.
 
 **Step 1 — LOADING:** Polyethylene powder — fine, white, granular — is measured and loaded into one half of a steel mould. The mould is shaped like the inside of a water tank.
 
-> CAPTION: *The raw material: Linear Low-Density Polyethylene. LLDPE. A powder derived from petroleum. White as flour. The same material in grocery bags, but engineered for structural strength.*
+<div class="narrator-box">The raw material: Linear Low-Density Polyethylene. LLDPE. A powder derived from petroleum. White as flour. The same material in grocery bags, but engineered for structural strength.</div>
 
 **Step 2 — CLOSING:** The two halves of the mould are bolted shut. The shape of the tank is now negative space inside the steel.
 
 **Step 3 — ROTATION:** The mould is mounted on a machine with two perpendicular axes. It begins to rotate — slowly, simultaneously, on both axes. Like a planet turning while orbiting. The rotation ensures the powder distributes evenly across every surface.
 
-> CAPTION: *The principle is elegant: let gravity be the engineer. As the mould turns, the powder falls — coating the walls, the base, the lid, uniformly. No pressure. No injection. Just rotation and patience.*
+<div class="narrator-box">The principle is elegant: let gravity be the engineer. As the mould turns, the powder falls — coating the walls, the base, the lid, uniformly. No pressure. No injection. Just rotation and patience.</div>
 
 **Step 4 — HEATING:** The rotating mould enters an oven. Temperatures: 230-300°C. The polyethylene powder melts and fuses to the mould walls. Layer by layer, the tank forms from the INSIDE OUT.
 
-> CAPTION: *The same forces that shape planets shape plastic. Rotation. Heat. Time. The universe's oldest manufacturing process, reinvented for the twenty-first century.*
+<div class="narrator-box">The same forces that shape planets shape plastic. Rotation. Heat. Time. The universe's oldest manufacturing process, reinvented for the twenty-first century.</div>
 
 **Step 5 — COOLING:** The mould exits the oven, still rotating. Fans and water spray cool the plastic slowly — too fast and it warps, too slow and it crystallizes wrong. The cooling determines the tank's final strength.
 
 **Step 6 — DEMOLDING:** The mould opens. Steam pours out. And there it is — a water tank. One piece. No seams. No welds. Uniform wall thickness: 99.8%. A thing that will hold water for twenty-five years in the African sun.
 
-> CAPTION: *One tank. Every twenty minutes. From powder to vessel.*
+<div class="narrator-box">One tank. Every twenty minutes. From powder to vessel.</div>
 
-> CAPTION: *In the time it took Oga Plastic to cross the Atlantic with three tanks — a single machine could produce eighteen.*
+<div class="narrator-box">In the time it took Oga Plastic to cross the Atlantic with three tanks — a single machine could produce eighteen.</div>
 
 ---
-
-**Page 6**
-
-PANEL 1 (back in the internet cafe — Oga Plastic reading about rotomoulding machine manufacturers): His eyes scan the screen. Manufacturers in India. China. Italy. Turkey. Prices ranging from tens of thousands to hundreds of thousands of dollars.
-
-PANEL 2 (he writes in the notebook):
 
 ```
 TO BUILD A FACTORY:
@@ -1905,11 +1589,9 @@ TO BUILD A FACTORY:
 7. Capital (??????????)
 ```
 
-PANEL 3 (he circles item 6):
+<div class="narrator-box"><strong>Oga Plastic:</strong> I can find money. I can rent a building. I can buy a generator. But I cannot buy KNOWLEDGE. Not this kind. This is the knowledge of hands and heat and timing. This is the knowledge that lives on the factory floor.</div>
 
-> OGA PLASTIC (internal): *I can find money. I can rent a building. I can buy a generator. But I cannot buy KNOWLEDGE. Not this kind. This is the knowledge of hands and heat and timing. This is the knowledge that lives on the factory floor.*
-
-> OGA PLASTIC (internal): *I have to go where they make the machines. I have to learn by standing in the fire.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I have to go where they make the machines. I have to learn by standing in the fire.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -1980,9 +1662,6 @@ PANEL 3 (he circles item 6):
 </svg>
 </figure>
 
-
-PANEL 4 (he types — slowly, carefully — an email to a rotomoulding machine manufacturer in India):
-
 ```
 Subject: I want to learn to make water tanks
 
@@ -1998,49 +1677,29 @@ Please advise.
 Yours faithfully,
 ```
 
-PANEL 5 (he hovers over SEND. His finger over the mouse button. This email — this terrible, earnest, two-paragraph email — is a door. On the other side: India, engineering, months alone in a country where he knows no one, spending money he cannot replace):
+<div class="narrator-box"><strong>Oga Plastic:</strong> The sea was the first crossing. This is the second.</div>
 
-> OGA PLASTIC (internal): *The sea was the first crossing. This is the second.*
-
-PANEL 6 (he clicks):
-
-> SFX: *click*
+<div class="narrator-box"><strong>SFX:</strong> click</div>
 
 ---
-
-**Page 7**
-
-PANEL 1 (three days later — the internet cafe again. He checks the email):
 
 > **RE: I want to learn to make water tanks**
 
 > *Dear Sir, Thank you for your interest. We are [manufacturer] based in Ahmedabad, Gujarat, India. We manufacture rotational moulding machines and moulds for the water tank industry. We welcome you to visit our facility. We can arrange a demonstration and discuss your requirements. Please advise your travel dates. Regards, [manufacturer]*
 
-PANEL 2 (Oga Plastic reads it three times. Then a fourth time. Then he closes the browser, walks outside, and looks up at the sky):
+<div class="narrator-box"><strong>Oga Plastic:</strong> They said come.</div>
 
-> OGA PLASTIC (internal): *They said come.*
-
-> OGA PLASTIC (internal): *So I go.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> So I go.</div>
 
 ---
 
-**Page 8-9 — THE DECISION AND THE DEPARTURE**
+<div class="narrator-box"><strong>Oga Plastic:</strong> The first time I crossed water, it was 120 kilometers to Nigeria. Now I'm crossing an ocean to India.</div>
 
-PANEL 1 (montage — preparation): Selling the remaining tanks. Counting money. Passport. Visa application — the grinding bureaucracy of it, the waiting, the forms, the embassy interview. This is compressed into a rapid-fire sequence because the real story is not the paperwork — the real story is the WEIGHT of the decision.
+<div class="narrator-box"><strong>Oga Plastic:</strong> Each crossing is bigger. Each one asks more.</div>
 
-PANEL 2 (quiet moment — Oga Plastic at the shore one last time before leaving): He is about to leave Africa for the first time. Not for Europe, not for America — for INDIA. To learn how to make something that doesn't exist in his country. To bring back not a product but a CAPABILITY.
+<div class="narrator-box">He told no one what he was doing. Not because he was ashamed. Because explaining it would take longer than doing it.</div>
 
-> OGA PLASTIC (internal): *The first time I crossed water, it was 120 kilometers to Nigeria. Now I'm crossing an ocean to India.*
-
-> OGA PLASTIC (internal): *Each crossing is bigger. Each one asks more.*
-
-**Page 9:**
-
-PANEL 1 (the airport — Douala International): Oga Plastic with one bag. The same notebook in his back pocket, now half-full. He stands in the departure hall, looking at the board: DOUALA → ADDIS ABABA → MUMBAI.
-
-> CAPTION: *He told no one what he was doing. Not because he was ashamed. Because explaining it would take longer than doing it.*
-
-> CAPTION: *"I'm flying to India to learn how to make water tanks so I can build a factory in Cameroon because nobody in Central Africa manufactures them and I had a dream about it." Try explaining that to your uncle.*
+<div class="narrator-box">"I'm flying to India to learn how to make water tanks so I can build a factory in Cameroon because nobody in Central Africa manufactures them and I had a dream about it." Try explaining that to your uncle.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -2135,18 +1794,13 @@ PANEL 1 (the airport — Douala International): Oga Plastic with one bag. The sa
 </svg>
 </figure>
 
+<div class="narrator-box"><strong>Oga Plastic:</strong> I am going to learn how to give my people water. If I come back with nothing, I have lost everything I've saved. Every franc from every tank I carried on every boat.</div>
 
-PANEL 2 (at the gate — he looks back. Not at a person. At the CONTINENT. Through the airport window, the Douala sky — humid, hazy, enormous):
+<div class="narrator-box"><strong>Oga Plastic:</strong> If I come back with knowledge — I come back with an industry.</div>
 
-> OGA PLASTIC (internal): *I am going to learn how to give my people water. If I come back with nothing, I have lost everything I've saved. Every franc from every tank I carried on every boat.*
+<div class="narrator-box">Oga Plastic left Cameroon with a bag, a notebook, and the understanding that courage without craft is just enthusiasm.</div>
 
-> OGA PLASTIC (internal): *If I come back with knowledge — I come back with an industry.*
-
-PANEL 3 (he boards the plane. The door closes. End of Africa):
-
-> CAPTION: *Oga Plastic left Cameroon with a bag, a notebook, and the understanding that courage without craft is just enthusiasm.*
-
-> CAPTION: *He was going to learn the craft.*
+<div class="narrator-box">He was going to learn the craft.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
@@ -2255,14 +1909,11 @@ PANEL 3 (he boards the plane. The door closes. End of Africa):
 </svg>
 </figure>
 
-
 **CHAPTER END CARD:**
 
 > **Chapter 3: The Arithmetic of Revolution — END**
 
 > *Next: Chapter 4 — "The Forge"*
-
----
 
 ---
 
@@ -2286,9 +1937,9 @@ PANEL 3 (he boards the plane. The door closes. End of Africa):
 
 **ARRIVAL IN INDIA (Pages 1-3):** Mumbai first — the sensory detonation. Then the train to Ahmedabad. Gujarat. The industrial heartland. Oga Plastic is alone in a way that transcends geography — alone in language, in culture, in diet, in climate, in everything except PURPOSE. He has purpose. Purpose is the only language that translates everywhere.
 
-> CAPTION: *He could not read Hindi. He could not speak Gujarati. He could not eat the food without his stomach revolting for the first two weeks. He could not sleep in the heat — and he was from Cameroon, a country not known for its cool breezes.*
+<div class="narrator-box">He could not read Hindi. He could not speak Gujarati. He could not eat the food without his stomach revolting for the first two weeks. He could not sleep in the heat — and he was from Cameroon, a country not known for its cool breezes.</div>
 
-> CAPTION: *But the machines. The machines spoke a language he was born to learn.*
+<div class="narrator-box">But the machines. The machines spoke a language he was born to learn.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -2383,10 +2034,9 @@ PANEL 3 (he boards the plane. The door closes. End of Africa):
 <figcaption style="font-style:italic;color:#d4a574;font-size:0.85rem;margin-top:0.3rem">The factory floor. Machines the size of rooms. And at the entrance, a man from Cameroon — small against the scale of industry.</figcaption>
 </figure>
 
-
 **THE FACTORY FLOOR (Pages 4-7):** His first day in the rotomoulding plant. The SCALE. Machines the size of rooms — rotating arms carrying moulds through ovens, cooling stations, demoulding bays. The heat is volcanic. Workers move with choreographed precision. And out the end of the line: tanks. One every twenty minutes. Perfect. Identical. Engineered for decades.
 
-> OGA PLASTIC (internal, standing on the factory floor, looking up at the machine): *In Cameroon, I carried three tanks on a boat and nearly died. This machine makes three before lunch. And it never gets tired. And it never fears the sea.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> In Cameroon, I carried three tanks on a boat and nearly died. This machine makes three before lunch. And it never gets tired. And it never fears the sea.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -2463,22 +2113,21 @@ PANEL 3 (he boards the plane. The door closes. End of Africa):
 <figcaption style="font-style:italic;color:#9e9684;font-size:0.85rem;margin-top:0.3rem">His hand on the cold steel. The geometry of the thing that makes the thing.</figcaption>
 </figure>
 
-
 **THE APPRENTICESHIP (Pages 8-14):** Six months compressed into a MONTAGE SEQUENCE — but a deep montage, not a superficial one. Each page covers a different discipline:
 
-- **Page 8: Materials science** — LLDPE grades, melt flow index, UV stabilizers, the difference between food-grade and industrial. Oga Plastic learning to distinguish plastic grades by feel, by smell, by the sound they make when you tap a finished product.
+<div class="narrator-box">LLDPE grades, melt flow index, UV stabilizers, the difference between food-grade and industrial. Oga Plastic learning to distinguish plastic grades by feel, by smell, by the sound they make when you tap a finished product.</div>
 
-- **Page 9: Mould design** — The geometry of a water tank is not arbitrary. Every rib is structural. Every curve is calculated. The threaded manhole must seal perfectly. The outlet port must be positioned for gravity feed. Oga Plastic learns to read engineering drawings, then to MAKE them.
+<div class="narrator-box">The geometry of a water tank is not arbitrary. Every rib is structural. Every curve is calculated. The threaded manhole must seal perfectly. The outlet port must be positioned for gravity feed. Oga Plastic learns to read engineering drawings, then to MAKE them.</div>
 
-- **Page 10: Temperature calibration** — Too hot and the plastic degrades. Too cool and it doesn't fuse. The sweet spot is narrow and varies with ambient temperature, humidity, material batch. This is where science becomes art. This is where the operator's intuition matters more than the manual.
+<div class="narrator-box">Too hot and the plastic degrades. Too cool and it doesn't fuse. The sweet spot is narrow and varies with ambient temperature, humidity, material batch. This is where science becomes art. This is where the operator's intuition matters more than the manual.</div>
 
-- **Page 11: Wall thickness and uniformity** — 99.8% uniformity means the wall is the same thickness everywhere — top, bottom, sides. This is achieved through rotation speed, temperature control, and the precise amount of powder loaded. Oga Plastic learns to measure wall thickness with calipers, to tap a tank and hear the uniformity, to spot a thin section by the sound.
+<div class="narrator-box">99.8% uniformity means the wall is the same thickness everywhere — top, bottom, sides. This is achieved through rotation speed, temperature control, and the precise amount of powder loaded. Oga Plastic learns to measure wall thickness with calipers, to tap a tank and hear the uniformity, to spot a thin section by the sound.</div>
 
-- **Page 12: Quality control** — Drop tests. Pressure tests. UV exposure tests. The tank must survive a fall from a truck. Must hold pressure without leaking. Must sit in the tropical sun for twenty-five years without cracking. Oga Plastic learns that quality is not a final inspection — it is every decision made during production.
+<div class="narrator-box">Drop tests. Pressure tests. UV exposure tests. The tank must survive a fall from a truck. Must hold pressure without leaking. Must sit in the tropical sun for twenty-five years without cracking. Oga Plastic learns that quality is not a final inspection — it is every decision made during production.</div>
 
-- **Page 13: Factory layout** — Where the machine sits relative to the raw material store, the cooling station, the finishing bay, the loading dock. The flow of materials through the factory is a river — it must flow, not pool. Oga Plastic sketches layouts in his notebook, each one better than the last.
+<div class="narrator-box">Where the machine sits relative to the raw material store, the cooling station, the finishing bay, the loading dock. The flow of materials through the factory is a river — it must flow, not pool. Oga Plastic sketches layouts in his notebook, each one better than the last.</div>
 
-- **Page 14: Power and infrastructure** — The machine needs reliable power. Cameroon's grid is unreliable. Therefore: generator backup, automatic transfer switch, power factor correction. Every kilowatt that stutters is a tank with a defect.
+<div class="narrator-box">The machine needs reliable power. Cameroon's grid is unreliable. Therefore: generator backup, automatic transfer switch, power factor correction. Every kilowatt that stutters is a tank with a defect.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -2584,18 +2233,17 @@ PANEL 3 (he boards the plane. The door closes. End of Africa):
 <figcaption style="font-style:italic;color:#d4a574;font-size:0.85rem;margin-top:0.3rem">Four notebooks. Moulds, machines, materials, factory layout. Six months of India compressed into ink.</figcaption>
 </figure>
 
-
 **THE FRIENDSHIP — RAVI (Pages 15-17):** Oga Plastic befriends RAVI — a plant engineer in his thirties, practical, curious, slightly amazed that a man from Cameroon showed up alone to learn an industry from scratch. Their friendship is built on the shared language of making things.
 
-> RAVI: *In ten years on this floor, I have trained operators from Ghana, Kenya, Tanzania, Ethiopia. But never one who came alone, with no company behind him, no government program, no sponsor. Just a notebook and a ticket.*
+<div class="narrator-box"><strong>Ravi:</strong> In ten years on this floor, I have trained operators from Ghana, Kenya, Tanzania, Ethiopia. But never one who came alone, with no company behind him, no government program, no sponsor. Just a notebook and a ticket.</div>
 
-> OGA PLASTIC: *I have something better than a sponsor.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I have something better than a sponsor.</div>
 
-> RAVI: *What?*
+<div class="narrator-box"><strong>Ravi:</strong> What?</div>
 
-> OGA PLASTIC: *A country with no water tanks.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> A country with no water tanks.</div>
 
-> RAVI: *...That is actually better than a sponsor.*
+<div class="narrator-box"><strong>Ravi:</strong> ...That is actually better than a sponsor.</div>
 
 **THE DESIGN — THE MOULD (Pages 18-22):** The climactic sequence. Oga Plastic, working with Ravi and the manufacturer's engineering team, designs his first mould. The 1000 LTR MOULD. The manga reproduces the ACTUAL ENGINEERING DRAWING — the one with:
 
@@ -2608,13 +2256,13 @@ PANEL 3 (he boards the plane. The door closes. End of Africa):
 
 This is the page where the brand is BORN. Not as a marketing decision. As an engineering decision. The name is part of the mould. Every tank that comes out of this mould will carry these words. Forever.
 
-> RAVI: *"Italia Serbatoi." Italian for "Italian Tanks." Why Italian?*
+<div class="narrator-box"><strong>Ravi:</strong> "Italia Serbatoi." Italian for "Italian Tanks." Why Italian?</div>
 
-> OGA PLASTIC: *Because Italian engineering is what the world trusts for water systems. When an African sees "Italia" on a tank, he knows it's world-class. I am making a world-class product. The name should say so before the product proves it.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Because Italian engineering is what the world trusts for water systems. When an African sees "Italia" on a tank, he knows it's world-class. I am making a world-class product. The name should say so before the product proves it.</div>
 
-> RAVI: *And "By Oga Plastic"?*
+<div class="narrator-box"><strong>Ravi:</strong> And "By Oga Plastic"?</div>
 
-> OGA PLASTIC: *Because the world should know who brought it home.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Because the world should know who brought it home.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -2714,12 +2362,11 @@ This is the page where the brand is BORN. Not as a marketing decision. As an eng
 <figcaption style="font-style:italic;color:#1a1a2e;font-size:0.85rem;margin-top:0.3rem">The drawing is precise, calculated, obsessive. "ITALIA SERBATOI BY OGA PLASTIC" — engraved into the mould itself. This is not fiction. This is an artifact.</figcaption>
 </figure>
 
-
 **THE CONTAINER (Pages 23-24):** The machine is built. Tested. Approved. Dismantled. Loaded into a shipping container with the moulds, spare parts, manuals, and four notebooks filled cover-to-cover.
 
-> CAPTION: *The container was loaded on a Tuesday. It would travel by truck to Mumbai port. By cargo ship through the Arabian Sea, around the Horn of Africa, past Somalia, past Kenya, past the equator, into the Gulf of Guinea. Destination: Douala port, Cameroon.*
+<div class="narrator-box">The container was loaded on a Tuesday. It would travel by truck to Mumbai port. By cargo ship through the Arabian Sea, around the Horn of Africa, past Somalia, past Kenya, past the equator, into the Gulf of Guinea. Destination: Douala port, Cameroon.</div>
 
-> CAPTION: *The same ocean Oga Plastic had crossed in a speed boat carrying three tanks — would now carry his factory.*
+<div class="narrator-box">The same ocean Oga Plastic had crossed in a speed boat carrying three tanks — would now carry his factory.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -2810,16 +2457,15 @@ This is the page where the brand is BORN. Not as a marketing decision. As an eng
 <figcaption style="font-style:italic;color:#d4a574;font-size:0.85rem;margin-top:0.3rem">A shipping container. Inside: a rotomoulding machine, moulds, tools, raw materials. Everything needed to start. The ocean that once carried three tanks would now carry the factory.</figcaption>
 </figure>
 
-
 **DEPARTURE FROM INDIA (Page 25):** Oga Plastic and Ravi at the factory gate. Ravi hands him a small box — inside it, a set of precision calipers.
 
-> RAVI: *For measuring wall thickness. Remember: if the tap sounds wrong, the wall IS wrong. Trust your ears.*
+<div class="narrator-box"><strong>Ravi:</strong> For measuring wall thickness. Remember: if the tap sounds wrong, the wall IS wrong. Trust your ears.</div>
 
-> OGA PLASTIC: *I won't forget.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I won't forget.</div>
 
-> RAVI: *When you make your first tank — send me a photograph.*
+<div class="narrator-box"><strong>Ravi:</strong> When you make your first tank — send me a photograph.</div>
 
-> OGA PLASTIC: *I'll send you a tank.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> I'll send you a tank.</div>
 
 *They shake hands. Oga Plastic walks to the waiting car. He does not look back. He never looks back.*
 
@@ -2828,8 +2474,6 @@ This is the page where the brand is BORN. Not as a marketing decision. As an eng
 > **Chapter 4: The Forge — END**
 
 > *Next: Chapter 5 — "The First Fire"*
-
----
 
 ---
 
@@ -2938,10 +2582,9 @@ This is the page where the brand is BORN. Not as a marketing decision. As an eng
 <figcaption style="font-style:italic;color:#9e9684;font-size:0.85rem;margin-top:0.3rem">An empty warehouse. Concrete walls. High ceiling. Empty. Full of potential.</figcaption>
 </figure>
 
-
 **THE INSTALLATION (Pages 5-8):** Installing the machine with a small team of local workers. This is where everything that can go wrong does. The wiring doesn't match the local electrical standards. The generator is underpowered. The concrete floor isn't level — the machine vibrates. Oga Plastic fixes each problem with the knowledge from India and the stubbornness from the Atlantic.
 
-> OGA PLASTIC (internal, at 2 AM, rewiring a junction box by generator light): *Ravi didn't teach me this. India didn't teach me this. The sea taught me this. The sea teaches you that the thing you planned for is never the thing that happens. The thing that happens is the thing you fix.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Ravi didn't teach me this. India didn't teach me this. The sea taught me this. The sea teaches you that the thing you planned for is never the thing that happens. The thing that happens is the thing you fix.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -3027,7 +2670,6 @@ This is the page where the brand is BORN. Not as a marketing decision. As an eng
 <figcaption style="font-style:italic;color:#e07c3e;font-size:0.85rem;margin-top:0.3rem">Steel beams, burner system, rotation arms. Workers welding. Sparks flying. Industrial choreography.</figcaption>
 </figure>
 
-
 **THE FIRST FAILURE (Pages 9-10):** The first test run. Powder loaded. Mould closed. Machine rotating. Oven fired. Everything by the manual. But the first tank comes out WRONG — uneven walls, a thin section near the base, a bubble in the surface. It holds water but it wouldn't pass quality control.
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
@@ -3101,8 +2743,7 @@ This is the page where the brand is BORN. Not as a marketing decision. As an eng
 <figcaption style="font-style:italic;color:#e07c3e;font-size:0.85rem;margin-top:0.3rem">The machine spinning. A tank-shaped mould rotating in the furnace. Orange glow. Heat. Everyone watching. The first test.</figcaption>
 </figure>
 
-
-> OGA PLASTIC (holding the deformed tank, pressing the thin section with his thumb): *If I sell this, it fails in two years. And when it fails, people say: "See? African-made. Not quality." And the chemical drums come back. And I NEVER get another chance.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> If I sell this, it fails in two years. And when it fails, people say: "See? African-made. Not quality." And the chemical drums come back. And I NEVER get another chance.</div>
 
 He destroys it. Cuts it in half with a saw. Studies the cross-section. The problem is in the rotation speed — too fast on one axis, the powder pools unevenly. He adjusts. By **fractions**.
 
@@ -3174,7 +2815,6 @@ He destroys it. Cuts it in half with a saw. Studies the cross-section. The probl
 <figcaption style="font-style:italic;color:#c04030;font-size:0.85rem;margin-top:0.3rem">The first tank comes out deformed. He cuts it open, studies the cross-section. Not despair — analysis.</figcaption>
 </figure>
 
-
 **THE CALIBRATION (Pages 11-13):** Days of adjustment. Tank after tank, each one slightly better, each one cut open and studied. The factory floor becomes a classroom and the tanks are the exams. Oga Plastic taps each tank with Ravi's calipers, listening. Adjusting.
 
 **THE FIRST PERFECT TANK (Pages 14-16):** The mould opens. Steam pours out. He taps it — the sound is RIGHT. Uniform. Clear. The same sound at the top as the bottom, the same sound on every rib. He measures with the calipers: 99.8% wall uniformity. He checks the embossed lettering:
@@ -3186,27 +2826,27 @@ The words from the dream. The words from the mould drawing. NOW REAL. Stamped in
 
 **THE CALL (Page 17):** He photographs the tank. Opens WhatsApp. Sends it to Ravi.
 
-> OGA PLASTIC: *[photo]*
-> OGA PLASTIC: *The first one.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> [photo]</div>
+<div class="narrator-box"><strong>Oga Plastic:</strong> The first one.</div>
 
 *Three dots. Ravi is typing.*
 
-> RAVI: *The walls?*
-> OGA PLASTIC: *99.8.*
-> RAVI: *The sound?*
-> OGA PLASTIC: *Clean.*
+<div class="narrator-box"><strong>Ravi:</strong> The walls?</div>
+<div class="narrator-box"><strong>Oga Plastic:</strong> 99.8.</div>
+<div class="narrator-box"><strong>Ravi:</strong> The sound?</div>
+<div class="narrator-box"><strong>Oga Plastic:</strong> Clean.</div>
 
 *Pause.*
 
-> RAVI: *Welcome to the industry, brother.*
+<div class="narrator-box"><strong>Ravi:</strong> Welcome to the industry, brother.</div>
 
 **THE DREAM CALLBACK (Pages 18-19):** As Oga Plastic stands in the factory, hand on the first tank, the art style shifts — just for two panels — back to the watercolor dreamscape. The voice from the dream:
 
-> VOICE: **"Build the vessel."**
+<div class="narrator-box"><em>"Build the vessel."</em></div>
 
 And he answers — not in the dream, but in the real world, standing in a warehouse in Douala with oil on his hands and steam in the air:
 
-> OGA PLASTIC (aloud, to no one, to God, to the Atlantic): *Built.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Built.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -3287,14 +2927,11 @@ And he answers — not in the dream, but in the real world, standing in a wareho
 <figcaption style="font-style:italic;color:#c9a96e;font-size:0.85rem;margin-top:0.3rem">Black. Ribbed. Structurally sound. The thing he dreamed in Edinau, the thing he crossed two oceans to learn to make — is real.</figcaption>
 </figure>
 
-
 **CHAPTER END CARD:**
 
 > **Chapter 5: The First Fire — END**
 
 > *Next: Chapter 6 — "The Name in Gold"*
-
----
 
 ---
 
@@ -3320,7 +2957,7 @@ And he answers — not in the dream, but in the real world, standing in a wareho
 
 **THE SCALE PROBLEM (Pages 1-3):** The Douala factory works. Tanks sell as fast as he makes them. But Cameroon is 25 million people. Nigeria is 200 million. And the real market — the real NEED — is across the border. The same border he crossed by speed boat. The same country that once had what he didn't.
 
-> OGA PLASTIC (internal): *Nigeria made the tanks I bought. But Nigeria doesn't make ENOUGH. Not for 200 million people. Not at the quality I know is possible. The machine I learned to build in India, the mould I designed with my own hands — Nigeria needs this too.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Nigeria made the tanks I bought. But Nigeria doesn't make ENOUGH. Not for 200 million people. Not at the quality I know is possible. The machine I learned to build in India, the mould I designed with my own hands — Nigeria needs this too.</div>
 
 **THE RETURN TO CROSS RIVER (Pages 4-6):** Oga Plastic returns to Cross River State — not by speed boat this time, but by road, as a businessman with a business plan, capital, and experience. He visits Ugep — a town along the Ediba Road, strategic for distribution, with land available, road access, and proximity to the port at Calabar.
 
@@ -3385,10 +3022,9 @@ He walks the land at №1 Lokpema Road. Red laterite earth. Bush encroaching fro
 <figcaption style="font-style:italic;color:#2d5a3d;font-size:0.85rem;margin-top:0.3rem">Ugep, Cross River State, Nigeria. Green. The town where he first landed, soaking wet. Now he returns to BUILD.</figcaption>
 </figure>
 
+<div class="narrator-box"><strong>Oga Plastic:</strong> I first stepped onto this state's soil from a speed boat. Salt-crusted. Broke. Looking for three tanks. That was [X] years ago.</div>
 
-> OGA PLASTIC (internal, standing on the land): *I first stepped onto this state's soil from a speed boat. Salt-crusted. Broke. Looking for three tanks. That was [X] years ago.*
-
-> OGA PLASTIC (internal): *Now I'm standing on the ground where I'll build a factory.*
+<div class="narrator-box"><strong>Oga Plastic:</strong> Now I'm standing on the ground where I'll build a factory.</div>
 
 **THE CONSTRUCTION (Pages 7-12):** Montage — the factory rising from the bush. Foundation. Block walls. Steel beams. The roof — an enormous span of corrugated metal, industrial-grade, designed to cover the machines. The second building. The third. Paved compound. Generator house. Raw material storage. Quality control zone.
 
@@ -3486,7 +3122,6 @@ And then — the roof painters. Two men with harnesses and gold paint. Letter by
 <figcaption style="font-style:italic;color:#9e9684;font-size:0.85rem;margin-top:0.3rem">Concrete blocks going up. Steel roof beams being lifted. Multiple buildings. A purpose-built plant, not a rented warehouse.</figcaption>
 </figure>
 
-
 > **O... G... A...**
 
 > **P... L... A... S... T... I... C...**
@@ -3497,11 +3132,10 @@ And then — the roof painters. Two men with harnesses and gold paint. Letter by
 
 > **L... T... D... .**
 
-PANEL (wide — the finished factory from the front. The gold letters catch the sun):
 
-> CAPTION: *A dock worker in Calabar gave him this name as a joke. A shout across the water at a madman carrying tanks on a speed boat.*
+<div class="narrator-box">A dock worker in Calabar gave him this name as a joke. A shout across the water at a madman carrying tanks on a speed boat.</div>
 
-> CAPTION: *Now the name was sixty feet wide and written in gold.*
+<div class="narrator-box">Now the name was sixty feet wide and written in gold.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -3599,7 +3233,6 @@ PANEL (wide — the finished factory from the front. The gold letters catch the 
 <figcaption style="font-style:italic;color:#c9a96e;font-size:0.85rem;margin-top:0.3rem">Gold letters catching sunlight: OGA PLASTIC MANUFACTURING NIG. LTD. A dock worker in Calabar gave him this name as a joke. Now it is sixty feet wide.</figcaption>
 </figure>
 
-
 **THE FIRST NIGERIAN TANK (Pages 13-15):** The Ugep plant fires up. The machines — bigger now, more of them, capable of producing from 750L to 10,000L. The moulds: custom-designed, each one engraved "ITALIA SERBATOI BY OGA PLASTIC." The first Nigerian tank rolls off the line.
 
 Double-layer construction: white food-grade LLDPE inner layer for visibility and safety. Black UV-stabilized outer shell for twenty-five years in the tropical sun. Threaded manhole with precision seal. Integrated moulded support cradles. Embossed capacity, batch number, manufacturing date.
@@ -3608,15 +3241,11 @@ This is not the product of a man who bought three tanks on a speed boat. This is
 
 **THE SYMMETRY (Pages 16-17):** Two panels, side by side. Same composition.
 
-**LEFT PANEL:** 2012. A young man stepping off a speed boat onto the Calabar jetty. Salt-crusted. Broke. One bag. One notebook. Looking for water tanks.
+<div class="narrator-box">Cross River State.</div>
 
-**RIGHT PANEL:** Present day. The Ugep factory from above. Multiple buildings. Gold letters on the roof. Tanks stacked in the yard — hundreds of them. Delivery trucks loading. Workers in the plant. Machines turning.
+<div class="narrator-box">He arrived in this state as a buyer. He returned as a manufacturer.</div>
 
-> CAPTION: *Cross River State.*
-
-> CAPTION: *He arrived in this state as a buyer. He returned as a manufacturer.*
-
-> CAPTION: *The same soil. The same sun. A different man.*
+<div class="narrator-box">The same soil. The same sun. A different man.</div>
 
 **THE NUMBERS (Page 18):** A single page. Clean. Just statistics, presented like a monument:
 
@@ -3639,9 +3268,9 @@ Institutions:               300+
 Commercial estates:         200+
 ```
 
-> CAPTION: *Fifty thousand tanks. Fifty thousand homes with clean water storage. Fifty thousand families who are not drinking from chemical drums.*
+<div class="narrator-box">Fifty thousand tanks. Fifty thousand homes with clean water storage. Fifty thousand families who are not drinking from chemical drums.</div>
 
-> CAPTION: *And counting.*
+<div class="narrator-box">And counting.</div>
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -3758,10 +3387,8 @@ Commercial estates:         200+
 <figcaption style="font-style:italic;color:#c9a96e;font-size:0.85rem;margin-top:0.3rem">Rows of finished tanks outside the factory. Black against green grass. Dozens. Then hundreds. Fifty thousand and counting.</figcaption>
 </figure>
 
-
 **THE FINAL PAGE — VOLUME 1 CLOSER (Page 19):**
 
-**FULL SPLASH PAGE.** The most important page of the manga.
 
 Oga Plastic stands in the compound of his factory in Ugep. Behind him, the building with his name in gold on the roof. Around him, his products — tanks stacked and ready for delivery. The Nigerian bush surrounds the compound, green and alive.
 
@@ -3769,7 +3396,7 @@ He faces the reader. The SECOND and FINAL fourth-wall break of Volume 1. He look
 
 His expression is not triumph. Not pride. Not arrogance. It is the quiet, steady gaze of a man who has earned the right to say what he is about to say.
 
-> OGA PLASTIC: ***"The drums are finished."***
+<div class="narrator-box"><strong>Oga Plastic:</strong> </div>*"The drums are finished."***
 
 <figure class="panel panel-full" style="text-align:center;margin:0.8rem auto">
 <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px">
@@ -3897,7 +3524,6 @@ His expression is not triumph. Not pride. Not arrogance. It is the quiet, steady
 </svg>
 <figcaption style="font-style:italic;color:#c9a96e;font-size:0.85rem;margin-top:0.3rem">A rusted chemical drum in a field, grass growing through the rust. In the distance, a gleaming black water tank. A child drinks clean water. The old world dying, the new world born.</figcaption>
 </figure>
-
 
 ---
 
