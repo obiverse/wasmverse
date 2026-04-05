@@ -14,13 +14,227 @@ For most of human history, we saw electricity only in its most violent form — 
 
 In the span of roughly two hundred years — from Benjamin Franklin's kite in 1752 to the construction of the first continental power grids — humanity went from cowering before lightning to commanding it. We learned to generate it, store it, transmit it across thousands of kilometres, and deliver it to a wall socket where a child can plug in a lamp. This is among the greatest achievements of the human mind, and it rests on principles so elegant that any careful reader can grasp them.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 560 200" width="100%" style="max-width:560px" xmlns="http://www.w3.org/2000/svg">
+  <!-- Generator -->
+  <rect x="10" y="60" width="70" height="50" rx="6" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="45" y="82" text-anchor="middle" fill="#c9a96e" font-size="10" font-weight="bold" font-family="sans-serif">Generator</text>
+  <text x="45" y="96" text-anchor="middle" fill="#9e9684" font-size="9" font-family="sans-serif">11kV</text>
+  <!-- Circle inside for generator symbol -->
+  <circle cx="45" cy="72" r="0" fill="none"/>
+  <!-- Arrow 1 -->
+  <line x1="80" y1="85" x2="100" y2="85" stroke="#ddd5c4" stroke-width="1.5"/>
+  <polygon points="97,81 105,85 97,89" fill="#ddd5c4"/>
+  <!-- Step-up transformer -->
+  <rect x="105" y="55" width="75" height="60" rx="6" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="142" y="76" text-anchor="middle" fill="#c9a96e" font-size="9" font-weight="bold" font-family="sans-serif">Step-Up</text>
+  <text x="142" y="88" text-anchor="middle" fill="#c9a96e" font-size="9" font-family="sans-serif">Transformer</text>
+  <text x="142" y="102" text-anchor="middle" fill="#9e9684" font-size="9" font-family="sans-serif">→ 330kV</text>
+  <!-- Arrow 2 -->
+  <line x1="180" y1="85" x2="200" y2="85" stroke="#ddd5c4" stroke-width="1.5"/>
+  <polygon points="197,81 205,85 197,89" fill="#ddd5c4"/>
+  <!-- Transmission -->
+  <rect x="205" y="55" width="85" height="60" rx="6" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <text x="247" y="76" text-anchor="middle" fill="#c0392b" font-size="9" font-weight="bold" font-family="sans-serif">Transmission</text>
+  <text x="247" y="88" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif">Lines</text>
+  <text x="247" y="102" text-anchor="middle" fill="#9e9684" font-size="9" font-family="sans-serif">330kV (HV)</text>
+  <!-- Arrow 3 -->
+  <line x1="290" y1="85" x2="310" y2="85" stroke="#ddd5c4" stroke-width="1.5"/>
+  <polygon points="307,81 315,85 307,89" fill="#ddd5c4"/>
+  <!-- Step-down transformer -->
+  <rect x="315" y="55" width="75" height="60" rx="6" fill="none" stroke="#48a6a6" stroke-width="2"/>
+  <text x="352" y="76" text-anchor="middle" fill="#48a6a6" font-size="9" font-weight="bold" font-family="sans-serif">Step-Down</text>
+  <text x="352" y="88" text-anchor="middle" fill="#48a6a6" font-size="9" font-family="sans-serif">Transformer</text>
+  <text x="352" y="102" text-anchor="middle" fill="#9e9684" font-size="9" font-family="sans-serif">→ 33kV</text>
+  <!-- Arrow 4 -->
+  <line x1="390" y1="85" x2="410" y2="85" stroke="#ddd5c4" stroke-width="1.5"/>
+  <polygon points="407,81 415,85 407,89" fill="#ddd5c4"/>
+  <!-- Distribution -->
+  <rect x="415" y="55" width="65" height="60" rx="6" fill="none" stroke="#48a6a6" stroke-width="2"/>
+  <text x="447" y="76" text-anchor="middle" fill="#48a6a6" font-size="9" font-weight="bold" font-family="sans-serif">Distrib.</text>
+  <text x="447" y="88" text-anchor="middle" fill="#48a6a6" font-size="9" font-family="sans-serif">→ 11kV</text>
+  <text x="447" y="102" text-anchor="middle" fill="#9e9684" font-size="9" font-family="sans-serif">→ 240V</text>
+  <!-- Arrow 5 -->
+  <line x1="480" y1="85" x2="500" y2="85" stroke="#ddd5c4" stroke-width="1.5"/>
+  <polygon points="497,81 505,85 497,89" fill="#ddd5c4"/>
+  <!-- Home -->
+  <rect x="505" y="60" width="50" height="50" rx="6" fill="none" stroke="#ddd5c4" stroke-width="2"/>
+  <text x="530" y="82" text-anchor="middle" fill="#ddd5c4" font-size="10" font-weight="bold" font-family="sans-serif">Home</text>
+  <text x="530" y="96" text-anchor="middle" fill="#9e9684" font-size="9" font-family="sans-serif">240V</text>
+  <!-- Voltage cascade label -->
+  <text x="280" y="145" text-anchor="middle" fill="#c9a96e" font-size="11" font-family="sans-serif">11kV → 330kV → 33kV → 11kV → 240V</text>
+  <!-- Bottom note -->
+  <text x="280" y="170" text-anchor="middle" fill="#9e9684" font-size="10" font-family="sans-serif">High voltage for transmission (low current = low losses) · Low voltage for safe delivery</text>
+  <!-- Top label -->
+  <text x="280" y="38" text-anchor="middle" fill="#ddd5c4" font-size="13" font-weight="bold" font-family="sans-serif">The Power Grid: From Generator to Home</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Fig. 8 — The power grid: voltage is stepped up for efficient long-distance transmission, then stepped down for safe distribution</figcaption>
+</figure>
+
+
 This treatise exists because six hundred million Africans still lack reliable electricity, and this is not because Africa lacks energy. It is because Africa lacks the infrastructure to convert its staggering energy endowment into usable power and deliver it to its people. The African continent receives more solar irradiance than any other landmass. The Congo River's Inga Falls alone could generate forty gigawatts — enough to power half the continent. The Great Rift Valley sits atop a geothermal reservoir that has already made Kenya one of the most renewable-powered nations on Earth. The wind corridors of Lake Turkana, the Saharan Atlantic coast, and the Cape of Good Hope rival any on the planet.
 
 The gap between Africa's energy potential and Africa's energy reality is not a gap of nature. It is a gap of knowledge, capital, and infrastructure — and of these three, knowledge is the one that costs nothing to distribute. A young engineer in Accra who truly understands how a transformer works, why three-phase power is superior, and how to size a solar installation for a clinic in the Upper East Region possesses something more valuable than any grant. She possesses the ability to act.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 480 340" width="100%" style="max-width:480px" xmlns="http://www.w3.org/2000/svg">
+  <!-- Iron core (rectangular) -->
+  <rect x="120" y="40" width="240" height="240" rx="8" fill="none" stroke="#9e9684" stroke-width="8"/>
+  <rect x="140" y="60" width="200" height="200" rx="4" fill="none" stroke="#9e9684" stroke-width="0"/>
+  <!-- Core fill to show it's solid -->
+  <rect x="124" y="44" width="232" height="232" rx="6" fill="#9e9684" fill-opacity="0.12"/>
+  <!-- Clear center -->
+  <rect x="160" y="80" width="160" height="160" rx="4" fill="transparent" stroke="none"/>
+  <!-- Inner cutout to show core shape (top-bottom bars with left-right legs) -->
+  <rect x="170" y="90" width="60" height="140" fill="#1a1a1a" fill-opacity="0.85"/>
+  <rect x="250" y="90" width="60" height="140" fill="#1a1a1a" fill-opacity="0.85"/>
+  <!-- Primary coil (left leg) - multiple turns -->
+  <ellipse cx="200" cy="105" rx="35" ry="8" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <ellipse cx="200" cy="125" rx="35" ry="8" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <ellipse cx="200" cy="145" rx="35" ry="8" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <ellipse cx="200" cy="165" rx="35" ry="8" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <ellipse cx="200" cy="185" rx="35" ry="8" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <ellipse cx="200" cy="205" rx="35" ry="8" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <!-- Secondary coil (right leg) - fewer turns for step-down -->
+  <ellipse cx="280" cy="115" rx="35" ry="8" fill="none" stroke="#48a6a6" stroke-width="2"/>
+  <ellipse cx="280" cy="145" rx="35" ry="8" fill="none" stroke="#48a6a6" stroke-width="2"/>
+  <ellipse cx="280" cy="175" rx="35" ry="8" fill="none" stroke="#48a6a6" stroke-width="2"/>
+  <ellipse cx="280" cy="205" rx="35" ry="8" fill="none" stroke="#48a6a6" stroke-width="2"/>
+  <!-- Flux arrows in core -->
+  <polygon points="237,58 240,48 243,58" fill="#c0392b"/>
+  <polygon points="237,272 240,262 243,272" fill="#c0392b" transform="rotate(180,240,267)"/>
+  <text x="240" y="45" text-anchor="middle" fill="#c0392b" font-size="10" font-family="sans-serif">Φ (flux)</text>
+  <!-- Primary leads -->
+  <line x1="165" y1="100" x2="100" y2="100" stroke="#c9a96e" stroke-width="2"/>
+  <line x1="165" y1="210" x2="100" y2="210" stroke="#c9a96e" stroke-width="2"/>
+  <text x="88" y="95" text-anchor="end" fill="#c9a96e" font-size="11" font-family="sans-serif">V₁</text>
+  <text x="88" y="160" text-anchor="end" fill="#c9a96e" font-size="12" font-family="sans-serif">N₁ turns</text>
+  <!-- Secondary leads -->
+  <line x1="315" y1="110" x2="380" y2="110" stroke="#48a6a6" stroke-width="2"/>
+  <line x1="315" y1="210" x2="380" y2="210" stroke="#48a6a6" stroke-width="2"/>
+  <text x="392" y="115" fill="#48a6a6" font-size="11" font-family="sans-serif">V₂</text>
+  <text x="392" y="165" fill="#48a6a6" font-size="12" font-family="sans-serif">N₂ turns</text>
+  <!-- Labels -->
+  <text x="200" y="230" text-anchor="middle" fill="#c9a96e" font-size="11" font-family="sans-serif">Primary</text>
+  <text x="280" y="230" text-anchor="middle" fill="#48a6a6" font-size="11" font-family="sans-serif">Secondary</text>
+  <text x="240" y="305" text-anchor="middle" fill="#9e9684" font-size="11" font-family="sans-serif">Iron Core</text>
+  <!-- Formula -->
+  <text x="240" y="328" text-anchor="middle" fill="#ddd5c4" font-size="14" font-family="sans-serif">V₁ / V₂ = N₁ / N₂</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Fig. 7 — The transformer: two coils on a shared iron core. The turns ratio N₁/N₂ determines the voltage ratio.</figcaption>
+</figure>
+
+
 These letters are written in the tradition of Leonhard Euler, the great Swiss mathematician who, in 1768, wrote a series of letters to a German princess explaining the deepest ideas in physics and philosophy in language that was clear, warm, and utterly without condescension. Euler believed that the mark of true understanding was the ability to explain a thing simply. I share that belief. If an idea cannot be made plain, it has not been understood — it has only been memorised.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 560 280" width="100%" style="max-width:560px" xmlns="http://www.w3.org/2000/svg">
+  <!-- SERIES (left panel) -->
+  <text x="140" y="24" text-anchor="middle" fill="#ddd5c4" font-size="15" font-weight="bold" font-family="sans-serif">Series</text>
+  <!-- Wires -->
+  <line x1="20" y1="100" x2="60" y2="100" stroke="#ddd5c4" stroke-width="2"/>
+  <line x1="130" y1="100" x2="150" y2="100" stroke="#ddd5c4" stroke-width="2"/>
+  <line x1="220" y1="100" x2="260" y2="100" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- R1 box -->
+  <rect x="60" y="80" width="70" height="40" rx="4" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <text x="95" y="106" text-anchor="middle" fill="#c0392b" font-size="14" font-family="sans-serif">R₁</text>
+  <!-- R2 box -->
+  <rect x="150" y="80" width="70" height="40" rx="4" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <text x="185" y="106" text-anchor="middle" fill="#c0392b" font-size="14" font-family="sans-serif">R₂</text>
+  <!-- Current arrow -->
+  <polygon points="36,94 46,100 36,106" fill="#c9a96e"/>
+  <text x="20" y="80" fill="#c9a96e" font-size="11" font-family="sans-serif">I →</text>
+  <!-- Same current label -->
+  <text x="140" y="145" text-anchor="middle" fill="#48a6a6" font-size="11" font-family="sans-serif">Same current through both</text>
+  <!-- Formula -->
+  <text x="140" y="170" text-anchor="middle" fill="#ddd5c4" font-size="13" font-family="sans-serif">R_total = R₁ + R₂</text>
+  <!-- Voltage drops -->
+  <line x1="60" y1="55" x2="130" y2="55" stroke="#c9a96e" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="95" y="50" text-anchor="middle" fill="#c9a96e" font-size="10" font-family="sans-serif">V₁</text>
+  <line x1="150" y1="55" x2="220" y2="55" stroke="#c9a96e" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="185" y="50" text-anchor="middle" fill="#c9a96e" font-size="10" font-family="sans-serif">V₂</text>
+
+  <!-- Divider -->
+  <line x1="280" y1="20" x2="280" y2="260" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- PARALLEL (right panel) -->
+  <text x="420" y="24" text-anchor="middle" fill="#ddd5c4" font-size="15" font-weight="bold" font-family="sans-serif">Parallel</text>
+  <!-- Left node -->
+  <line x1="300" y1="100" x2="340" y2="100" stroke="#ddd5c4" stroke-width="2"/>
+  <circle cx="340" cy="100" r="3" fill="#ddd5c4"/>
+  <!-- Top branch -->
+  <line x1="340" y1="100" x2="340" y2="60" stroke="#ddd5c4" stroke-width="2"/>
+  <line x1="340" y1="60" x2="370" y2="60" stroke="#ddd5c4" stroke-width="2"/>
+  <rect x="370" y="42" width="70" height="36" rx="4" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <text x="405" y="66" text-anchor="middle" fill="#c0392b" font-size="14" font-family="sans-serif">R₁</text>
+  <line x1="440" y1="60" x2="500" y2="60" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- Bottom branch -->
+  <line x1="340" y1="100" x2="340" y2="140" stroke="#ddd5c4" stroke-width="2"/>
+  <line x1="340" y1="140" x2="370" y2="140" stroke="#ddd5c4" stroke-width="2"/>
+  <rect x="370" y="122" width="70" height="36" rx="4" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <text x="405" y="146" text-anchor="middle" fill="#c0392b" font-size="14" font-family="sans-serif">R₂</text>
+  <line x1="440" y1="140" x2="500" y2="140" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- Right node -->
+  <circle cx="500" cy="100" r="3" fill="#ddd5c4"/>
+  <line x1="500" y1="60" x2="500" y2="140" stroke="#ddd5c4" stroke-width="2"/>
+  <line x1="500" y1="100" x2="540" y2="100" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- Current arrows -->
+  <polygon points="316,94 326,100 316,106" fill="#c9a96e"/>
+  <text x="300" y="80" fill="#c9a96e" font-size="11" font-family="sans-serif">I →</text>
+  <!-- Branch current labels -->
+  <text x="354" y="56" fill="#48a6a6" font-size="10" font-family="sans-serif">I₁</text>
+  <text x="354" y="152" fill="#48a6a6" font-size="10" font-family="sans-serif">I₂</text>
+  <!-- Same voltage label -->
+  <text x="420" y="195" text-anchor="middle" fill="#48a6a6" font-size="11" font-family="sans-serif">Same voltage across both</text>
+  <!-- Formula -->
+  <text x="420" y="220" text-anchor="middle" fill="#ddd5c4" font-size="12" font-family="sans-serif">1/R_total = 1/R₁ + 1/R₂</text>
+
+  <!-- Bottom note -->
+  <text x="280" y="260" text-anchor="middle" fill="#9e9684" font-size="11" font-family="sans-serif">Series: voltages divide, current is shared · Parallel: currents divide, voltage is shared</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Fig. 4 — Series vs parallel circuits: the two fundamental ways to connect components</figcaption>
+</figure>
+
+
 We shall proceed from the lightning bolt to the atom, from the atom to the circuit, from the circuit to the generator, from the generator to the grid. By the end, you will understand not merely what electricity does, but what it *is* — and that understanding will make you dangerous in the best possible sense: dangerous to ignorance, dangerous to dependence, and dangerous to the notion that Africa must wait for anyone's permission to power itself.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 440 300" width="100%" style="max-width:480px" xmlns="http://www.w3.org/2000/svg">
+  <!-- Battery -->
+  <line x1="60" y1="90" x2="60" y2="130" stroke="#c9a96e" stroke-width="3"/>
+  <line x1="48" y1="130" x2="72" y2="130" stroke="#c9a96e" stroke-width="1.5"/>
+  <line x1="42" y1="90" x2="78" y2="90" stroke="#c9a96e" stroke-width="3"/>
+  <text x="60" y="78" text-anchor="middle" fill="#c9a96e" font-size="14" font-weight="bold" font-family="sans-serif">+</text>
+  <text x="60" y="155" text-anchor="middle" fill="#c9a96e" font-size="14" font-weight="bold" font-family="sans-serif">−</text>
+  <text x="25" y="115" text-anchor="middle" fill="#ddd5c4" font-size="13" font-family="sans-serif">V</text>
+  <!-- Top wire -->
+  <line x1="60" y1="90" x2="60" y2="50" stroke="#ddd5c4" stroke-width="2"/>
+  <line x1="60" y1="50" x2="380" y2="50" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- Right wire down to resistor -->
+  <line x1="380" y1="50" x2="380" y2="85" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- Resistor (zigzag) -->
+  <polyline points="380,85 390,95 370,110 390,125 370,140 390,155 370,170 380,180" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <text x="410" y="138" fill="#ddd5c4" font-size="13" font-family="sans-serif">R</text>
+  <!-- Bottom wire -->
+  <line x1="380" y1="180" x2="380" y2="220" stroke="#ddd5c4" stroke-width="2"/>
+  <line x1="60" y1="220" x2="380" y2="220" stroke="#ddd5c4" stroke-width="2"/>
+  <line x1="60" y1="130" x2="60" y2="220" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- Current direction arrows (gold, clockwise) -->
+  <polygon points="200,44 210,50 200,56" fill="#c9a96e"/>
+  <text x="210" y="38" fill="#c9a96e" font-size="11" font-family="sans-serif">I (conventional current)</text>
+  <polygon points="200,226 190,220 200,214" fill="#48a6a6"/>
+  <text x="130" y="240" fill="#48a6a6" font-size="11" font-family="sans-serif">e⁻ (electron flow)</text>
+  <!-- Arrow on right side going down -->
+  <polygon points="374,68 380,78 386,68" fill="#c9a96e"/>
+  <!-- Arrow on left side going up -->
+  <polygon points="54,190 60,180 66,190" fill="#48a6a6"/>
+  <!-- Labels -->
+  <text x="60" y="170" text-anchor="end" fill="#9e9684" font-size="11" font-family="sans-serif" transform="translate(-15,0)">Battery</text>
+  <text x="380" y="200" text-anchor="start" fill="#9e9684" font-size="11" font-family="sans-serif" transform="translate(8,0)">Resistor</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Fig. 2 — A simple circuit: battery (V) drives current (I) through a resistor (R). Gold arrows show conventional current; teal arrows show electron flow.</figcaption>
+</figure>
+
 
 Let us begin.
 
@@ -54,6 +268,57 @@ To understand electricity, we must descend from the scale of the thunderstorm to
 
 All matter — the copper wire in your wall, the water in the Niger River, the silicon in a solar panel, the iron in the Earth's core — is made of atoms. An atom consists of a nucleus at the centre, containing protons and neutrons, surrounded by a cloud of electrons. The proton carries a positive electrical charge. The electron carries a negative electrical charge of exactly equal magnitude. The neutron, as its name suggests, is neutral — it carries no charge. In a normal, undisturbed atom, the number of protons equals the number of electrons, and the atom as a whole is electrically neutral. A copper atom, for example, has twenty-nine protons in its nucleus and twenty-nine electrons orbiting around it.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 400" width="100%" style="max-width:400px" xmlns="http://www.w3.org/2000/svg">
+  <!-- Orbit rings -->
+  <ellipse cx="200" cy="200" rx="60" ry="60" fill="none" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3"/>
+  <ellipse cx="200" cy="200" rx="110" ry="110" fill="none" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3"/>
+  <ellipse cx="200" cy="200" rx="165" ry="165" fill="none" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Nucleus -->
+  <circle cx="200" cy="200" r="30" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <!-- Protons (gold with +) -->
+  <circle cx="190" cy="188" r="8" fill="#c9a96e" opacity="0.9"/>
+  <text x="190" y="192" text-anchor="middle" fill="#1a1a1a" font-size="11" font-weight="bold" font-family="sans-serif">+</text>
+  <circle cx="210" cy="188" r="8" fill="#c9a96e" opacity="0.9"/>
+  <text x="210" y="192" text-anchor="middle" fill="#1a1a1a" font-size="11" font-weight="bold" font-family="sans-serif">+</text>
+  <circle cx="200" cy="206" r="8" fill="#c9a96e" opacity="0.9"/>
+  <text x="200" y="210" text-anchor="middle" fill="#1a1a1a" font-size="11" font-weight="bold" font-family="sans-serif">+</text>
+  <!-- Neutrons (gray) -->
+  <circle cx="182" cy="204" r="7" fill="#9e9684" opacity="0.7"/>
+  <circle cx="218" cy="204" r="7" fill="#9e9684" opacity="0.7"/>
+  <circle cx="200" cy="182" r="7" fill="#9e9684" opacity="0.7"/>
+  <!-- Electrons (teal dots) on orbit 1 -->
+  <circle cx="260" cy="200" r="6" fill="#48a6a6"/>
+  <circle cx="140" cy="200" r="6" fill="#48a6a6"/>
+  <!-- Electrons on orbit 2 -->
+  <circle cx="278" cy="130" r="6" fill="#48a6a6"/>
+  <circle cx="122" cy="270" r="6" fill="#48a6a6"/>
+  <circle cx="310" cy="200" r="6" fill="#48a6a6"/>
+  <circle cx="90" cy="200" r="6" fill="#48a6a6"/>
+  <!-- Electrons on orbit 3 -->
+  <circle cx="365" cy="200" r="6" fill="#48a6a6"/>
+  <circle cx="35" cy="200" r="6" fill="#48a6a6"/>
+  <circle cx="200" cy="35" r="6" fill="#48a6a6"/>
+  <circle cx="200" cy="365" r="6" fill="#48a6a6"/>
+  <circle cx="317" cy="117" r="6" fill="#48a6a6"/>
+  <circle cx="83" cy="283" r="6" fill="#48a6a6"/>
+  <!-- Labels -->
+  <text x="200" y="244" text-anchor="middle" fill="#ddd5c4" font-size="12" font-family="sans-serif">Nucleus</text>
+  <text x="200" y="258" text-anchor="middle" fill="#9e9684" font-size="10" font-family="sans-serif">(protons + neutrons)</text>
+  <text x="330" cy="108" y="108" text-anchor="start" fill="#48a6a6" font-size="11" font-family="sans-serif">e⁻ electron</text>
+  <text x="265" y="68" text-anchor="middle" fill="#9e9684" font-size="10" font-family="sans-serif">Orbit shells</text>
+  <!-- Legend -->
+  <circle cx="70" cy="370" r="5" fill="#c9a96e"/>
+  <text x="80" y="374" fill="#ddd5c4" font-size="10" font-family="sans-serif">Proton (+)</text>
+  <circle cx="155" cy="370" r="5" fill="#9e9684"/>
+  <text x="165" y="374" fill="#ddd5c4" font-size="10" font-family="sans-serif">Neutron</text>
+  <circle cx="230" cy="370" r="5" fill="#48a6a6"/>
+  <text x="240" y="374" fill="#ddd5c4" font-size="10" font-family="sans-serif">Electron (−)</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Fig. 1 — The Bohr model of the atom: protons and neutrons in the nucleus, electrons orbiting in shells</figcaption>
+</figure>
+
+
 The electron is the protagonist of our story. It is unimaginably light — roughly one-thousandth the mass of even the tiny proton — and it occupies the outer regions of the atom, where it is relatively loosely bound. In certain materials, particularly metals like copper, the outermost electrons are so weakly attached to their parent atoms that they can drift freely from atom to atom. These are called free electrons, and their ability to move is what makes metals conduct electricity. When we say "current flows through a copper wire," what we mean, physically, is that free electrons are drifting through the copper lattice, bumping from atom to atom, carrying their charge with them. More on this in the letters to come.
 
 The force that governs the interaction between charged particles was quantified by Charles-Augustin de Coulomb in 1785. Coulomb's law states that the force between two charges is proportional to the product of the charges and inversely proportional to the square of the distance between them. In plain language: like charges repel each other (two electrons push apart, two protons push apart), opposite charges attract (an electron and a proton pull toward each other), and the force gets weaker as the particles move farther apart — specifically, it weakens with the square of the distance. Double the distance, and the force drops to one-quarter. Triple it, and the force drops to one-ninth. This inverse-square law is the same mathematical form as Newton's law of gravitation, and it is not a coincidence — both are fundamental forces radiating outward from a point source in three-dimensional space.
@@ -85,6 +350,47 @@ For the African context, static electricity is not merely a historical curiosity
 We have spoken of charges attracting and repelling each other, of sparks leaping across gaps, of lightning bridging the distance between cloud and ground. But how, exactly, does one charge "know" that another charge exists? The charges do not touch each other. There is empty space between them. How does the force act across that space? This question troubled physicists for a century, and the answer — the concept of the field — is one of the most profound ideas in all of physics.
 
 The concept was developed most fully by Michael Faraday, an Englishman of extraordinary genius and no formal education. Faraday was the son of a blacksmith, apprenticed to a bookbinder, and entirely self-taught in science. He could not do advanced mathematics — a fact that his more credentialed colleagues at the Royal Institution never let him forget — and yet his physical intuition was so penetrating that he discovered electromagnetic induction, invented the electric motor, and conceived the field theory that would later be made rigorous by James Clerk Maxwell. Faraday's story is worth lingering on because it demolishes the notion that scientific ability requires privileged origins. If any reader of these letters feels that their background disqualifies them from understanding deep physics, let them remember Faraday: no university, no mathematics, and yet he saw further than almost anyone in his century. The mind is the instrument. Everything else is circumstance.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 300" width="100%" style="max-width:520px" xmlns="http://www.w3.org/2000/svg">
+  <!-- Propagation axis -->
+  <line x1="40" y1="150" x2="490" y2="150" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3"/>
+  <polygon points="490,146 500,150 490,154" fill="#9e9684"/>
+  <text x="500" y="165" fill="#9e9684" font-size="11" font-family="sans-serif">direction</text>
+  <!-- E field (gold sine wave - vertical oscillation) -->
+  <path d="M40,150 C70,150 80,60 110,60 C140,60 150,150 180,150 C210,150 220,240 250,240 C280,240 290,150 320,150 C350,150 360,60 390,60 C420,60 430,150 460,150" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- E field arrows at peaks -->
+  <line x1="110" y1="150" x2="110" y2="65" stroke="#c9a96e" stroke-width="1.5"/>
+  <polygon points="106,70 110,58 114,70" fill="#c9a96e"/>
+  <line x1="250" y1="150" x2="250" y2="235" stroke="#c9a96e" stroke-width="1.5"/>
+  <polygon points="246,230 250,242 254,230" fill="#c9a96e"/>
+  <line x1="390" y1="150" x2="390" y2="65" stroke="#c9a96e" stroke-width="1.5"/>
+  <polygon points="386,70 390,58 394,70" fill="#c9a96e"/>
+  <!-- B field (teal - shown as horizontal oscillation using perspective) -->
+  <path d="M40,150 C70,150 80,150 110,150" fill="none" stroke="#48a6a6" stroke-width="0" />
+  <!-- B field arrows (perpendicular, shown as horizontal deflections) -->
+  <line x1="110" y1="150" x2="140" y2="135" stroke="#48a6a6" stroke-width="1.5"/>
+  <polygon points="135,131 142,133 137,139" fill="#48a6a6"/>
+  <line x1="250" y1="150" x2="220" y2="165" stroke="#48a6a6" stroke-width="1.5"/>
+  <polygon points="225,169 218,167 223,161" fill="#48a6a6"/>
+  <line x1="390" y1="150" x2="420" y2="135" stroke="#48a6a6" stroke-width="1.5"/>
+  <polygon points="415,131 422,133 417,139" fill="#48a6a6"/>
+  <!-- B field sine wave (perspective - smaller amplitude, phase-shifted appearance) -->
+  <path d="M40,150 C55,150 70,142 110,130 C135,122 145,150 180,150 C215,150 225,178 250,170 C275,162 285,150 320,150 C355,150 365,142 390,130 C415,122 425,150 460,150" fill="none" stroke="#48a6a6" stroke-width="2" stroke-dasharray="6,3"/>
+  <!-- Labels -->
+  <text x="110" y="48" text-anchor="middle" fill="#c9a96e" font-size="13" font-weight="bold" font-family="sans-serif">E field</text>
+  <text x="110" y="30" text-anchor="middle" fill="#c9a96e" font-size="10" font-family="sans-serif">(electric)</text>
+  <text x="160" y="118" text-anchor="start" fill="#48a6a6" font-size="13" font-weight="bold" font-family="sans-serif">B field</text>
+  <text x="160" y="106" text-anchor="start" fill="#48a6a6" font-size="10" font-family="sans-serif">(magnetic)</text>
+  <!-- Axis labels -->
+  <text x="25" y="70" text-anchor="middle" fill="#c9a96e" font-size="11" font-family="sans-serif">↑ E</text>
+  <text x="25" y="140" text-anchor="middle" fill="#48a6a6" font-size="11" font-family="sans-serif">↗ B</text>
+  <!-- Note -->
+  <text x="260" y="285" text-anchor="middle" fill="#9e9684" font-size="11" font-family="sans-serif">E and B oscillate perpendicular to each other and to the direction of travel</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Fig. 5 — An electromagnetic wave: the electric field (E, gold) and magnetic field (B, teal) oscillate perpendicular to each other and to the direction of propagation</figcaption>
+</figure>
+
 
 Faraday imagined that every charge creates an invisible influence that extends outward in all directions, filling the space around it. He called this influence the electric field. A positive charge creates a field that points outward, away from the charge, in all directions — like the quills of a porcupine radiating from its body. A negative charge creates a field that points inward, toward the charge — like water draining into a sink. The field exists whether or not another charge is present to feel it. But when a second charge is placed in the field, it experiences a force. A positive charge placed in the field of another positive charge is pushed away (the field points outward from both, and the second charge is pushed along the field lines). A negative charge placed in the same field is pulled toward the source (it is pulled against the field lines). This is how we reformulate Coulomb's law: charge creates a field; the field exerts force on other charges.
 
@@ -147,6 +453,31 @@ There is a historical oddity that confuses students and must be addressed plainl
 Current is measured with an instrument called an ammeter, which must be connected in series with the circuit — that is, the current must flow through the ammeter. This is because the ammeter measures the flow rate at a specific point, just as a flow meter in a pipe must be placed in the pipe, not beside it. (By contrast, a voltmeter measures the pressure difference between two points and must be connected in parallel — across the two points — just as a pressure gauge measures the difference between two taps.) The distinction between series and parallel connections will become critical in Letter 10.
 
 Let me ground this in African practicality. A typical mobile phone charger draws about 1 to 2 amperes at 5 volts. A 60-watt incandescent lightbulb on a 240V African mains supply draws 0.25 amps (we will derive this from Ohm's law in Letter 9). An electric kettle draws about 8-10 amps. A welding machine might draw 30-50 amps. The main circuit breaker in a typical African household is rated at 60 amps — this is the maximum current the system can supply before the breaker trips to prevent the wires from overheating. If you try to run too many appliances simultaneously — the kettle, the iron, the heater, the cooker — the total current exceeds 60 amps, the breaker trips, and the power cuts off. This is not a malfunction. It is protection. The breaker is saying: "The flow through these wires exceeds what they can safely carry. I am shutting down before the wires melt and your house catches fire." Understanding current ratings is the foundation of safe household wiring — a subject we shall address in detail in the second half of this treatise.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 320" width="100%" style="max-width:400px" xmlns="http://www.w3.org/2000/svg">
+  <!-- Triangle -->
+  <polygon points="200,40 60,250 340,250" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- Horizontal divider -->
+  <line x1="108" y1="165" x2="292" y2="165" stroke="#c9a96e" stroke-width="1.5"/>
+  <!-- V at top -->
+  <text x="200" y="125" text-anchor="middle" fill="#ddd5c4" font-size="36" font-weight="bold" font-family="sans-serif">V</text>
+  <!-- I at bottom-left -->
+  <text x="155" y="225" text-anchor="middle" fill="#48a6a6" font-size="36" font-weight="bold" font-family="sans-serif">I</text>
+  <!-- Multiplication sign -->
+  <text x="200" y="225" text-anchor="middle" fill="#9e9684" font-size="28" font-family="sans-serif">×</text>
+  <!-- R at bottom-right -->
+  <text x="245" y="225" text-anchor="middle" fill="#c0392b" font-size="36" font-weight="bold" font-family="sans-serif">R</text>
+  <!-- Formulas below -->
+  <text x="80" y="290" text-anchor="middle" fill="#ddd5c4" font-size="14" font-family="sans-serif">V = I × R</text>
+  <text x="200" y="290" text-anchor="middle" fill="#48a6a6" font-size="14" font-family="sans-serif">I = V / R</text>
+  <text x="320" y="290" text-anchor="middle" fill="#c0392b" font-size="14" font-family="sans-serif">R = V / I</text>
+  <!-- Instruction -->
+  <text x="200" y="310" text-anchor="middle" fill="#9e9684" font-size="11" font-family="sans-serif">Cover the unknown quantity — what remains is the formula</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Fig. 3 — The Ohm's Law triangle: cover V, I, or R to reveal the formula for the unknown</figcaption>
+</figure>
+
 
 There are two types of current: direct current (DC), in which electrons flow in one direction only, and alternating current (AC), in which electrons oscillate back and forth, reversing direction many times per second. Batteries produce DC. Solar panels produce DC. The grid delivers AC. We shall devote all of Part IV to alternating current, but for now, understand that our discussions of circuits in this Part assume direct current — a steady, one-directional flow — because it is simpler and the fundamental laws apply equally to both.
 
@@ -279,6 +610,47 @@ The dance between electricity and magnetism is one of the most beautiful symmetr
 Every power plant on Earth — every coal plant, every gas turbine, every nuclear reactor, every hydroelectric dam, every wind farm, every geothermal plant — generates electricity in fundamentally the same way: by spinning a magnet inside a coil of wire (or equivalently, spinning a coil inside a magnetic field). The energy source differs, but the generator is the same. This is one of the most remarkable unifications in all of engineering.
 
 Let us build a generator in our minds. Take a rectangular loop of wire and mount it on an axle so it can rotate within a magnetic field produced by two permanent magnets (or electromagnets) facing each other, north pole on one side and south pole on the other. The magnetic field is uniform and horizontal between the magnets. Now, rotate the loop. As it turns, the magnetic flux through the loop changes — when the loop is face-on to the field, the flux is maximum; when it is edge-on, the flux is zero. By Faraday's law, the changing flux induces a voltage in the loop. As the loop completes one full rotation, the voltage goes positive, reaches a peak, returns to zero, goes negative, reaches a negative peak, and returns to zero — one complete cycle, producing a sine wave. This is the origin of alternating current. The generator does not produce DC by nature — it produces AC, because the rotation naturally creates an oscillating voltage.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 500 320" width="100%" style="max-width:500px" xmlns="http://www.w3.org/2000/svg">
+  <!-- Axes -->
+  <line x1="60" y1="160" x2="470" y2="160" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="60" y1="30" x2="60" y2="290" stroke="#9e9684" stroke-width="1.5"/>
+  <polygon points="470,156 480,160 470,164" fill="#9e9684"/>
+  <polygon points="56,30 60,20 64,30" fill="#9e9684"/>
+  <text x="485" y="165" fill="#9e9684" font-size="12" font-family="sans-serif">t</text>
+  <text x="50" y="25" fill="#9e9684" font-size="12" font-family="sans-serif">V</text>
+  <!-- Sine wave -->
+  <path d="M60,160 C90,160 105,50 150,50 C195,50 210,160 240,160 C270,160 285,270 330,270 C375,270 390,160 420,160" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- Zero crossings tick marks -->
+  <line x1="60" y1="155" x2="60" y2="165" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="240" y1="155" x2="240" y2="165" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="420" y1="155" x2="420" y2="165" stroke="#9e9684" stroke-width="1.5"/>
+  <!-- Peak voltage line -->
+  <line x1="55" y1="50" x2="460" y2="50" stroke="#c9a96e" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="48" y="54" text-anchor="end" fill="#c9a96e" font-size="11" font-family="sans-serif">+V_peak</text>
+  <text x="48" y="274" text-anchor="end" fill="#c9a96e" font-size="11" font-family="sans-serif">−V_peak</text>
+  <line x1="55" y1="270" x2="460" y2="270" stroke="#c9a96e" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- RMS voltage line -->
+  <line x1="55" y1="82" x2="460" y2="82" stroke="#48a6a6" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="48" y="86" text-anchor="end" fill="#48a6a6" font-size="11" font-family="sans-serif">V_RMS</text>
+  <line x1="55" y1="238" x2="460" y2="238" stroke="#48a6a6" stroke-width="1" stroke-dasharray="6,3"/>
+  <!-- RMS annotation -->
+  <text x="462" y="86" fill="#48a6a6" font-size="10" font-family="sans-serif">0.707 × V_peak</text>
+  <!-- Period bracket -->
+  <line x1="60" y1="290" x2="60" y2="296" stroke="#ddd5c4" stroke-width="1"/>
+  <line x1="420" y1="290" x2="420" y2="296" stroke="#ddd5c4" stroke-width="1"/>
+  <line x1="60" y1="296" x2="420" y2="296" stroke="#ddd5c4" stroke-width="1"/>
+  <text x="240" y="312" text-anchor="middle" fill="#ddd5c4" font-size="12" font-family="sans-serif">T = 1/f (one period = 20ms at 50Hz)</text>
+  <!-- Peak annotation line -->
+  <line x1="150" y1="50" x2="150" y2="160" stroke="#c9a96e" stroke-width="0.8" stroke-dasharray="2,3"/>
+  <!-- Half-period mark -->
+  <line x1="240" y1="286" x2="240" y2="296" stroke="#ddd5c4" stroke-width="1"/>
+  <text x="240" y="285" text-anchor="middle" fill="#9e9684" font-size="9" font-family="sans-serif">T/2</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Fig. 6 — The AC sine wave: peak voltage, RMS voltage (0.707 x peak), and one full period T</figcaption>
+</figure>
+
 
 The frequency of the AC output is determined by the rotational speed of the generator. In most of Africa (and Europe, Asia, and Australia), the standard frequency is 50 Hz — fifty cycles per second. For a two-pole generator (the simple case we described), this requires spinning at 3,000 revolutions per minute (RPM). For a generator with more poles (which is common in large machines, because it allows slower rotation for the same frequency), the speed is lower: a four-pole generator needs 1,500 RPM for 50 Hz, a six-pole needs 1,000 RPM, and so on. The relationship is: frequency = (poles/2) × RPM / 60. Large hydroelectric generators often have many poles and rotate slowly — the generators at the Grand Ethiopian Renaissance Dam, for example, are designed to spin at a few hundred RPM with many pole pairs.
 

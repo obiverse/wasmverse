@@ -10,9 +10,93 @@
 
 Every structure is a conversation between force and material. The stone wall speaks to gravity. The timber beam negotiates with the load upon it. The arch redirects what would crush it into a thrust it can bear. The builder who understands this conversation builds what endures. The builder who does not is at the mercy of accident.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 480 300" width="100%" style="max-width:480px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Support triangles -->
+  <polygon points="60,130 75,155 45,155" fill="none" stroke="#9e9684" stroke-width="1.5"/>
+  <polygon points="420,130 435,155 405,155" fill="none" stroke="#9e9684" stroke-width="1.5"/>
+  <!-- Beam (straight) -->
+  <line x1="60" y1="125" x2="420" y2="125" stroke="#c9a96e" stroke-width="3"/>
+  <!-- Deflected shape (dashed) -->
+  <path d="M 60,125 Q 240,165 420,125" fill="none" stroke="#c9a96e" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
+  <!-- Point load P at center -->
+  <defs><marker id="arrowDown" markerWidth="8" markerHeight="8" refX="4" refY="8" orient="auto"><path d="M0,0 L4,8 L8,0" fill="#c0392b"/></marker></defs>
+  <line x1="240" y1="60" x2="240" y2="118" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <text x="240" y="52" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">P</text>
+  <!-- Span label -->
+  <line x1="60" y1="170" x2="420" y2="170" stroke="#9e9684" stroke-width="0.5"/>
+  <line x1="60" y1="165" x2="60" y2="175" stroke="#9e9684" stroke-width="0.5"/>
+  <line x1="420" y1="165" x2="420" y2="175" stroke="#9e9684" stroke-width="0.5"/>
+  <text x="240" y="185" text-anchor="middle" fill="#9e9684" font-size="10">L</text>
+  <!-- Bending moment diagram below -->
+  <line x1="60" y1="210" x2="420" y2="210" stroke="#9e9684" stroke-width="0.5"/>
+  <polygon points="60,210 240,270 420,210" fill="#48a6a6" opacity="0.15" stroke="#48a6a6" stroke-width="1.2"/>
+  <text x="240" y="288" text-anchor="middle" fill="#48a6a6" font-size="10">M_max = PL/4</text>
+  <text x="240" y="230" text-anchor="middle" fill="#9e9684" font-size="9">Bending moment diagram</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 2 — Simply supported beam with central point load P. Dashed line shows deflection. Triangle below is the bending moment diagram.</figcaption>
+</figure>
+
+
 I write these letters because the African continent is building. From Lagos to Kigali, from Addis Ababa to Dar es Salaam, structures rise daily — houses, schools, bridges, dams. Many are built by hands that know their craft through tradition and apprenticeship, which is a noble and ancient form of knowledge. But tradition alone cannot explain why a beam of a certain depth will carry a classroom of children safely while one slightly thinner will not. Tradition alone cannot tell you when a column will buckle, or why a triangle holds rigid while a rectangle collapses, or how much steel to place inside a concrete beam so that it bends gracefully instead of snapping without warning.
 
 These letters aim to provide that understanding. They proceed as Euler proceeded in his famous letters to a German princess — from first principles, in plain language, with patience. We begin with the nature of force itself, move through simple machines and the behavior of materials, then build upward through beams, columns, trusses, arches, and domes, until at last we can trace the path of every load from rooftop to earth and understand why each element along that path must be sized as it is.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 240" width="100%" style="max-width:520px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Bottom chord -->
+  <line x1="40" y1="170" x2="480" y2="170" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- Top chord -->
+  <line x1="40" y1="60" x2="480" y2="60" stroke="#48a6a6" stroke-width="2.5"/>
+  <!-- Vertical members -->
+  <line x1="40" y1="60" x2="40" y2="170" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="480" y1="60" x2="480" y2="170" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="260" y1="60" x2="260" y2="170" stroke="#9e9684" stroke-width="1.5"/>
+  <!-- Warren-style diagonals -->
+  <line x1="40" y1="170" x2="150" y2="60" stroke="#c9a96e" stroke-width="1.5"/>
+  <line x1="150" y1="60" x2="260" y2="170" stroke="#48a6a6" stroke-width="1.5"/>
+  <line x1="260" y1="170" x2="370" y2="60" stroke="#c9a96e" stroke-width="1.5"/>
+  <line x1="370" y1="60" x2="480" y2="170" stroke="#48a6a6" stroke-width="1.5"/>
+  <!-- Top chord intermediate nodes -->
+  <circle cx="150" cy="60" r="4" fill="#ddd5c4"/>
+  <circle cx="370" cy="60" r="4" fill="#ddd5c4"/>
+  <circle cx="260" cy="60" r="4" fill="#ddd5c4"/>
+  <!-- Bottom chord nodes -->
+  <circle cx="40" cy="170" r="4" fill="#ddd5c4"/>
+  <circle cx="260" cy="170" r="4" fill="#ddd5c4"/>
+  <circle cx="480" cy="170" r="4" fill="#ddd5c4"/>
+  <!-- Top chord nodes -->
+  <circle cx="40" cy="60" r="4" fill="#ddd5c4"/>
+  <circle cx="480" cy="60" r="4" fill="#ddd5c4"/>
+  <!-- External loads (downward arrows at top joints) -->
+  <defs><marker id="arrowDn4" markerWidth="7" markerHeight="7" refX="3.5" refY="7" orient="auto"><path d="M0,0 L3.5,7 L7,0" fill="#c0392b"/></marker></defs>
+  <line x1="150" y1="25" x2="150" y2="53" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowDn4)"/>
+  <line x1="260" y1="25" x2="260" y2="53" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowDn4)"/>
+  <line x1="370" y1="25" x2="370" y2="53" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowDn4)"/>
+  <text x="150" y="18" text-anchor="middle" fill="#c0392b" font-size="10">P</text>
+  <text x="260" y="18" text-anchor="middle" fill="#c0392b" font-size="10">P</text>
+  <text x="370" y="18" text-anchor="middle" fill="#c0392b" font-size="10">P</text>
+  <!-- Support reactions -->
+  <!-- Pin support (left) -->
+  <polygon points="40,175 52,195 28,195" fill="none" stroke="#9e9684" stroke-width="1.2"/>
+  <!-- Roller support (right) -->
+  <polygon points="480,175 492,195 468,195" fill="none" stroke="#9e9684" stroke-width="1.2"/>
+  <circle cx="480" cy="200" r="4" fill="none" stroke="#9e9684" stroke-width="1"/>
+  <!-- Reaction arrows -->
+  <defs><marker id="arrowUp2" markerWidth="7" markerHeight="7" refX="3.5" refY="0" orient="auto"><path d="M0,7 L3.5,0 L7,7" fill="#48a6a6"/></marker></defs>
+  <line x1="40" y1="210" x2="40" y2="200" stroke="#48a6a6" stroke-width="1.5" marker-end="url(#arrowUp2)"/>
+  <line x1="480" y1="215" x2="480" y2="205" stroke="#48a6a6" stroke-width="1.5" marker-end="url(#arrowUp2)"/>
+  <text x="40" y="224" text-anchor="middle" fill="#48a6a6" font-size="9">R₁</text>
+  <text x="480" y="228" text-anchor="middle" fill="#48a6a6" font-size="9">R₂</text>
+  <!-- Legend -->
+  <line x1="100" y1="230" x2="130" y2="230" stroke="#c9a96e" stroke-width="2"/>
+  <text x="135" y="234" fill="#c9a96e" font-size="9">tension</text>
+  <line x1="220" y1="230" x2="250" y2="230" stroke="#48a6a6" stroke-width="2"/>
+  <text x="255" y="234" fill="#48a6a6" font-size="9">compression</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 5 — A Warren truss: triangulated frame with loads at the top joints. Gold members in tension, teal members in compression.</figcaption>
+</figure>
+
 
 I have drawn examples from African building wherever possible: the dry-stone walls of Great Zimbabwe, which have stood for seven centuries without mortar; the rock-hewn churches of Lalibela, carved from living basalt; the Nubian vault technique of the upper Nile, which builds curved roofs without formwork; the Grand Ethiopian Renaissance Dam, which harnesses the Blue Nile. These are not decorations added to a foreign science. They are structural engineering, practiced on African soil, sometimes centuries before European theory caught up to explain why they worked.
 
@@ -31,6 +115,42 @@ My dear reader, before we can speak of beams and bridges, of arches and foundati
 A force is simply a push or a pull. When you press your hand against a wall, you exert a force upon it. When you lift a bucket of water from a well, you exert an upward force upon the rope. When the wind blows against the side of a building, it exerts a horizontal force upon the wall. Forces are invisible, but their effects are plain: they accelerate things, they deform things, they hold things in place or send them tumbling.
 
 Sir Isaac Newton, the great English natural philosopher, gave us the first law of motion, which is the foundation upon which all structural reasoning rests. The law states this: a body at rest remains at rest, and a body in motion remains in motion at constant speed in a straight line, unless acted upon by a force. Consider a stone lying on the ground in the Sahel. It does not move. It has sat there for a thousand years and will sit there for a thousand more, unless something pushes it — a foot, a flood, an earthquake. This is not because the stone is "naturally still." It is because no unbalanced force acts upon it. The moment you kick it, you apply a force, and it moves. The moment you stop kicking, friction (another force, which we shall meet later) brings it to rest again.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 440 280" width="100%" style="max-width:440px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Fixed wall (left) -->
+  <rect x="30" y="60" width="15" height="100" fill="#9e9684" opacity="0.3"/>
+  <line x1="45" y1="60" x2="45" y2="160" stroke="#9e9684" stroke-width="2"/>
+  <!-- Hatching on wall -->
+  <line x1="30" y1="70" x2="42" y2="60" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="30" y1="85" x2="42" y2="75" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="30" y1="100" x2="42" y2="90" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="30" y1="115" x2="42" y2="105" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="30" y1="130" x2="42" y2="120" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="30" y1="145" x2="42" y2="135" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="30" y1="160" x2="42" y2="150" stroke="#9e9684" stroke-width="0.7"/>
+  <!-- Beam -->
+  <line x1="45" y1="110" x2="380" y2="110" stroke="#c9a96e" stroke-width="3"/>
+  <!-- Point load P at free end -->
+  <defs><marker id="arrowDn2" markerWidth="8" markerHeight="8" refX="4" refY="8" orient="auto"><path d="M0,0 L4,8 L8,0" fill="#c0392b"/></marker></defs>
+  <line x1="380" y1="55" x2="380" y2="103" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowDn2)"/>
+  <text x="380" y="47" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">P</text>
+  <!-- Span label -->
+  <line x1="45" y1="135" x2="380" y2="135" stroke="#9e9684" stroke-width="0.5"/>
+  <line x1="45" y1="130" x2="45" y2="140" stroke="#9e9684" stroke-width="0.5"/>
+  <line x1="380" y1="130" x2="380" y2="140" stroke="#9e9684" stroke-width="0.5"/>
+  <text x="212" y="150" text-anchor="middle" fill="#9e9684" font-size="10">L</text>
+  <!-- Bending moment diagram -->
+  <line x1="45" y1="185" x2="380" y2="185" stroke="#9e9684" stroke-width="0.5"/>
+  <polygon points="45,185 45,255 380,185" fill="#48a6a6" opacity="0.15" stroke="#48a6a6" stroke-width="1.2"/>
+  <text x="60" y="265" text-anchor="start" fill="#48a6a6" font-size="10">M_max = P × L</text>
+  <text x="380" y="200" text-anchor="middle" fill="#9e9684" font-size="9">M = 0</text>
+  <text x="55" y="200" text-anchor="start" fill="#9e9684" font-size="9">fixed end</text>
+  <text x="365" y="178" text-anchor="end" fill="#9e9684" font-size="9">free end</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 3 — Cantilever beam with point load at free end. Moment is zero at the free end, maximum (P x L) at the wall.</figcaption>
+</figure>
+
 
 Now here is the insight that matters for the builder: a structure that is standing still is a body at rest. Newton's first law tells us that every force acting upon it must be balanced by an equal and opposite force. The roof pushes down on the wall; the wall pushes up on the roof. The wall pushes down on the foundation; the foundation pushes up on the wall. The foundation pushes down on the earth; the earth pushes up on the foundation. If at any point in this chain a force goes unbalanced — if the earth cannot push back hard enough, or the wall is too weak to transmit the load — the structure moves. And when a structure moves, we call that collapse.
 
@@ -85,6 +205,42 @@ Gravity is what makes the Nile flow from the highlands of Ethiopia northward to 
 For the builder, gravity creates two kinds of load. The first is the dead load — the weight of the structure itself. The concrete slab weighs so much per square meter. The steel beams weigh so much per meter of length. The roof tiles, the walls, the foundations — all have weight, and all that weight must be carried continuously. The second is the live load — the weight of everything that is not the structure itself but rests upon it. People, furniture, stored goods, vehicles on a bridge. Live loads come and go, but the structure must be ready for them at all times.
 
 Consider a simple example: a reinforced concrete floor slab in a school in Kigali. The slab is 150 millimeters thick and spans 4 meters. Reinforced concrete weighs approximately 25 kilonewtons per cubic meter. The dead load of the slab is therefore 0.15 meters times 25 kN/m³ = 3.75 kN per square meter. The live load for a classroom — students, desks, the teacher pacing — is typically taken as 3.0 kN per square meter. The total load is 6.75 kN per square meter. Over a 4-meter by 6-meter classroom, that is 162 kN — roughly the weight of 16 tonnes pressing down on the beams and walls below. The structure must carry this without excessive deflection or distress, day after day, for the life of the building.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 480 200" width="100%" style="max-width:480px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Original bar -->
+  <rect x="120" y="65" width="200" height="50" rx="3" fill="#c9a96e" opacity="0.15" stroke="#c9a96e" stroke-width="1.5"/>
+  <!-- Elongation region (dashed extension) -->
+  <rect x="320" y="65" width="40" height="50" rx="0" fill="#c9a96e" opacity="0.08" stroke="#c9a96e" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Force arrows (tension) -->
+  <defs>
+    <marker id="arrowFL" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><path d="M10,0 L0,3.5 L10,7" fill="#c0392b"/></marker>
+    <marker id="arrowFR" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#c0392b"/></marker>
+  </defs>
+  <line x1="115" y1="90" x2="50" y2="90" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowFL)"/>
+  <text x="75" y="82" text-anchor="middle" fill="#c0392b" font-size="11" font-weight="bold">F</text>
+  <line x1="365" y1="90" x2="430" y2="90" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowFR)"/>
+  <text x="405" y="82" text-anchor="middle" fill="#c0392b" font-size="11" font-weight="bold">F</text>
+  <!-- L0 dimension -->
+  <line x1="120" y1="140" x2="320" y2="140" stroke="#ddd5c4" stroke-width="0.7"/>
+  <line x1="120" y1="135" x2="120" y2="145" stroke="#ddd5c4" stroke-width="0.7"/>
+  <line x1="320" y1="135" x2="320" y2="145" stroke="#ddd5c4" stroke-width="0.7"/>
+  <text x="220" y="155" text-anchor="middle" fill="#ddd5c4" font-size="10">L₀</text>
+  <!-- Delta L dimension -->
+  <line x1="320" y1="50" x2="360" y2="50" stroke="#48a6a6" stroke-width="0.7"/>
+  <line x1="320" y1="45" x2="320" y2="55" stroke="#48a6a6" stroke-width="0.7"/>
+  <line x1="360" y1="45" x2="360" y2="55" stroke="#48a6a6" stroke-width="0.7"/>
+  <text x="340" y="44" text-anchor="middle" fill="#48a6a6" font-size="10">ΔL</text>
+  <!-- Cross-section area indicator -->
+  <line x1="120" y1="65" x2="120" y2="115" stroke="#9e9684" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <text x="110" y="55" text-anchor="end" fill="#9e9684" font-size="9">Area A</text>
+  <!-- Formulas -->
+  <text x="240" y="185" text-anchor="middle" fill="#c9a96e" font-size="11">σ = F / A</text>
+  <text x="400" y="185" text-anchor="middle" fill="#48a6a6" font-size="11">ε = ΔL / L₀</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 1 — Stress and strain: a bar in tension. Stress is force per unit area; strain is elongation per unit length.</figcaption>
+</figure>
+
 
 Gravity also creates a phenomenon called overturning. A tall, narrow structure — a chimney, a water tower, a tall retaining wall — can be toppled by a horizontal force such as wind. Gravity resists this toppling: the weight of the structure acts downward through its center, creating a stabilizing moment. But if the wind moment exceeds the gravity moment, the structure overturns. This is why tall structures must be either heavy enough or wide enough at their base to resist overturning. The pyramids of Egypt, with their enormous weight and broad bases, are perhaps the most over-engineered structures in history against overturning — which is one reason they have stood for four and a half millennia.
 
@@ -233,6 +389,42 @@ Beyond the yield plateau, steel continues to resist increasing stress through a 
 Concrete tells a different story. When a concrete cylinder is compressed, it behaves approximately elastically up to about 40% of its ultimate strength. Beyond this, micro-cracks begin to form and grow. The stress-strain curve bends, becoming less steep. At the ultimate compressive strength (typically 20 to 50 MPa for structural concrete), the cracks coalesce, and the concrete crushes. There is no yield plateau, no ductile deformation, no warning. One moment the concrete is carrying load; the next, it is rubble. This brittleness is concrete's great weakness, and it is the reason we reinforce concrete with steel. The steel provides the ductility that the concrete lacks, and the combination — reinforced concrete — is both strong and forgiving.
 
 Timber fails in a manner that depends on the type of loading and the direction relative to the grain. In tension along the grain, timber fails by brittle fracture — the fibers snap. In compression along the grain, timber can yield by fiber buckling, which provides some ductility. In bending, timber typically fails in tension on the bottom face, because wood is weaker in tension than in compression. The failure is often sudden and audible — a sharp crack. The experienced carpenter learns to listen to the wood, for it speaks before it breaks. A creak or a groan under load is the wood's way of saying it is nearing its limit. The builder who heeds this warning may avert disaster; the builder who ignores it may not be so fortunate.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 360 380" width="100%" style="max-width:400px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Ground line -->
+  <line x1="100" y1="330" x2="260" y2="330" stroke="#9e9684" stroke-width="1.5"/>
+  <!-- Hatching -->
+  <line x1="110" y1="340" x2="120" y2="330" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="130" y1="340" x2="140" y2="330" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="150" y1="340" x2="160" y2="330" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="170" y1="340" x2="180" y2="330" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="190" y1="340" x2="200" y2="330" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="210" y1="340" x2="220" y2="330" stroke="#9e9684" stroke-width="0.7"/>
+  <line x1="230" y1="340" x2="240" y2="330" stroke="#9e9684" stroke-width="0.7"/>
+  <!-- Straight column (dashed, original) -->
+  <line x1="180" y1="330" x2="180" y2="50" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Buckled shape (sinusoidal curve) -->
+  <path d="M 180,330 C 180,280 220,230 220,190 C 220,150 140,100 180,50" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- Axial load P at top -->
+  <defs><marker id="arrowDn3" markerWidth="8" markerHeight="8" refX="4" refY="8" orient="auto"><path d="M0,0 L4,8 L8,0" fill="#c0392b"/></marker></defs>
+  <line x1="180" y1="15" x2="180" y2="44" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrowDn3)"/>
+  <text x="180" y="12" text-anchor="middle" fill="#c0392b" font-size="14" font-weight="bold">P</text>
+  <!-- Lateral deflection indicator -->
+  <line x1="180" y1="190" x2="220" y2="190" stroke="#48a6a6" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="235" y="194" fill="#48a6a6" font-size="9">δ</text>
+  <!-- L label -->
+  <line x1="130" y1="50" x2="130" y2="330" stroke="#9e9684" stroke-width="0.5"/>
+  <line x1="125" y1="50" x2="135" y2="50" stroke="#9e9684" stroke-width="0.5"/>
+  <line x1="125" y1="330" x2="135" y2="330" stroke="#9e9684" stroke-width="0.5"/>
+  <text x="120" y="195" text-anchor="end" fill="#9e9684" font-size="11">L</text>
+  <!-- Formula -->
+  <text x="180" y="365" text-anchor="middle" fill="#c9a96e" font-size="12" font-weight="bold">P_cr = π²EI / L²</text>
+  <text x="180" y="378" text-anchor="middle" fill="#9e9684" font-size="9">Euler's critical load -- the master's own formula</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 4 — Euler's column buckling: axial load P causes sinusoidal lateral deflection at the critical load.</figcaption>
+</figure>
+
 
 The structural engineer designs with safety factors precisely because failure is the consequence of miscalculation. A safety factor of 1.5 on steel yield means the structure is designed so that the actual stress is no more than two-thirds of the yield stress. A safety factor of 2.0 on concrete ultimate strength means the actual stress is no more than half the crushing strength. These factors account for variability in materials, uncertainty in loads, imperfections in construction, and the consequences of failure. A footbridge might have a modest safety factor; a hospital or a school, where many lives depend on the structure, will have a larger one. The safety factor is not a sign of ignorance — it is a sign of humility in the face of uncertainty.
 

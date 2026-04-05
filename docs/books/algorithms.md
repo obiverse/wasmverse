@@ -132,6 +132,69 @@ A queue supports two primary operations: enqueue (add an item to the back) and d
 
 The queue is the natural data structure for breadth-first search (BFS), which we shall examine in detail in our letters on graphs. For now, know that BFS explores a graph level by level: first all nodes at distance 1, then all at distance 2, and so on. The queue ensures that nodes discovered earlier are explored first, producing this level-by-level pattern. BFS finds the shortest path in an unweighted graph, making it indispensable for applications like network routing.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 460 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px" font-family="sans-serif">
+  <defs>
+    <marker id="arrowD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#9e9684"/>
+    </marker>
+    <marker id="arrowGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#c9a96e"/>
+    </marker>
+  </defs>
+  <!-- Dim edges (non-shortest-path) -->
+  <line x1="85" y1="55" x2="215" y2="55" stroke="#9e9684" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="150" y="47" text-anchor="middle" fill="#9e9684" font-size="10" opacity="0.6">10</text>
+  <line x1="230" y1="65" x2="370" y2="120" stroke="#9e9684" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="308" y="85" text-anchor="middle" fill="#9e9684" font-size="10" opacity="0.6">6</text>
+  <line x1="85" y1="65" x2="160" y2="140" stroke="#9e9684" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="112" y="108" text-anchor="middle" fill="#9e9684" font-size="10" opacity="0.6">8</text>
+  <line x1="225" y1="65" x2="175" y2="140" stroke="#9e9684" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="210" y="108" text-anchor="middle" fill="#9e9684" font-size="10" opacity="0.6">5</text>
+  <line x1="175" y1="160" x2="290" y2="230" stroke="#9e9684" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="222" y="202" text-anchor="middle" fill="#9e9684" font-size="10" opacity="0.6">9</text>
+  <!-- Shortest path edges: A -> C -> D -> F (gold, thick) -->
+  <line x1="75" y1="68" x2="75" y2="130" stroke="#c9a96e" stroke-width="2.5"/>
+  <text x="62" y="102" text-anchor="middle" fill="#c9a96e" font-size="11" font-weight="bold">2</text>
+  <line x1="85" y1="145" x2="370" y2="135" stroke="#c9a96e" stroke-width="2.5"/>
+  <text x="230" y="148" text-anchor="middle" fill="#c9a96e" font-size="11" font-weight="bold">3</text>
+  <line x1="385" y1="145" x2="320" y2="225" stroke="#c9a96e" stroke-width="2.5"/>
+  <text x="362" y="192" text-anchor="middle" fill="#c9a96e" font-size="11" font-weight="bold">4</text>
+  <!-- Nodes -->
+  <!-- A (start) -->
+  <circle cx="70" cy="55" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="70" y="52" text-anchor="middle" fill="#c9a96e" font-size="14" font-weight="bold">A</text>
+  <text x="70" y="64" text-anchor="middle" fill="#c9a96e" font-size="9">d=0</text>
+  <!-- B -->
+  <circle cx="225" cy="55" r="20" fill="none" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="225" y="52" text-anchor="middle" fill="#9e9684" font-size="14">B</text>
+  <text x="225" y="64" text-anchor="middle" fill="#9e9684" font-size="9">d=10</text>
+  <!-- C (on path) -->
+  <circle cx="70" cy="145" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="70" y="142" text-anchor="middle" fill="#c9a96e" font-size="14" font-weight="bold">C</text>
+  <text x="70" y="154" text-anchor="middle" fill="#c9a96e" font-size="9">d=2</text>
+  <!-- E -->
+  <circle cx="170" cy="150" r="20" fill="none" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="170" y="147" text-anchor="middle" fill="#9e9684" font-size="14">E</text>
+  <text x="170" y="159" text-anchor="middle" fill="#9e9684" font-size="9">d=15</text>
+  <!-- D (on path) -->
+  <circle cx="385" cy="130" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="385" y="127" text-anchor="middle" fill="#c9a96e" font-size="14" font-weight="bold">D</text>
+  <text x="385" y="139" text-anchor="middle" fill="#c9a96e" font-size="9">d=5</text>
+  <!-- F (end, on path) -->
+  <circle cx="305" cy="235" r="20" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="305" y="232" text-anchor="middle" fill="#c9a96e" font-size="14" font-weight="bold">F</text>
+  <text x="305" y="244" text-anchor="middle" fill="#c9a96e" font-size="9">d=9</text>
+  <!-- Legend -->
+  <line x1="30" y1="270" x2="55" y2="270" stroke="#c9a96e" stroke-width="2.5"/>
+  <text x="60" y="274" fill="#c9a96e" font-size="10">Shortest path (A-C-D-F, cost 9)</text>
+  <line x1="250" y1="270" x2="275" y2="270" stroke="#9e9684" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="280" y="274" fill="#9e9684" font-size="10">Other edges</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Dijkstra's algorithm: the shortest path from A to F (gold) has total cost 9. Distance labels show settled costs.</figcaption>
+</figure>
+
+
 Consider the M-Pesa transaction processing system. Transactions arrive from millions of agents and must be processed in order. This is a queue. A print queue handles documents in the order they are submitted. A message queue in a distributed system ensures that events are processed in the order they occurred. The operating system's process scheduler uses a queue to give each running program its fair share of CPU time. Queues are the infrastructure of fairness and ordering.
 
 A useful variant is the double-ended queue, or deque, which allows insertion and removal at both ends. Another is the priority queue, where items are dequeued not by arrival order but by priority. The priority queue is so important that it receives its own letter when we discuss heaps. For now, let us simply note that the basic queue -- first come, first served -- is one of the most commonly used data structures in systems programming, networking, and any application where ordering and fairness matter.
@@ -145,6 +208,62 @@ I come now to what is perhaps the single most useful data structure in practical
 Imagine a large cloakroom at a conference center in Kigali. When you deposit your coat, the attendant does not simply hang it on the next available hook. Instead, she computes a number from your name -- perhaps by summing the numeric values of the letters and taking the remainder when divided by the number of hooks. This number determines which hook your coat goes on. When you return, she performs the same computation on your name, goes directly to the computed hook, and retrieves your coat. She never searches. The computation -- the hash function -- converts the key (your name) into an index (the hook number).
 
 The hash function must be deterministic: the same key always produces the same index. It should distribute keys uniformly across the available slots, minimizing the chance that two different keys map to the same slot. When two keys do map to the same slot -- a collision -- we must handle it. The simplest method, called chaining, stores a linked list at each slot. When a collision occurs, the new item is appended to the list. To retrieve an item, we hash the key, go to the slot, and search the list. If the hash function distributes well, the lists are short, and the average search time remains O(1).
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 480 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px" font-family="sans-serif">
+  <!-- Keys -->
+  <rect x="10" y="20" width="80" height="28" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="4"/>
+  <text x="50" y="39" text-anchor="middle" fill="#ddd5c4" font-size="12">Lagos</text>
+  <rect x="10" y="65" width="80" height="28" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="4"/>
+  <text x="50" y="84" text-anchor="middle" fill="#ddd5c4" font-size="12">Accra</text>
+  <rect x="10" y="110" width="80" height="28" fill="none" stroke="#c0392b" stroke-width="1.5" rx="4"/>
+  <text x="50" y="129" text-anchor="middle" fill="#ddd5c4" font-size="12">Nairobi</text>
+  <!-- Hash function box -->
+  <rect x="140" y="50" width="70" height="40" fill="none" stroke="#c9a96e" stroke-width="1.5" rx="4"/>
+  <text x="175" y="66" text-anchor="middle" fill="#c9a96e" font-size="10" font-weight="bold">hash(key)</text>
+  <text x="175" y="80" text-anchor="middle" fill="#c9a96e" font-size="10">% 5</text>
+  <!-- Arrows: keys to hash -->
+  <line x1="90" y1="34" x2="140" y2="62" stroke="#9e9684" stroke-width="1"/>
+  <line x1="90" y1="79" x2="140" y2="70" stroke="#9e9684" stroke-width="1"/>
+  <line x1="90" y1="124" x2="140" y2="78" stroke="#9e9684" stroke-width="1"/>
+  <!-- Arrows: hash to buckets -->
+  <line x1="210" y1="58" x2="270" y2="34" stroke="#48a6a6" stroke-width="1"/>
+  <polygon points="268,30 276,34 268,38" fill="#48a6a6"/>
+  <line x1="210" y1="70" x2="270" y2="114" stroke="#48a6a6" stroke-width="1"/>
+  <polygon points="268,110 276,114 268,118" fill="#48a6a6"/>
+  <line x1="210" y1="78" x2="270" y2="114" stroke="#c0392b" stroke-width="1" stroke-dasharray="4,2"/>
+  <polygon points="268,110 276,114 268,118" fill="#c0392b"/>
+  <!-- Buckets -->
+  <rect x="275" y="15" width="40" height="28" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <text x="295" y="33" text-anchor="middle" fill="#9e9684" font-size="11">0</text>
+  <rect x="275" y="55" width="40" height="28" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <text x="295" y="73" text-anchor="middle" fill="#9e9684" font-size="11">1</text>
+  <rect x="275" y="95" width="40" height="28" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <text x="295" y="113" text-anchor="middle" fill="#9e9684" font-size="11">2</text>
+  <rect x="275" y="135" width="40" height="28" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <text x="295" y="153" text-anchor="middle" fill="#9e9684" font-size="11">3</text>
+  <rect x="275" y="175" width="40" height="28" fill="none" stroke="#9e9684" stroke-width="1.5" rx="2"/>
+  <text x="295" y="193" text-anchor="middle" fill="#9e9684" font-size="11">4</text>
+  <!-- Bucket 0: Lagos -->
+  <line x1="315" y1="29" x2="340" y2="29" stroke="#48a6a6" stroke-width="1.5"/>
+  <polygon points="338,25 346,29 338,33" fill="#48a6a6"/>
+  <rect x="348" y="15" width="70" height="28" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="4"/>
+  <text x="383" y="33" text-anchor="middle" fill="#ddd5c4" font-size="11">Lagos</text>
+  <!-- Bucket 2: Accra -> Nairobi (collision chain) -->
+  <line x1="315" y1="109" x2="340" y2="109" stroke="#48a6a6" stroke-width="1.5"/>
+  <polygon points="338,105 346,109 338,113" fill="#48a6a6"/>
+  <rect x="348" y="95" width="55" height="28" fill="none" stroke="#48a6a6" stroke-width="1.5" rx="4"/>
+  <text x="375" y="113" text-anchor="middle" fill="#ddd5c4" font-size="11">Accra</text>
+  <line x1="403" y1="109" x2="418" y2="109" stroke="#c0392b" stroke-width="1.5"/>
+  <polygon points="416,105 424,109 416,113" fill="#c0392b"/>
+  <rect x="425" y="95" width="55" height="28" fill="none" stroke="#c0392b" stroke-width="1.5" rx="4"/>
+  <text x="452" y="113" text-anchor="middle" fill="#ddd5c4" font-size="11">Nairobi</text>
+  <!-- Collision label -->
+  <text x="440" y="88" text-anchor="middle" fill="#c0392b" font-size="9">collision</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Hash table with chaining: keys pass through a hash function to buckets. Accra and Nairobi collide at bucket 2.</figcaption>
+</figure>
+
 
 An alternative collision resolution strategy is open addressing: when a collision occurs, probe the next slot (or a slot determined by a secondary hash function) until an empty one is found. Open addressing avoids the overhead of linked lists and benefits from cache locality, but it becomes slow as the table fills up. Most practical hash tables switch strategies or resize when the load factor (ratio of items to slots) exceeds a threshold, typically 0.7 or so.
 
@@ -163,6 +282,41 @@ One must note the worst case. If the hash function is poor, or if an adversary c
 We leave the linear world of arrays, lists, stacks, and queues, and enter the branching world of trees. A tree is a hierarchical data structure where each element -- called a node -- has a parent (except the root, which has none) and zero or more children. The analogy to a family tree is apt: the patriarch at the top, his children below, their children below them, and so on.
 
 A binary tree is a tree where each node has at most two children, conventionally called the left child and the right child. This restriction to two children may seem arbitrary, but it leads to a remarkably rich theory and a vast number of practical applications. Binary trees are the foundation upon which search trees, heaps, expression trees, and many other structures are built.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px" font-family="sans-serif">
+  <!-- Edges (drawn first, behind nodes) -->
+  <line x1="200" y1="35" x2="110" y2="85" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="200" y1="35" x2="290" y2="85" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="110" y1="85" x2="60" y2="145" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="110" y1="85" x2="160" y2="145" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="290" y1="85" x2="240" y2="145" stroke="#9e9684" stroke-width="1.5"/>
+  <line x1="290" y1="85" x2="340" y2="145" stroke="#9e9684" stroke-width="1.5"/>
+  <!-- Root (depth 0) -->
+  <circle cx="200" cy="30" r="22" fill="none" stroke="#c9a96e" stroke-width="2"/>
+  <text x="200" y="36" text-anchor="middle" fill="#c9a96e" font-size="14" font-weight="bold">50</text>
+  <!-- Depth 1 -->
+  <circle cx="110" cy="90" r="22" fill="none" stroke="#48a6a6" stroke-width="1.5"/>
+  <text x="110" y="96" text-anchor="middle" fill="#ddd5c4" font-size="14" font-weight="bold">30</text>
+  <circle cx="290" cy="90" r="22" fill="none" stroke="#48a6a6" stroke-width="1.5"/>
+  <text x="290" y="96" text-anchor="middle" fill="#ddd5c4" font-size="14" font-weight="bold">70</text>
+  <!-- Depth 2 -->
+  <circle cx="60" cy="150" r="22" fill="none" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="60" y="156" text-anchor="middle" fill="#ddd5c4" font-size="14">20</text>
+  <circle cx="160" cy="150" r="22" fill="none" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="160" y="156" text-anchor="middle" fill="#ddd5c4" font-size="14">40</text>
+  <circle cx="240" cy="150" r="22" fill="none" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="240" y="156" text-anchor="middle" fill="#ddd5c4" font-size="14">60</text>
+  <circle cx="340" cy="150" r="22" fill="none" stroke="#9e9684" stroke-width="1.5"/>
+  <text x="340" y="156" text-anchor="middle" fill="#ddd5c4" font-size="14">80</text>
+  <!-- Depth labels -->
+  <text x="385" y="36" fill="#9e9684" font-size="10">depth 0</text>
+  <text x="385" y="96" fill="#9e9684" font-size="10">depth 1</text>
+  <text x="385" y="156" fill="#9e9684" font-size="10">depth 2</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">A complete binary tree of depth 2 with 7 nodes. Root in gold, children branching left and right.</figcaption>
+</figure>
+
 
 The fundamental operations on a binary tree are traversals -- systematic ways of visiting every node. There are three natural traversals, each defined recursively. In-order traversal visits the left subtree, then the current node, then the right subtree. Pre-order traversal visits the current node first, then the left subtree, then the right. Post-order traversal visits the left subtree, then the right subtree, then the current node. There is also level-order traversal, which visits nodes level by level from top to bottom, using a queue. Each traversal order has its uses: in-order produces sorted output from a binary search tree, pre-order is used to copy or serialize a tree, and post-order is used to delete a tree or evaluate an expression tree.
 

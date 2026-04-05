@@ -10,11 +10,91 @@
 
 Chemistry is the science of transformation. It is the discipline that explains why iron rusts but gold does not, why limestone becomes cement when heated in a kiln, why crude oil from the Niger Delta can be refined into petrol, diesel, kerosene, and the plastic casing of the phone in your pocket. It is the science that tells you what things are made of and — more importantly — why they behave as they do. Every material you have ever touched, tasted, smelled, or breathed is a chemical substance, and its properties are determined not by accident or mystery but by the arrangement of its atoms and the bonds between them.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 220" width="100%" style="max-width:520px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Divider -->
+  <line x1="260" y1="15" x2="260" y2="195" stroke="#9e9684" stroke-width="0.5" stroke-dasharray="4,3"/>
+  <!-- IONIC (left panel) -->
+  <text x="130" y="22" text-anchor="middle" fill="#ddd5c4" font-size="12" font-weight="bold">Ionic Bond</text>
+  <!-- Na atom -->
+  <circle cx="70" cy="90" r="30" fill="none" stroke="#c9a96e" stroke-width="1.5"/>
+  <text x="70" y="94" text-anchor="middle" fill="#c9a96e" font-size="13" font-weight="bold">Na</text>
+  <circle cx="100" cy="80" r="4" fill="#48a6a6"/>
+  <text x="70" y="135" text-anchor="middle" fill="#9e9684" font-size="9">1 valence e⁻</text>
+  <!-- Arrow: electron transfer -->
+  <line x1="110" y1="80" x2="145" y2="80" stroke="#48a6a6" stroke-width="1.5" marker-end="url(#arrowT)"/>
+  <defs><marker id="arrowT" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#48a6a6"/></marker></defs>
+  <text x="128" y="73" text-anchor="middle" fill="#48a6a6" font-size="8">e⁻</text>
+  <!-- Cl atom -->
+  <circle cx="190" cy="90" r="34" fill="none" stroke="#48a6a6" stroke-width="1.5"/>
+  <text x="190" y="94" text-anchor="middle" fill="#48a6a6" font-size="13" font-weight="bold">Cl</text>
+  <!-- Result ions -->
+  <text x="70" y="170" text-anchor="middle" fill="#c9a96e" font-size="14" font-weight="bold">Na⁺</text>
+  <text x="190" y="170" text-anchor="middle" fill="#48a6a6" font-size="14" font-weight="bold">Cl⁻</text>
+  <!-- Electrostatic attraction -->
+  <line x1="90" y1="166" x2="170" y2="166" stroke="#c0392b" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="130" y="190" text-anchor="middle" fill="#c0392b" font-size="8">electrostatic attraction</text>
+  <!-- COVALENT (right panel) -->
+  <text x="390" y="22" text-anchor="middle" fill="#ddd5c4" font-size="12" font-weight="bold">Covalent Bond</text>
+  <!-- O atom 1 -->
+  <circle cx="355" cy="90" r="34" fill="none" stroke="#c0392b" stroke-width="1.5" opacity="0.7"/>
+  <text x="340" y="94" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">O</text>
+  <!-- O atom 2 -->
+  <circle cx="425" cy="90" r="34" fill="none" stroke="#c0392b" stroke-width="1.5" opacity="0.7"/>
+  <text x="440" y="94" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">O</text>
+  <!-- Overlap region -->
+  <ellipse cx="390" cy="90" rx="12" ry="28" fill="#c9a96e" opacity="0.15"/>
+  <!-- Shared electron pairs (double bond) -->
+  <circle cx="387" cy="80" r="3.5" fill="#48a6a6"/>
+  <circle cx="393" cy="80" r="3.5" fill="#48a6a6"/>
+  <circle cx="387" cy="100" r="3.5" fill="#48a6a6"/>
+  <circle cx="393" cy="100" r="3.5" fill="#48a6a6"/>
+  <text x="390" y="145" text-anchor="middle" fill="#9e9684" font-size="9">shared electron pairs</text>
+  <text x="390" y="158" text-anchor="middle" fill="#ddd5c4" font-size="10">O=O (double bond)</text>
+  <!-- Bottom labels -->
+  <text x="130" y="210" text-anchor="middle" fill="#9e9684" font-size="9">electron transfer</text>
+  <text x="390" y="210" text-anchor="middle" fill="#9e9684" font-size="9">electron sharing</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 3 — Ionic bonding (left): Na donates an electron to Cl. Covalent bonding (right): two O atoms share electron pairs.</figcaption>
+</figure>
+
+
 For much of human history, the transformation of matter was practised without being understood. The smelters of Nok, in what is now central Nigeria, reduced iron ore to metal around 500 BC — among the earliest iron-working cultures on Earth — without knowing that they were using carbon monoxide to strip oxygen atoms from iron oxide. The salt traders of the Danakil Depression in Ethiopia have harvested evaporite minerals from the hottest inhabited place on the planet for centuries, cutting slabs of halite from the crust of a dried lake without needing to know that each slab is a crystal lattice of sodium and chlorine atoms held together by electrostatic attraction. The knowledge was empirical: do this, and that happens. Chemistry asks the deeper question: *why* does that happen? And the answer, once grasped, gives you power over matter itself.
 
 This treatise is written for the reader who wishes to understand materials — not as a student memorising formulas for an examination, but as a thinking person who wants to know why concrete hardens, why batteries die, why petroleum can be cracked into a dozen useful products, why cobalt is essential to the lithium-ion cell that powers the modern world, and why the chemistry of the atmosphere determines whether crops grow or fail. These are not academic questions. They are questions of industry, sovereignty, and survival.
 
 The letters follow the tradition of Leonhard Euler, who believed that the deepest ideas in science could be communicated in clear, patient language to any attentive reader. I share that conviction. Chemistry is not difficult because its ideas are beyond the ordinary mind. It is difficult only when it is taught as a catalogue of facts rather than as a story of *why*. We shall tell the story of why. We shall begin with the atom, proceed through the bond, the reaction, the acid and the base, the hydrocarbon chain, the metal and the ceramic, the battery and the corroding pipe, and arrive at last at the chemistry of the air and the water and the soil — the environmental chemistry upon which all life depends.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 320" width="100%" style="max-width:400px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Oxygen atom -->
+  <circle cx="200" cy="130" r="38" fill="#c0392b" opacity="0.2" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="200" y="135" text-anchor="middle" fill="#c0392b" font-size="16" font-weight="bold">O</text>
+  <text x="200" y="150" text-anchor="middle" fill="#ddd5c4" font-size="9">δ−</text>
+  <!-- Bond lines -->
+  <line x1="175" y1="155" x2="130" y2="220" stroke="#9e9684" stroke-width="2"/>
+  <line x1="225" y1="155" x2="270" y2="220" stroke="#9e9684" stroke-width="2"/>
+  <!-- Hydrogen 1 (left) -->
+  <circle cx="120" cy="232" r="22" fill="#48a6a6" opacity="0.25" stroke="#48a6a6" stroke-width="1.5"/>
+  <text x="120" y="236" text-anchor="middle" fill="#48a6a6" font-size="14" font-weight="bold">H</text>
+  <text x="120" y="260" text-anchor="middle" fill="#ddd5c4" font-size="9">δ+</text>
+  <!-- Hydrogen 2 (right) -->
+  <circle cx="280" cy="232" r="22" fill="#48a6a6" opacity="0.25" stroke="#48a6a6" stroke-width="1.5"/>
+  <text x="280" y="236" text-anchor="middle" fill="#48a6a6" font-size="14" font-weight="bold">H</text>
+  <text x="280" y="260" text-anchor="middle" fill="#ddd5c4" font-size="9">δ+</text>
+  <!-- Bond angle arc -->
+  <path d="M 165,170 A 45,45 0 0,0 235,170" fill="none" stroke="#c9a96e" stroke-width="1"/>
+  <text x="200" y="188" text-anchor="middle" fill="#c9a96e" font-size="11" font-weight="bold">104.5°</text>
+  <!-- Polarity arrow (net dipole) -->
+  <defs><marker id="arrowP" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#c9a96e"/></marker></defs>
+  <line x1="200" y1="95" x2="200" y2="55" stroke="#c9a96e" stroke-width="1.5" marker-end="url(#arrowP)"/>
+  <text x="200" y="45" text-anchor="middle" fill="#c9a96e" font-size="9">net dipole</text>
+  <!-- Labels -->
+  <text x="200" y="300" text-anchor="middle" fill="#9e9684" font-size="10">H₂O — a bent, polar molecule</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 4 — The water molecule: 104.5° bond angle, partial charges (delta+ on H, delta- on O), and net dipole moment</figcaption>
+</figure>
+
 
 By the end, you will understand the substance of everything you touch. Let us begin.
 
@@ -32,6 +112,57 @@ All matter — the calcium carbite in limestone, the iron in a machete, the oxyg
 
 At the centre of every atom lies the nucleus, a dense knot of particles called protons and neutrons. The proton carries a positive electrical charge. The neutron carries no charge at all — it is electrically neutral, as its name suggests. Surrounding the nucleus, occupying a volume vastly larger than the nucleus itself, are the electrons. Each electron carries a negative charge exactly equal in magnitude to the proton's positive charge. In a neutral atom, the number of electrons equals the number of protons, and the charges cancel perfectly.
 
+<figure>` elements with their book and anchor text.
+
+---
+
+## CHEMISTRY BOOK (chemistry.md) -- 6 Diagrams
+
+---
+
+### Chemistry Diagram 1: Atomic Structure
+**Book:** chemistry.md
+**Insert after:** The paragraph ending with `"The outermost electrons — those in the highest shell — are called valence electrons, and they are the actors in the drama of chemistry. Virtually everything that happens when atoms meet — bonding, reacting, dissolving, combusting — is determined by what the valence electrons do."` (end of the third body paragraph of Letter 1, line 37)
+
+```html
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 400" width="100%" style="max-width:440px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Shell circles -->
+  <circle cx="200" cy="200" r="60" fill="none" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="200" cy="200" r="120" fill="none" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="200" cy="200" r="180" fill="none" stroke="#9e9684" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Nucleus -->
+  <circle cx="200" cy="200" r="28" fill="#c9a96e" opacity="0.85"/>
+  <text x="200" y="195" text-anchor="middle" fill="#1a1714" font-size="10" font-weight="bold">13p+</text>
+  <text x="200" y="208" text-anchor="middle" fill="#1a1714" font-size="10" font-weight="bold">14n</text>
+  <!-- Shell 1: 2 electrons -->
+  <circle cx="260" cy="200" r="5" fill="#48a6a6"/>
+  <circle cx="140" cy="200" r="5" fill="#48a6a6"/>
+  <!-- Shell 2: 8 electrons -->
+  <circle cx="320" cy="200" r="5" fill="#48a6a6"/>
+  <circle cx="80" cy="200" r="5" fill="#48a6a6"/>
+  <circle cx="200" cy="80" r="5" fill="#48a6a6"/>
+  <circle cx="200" cy="320" r="5" fill="#48a6a6"/>
+  <circle cx="285" cy="115" r="5" fill="#48a6a6"/>
+  <circle cx="115" cy="285" r="5" fill="#48a6a6"/>
+  <circle cx="285" cy="285" r="5" fill="#48a6a6"/>
+  <circle cx="115" cy="115" r="5" fill="#48a6a6"/>
+  <!-- Shell 3: 3 electrons (valence) -->
+  <circle cx="380" cy="200" r="5" fill="#48a6a6"/>
+  <circle cx="290" cy="44" r="5" fill="#48a6a6"/>
+  <circle cx="290" cy="356" r="5" fill="#48a6a6"/>
+  <!-- Labels -->
+  <text x="200" y="28" text-anchor="middle" fill="#ddd5c4" font-size="11">Shell 3 — 3 valence e⁻</text>
+  <text x="200" y="388" text-anchor="middle" fill="#9e9684" font-size="10">Aluminium (Al) — 13 protons, 14 neutrons, 13 electrons</text>
+  <!-- Label lines -->
+  <line x1="30" y1="200" x2="135" y2="200" stroke="#9e9684" stroke-width="0.5"/>
+  <text x="12" y="196" text-anchor="middle" fill="#ddd5c4" font-size="9" transform="rotate(-90,12,196)">Shell 1</text>
+  <text x="48" y="155" text-anchor="start" fill="#9e9684" font-size="9">Shell 2</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 1 — The atom: nucleus of protons and neutrons, surrounded by electron shells (2, 8, 3)</figcaption>
+</figure>
+
+
 What defines an element — what makes iron iron and not copper — is simply the number of protons in the nucleus. Hydrogen has one proton. Carbon has six. Iron has twenty-six. Gold has seventy-nine. Change the number of protons and you change the element entirely. This number is called the atomic number, and it is the identity card of every atom in the universe. There are ninety-two naturally occurring elements, from hydrogen at one to uranium at ninety-two, and a handful of heavier elements that have been synthesised in laboratories. From this alphabet of roughly one hundred elements, all matter in the known universe is composed — every mineral, every gas, every living cell, every star.
 
 The electrons do not orbit the nucleus in neat circular paths like planets around a sun, despite what simplified diagrams suggest. They occupy regions of probability called orbitals, arranged in shells at increasing distances from the nucleus. The innermost shell can hold at most two electrons. The second can hold eight. The third can hold eighteen, though it often behaves as if it holds eight before the fourth shell begins to fill. The outermost electrons — those in the highest shell — are called valence electrons, and they are the actors in the drama of chemistry. Virtually everything that happens when atoms meet — bonding, reacting, dissolving, combusting — is determined by what the valence electrons do.
@@ -41,6 +172,100 @@ When you heat limestone in a kiln to make the calcium oxide that is the basis of
 ---
 
 ### Letter 2: On the Periodic Table and the Logic of Elements
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 560 280" width="100%" style="max-width:560px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Background grid: 18 columns x 4 rows shown -->
+  <!-- Row labels -->
+  <text x="8" y="60" fill="#9e9684" font-size="10" text-anchor="middle">1</text>
+  <text x="8" y="110" fill="#9e9684" font-size="10" text-anchor="middle">2</text>
+  <text x="8" y="160" fill="#9e9684" font-size="10" text-anchor="middle">3</text>
+  <text x="8" y="210" fill="#9e9684" font-size="10" text-anchor="middle">4</text>
+  <!-- Column labels -->
+  <text x="40" y="28" fill="#9e9684" font-size="8" text-anchor="middle">1</text>
+  <text x="70" y="28" fill="#9e9684" font-size="8" text-anchor="middle">2</text>
+  <text x="400" y="28" fill="#9e9684" font-size="8" text-anchor="middle">13</text>
+  <text x="430" y="28" fill="#9e9684" font-size="8" text-anchor="middle">14</text>
+  <text x="460" y="28" fill="#9e9684" font-size="8" text-anchor="middle">15</text>
+  <text x="490" y="28" fill="#9e9684" font-size="8" text-anchor="middle">16</text>
+  <text x="520" y="28" fill="#9e9684" font-size="8" text-anchor="middle">17</text>
+  <text x="545" y="28" fill="#9e9684" font-size="8" text-anchor="middle">18</text>
+  <!-- Metals (gold tint) -->
+  <!-- H - nonmetal -->
+  <rect x="20" y="40" width="28" height="28" rx="3" fill="#48a6a6" opacity="0.25" stroke="#48a6a6" stroke-width="0.7"/>
+  <text x="34" y="58" text-anchor="middle" fill="#ddd5c4" font-size="11" font-weight="bold">H</text>
+  <!-- He - noble gas -->
+  <rect x="530" y="40" width="28" height="28" rx="3" fill="#9e9684" opacity="0.2" stroke="#9e9684" stroke-width="0.7"/>
+  <text x="544" y="58" text-anchor="middle" fill="#ddd5c4" font-size="11">He</text>
+  <!-- Li -->
+  <rect x="20" y="90" width="28" height="28" rx="3" fill="#c9a96e" opacity="0.25" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="34" y="108" text-anchor="middle" fill="#ddd5c4" font-size="11">Li</text>
+  <!-- Be -->
+  <rect x="50" y="90" width="28" height="28" rx="3" fill="#c9a96e" opacity="0.25" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="64" y="108" text-anchor="middle" fill="#ddd5c4" font-size="11">Be</text>
+  <!-- B - metalloid -->
+  <rect x="380" y="90" width="28" height="28" rx="3" fill="#9e9684" opacity="0.3" stroke="#9e9684" stroke-width="0.7"/>
+  <text x="394" y="108" text-anchor="middle" fill="#ddd5c4" font-size="10">B</text>
+  <!-- C - nonmetal -->
+  <rect x="410" y="90" width="28" height="28" rx="3" fill="#48a6a6" opacity="0.25" stroke="#48a6a6" stroke-width="0.7"/>
+  <text x="424" y="108" text-anchor="middle" fill="#ddd5c4" font-size="11" font-weight="bold">C</text>
+  <!-- N -->
+  <rect x="440" y="90" width="28" height="28" rx="3" fill="#48a6a6" opacity="0.25" stroke="#48a6a6" stroke-width="0.7"/>
+  <text x="454" y="108" text-anchor="middle" fill="#ddd5c4" font-size="11">N</text>
+  <!-- O -->
+  <rect x="470" y="90" width="28" height="28" rx="3" fill="#48a6a6" opacity="0.25" stroke="#48a6a6" stroke-width="0.7"/>
+  <text x="484" y="108" text-anchor="middle" fill="#ddd5c4" font-size="11" font-weight="bold">O</text>
+  <!-- F -->
+  <rect x="500" y="90" width="28" height="28" rx="3" fill="#48a6a6" opacity="0.25" stroke="#48a6a6" stroke-width="0.7"/>
+  <text x="514" y="108" text-anchor="middle" fill="#ddd5c4" font-size="11">F</text>
+  <!-- Ne -->
+  <rect x="530" y="90" width="28" height="28" rx="3" fill="#9e9684" opacity="0.2" stroke="#9e9684" stroke-width="0.7"/>
+  <text x="544" y="108" text-anchor="middle" fill="#ddd5c4" font-size="11">Ne</text>
+  <!-- Na -->
+  <rect x="20" y="140" width="28" height="28" rx="3" fill="#c9a96e" opacity="0.25" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="34" y="158" text-anchor="middle" fill="#ddd5c4" font-size="11">Na</text>
+  <!-- Mg -->
+  <rect x="50" y="140" width="28" height="28" rx="3" fill="#c9a96e" opacity="0.25" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="64" y="158" text-anchor="middle" fill="#ddd5c4" font-size="10">Mg</text>
+  <!-- Al -->
+  <rect x="380" y="140" width="28" height="28" rx="3" fill="#c9a96e" opacity="0.25" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="394" y="158" text-anchor="middle" fill="#ddd5c4" font-size="11">Al</text>
+  <!-- Si - metalloid -->
+  <rect x="410" y="140" width="28" height="28" rx="3" fill="#9e9684" opacity="0.3" stroke="#9e9684" stroke-width="0.7"/>
+  <text x="424" y="158" text-anchor="middle" fill="#ddd5c4" font-size="11">Si</text>
+  <!-- Cl -->
+  <rect x="500" y="140" width="28" height="28" rx="3" fill="#48a6a6" opacity="0.25" stroke="#48a6a6" stroke-width="0.7"/>
+  <text x="514" y="158" text-anchor="middle" fill="#ddd5c4" font-size="11">Cl</text>
+  <!-- Ar -->
+  <rect x="530" y="140" width="28" height="28" rx="3" fill="#9e9684" opacity="0.2" stroke="#9e9684" stroke-width="0.7"/>
+  <text x="544" y="158" text-anchor="middle" fill="#ddd5c4" font-size="11">Ar</text>
+  <!-- K -->
+  <rect x="20" y="190" width="28" height="28" rx="3" fill="#c9a96e" opacity="0.25" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="34" y="208" text-anchor="middle" fill="#ddd5c4" font-size="11">K</text>
+  <!-- Ca -->
+  <rect x="50" y="190" width="28" height="28" rx="3" fill="#c9a96e" opacity="0.25" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="64" y="208" text-anchor="middle" fill="#ddd5c4" font-size="10">Ca</text>
+  <!-- Fe (in transition metals area) -->
+  <rect x="230" y="190" width="28" height="28" rx="3" fill="#c9a96e" opacity="0.35" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="244" y="208" text-anchor="middle" fill="#ddd5c4" font-size="11" font-weight="bold">Fe</text>
+  <!-- Au placeholder row 6 hint -->
+  <rect x="320" y="190" width="28" height="28" rx="3" fill="#c9a96e" opacity="0.35" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="334" y="208" text-anchor="middle" fill="#ddd5c4" font-size="11" font-weight="bold">Au</text>
+  <text x="334" y="225" text-anchor="middle" fill="#9e9684" font-size="7">*row 6</text>
+  <!-- Transition metal region suggestion -->
+  <rect x="80" y="190" width="148" height="28" rx="3" fill="none" stroke="#c9a96e" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.4"/>
+  <text x="154" y="208" text-anchor="middle" fill="#9e9684" font-size="9" opacity="0.6">transition metals...</text>
+  <!-- Legend -->
+  <rect x="100" y="248" width="14" height="14" rx="2" fill="#c9a96e" opacity="0.25" stroke="#c9a96e" stroke-width="0.7"/>
+  <text x="120" y="259" fill="#ddd5c4" font-size="10">Metals</text>
+  <rect x="200" y="248" width="14" height="14" rx="2" fill="#48a6a6" opacity="0.25" stroke="#48a6a6" stroke-width="0.7"/>
+  <text x="220" y="259" fill="#ddd5c4" font-size="10">Nonmetals</text>
+  <rect x="320" y="248" width="14" height="14" rx="2" fill="#9e9684" opacity="0.3" stroke="#9e9684" stroke-width="0.7"/>
+  <text x="340" y="259" fill="#ddd5c4" font-size="10">Metalloids / Noble gases</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 2 — The periodic table: groups (columns) share valence electrons; periods (rows) fill successive shells</figcaption>
+</figure>
+
 
 If there are roughly one hundred elements, you might fear that chemistry is simply an exercise in memorisation — a hundred substances, each with its own arbitrary properties, to be catalogued and committed to memory. Nothing could be further from the truth. The elements are not arbitrary. They are organised by a deep pattern, and that pattern is the periodic table.
 
@@ -98,6 +323,55 @@ Return to our Ethiopian salt. A sodium atom has eleven electrons — two in the 
 
 The properties of ionic compounds follow directly from this structure. They are hard, because displacing the ions requires overcoming strong electrostatic forces throughout the lattice. They are brittle, because if the lattice is deformed enough to shift a layer of ions, like charges suddenly face like charges and the crystal shatters from repulsion. They have high melting points, because enormous energy is required to break the lattice apart. Sodium chloride melts at 801 degrees Celsius. And when they do melt, or when they dissolve in water, the freed ions can carry electrical current — which is why salt water conducts electricity but solid salt does not.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 300" width="100%" style="max-width:520px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Axes -->
+  <line x1="50" y1="270" x2="490" y2="270" stroke="#9e9684" stroke-width="1"/>
+  <line x1="50" y1="270" x2="50" y2="30" stroke="#9e9684" stroke-width="1"/>
+  <text x="270" y="295" text-anchor="middle" fill="#9e9684" font-size="11">Reaction progress →</text>
+  <text x="25" y="150" text-anchor="middle" fill="#9e9684" font-size="11" transform="rotate(-90,25,150)">Energy</text>
+  <!-- EXOTHERMIC (left half) -->
+  <text x="165" y="22" text-anchor="middle" fill="#c0392b" font-size="12" font-weight="bold">Exothermic</text>
+  <!-- Reactants level -->
+  <line x1="70" y1="120" x2="120" y2="120" stroke="#c9a96e" stroke-width="1.5"/>
+  <text x="75" y="112" fill="#c9a96e" font-size="9">reactants</text>
+  <!-- Activation energy hump -->
+  <path d="M 120,120 Q 165,45 210,120 Q 225,140 240,200" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <!-- Products level (lower) -->
+  <line x1="240" y1="200" x2="290" y2="200" stroke="#c9a96e" stroke-width="1.5"/>
+  <text x="255" y="218" fill="#c9a96e" font-size="9">products</text>
+  <!-- Ea label -->
+  <line x1="130" y1="120" x2="130" y2="55" stroke="#9e9684" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <text x="145" y="70" fill="#9e9684" font-size="8">Eₐ</text>
+  <!-- Delta H -->
+  <line x1="100" y1="125" x2="100" y2="195" stroke="#c0392b" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="88" y="165" fill="#c0392b" font-size="9" text-anchor="end">−ΔH</text>
+  <defs><marker id="arrowD" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5" fill="#c0392b"/></marker></defs>
+  <line x1="100" y1="130" x2="100" y2="190" stroke="#c0392b" stroke-width="1" marker-end="url(#arrowD)"/>
+  <!-- Divider -->
+  <line x1="300" y1="30" x2="300" y2="260" stroke="#9e9684" stroke-width="0.5" stroke-dasharray="4,3"/>
+  <!-- ENDOTHERMIC (right half) -->
+  <text x="410" y="22" text-anchor="middle" fill="#48a6a6" font-size="12" font-weight="bold">Endothermic</text>
+  <!-- Reactants level -->
+  <line x1="320" y1="200" x2="370" y2="200" stroke="#c9a96e" stroke-width="1.5"/>
+  <text x="325" y="218" fill="#c9a96e" font-size="9">reactants</text>
+  <!-- Activation energy hump -->
+  <path d="M 370,200 Q 415,45 460,200 Q 470,175 480,120" fill="none" stroke="#48a6a6" stroke-width="2"/>
+  <!-- Products level (higher) -->
+  <line x1="480" y1="120" x2="500" y2="120" stroke="#c9a96e" stroke-width="1.5"/>
+  <text x="475" y="112" fill="#c9a96e" font-size="9">products</text>
+  <!-- Ea label -->
+  <line x1="380" y1="200" x2="380" y2="55" stroke="#9e9684" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <text x="393" y="70" fill="#9e9684" font-size="8">Eₐ</text>
+  <!-- Delta H -->
+  <defs><marker id="arrowU" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5" fill="#48a6a6"/></marker></defs>
+  <line x1="488" y1="195" x2="488" y2="130" stroke="#48a6a6" stroke-width="1" marker-end="url(#arrowU)"/>
+  <text x="500" y="165" fill="#48a6a6" font-size="9">+ΔH</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 5 — Energy diagrams: exothermic (products lower, energy released) vs endothermic (products higher, energy absorbed). Activation energy Ea is the hump.</figcaption>
+</figure>
+
+
 The Dangote cement plants — the largest in Africa, with facilities in Nigeria, Ethiopia, Cameroon, and across the continent — rely on ionic chemistry at every stage. The limestone they quarry is primarily calcium carbonate, an ionic compound of calcium ions (Ca2+) and carbonate ions (CO3 2-). When heated to roughly 1,450 degrees Celsius in a rotary kiln, the calcium carbonate decomposes into calcium oxide (quickite) and carbon dioxide gas. The calcium oxide is then combined with silica, alumina, and iron oxide to form clinite, which is ground into the fine grey powder we call Portland cement. Every step involves the making and breaking of ionic bonds. The strength of the resulting concrete — the material that builds Africa's roads, dams, bridges, and housing — is ultimately a consequence of the ionic and covalent bonds that form as the cement hydrates and cures. Chemistry is not a subject confined to laboratories. It is the science of infrastructure.
 
 ---
@@ -139,6 +413,66 @@ The strongest intermolecular force is the hydrogen bond, which occurs when a hyd
 This hydrogen bonding network gives water its anomalous properties. Water has an unusually high boiling point for its molecular weight — 100 degrees Celsius, compared to minus 60 degrees for hydrogen sulphide, a molecule of similar size but without hydrogen bonds. If water followed the trend of its chemical cousins, it would be a gas at room temperature, and life as we know it could not exist. Water has an unusually high specific heat capacity, meaning it absorbs a great deal of heat before its temperature rises — which is why coastal cities like Lagos and Mombasa have milder climates than inland cities at the same latitude. Water has an unusually high surface tension, which is why insects can walk on it and why water climbs up narrow tubes by capillary action — the mechanism by which water rises from roots to leaves in trees.
 
 Most remarkably, water expands when it freezes. Nearly every other substance contracts upon solidification, because the molecules pack more tightly in the solid state. But the hydrogen bond network in ice forces the water molecules into a hexagonal lattice that is actually less dense than the disordered liquid. Ice floats. This fact, which seems trivial, is profoundly consequential: when a lake in the Ethiopian highlands freezes on a cold night, the ice forms on the surface, insulating the liquid water beneath and allowing aquatic life to survive. If ice sank, lakes would freeze from the bottom up, killing everything in them, and the climate of the entire planet would be radically different.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 240" width="100%" style="max-width:520px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- SOLID -->
+  <rect x="15" y="40" width="140" height="130" rx="6" fill="none" stroke="#9e9684" stroke-width="0.7"/>
+  <text x="85" y="30" text-anchor="middle" fill="#c9a96e" font-size="12" font-weight="bold">Solid</text>
+  <!-- Rigid lattice grid 4x4 -->
+  <circle cx="45" cy="70" r="6" fill="#c9a96e" opacity="0.5"/><circle cx="75" cy="70" r="6" fill="#c9a96e" opacity="0.5"/>
+  <circle cx="105" cy="70" r="6" fill="#c9a96e" opacity="0.5"/><circle cx="135" cy="70" r="6" fill="#c9a96e" opacity="0.5"/>
+  <circle cx="45" cy="100" r="6" fill="#c9a96e" opacity="0.5"/><circle cx="75" cy="100" r="6" fill="#c9a96e" opacity="0.5"/>
+  <circle cx="105" cy="100" r="6" fill="#c9a96e" opacity="0.5"/><circle cx="135" cy="100" r="6" fill="#c9a96e" opacity="0.5"/>
+  <circle cx="45" cy="130" r="6" fill="#c9a96e" opacity="0.5"/><circle cx="75" cy="130" r="6" fill="#c9a96e" opacity="0.5"/>
+  <circle cx="105" cy="130" r="6" fill="#c9a96e" opacity="0.5"/><circle cx="135" cy="130" r="6" fill="#c9a96e" opacity="0.5"/>
+  <circle cx="45" cy="160" r="6" fill="#c9a96e" opacity="0.5"/><circle cx="75" cy="160" r="6" fill="#c9a96e" opacity="0.5"/>
+  <circle cx="105" cy="160" r="6" fill="#c9a96e" opacity="0.5"/><circle cx="135" cy="160" r="6" fill="#c9a96e" opacity="0.5"/>
+  <!-- LIQUID -->
+  <rect x="195" y="40" width="140" height="130" rx="6" fill="none" stroke="#9e9684" stroke-width="0.7"/>
+  <text x="265" y="30" text-anchor="middle" fill="#48a6a6" font-size="12" font-weight="bold">Liquid</text>
+  <!-- Close but disordered -->
+  <circle cx="220" cy="75" r="6" fill="#48a6a6" opacity="0.5"/><circle cx="245" cy="68" r="6" fill="#48a6a6" opacity="0.5"/>
+  <circle cx="272" cy="78" r="6" fill="#48a6a6" opacity="0.5"/><circle cx="300" cy="70" r="6" fill="#48a6a6" opacity="0.5"/>
+  <circle cx="210" cy="100" r="6" fill="#48a6a6" opacity="0.5"/><circle cx="240" cy="105" r="6" fill="#48a6a6" opacity="0.5"/>
+  <circle cx="268" cy="98" r="6" fill="#48a6a6" opacity="0.5"/><circle cx="298" cy="103" r="6" fill="#48a6a6" opacity="0.5"/>
+  <circle cx="225" cy="130" r="6" fill="#48a6a6" opacity="0.5"/><circle cx="255" cy="135" r="6" fill="#48a6a6" opacity="0.5"/>
+  <circle cx="280" cy="128" r="6" fill="#48a6a6" opacity="0.5"/><circle cx="310" cy="133" r="6" fill="#48a6a6" opacity="0.5"/>
+  <circle cx="215" cy="157" r="6" fill="#48a6a6" opacity="0.5"/><circle cx="248" cy="160" r="6" fill="#48a6a6" opacity="0.5"/>
+  <circle cx="278" cy="155" r="6" fill="#48a6a6" opacity="0.5"/><circle cx="305" cy="160" r="6" fill="#48a6a6" opacity="0.5"/>
+  <!-- GAS -->
+  <rect x="375" y="40" width="140" height="130" rx="6" fill="none" stroke="#9e9684" stroke-width="0.7"/>
+  <text x="445" y="30" text-anchor="middle" fill="#c0392b" font-size="12" font-weight="bold">Gas</text>
+  <!-- Far apart, scattered -->
+  <circle cx="400" cy="60" r="5" fill="#c0392b" opacity="0.5"/>
+  <circle cx="470" cy="85" r="5" fill="#c0392b" opacity="0.5"/>
+  <circle cx="420" cy="120" r="5" fill="#c0392b" opacity="0.5"/>
+  <circle cx="490" cy="145" r="5" fill="#c0392b" opacity="0.5"/>
+  <circle cx="395" cy="155" r="5" fill="#c0392b" opacity="0.5"/>
+  <circle cx="455" cy="55" r="5" fill="#c0392b" opacity="0.5"/>
+  <circle cx="440" cy="150" r="5" fill="#c0392b" opacity="0.5"/>
+  <circle cx="500" cy="70" r="5" fill="#c0392b" opacity="0.5"/>
+  <!-- Arrows between panels -->
+  <defs>
+    <marker id="arrowR" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5" fill="#ddd5c4"/></marker>
+    <marker id="arrowL" markerWidth="7" markerHeight="5" refX="0" refY="2.5" orient="auto"><path d="M7,0 L0,2.5 L7,5" fill="#ddd5c4"/></marker>
+  </defs>
+  <!-- Solid -> Liquid -->
+  <line x1="158" y1="92" x2="192" y2="92" stroke="#ddd5c4" stroke-width="1" marker-end="url(#arrowR)"/>
+  <text x="175" y="86" text-anchor="middle" fill="#ddd5c4" font-size="8">melt</text>
+  <line x1="192" y1="118" x2="158" y2="118" stroke="#ddd5c4" stroke-width="1" marker-end="url(#arrowL)"/>
+  <text x="175" y="133" text-anchor="middle" fill="#ddd5c4" font-size="8">freeze</text>
+  <!-- Liquid -> Gas -->
+  <line x1="338" y1="92" x2="372" y2="92" stroke="#ddd5c4" stroke-width="1" marker-end="url(#arrowR)"/>
+  <text x="355" y="86" text-anchor="middle" fill="#ddd5c4" font-size="8">evaporate</text>
+  <line x1="372" y1="118" x2="338" y2="118" stroke="#ddd5c4" stroke-width="1" marker-end="url(#arrowL)"/>
+  <text x="355" y="133" text-anchor="middle" fill="#ddd5c4" font-size="8">condense</text>
+  <!-- Caption -->
+  <text x="265" y="200" text-anchor="middle" fill="#9e9684" font-size="10">Particles fixed in lattice → close but mobile → far apart and fast</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.85em;margin-top:0.5em">Fig. 6 — States of matter: solid (rigid lattice), liquid (close but disordered), gas (far apart, high energy)</figcaption>
+</figure>
+
 
 Weaker intermolecular forces — van der Waals forces, also called London dispersion forces — exist between all molecules, even those with no permanent polarity. These forces arise from the temporary, fluctuating dipoles that appear when the electron cloud of an atom is momentarily asymmetric. They are feeble individually but add up in large molecules, which is why small hydrocarbons like methane (one carbon) are gases, medium hydrocarbons like octane (eight carbons) are liquids, and long-chain hydrocarbons like paraffin wax (twenty or more carbons) are solids. The progression from natural gas to petrol to wax is a progression of increasing van der Waals forces as the molecular chain grows longer. This is directly relevant to petroleum refining, as we shall see in Part V.
 

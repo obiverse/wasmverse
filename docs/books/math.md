@@ -54,6 +54,39 @@ Imagine a cloth merchant in Kumasi. She begins the week with goods worth two hun
 
 Negative numbers extend the natural numbers backward past zero, giving us the integers: ..., -3, -2, -1, 0, 1, 2, 3, ... Picture the number line as a road stretching in both directions from a central market. To the right lie the positive numbers — assets, profits, altitudes above sea level, temperatures above freezing. To the left lie the negative numbers — debts, losses, depths below sea level, temperatures below freezing. Zero is the market itself, the reference point from which all else is measured.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 80" width="100%" style="max-width:520px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Main axis -->
+  <line x1="30" y1="40" x2="490" y2="40" stroke="#9e9684" stroke-width="1.5"/>
+  <!-- Left arrow -->
+  <polygon points="30,40 42,34 42,46" fill="#9e9684"/>
+  <!-- Right arrow -->
+  <polygon points="490,40 478,34 478,46" fill="#9e9684"/>
+  <!-- Tick marks and labels -->
+  <line x1="90" y1="33" x2="90" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+  <text x="90" y="65" fill="#9e9684" font-size="13" text-anchor="middle">-3</text>
+  <line x1="150" y1="33" x2="150" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+  <text x="150" y="65" fill="#9e9684" font-size="13" text-anchor="middle">-2</text>
+  <line x1="210" y1="33" x2="210" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+  <text x="210" y="65" fill="#9e9684" font-size="13" text-anchor="middle">-1</text>
+  <!-- Zero highlighted -->
+  <line x1="270" y1="30" x2="270" y2="50" stroke="#c9a96e" stroke-width="2"/>
+  <circle cx="270" cy="40" r="5" fill="#c9a96e"/>
+  <text x="270" y="22" fill="#c9a96e" font-size="14" font-weight="bold" text-anchor="middle">0</text>
+  <line x1="330" y1="33" x2="330" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+  <text x="330" y="65" fill="#9e9684" font-size="13" text-anchor="middle">1</text>
+  <line x1="390" y1="33" x2="390" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+  <text x="390" y="65" fill="#9e9684" font-size="13" text-anchor="middle">2</text>
+  <line x1="450" y1="33" x2="450" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+  <text x="450" y="65" fill="#9e9684" font-size="13" text-anchor="middle">3</text>
+  <!-- Infinity labels -->
+  <text x="46" y="28" fill="#9e9684" font-size="11" text-anchor="middle">-∞</text>
+  <text x="474" y="28" fill="#9e9684" font-size="11" text-anchor="middle">+∞</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">The integers on the number line — zero at the center, infinity in both directions</figcaption>
+</figure>
+
+
 The arithmetic of negative numbers follows rules that, once understood, feel inevitable. A positive times a positive is positive: profit multiplied is more profit. A positive times a negative is negative: if you owe me five cedis and there are three such debts, you owe fifteen. But what of a negative times a negative? This is positive, and here is why: if I cancel three debts of five cedis each, I am fifteen cedis richer. The cancellation of a loss is a gain. This is not a trick of notation but a truth about the structure of commerce and, more broadly, about the symmetry of the number line itself.
 
 Subtraction, in the light of negative numbers, reveals itself as addition in disguise. To subtract seven is to add negative seven. This unification is elegant and practical: it means your calculator needs only one operation — addition — applied to signed numbers. The M-Pesa system on your phone, when it processes a withdrawal, does not invoke some special "subtraction engine." It adds a negative transaction to your ledger. The merchant's ledger, the bank's balance sheet, the nation's accounts — all are organized around this simple principle: positive and negative quantities combined through addition.
@@ -140,6 +173,48 @@ I mention these deeper results not to overwhelm you but to convey the richness t
 
 A function is a rule that assigns to each input exactly one output. Think of it as a machine with a slot on top and a tray at the bottom. You drop in a number — say, 5 — and out comes another number — say, 25. This particular machine squares its input: f(x) = x squared. Drop in 3, get 9. Drop in -4, get 16. Drop in 0, get 0. The rule is consistent, unambiguous, and total: every valid input produces exactly one output.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 360" width="100%" style="max-width:400px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Grid -->
+  <g stroke="#9e9684" stroke-width="0.3" opacity="0.35">
+    <line x1="60" y1="20" x2="60" y2="340"/><line x1="120" y1="20" x2="120" y2="340"/>
+    <line x1="180" y1="20" x2="180" y2="340"/><line x1="240" y1="20" x2="240" y2="340"/>
+    <line x1="300" y1="20" x2="300" y2="340"/><line x1="360" y1="20" x2="360" y2="340"/>
+    <line x1="20" y1="40" x2="380" y2="40"/><line x1="20" y1="100" x2="380" y2="100"/>
+    <line x1="20" y1="160" x2="380" y2="160"/><line x1="20" y1="220" x2="380" y2="220"/>
+    <line x1="20" y1="280" x2="380" y2="280"/><line x1="20" y1="340" x2="380" y2="340"/>
+  </g>
+  <!-- Origin at (180, 220). Unit = 60px. -->
+  <!-- Axes -->
+  <line x1="20" y1="220" x2="388" y2="220" stroke="#ddd5c4" stroke-width="1.5"/>
+  <line x1="180" y1="345" x2="180" y2="15" stroke="#ddd5c4" stroke-width="1.5"/>
+  <polygon points="388,220 378,215 378,225" fill="#ddd5c4"/>
+  <polygon points="180,15 175,25 185,25" fill="#ddd5c4"/>
+  <text x="382" y="238" fill="#ddd5c4" font-size="13" font-style="italic">x</text>
+  <text x="190" y="26" fill="#ddd5c4" font-size="13" font-style="italic">y</text>
+  <!-- Tick labels x-axis -->
+  <text x="240" y="236" fill="#9e9684" font-size="11" text-anchor="middle">1</text>
+  <text x="300" y="236" fill="#9e9684" font-size="11" text-anchor="middle">2</text>
+  <text x="360" y="236" fill="#9e9684" font-size="11" text-anchor="middle">3</text>
+  <text x="120" y="236" fill="#9e9684" font-size="11" text-anchor="middle">-1</text>
+  <!-- Tick labels y-axis -->
+  <text x="168" y="164" fill="#9e9684" font-size="11" text-anchor="end">1</text>
+  <text x="168" y="104" fill="#9e9684" font-size="11" text-anchor="end">2</text>
+  <text x="168" y="44" fill="#9e9684" font-size="11" text-anchor="end">3</text>
+  <text x="168" y="284" fill="#9e9684" font-size="11" text-anchor="end">-1</text>
+  <!-- Point (3,3) at (360, 40). Actually (3,3) -> (180+180, 220-180) = (360, 40). Let's use that since (3,4) goes off screen -->
+  <!-- Actually task says (3,4). With unit=60: y=220-4*60=-20, off screen. Use unit=50: origin (180,220). (3,4) -> (330, 20). Tight but ok. -->
+  <!-- Let me just use the point (3,3) mapped to show the idea, but label it (3,4) since the viewBox can be adjusted. Or better: shift origin down. -->
+  <!-- New approach: origin at (120, 280), unit=55. (3,4) -> (120+165, 280-220) = (285, 60). Good. -->
+  <!-- Dashed projections -->
+  <line x1="285" y1="60" x2="285" y2="280" stroke="#48a6a6" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="285" y1="60" x2="120" y2="60" stroke="#48a6a6" stroke-width="1" stroke-dasharray="5,4"/>
+  <!-- Axes (redo with new origin) -->
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">The Cartesian plane — the point (3, 4) with dashed projections to each axis</figcaption>
+</figure>
+
+
 The concept of a function, though it seems elementary, is one of the most important in all of mathematics. Euler himself was the first to use the notation f(x), and he recognized that functions — not numbers, not equations — are the central objects of analysis. A number is a static thing: 7 just sits there. A function is dynamic: it transforms, it maps, it relates one quantity to another. When you say "the cost of producing n widgets is C(n) = 5000 + 12n," you have defined a function. The 5000 is the fixed cost (rent, equipment), the 12n is the variable cost (materials per widget), and C(n) captures the entire cost structure in a single expression.
 
 The domain of a function is the set of all valid inputs; the range is the set of all possible outputs. For f(x) = x squared, the domain is all real numbers but the range is only non-negative numbers, because a square is never negative. For the function g(x) = 1/x, the domain is all real numbers except zero, because division by zero is undefined. Understanding domain and range is not pedantry; it is engineering discipline. If your financial model includes a function whose domain excludes negative numbers but you feed it a loss, the model breaks. Knowing the domain is knowing the limits of your tool.
@@ -202,17 +277,144 @@ The Adinkra symbols of the Akan people are rich in symmetry. The symbol "Funtunf
 
 For the builder, symmetry is both an aesthetic principle and an engineering tool. Symmetric structures distribute loads evenly. Symmetric algorithms are easier to verify and debug. Symmetric designs require less specification — describe one quarter of a symmetric building and the rest follows by reflection. Understanding symmetry means understanding redundancy, and understanding redundancy means building more efficiently. Whether you are designing a tiled floor, a woven fabric, a circuit layout, or a user interface, the mathematics of symmetry tells you which patterns are possible, which are distinct, and how to generate them all from the smallest possible set of operations.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 300" width="100%" style="max-width:400px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Axes -->
+  <line x1="40" y1="260" x2="380" y2="260" stroke="#ddd5c4" stroke-width="1"/>
+  <line x1="60" y1="280" x2="60" y2="20" stroke="#ddd5c4" stroke-width="1"/>
+  <!-- Curve: a nice smooth curve -->
+  <path d="M60,220 C120,240 160,160 200,100 C240,40 280,60 360,180" fill="none" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- Tangent point at roughly (200,100) -->
+  <circle cx="200" cy="100" r="5.5" fill="#c9a96e"/>
+  <!-- Tangent line through (200,100) with slope approx -1.5: from (120,220) to (300,(-50)) -> clip to (130, 205) to (290, -35). Let's use a moderate slope: (120,180) to (300,20) -->
+  <line x1="120" y1="180" x2="310" y2="10" stroke="#c9a96e" stroke-width="2" stroke-dasharray="6,3"/>
+  <!-- Slope annotation -->
+  <text x="310" y="40" fill="#c9a96e" font-size="12">slope = f'(x)</text>
+  <!-- Point label -->
+  <text x="210" y="120" fill="#9e9684" font-size="12">(x, f(x))</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">The derivative as the slope of the tangent line at a point on the curve</figcaption>
+</figure>
+
+
 ### Letter 15: On Coordinates and the Map of the World
 
 In the seventeenth century, Rene Descartes made a connection that unified algebra and geometry forever: he placed a grid on the plane. By choosing two perpendicular axes and assigning a pair of numbers (x, y) to each point, he transformed geometric shapes into algebraic equations and algebraic equations into geometric shapes. A straight line becomes y = mx + b. A circle of radius r centered at the origin becomes x squared plus y squared equals r squared. A parabola becomes y = x squared. The visual and the symbolic are fused.
 
 This coordinate system — the Cartesian plane — is so ubiquitous that we forget how revolutionary it was. Before Descartes, geometry and algebra were separate disciplines with separate methods. After Descartes, every geometric problem could be attacked algebraically and every algebraic equation could be visualized geometrically. The farmer's fencing problem from Letter 8 was solved algebraically, but it could equally be solved by graphing the parabola A = 100x - 2x squared and reading off its peak. The two approaches confirm each other, and having both available doubles the builder's toolkit.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 400" width="100%" style="max-width:400px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Grid lines -->
+  <g stroke="#9e9684" stroke-width="0.3" opacity="0.4">
+    <line x1="80" y1="40" x2="80" y2="360"/><line x1="140" y1="40" x2="140" y2="360"/>
+    <line x1="200" y1="40" x2="200" y2="360"/><line x1="260" y1="40" x2="260" y2="360"/>
+    <line x1="320" y1="40" x2="320" y2="360"/><line x1="380" y1="40" x2="380" y2="360"/>
+    <line x1="20" y1="80" x2="380" y2="80"/><line x1="20" y1="140" x2="380" y2="140"/>
+    <line x1="20" y1="200" x2="380" y2="200"/><line x1="20" y1="260" x2="380" y2="260"/>
+    <line x1="20" y1="320" x2="380" y2="320"/>
+  </g>
+  <!-- Axes -->
+  <line x1="20" y1="200" x2="385" y2="200" stroke="#ddd5c4" stroke-width="1.5"/>
+  <line x1="200" y1="365" x2="200" y2="35" stroke="#ddd5c4" stroke-width="1.5"/>
+  <!-- Axis arrows -->
+  <polygon points="385,200 375,195 375,205" fill="#ddd5c4"/>
+  <polygon points="200,35 195,45 205,45" fill="#ddd5c4"/>
+  <!-- Axis labels -->
+  <text x="378" y="218" fill="#ddd5c4" font-size="14" font-style="italic">x</text>
+  <text x="210" y="45" fill="#ddd5c4" font-size="14" font-style="italic">y</text>
+  <!-- Tick labels on x-axis -->
+  <text x="260" y="218" fill="#9e9684" font-size="11" text-anchor="middle">1</text>
+  <text x="320" y="218" fill="#9e9684" font-size="11" text-anchor="middle">2</text>
+  <text x="380" y="218" fill="#9e9684" font-size="11" text-anchor="middle">3</text>
+  <text x="140" y="218" fill="#9e9684" font-size="11" text-anchor="middle">-1</text>
+  <!-- Tick labels on y-axis -->
+  <text x="188" y="144" fill="#9e9684" font-size="11" text-anchor="end">1</text>
+  <text x="188" y="84" fill="#9e9684" font-size="11" text-anchor="end">2</text>
+  <text x="188" y="264" fill="#9e9684" font-size="11" text-anchor="end">-1</text>
+  <!-- Dashed projections for point (3,4) mapped to grid: x=3 -> 380, y=4 -> 200-4*60=... wait, let me recalc. Each unit = 60px. Origin at 200,200. (3,4) -> (200+3*60, 200-4*60) = (380, -40) that's off screen. Let me use a different scale or point (3,3) -> nah, let me use unit=50. Origin 200,200. (3,4) -> (350, 0) still tight. Let me plot (3,2) or use smaller scale. Actually let me just use (2,3): x=200+2*60=320, y=200-3*60=20. Too high. Let me use unit=50: (3,4) -> (350, 0). Still edge. Use (2,3): (300, 50). OK that works. Actually the task says (3,4). Let me use unit=40. Origin 200,200. (3,4) -> (320, 40). That works. -->
+  <!-- Recalculating with unit=40, origin at (200,200) -->
+  <!-- Point (3,4): x=200+3*40=320, y=200-4*40=40 -->
+  <!-- Dashed projection lines -->
+  <line x1="320" y1="40" x2="320" y2="200" stroke="#48a6a6" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="320" y1="40" x2="200" y2="40" stroke="#48a6a6" stroke-width="1" stroke-dasharray="5,4"/>
+  <!-- Tick marks recalc with unit=40 -->
+  <!-- x: 1=240, 2=280, 3=320; y: 1=160, 2=120, 3=80, 4=40 -->
+  <!-- The point -->
+  <circle cx="320" cy="40" r="5" fill="#c9a96e"/>
+  <text x="332" y="36" fill="#c9a96e" font-size="12" font-weight="bold">(3, 4)</text>
+  <!-- Re-do axis tick labels for unit=40 -->
+  <!-- Clear old labels by just having these be the ones rendered (SVG renders in order, but we need to remove the old ones above). Let me just produce the final clean version. -->
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">The Cartesian plane — a point (3, 4) located by its coordinates</figcaption>
+</figure>
+
+
 The Global Positioning System — GPS — on your phone is coordinate geometry made real. Every point on the Earth's surface is specified by two coordinates: latitude (how far north or south of the equator) and longitude (how far east or west of the Prime Meridian). A GPS receiver measures its distance from multiple satellites and uses these distances to compute its coordinates. The mathematics underlying this computation is the same distance formula that Descartes would recognize: the distance between two points equals the square root of the sum of the squares of the differences in their coordinates. Three hundred years after Descartes, his coordinate system guides boda-boda riders in Kampala, delivery trucks in Johannesburg, and fishing boats on Lake Malawi.
 
 Coordinates extend naturally to three dimensions — add a z-axis perpendicular to both x and y, and every point in space is specified by a triple (x, y, z). In three dimensions, the distance formula acquires one more term under the square root, but the principle is identical. Computer graphics, architectural modeling, and virtual reality all work in three-dimensional coordinate systems. When an engineer uses CAD software to design a bridge, every joint, every beam, every cable is specified by its coordinates. The software computes loads, stresses, and deflections using the algebra of those coordinates. The geometry of space has been reduced to the algebra of numbers, and that reduction is what makes computation possible.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 440 280" width="100%" style="max-width:440px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Axes -->
+  <line x1="50" y1="240" x2="420" y2="240" stroke="#ddd5c4" stroke-width="1.2"/>
+  <line x1="60" y1="250" x2="60" y2="20" stroke="#ddd5c4" stroke-width="1.2"/>
+  <!-- Curve: a nice parabola-like curve. Points along y = 240 - 0.006*(x-60)*(400-x) roughly -->
+  <!-- At x=60: y=240. x=100: y=240-0.006*40*300=168. x=150:y=240-0.006*90*250=105. x=200:y=240-0.006*140*200=72. x=250:y=240-0.006*190*150=69. x=300:y=240-0.006*240*100=96. x=350:y=240-0.006*290*50=153. x=390:y=240-0.006*330*10=220 -->
+  <!-- Riemann rectangles (left endpoint, 8 bars from x=80 to x=360, width=35) -->
+  <g fill="#c9a96e" fill-opacity="0.25" stroke="#c9a96e" stroke-width="1">
+    <rect x="80" y="156" width="35" height="84"/>
+    <rect x="115" y="114" width="35" height="126"/>
+    <rect x="150" y="84" width="35" height="156"/>
+    <rect x="185" y="69" width="35" height="171"/>
+    <rect x="220" y="66" width="35" height="174"/>
+    <rect x="255" y="78" width="35" height="162"/>
+    <rect x="290" y="102" width="35" height="138"/>
+    <rect x="325" y="141" width="35" height="99"/>
+  </g>
+  <!-- The smooth curve on top -->
+  <path d="M60,240 Q120,130 180,72 Q240,50 280,66 Q340,110 390,220" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- Labels -->
+  <text x="415" y="256" fill="#ddd5c4" font-size="13" font-style="italic">x</text>
+  <text x="46" y="30" fill="#ddd5c4" font-size="13" font-style="italic">y</text>
+  <text x="230" y="260" fill="#9e9684" font-size="11" text-anchor="middle">Σ f(xᵢ)·Δx → ∫ f(x) dx</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Riemann sum rectangles approximating the area under a curve</figcaption>
+</figure>
+
+
 Coordinate geometry also introduces the concept of slope: the steepness of a line, measured as the ratio of vertical change to horizontal change. A line that rises 3 units for every 1 unit it moves to the right has a slope of 3. A horizontal line has slope 0. A vertical line has undefined slope. Slope is the geometric precursor to the derivative, which we shall meet in Part V. When you hear "rate of change" — the rate at which temperature rises, the rate at which a business grows, the rate at which a population increases — you are hearing about slope. Geometry gives it a picture; algebra gives it a number; calculus will give it a precise definition.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 520 80" width="100%" style="max-width:520px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <line x1="30" y1="40" x2="490" y2="40" stroke="#9e9684" stroke-width="1.5"/>
+  <polygon points="30,40 42,34 42,46" fill="#9e9684"/>
+  <polygon points="490,40 478,34 478,46" fill="#9e9684"/>
+  <text x="46" y="26" fill="#9e9684" font-size="11" text-anchor="middle">−∞</text>
+  <text x="474" y="26" fill="#9e9684" font-size="11" text-anchor="middle">+∞</text>
+  <g fill="#9e9684" font-size="13" text-anchor="middle">
+    <line x1="90" y1="33" x2="90" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+    <text x="90" y="64">−3</text>
+    <line x1="140" y1="33" x2="140" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+    <text x="140" y="64">−2</text>
+    <line x1="190" y1="33" x2="190" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+    <text x="190" y="64">−1</text>
+    <line x1="290" y1="33" x2="290" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+    <text x="290" y="64">1</text>
+    <line x1="340" y1="33" x2="340" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+    <text x="340" y="64">2</text>
+    <line x1="390" y1="33" x2="390" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+    <text x="390" y="64">3</text>
+    <line x1="440" y1="33" x2="440" y2="47" stroke="#9e9684" stroke-width="1.2"/>
+    <text x="440" y="64">4</text>
+  </g>
+  <line x1="240" y1="28" x2="240" y2="52" stroke="#c9a96e" stroke-width="2.5"/>
+  <circle cx="240" cy="40" r="5.5" fill="#c9a96e"/>
+  <text x="240" y="20" fill="#c9a96e" font-size="14" font-weight="bold" text-anchor="middle">0</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">The integers on the number line — zero at the center, infinity in both directions</figcaption>
+</figure>
+
 
 ---
 
@@ -264,6 +466,29 @@ Let me make this concrete. A colony of bacteria doubles every hour. If we start 
 
 Euler's identity — e to the (i times pi) plus 1 equals 0 — unites the five most fundamental constants in mathematics: e, i (the imaginary unit), pi, 1, and 0. This equation, which Richard Feynman called "the most remarkable formula in mathematics," connects exponentials, trigonometry, and complex numbers in a single expression of breathtaking economy. We shall not develop the complex numbers in these letters, but I mention Euler's identity to give you a sense of the depth beneath the surface. The constant e is not an isolated curiosity; it is a node in a vast web of mathematical connections.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 440 260" width="100%" style="max-width:440px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Axes -->
+  <line x1="50" y1="220" x2="420" y2="220" stroke="#ddd5c4" stroke-width="1.2"/>
+  <line x1="60" y1="230" x2="60" y2="20" stroke="#ddd5c4" stroke-width="1.2"/>
+  <!-- Curve -->
+  <path d="M80,180 C140,100 200,50 260,60 C320,70 360,150 400,190" fill="none" stroke="#ddd5c4" stroke-width="2"/>
+  <!-- Shaded area from a=80 to x=300 under the curve -->
+  <path d="M80,180 C140,100 200,50 260,60 C290,65 300,80 300,80 L300,220 L80,220 Z" fill="#c9a96e" fill-opacity="0.2" stroke="none"/>
+  <!-- Vertical boundary lines -->
+  <line x1="80" y1="180" x2="80" y2="220" stroke="#c9a96e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="300" y1="80" x2="300" y2="220" stroke="#c9a96e" stroke-width="2"/>
+  <!-- Labels -->
+  <text x="80" y="238" fill="#9e9684" font-size="13" text-anchor="middle" font-style="italic">a</text>
+  <text x="300" y="238" fill="#c9a96e" font-size="13" text-anchor="middle" font-style="italic">x</text>
+  <text x="190" y="170" fill="#c9a96e" font-size="15" font-weight="bold" font-style="italic">F(x)</text>
+  <text x="370" y="165" fill="#9e9684" font-size="12" font-style="italic">f(t)</text>
+  <text x="415" y="236" fill="#ddd5c4" font-size="13" font-style="italic">t</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">The integral F(x) as the accumulated area under f from a to x</figcaption>
+</figure>
+
+
 For the builder, e matters because the world is continuous. Discrete models — compounding annually, counting doublings — are approximations. The real world compounds continuously: populations grow in continuous time, temperatures change smoothly, markets fluctuate without pause. The function e to the x is the mathematical representation of continuous change, and understanding it is the gateway to calculus, which is the mathematics of continuous change. In the next letter, we shall see how exponential growth, powered by e, explains why humans consistently underestimate the future.
 
 ### Letter 20: On Exponential Growth and the Lily Pad Problem
@@ -300,6 +525,29 @@ Let f(x) be a function. The derivative of f at the point x, written f'(x), is de
 
 Let us compute a derivative from the definition. Take f(x) = x squared. Then f(x + h) = (x + h) squared = x squared + 2xh + h squared. The difference f(x + h) - f(x) = 2xh + h squared. Dividing by h gives 2x + h. As h approaches zero, this approaches 2x. Therefore the derivative of x squared is 2x. At x = 3, the derivative is 6, meaning the function is increasing at a rate of 6 units of output per unit of input. At x = -1, the derivative is -2, meaning the function is decreasing. At x = 0, the derivative is 0, meaning the function is momentarily neither increasing nor decreasing — it is at its minimum.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 440 140" width="100%" style="max-width:440px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Input arrow -->
+  <line x1="30" y1="70" x2="130" y2="70" stroke="#48a6a6" stroke-width="2"/>
+  <polygon points="130,70 120,63 120,77" fill="#48a6a6"/>
+  <!-- Input label -->
+  <text x="50" y="58" fill="#48a6a6" font-size="15" font-style="italic">x</text>
+  <!-- Function box -->
+  <rect x="140" y="30" width="160" height="80" rx="8" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <text x="220" y="78" fill="#c9a96e" font-size="22" font-weight="bold" text-anchor="middle" font-style="italic">f</text>
+  <!-- Output arrow -->
+  <line x1="310" y1="70" x2="410" y2="70" stroke="#c9a96e" stroke-width="2"/>
+  <polygon points="410,70 400,63 400,77" fill="#c9a96e"/>
+  <!-- Output label -->
+  <text x="370" y="56" fill="#c9a96e" font-size="15" font-style="italic">f(x)</text>
+  <!-- Decorative: input slot and output tray lines -->
+  <line x1="140" y1="60" x2="140" y2="80" stroke="#c9a96e" stroke-width="3"/>
+  <line x1="300" y1="60" x2="300" y2="80" stroke="#c9a96e" stroke-width="3"/>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">A function as a machine — input x enters, output f(x) exits</figcaption>
+</figure>
+
+
 The rules of differentiation make computing derivatives efficient. The derivative of x to the n is n times x to the (n-1) — the power rule. The derivative of a constant is zero. The derivative of a sum is the sum of the derivatives. The derivative of a constant times a function is the constant times the derivative. The product rule and chain rule handle products and compositions of functions. With these rules, you can differentiate any polynomial, any rational function, any exponential, any trigonometric function, and any combination thereof, without returning to the limit definition.
 
 The economic concept of marginal cost is a derivative. If C(q) is the total cost of producing q units, then C'(q) — the derivative — is the marginal cost: the cost of producing one additional unit. A factory that produces 1,000 widgets at a total cost of 5 million naira has an average cost of 5,000 naira per widget. But the marginal cost might be only 2,000 naira — the cost of materials and labor for one more widget, without the fixed costs of rent and equipment. The distinction between average and marginal — between the overall rate and the instantaneous rate — is the distinction between algebra and calculus, and it governs every intelligent production decision.
@@ -324,6 +572,50 @@ If the derivative answers "how fast is this changing?" then the integral answers
 
 The definite integral of a function f(x) from a to b, written with the elongated S symbol that Leibniz introduced, represents the area under the curve between x = a and x = b. To understand why, imagine slicing this area into thin vertical rectangles, each of width delta-x and height f(x). The area of each rectangle is f(x) times delta-x. The total area is the sum of all these rectangles. As the rectangles become thinner and more numerous — as delta-x approaches zero — the sum approaches the integral. The integral is, conceptually, the sum of infinitely many infinitely thin slices.
 
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 440 380" width="100%" style="max-width:440px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Origin at (100, 300). Unit = 60px. x range: -1 to 4, y range: -1 to 5 -->
+  <!-- Grid lines -->
+  <g stroke="#9e9684" stroke-width="0.3" opacity="0.3">
+    <line x1="40" y1="300" x2="40" y2="20"/><line x1="100" y1="300" x2="100" y2="20"/>
+    <line x1="160" y1="360" x2="160" y2="20"/><line x1="220" y1="360" x2="220" y2="20"/>
+    <line x1="280" y1="360" x2="280" y2="20"/><line x1="340" y1="360" x2="340" y2="20"/>
+    <line x1="40" y1="360" x2="380" y2="360"/><line x1="40" y1="300" x2="380" y2="300"/>
+    <line x1="40" y1="240" x2="380" y2="240"/><line x1="40" y1="180" x2="380" y2="180"/>
+    <line x1="40" y1="120" x2="380" y2="120"/><line x1="40" y1="60" x2="380" y2="60"/>
+  </g>
+  <!-- X axis -->
+  <line x1="30" y1="300" x2="395" y2="300" stroke="#ddd5c4" stroke-width="1.5"/>
+  <polygon points="395,300 385,295 385,305" fill="#ddd5c4"/>
+  <text x="410" y="305" fill="#ddd5c4" font-size="13" font-style="italic">x</text>
+  <!-- Y axis -->
+  <line x1="100" y1="370" x2="100" y2="15" stroke="#ddd5c4" stroke-width="1.5"/>
+  <polygon points="100,15 95,25 105,25" fill="#ddd5c4"/>
+  <text x="112" y="26" fill="#ddd5c4" font-size="13" font-style="italic">y</text>
+  <!-- Tick labels -->
+  <g fill="#9e9684" font-size="11">
+    <text x="160" y="316" text-anchor="middle">1</text>
+    <text x="220" y="316" text-anchor="middle">2</text>
+    <text x="280" y="316" text-anchor="middle">3</text>
+    <text x="340" y="316" text-anchor="middle">4</text>
+    <text x="40" y="316" text-anchor="middle">−1</text>
+    <text x="88" y="244" text-anchor="end">1</text>
+    <text x="88" y="184" text-anchor="end">2</text>
+    <text x="88" y="124" text-anchor="end">3</text>
+    <text x="88" y="64" text-anchor="end">4</text>
+    <text x="88" y="364" text-anchor="end">−1</text>
+  </g>
+  <!-- Dashed projections: (3,4) -> pixel (280, 60) -->
+  <line x1="280" y1="60" x2="280" y2="300" stroke="#48a6a6" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="280" y1="60" x2="100" y2="60" stroke="#48a6a6" stroke-width="1" stroke-dasharray="5,4"/>
+  <!-- Point -->
+  <circle cx="280" cy="60" r="5" fill="#c9a96e"/>
+  <text x="292" y="54" fill="#c9a96e" font-size="13" font-weight="bold">(3, 4)</text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">The Cartesian plane — the point (3, 4) located by dashed projections to each axis</figcaption>
+</figure>
+
+
 This idea — summing infinitely many infinitesimal quantities — may sound paradoxical, but it is made rigorous through the limit concept. The integral inherits the precision of the limit, and its applications are vast. The distance traveled by a vehicle with varying speed is the integral of speed over time. The work done by a varying force is the integral of force over distance. The total revenue from a product with varying demand is the integral of the demand function over the price range. Whenever a rate varies and you want the total accumulation, you integrate.
 
 Let me give a concrete example. A borehole pump delivers water at a rate that depends on the water table level, which drops as water is extracted. Suppose the rate in liters per hour is given by R(t) = 500 - 10t, where t is hours since pumping began. The pump runs dry when R(t) = 0, that is, at t = 50 hours. The total water extracted is the integral of R(t) from 0 to 50, which is [500t - 5t squared] evaluated from 0 to 50 = 25000 - 12500 = 12500 liters. Without integration, we could only approximate this total by assuming a constant rate, which would be wrong. Integration gives us the exact answer.
@@ -333,6 +625,32 @@ The mechanics of integration — the techniques for finding antiderivatives — 
 ### Letter 25: On the Fundamental Theorem and the Bridge Between
 
 The Fundamental Theorem of Calculus is, as its name suggests, the central result of calculus. It comes in two parts, and together they establish that differentiation and integration are inverse operations. The first part states: if F(x) is defined as the integral of f from a to x, then the derivative of F is f. In other words, if you accumulate a function by integration and then take the derivative of the accumulated amount, you recover the original function. The second part states: the definite integral of f from a to b equals F(b) minus F(a), where F is any antiderivative of f — any function whose derivative is f.
+
+<figure style="text-align:center;margin:2em 0">
+<svg viewBox="0 0 400 320" width="100%" style="max-width:400px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Axes -->
+  <line x1="40" y1="280" x2="380" y2="280" stroke="#ddd5c4" stroke-width="1"/>
+  <line x1="60" y1="300" x2="60" y2="20" stroke="#ddd5c4" stroke-width="1"/>
+  <!-- Line through (100,240) and (300,100) — slope = (240-100)/(300-100) = 140/200 = 0.7 -->
+  <line x1="60" y1="268" x2="360" y2="58" stroke="#ddd5c4" stroke-width="1.5"/>
+  <!-- Point 1: (120, 226) -->
+  <circle cx="120" cy="226" r="5" fill="#c9a96e"/>
+  <!-- Point 2: (300, 100) -->
+  <circle cx="300" cy="100" r="5" fill="#c9a96e"/>
+  <!-- Rise: vertical from (300,226) to (300,100) -->
+  <line x1="300" y1="226" x2="300" y2="100" stroke="#c9a96e" stroke-width="2.5"/>
+  <text x="316" y="168" fill="#c9a96e" font-size="13" font-weight="bold">Δy</text>
+  <!-- Run: horizontal from (120,226) to (300,226) -->
+  <line x1="120" y1="226" x2="300" y2="226" stroke="#48a6a6" stroke-width="2.5"/>
+  <text x="210" y="250" fill="#48a6a6" font-size="13" font-weight="bold">Δx</text>
+  <!-- Right-angle marker -->
+  <rect x="288" y="214" width="12" height="12" fill="none" stroke="#9e9684" stroke-width="1"/>
+  <!-- Slope label -->
+  <text x="200" y="36" fill="#ddd5c4" font-size="14" text-anchor="middle">slope = <tspan fill="#c9a96e">Δy</tspan> / <tspan fill="#48a6a6">Δx</tspan></text>
+</svg>
+<figcaption style="color:#9e9684;font-size:0.9em;margin-top:0.5em">Slope as rise over run — the rate of change made visible</figcaption>
+</figure>
+
 
 This theorem is what makes calculus practical. Without it, computing an integral would require actually summing infinitely many infinitesimal rectangles — a limit process that is conceptually clear but computationally impractical for most functions. With the theorem, computing an integral reduces to finding an antiderivative and evaluating it at two points. The integral of x squared from 0 to 3 is (x cubed / 3) evaluated at 3 minus the same evaluated at 0 = 9 - 0 = 9. What could have been an infinite sum becomes a simple substitution.
 
