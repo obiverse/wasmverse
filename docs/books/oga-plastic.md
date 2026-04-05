@@ -2,9 +2,9 @@
 
 *"Water is life. I will carry it."*
 
-A manga in three volumes. Seinen — industrial epic. The tone of Vinland Saga meets Dr. Stone: saltwater crossings, furnace heat, spiritual weight.
+A man crossed the Atlantic in a speed boat. He was looking for water tanks. He found three. Then he crossed two oceans to learn how to manufacture them. He built a factory in Cameroon. Then another in Nigeria. He put his name in gold letters on the roof.
 
-Setting: Cameroon, Nigeria, India — 2005 to 2015. The core truth: a man who crossed the Atlantic in a speed boat now has his name in gold letters on a factory roof in the same state where he first landed, soaking wet, with nothing.
+50,000 tanks. 36 states. The chemical drums that poisoned a generation are finished.
 
 This is the story of Oga Plastic.
 
