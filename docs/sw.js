@@ -26,7 +26,7 @@
 // automatically, but you can also just change this string.
 // Any change to sw.js triggers browser re-install of the SW,
 // which purges the old cache via the activate handler below.
-const CACHE = 'lv-b14bf9d';
+const CACHE = 'lv-f2fee4f';
 const UPDATE_FLAG = 'lv-update-ready';
 
 /* ── Lifecycle ─────────────────────────────── */

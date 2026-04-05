@@ -21,6 +21,26 @@
   margin-top: 0.5rem;
   letter-spacing: 0.04em;
 }
+/* ── Graphic novel panel layout ────────────────── */
+.chapter figure.panel { margin: 0.8rem auto; border-radius: 10px; overflow: hidden; }
+.chapter figure.panel svg { border-radius: 10px; border: 1px solid var(--border-subtle); }
+.chapter figure.panel-full { max-width: 800px; }
+.chapter figure.panel-half { max-width: 420px; }
+.chapter .narrator-box {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  margin: 0.5rem auto;
+  max-width: 620px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--text);
+  font-style: italic;
+  line-height: 1.6;
+}
+.chapter .narrator-box strong { color: var(--gold); font-style: normal; }
+
 .chapter img {
   max-width: 100%;
   height: auto;

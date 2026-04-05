@@ -687,6 +687,24 @@
         "math",
         "earth"
       ]
+    },
+    {
+      "id": "qibla-graphic",
+      "title": "The Direction of Prayer",
+      "subtitle": "A Graphic Novel on Building the Qibla Compass",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/qibla-graphic.md",
+      "symbol": "nsoromma",
+      "accent": "#d4af37",
+      "letters": 5,
+      "parts": 1,
+      "topic": "Graphic Novel",
+      "description": "Ibrahim builds a Qibla compass app for his grandmother. Follow him from 'which way is Makkah?' through spherical geometry, sensor fusion, and custom painting — told in 40 panels of geometric art.",
+      "category": "Graphic Novel",
+      "next": [
+        "qibla",
+        "math"
+      ]
     }
   ]
 }

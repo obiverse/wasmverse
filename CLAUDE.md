@@ -126,6 +126,11 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Invisible Cloak (Privacy) | 35 | cloak.md |
 | Letters on the Fortress of the Self (Infrastructure) | 36 | fortress.md |
 
+### Graphic Novel Wing (1 book, 5 chapters)
+| Book | Chapters | File |
+|------|----------|------|
+| The Direction of Prayer (Graphic Novel) | 5 | qibla-graphic.md |
+
 ## Architecture
 
 ```
