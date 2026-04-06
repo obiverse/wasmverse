@@ -723,6 +723,21 @@
         "manufacturing",
         "enterprise"
       ]
+    },
+    {
+      "id": "otrade",
+      "title": "oTrade — Market Price Intelligence",
+      "subtitle": "Know the Price Before You Travel",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/otrade.md",
+      "symbol": "ananse",
+      "accent": "#2E7D32",
+      "letters": 8,
+      "parts": 1,
+      "topic": "Product Vision",
+      "description": "50 million Nigerian traders operate in information darkness. oTrade is the price intelligence platform that lets any trader know the price before they travel. Post a price in 10 seconds. See prices in 3 seconds. Get alerts via WhatsApp.",
+      "category": "Building",
+      "next": ["enterprise", "wealth"]
     }
   ]
 }
