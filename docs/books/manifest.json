@@ -725,6 +725,24 @@
       ]
     },
     {
+      "id": "games",
+      "title": "Letters on the Animation of Worlds",
+      "subtitle": "A Treatise on Game Development, from the Loop to the Living World",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/games.md",
+      "symbol": "ananse",
+      "accent": "#ec5d3a",
+      "letters": 40,
+      "parts": 6,
+      "topic": "Game Development",
+      "description": "Oware was always a finite-state machine. The talking drum was always a game loop. From the heartbeat of the frame to coyote time and rollback netcode, from vectors and shaders to behaviour trees and the ethics of small universes — the African builder learns to author worlds and ship them as a single URL, no app store, no permission.",
+      "category": "Creative",
+      "next": [
+        "canvas",
+        "math"
+      ]
+    },
+    {
       "id": "otrade",
       "title": "oTrade — Market Price Intelligence",
       "subtitle": "Know the Price Before You Travel",
