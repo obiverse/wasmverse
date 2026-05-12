@@ -11,7 +11,7 @@
   <text x="600" y="240" text-anchor="middle" fill="#e4c98a" font-family="Georgia,serif" font-size="52" font-weight="700">The Letterverse</text>
   <text x="600" y="290" text-anchor="middle" fill="#9e9684" font-family="Georgia,serif" font-size="22" font-style="italic">Treatises in the manner of Euler, for builders who love the universe</text>
   <!-- Stats -->
-  <text x="600" y="370" text-anchor="middle" fill="#c9a96e" font-family="monospace" font-size="16" letter-spacing="2">33 TREATISES · 1,195 LETTERS · LIVE WASM DEMOS · WORKS OFFLINE</text>
+  <text x="600" y="370" text-anchor="middle" fill="#c9a96e" font-family="monospace" font-size="16" letter-spacing="2">50 TREATISES · 1,576 LETTERS · LIVE WASM DEMOS · WORKS OFFLINE</text>
   <!-- Bottom -->
   <text x="600" y="560" text-anchor="middle" fill="#8b6914" font-family="Georgia,serif" font-size="18">OBIVERSE</text>
   <!-- Adinkra dots -->

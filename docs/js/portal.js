@@ -5,7 +5,7 @@
 
    Identity    — Nostr pubkey + relay status
    Journey     — letters read, books started, books completed
-   Shelf       — all 33 books with CSS conic-gradient progress rings
+   Shelf       — all 50 books with CSS conic-gradient progress rings
    Relay       — attestations fetched from Nostr (KIND 30078)
    Patronage   — Lightning zap address
    Exit        — disconnect

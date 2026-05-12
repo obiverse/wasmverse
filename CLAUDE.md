@@ -58,9 +58,9 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 - `### Letter N: On Title` — individual chapters
 - `## Epilogue: On Title` — closing chapter
 
-## Current Library (38 books, 1,339 letters)
+## Current Library (46 books, 1,517 letters)
 
-### Technology Wing (10 books, 352 letters)
+### Technology Wing (18 books, 530 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Universal Machine (WebAssembly) | 40 | wasm.md |
@@ -73,6 +73,14 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Sovereign Machine (Linux & Linux Mint) | 46 | linux.md |
 | Letters on the Sovereign Intelligence (Claude & AI) | 25 | claude-ai.md |
 | Letters on the Nine Scrolls (9S Substrate) | 25 | nine-scrolls.md |
+| Letters on the Stack of a Single Tongue (MEAN) | 23 | mean.md |
+| Letters on the Stack of Reactive Threads (MERN) | 23 | mern.md |
+| Letters on the Continuous Pipeline (DevOps) | 22 | devops.md |
+| Letters on the Reasoned Web (Django) | 22 | django.md |
+| Letters on the Orchestra of Containers (Kubernetes) | 22 | kubernetes.md |
+| Letters on the Single Canvas (Flutter) | 22 | flutter.md |
+| Letters on Plain Speech (Go) | 22 | go.md |
+| Letters on the Memory of Data (PostgreSQL) | 22 | postgres.md |
 
 ### Science Wing (9 books, 305 letters)
 | Book | Letters | File |

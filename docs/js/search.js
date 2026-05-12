@@ -109,7 +109,7 @@ async function indexAllBooks() {
       bookTitles[book.id] = book.title;
     }
 
-    // Fetch ALL books in parallel (not sequential — 33 books × ~100KB each)
+    // Fetch ALL books in parallel (not sequential — 50 books × ~100KB each)
     const fetchResults = await Promise.allSettled(
       manifest.books.map(async (book) => {
         const bookRes = await fetch(book.file);

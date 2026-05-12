@@ -134,7 +134,7 @@ function idbDelete(db, store, key) {
 // ── Library cache management ──────────────────
 
 // Hard cap on library cache: 15MB.
-// Keeps the whole library (33 books, ~10MB) comfortably cacheable
+// Keeps the whole library (50 books, ~12MB) comfortably cacheable
 // while leaving room for settings, letters, and bookmarks.
 // The quota-aware warmRecentBooks() in library.js enforces a
 // softer check (skips proactive caching on tight-quota devices)
