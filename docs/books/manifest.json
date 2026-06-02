@@ -876,6 +876,21 @@
       "description": "The most enduring asset of a serious application is not its code but its data. Postgres is the open-source database that more African government tax systems, hospitals, and startups trust with their decades-long memory than any other. Codd's relational model, JSONB for the hybrid, MVCC for the concurrency, the extensions that keep it modern. The village's memory, in software.",
       "category": "Technology",
       "next": ["django", "making"]
+    },
+    {
+      "id": "macros",
+      "title": "Letters on the Word That Writes Words",
+      "subtitle": "A Treatise on Rust Macros, from Token to Transformation",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/macros.md",
+      "symbol": "ananse",
+      "accent": "#8a63d2",
+      "letters": 33,
+      "parts": 8,
+      "topic": "Rust Macros",
+      "description": "Code that writes code, in the spirit of Euler, Plato, and Knuth. The Adinkra stamp carved once and pressed a thousand times; the griot's praise-formula; the blacksmith of Suame who forges his own tools. From the single token to declarative moulds, procedural forges, derive and attribute macros, hygiene and spans, the Turing-completeness of pattern and recursion — ending with a USSD menu DSL the reader builds themselves. The reader finishes master of Rust, of macros, and of the deep computer science beneath them.",
+      "category": "Technology",
+      "next": ["rust", "wasm"]
     }
   ]
 }
