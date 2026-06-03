@@ -891,6 +891,21 @@
       "description": "Code that writes code, in the spirit of Euler, Plato, and Knuth. The Adinkra stamp carved once and pressed a thousand times; the griot's praise-formula; the blacksmith of Suame who forges his own tools. From the single token to declarative moulds, procedural forges, derive and attribute macros, hygiene and spans, the Turing-completeness of pattern and recursion — ending with a USSD menu DSL the reader builds themselves. The reader finishes master of Rust, of macros, and of the deep computer science beneath them.",
       "category": "Technology",
       "next": ["rust", "wasm"]
+    },
+    {
+      "id": "payload",
+      "title": "Letters on the Sovereign Workshop",
+      "subtitle": "A Treatise on Payload CMS, from the First Collection to the Thousand-Client Agency",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/payload.md",
+      "symbol": "funtun",
+      "accent": "#2a7d6f",
+      "letters": 40,
+      "parts": 10,
+      "topic": "Payload CMS",
+      "description": "Run a software shop on Payload the way agencies ran on WordPress and Django — but with far better margins. The config is the genome: one TypeScript file expresses the database, three APIs, the admin panel, and the types. From the first collection through fields, hooks, access control, media, deployment, plugins, and multi-tenancy — then the agency itself: productized starters, retainers, white-labelling, and the multi-million-dollar atelier. The builder finishes able to construct any modern app and run a sovereign agency, from 0 to archmage.",
+      "category": "Technology",
+      "next": ["mern", "enterprise"]
     }
   ]
 }
