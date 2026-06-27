@@ -60,7 +60,7 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 
 ## Current Library (46 books, 1,517 letters)
 
-### Technology Wing (18 books, 530 letters)
+### Technology Wing (19 books, 576 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Universal Machine (WebAssembly) | 40 | wasm.md |
@@ -81,6 +81,7 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Single Canvas (Flutter) | 22 | flutter.md |
 | Letters on Plain Speech (Go) | 22 | go.md |
 | Letters on the Memory of Data (PostgreSQL) | 22 | postgres.md |
+| Letters on the Living Database (Supabase & Full-Stack) | 46 | supabase.md |
 
 ### Science Wing (9 books, 305 letters)
 | Book | Letters | File |

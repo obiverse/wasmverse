@@ -921,6 +921,21 @@
       "description": "At Lokoja the Niger meets the Benue and flows as one to the sea. So the modern fintech meets the national river of OPay's naira rails and the sovereign ocean of Bitcoin. From raising a sandbox account and signing your first request, through collection by transfer, card, USSD, wallet, and the agent's POS, through disbursement, ledgers, reconciliation, and compliance — to Saylor's digital capital, a Bitcoin treasury, Lightning cross-border settlement, and an AI intelligence layer. The builder finishes able to construct a pan-African payment system that moves value across borders in seconds, from zero to archmage.",
       "category": "Finance",
       "next": ["bitcoin", "lightning"]
+    },
+    {
+      "id": "supabase",
+      "title": "Letters on the Living Database",
+      "subtitle": "A Treatise on Supabase, from the First Table to the Planetary Application — and the Software Shop Built upon It",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/supabase.md",
+      "symbol": "ananse",
+      "accent": "#3ecf8e",
+      "letters": 46,
+      "parts": 10,
+      "topic": "Supabase & Full-Stack",
+      "description": "Supabase is a baobab: one root — PostgreSQL — from which every branch a modern application needs grows as one living thing. The auto-API, authentication, row-level security, realtime, storage, edge functions, and AI vectors, all fed by one tongue. The reader learns the database IS the application, then proves it by building the giants — X (the living square), Google (search by word then by meaning), and Amazon (catalogue, cart, order, marketplace) — as the same root pruned three ways. Then production and scale, and finally the trade: uniting Supabase with Payload CMS into one stack to run a sovereign software shop, from the first table to a thriving studio. From zero to hero.",
+      "category": "Technology",
+      "next": ["postgres", "payload"]
     }
   ]
 }
