@@ -95,11 +95,12 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Warmth of Fire (Thermodynamics) | 30 | heat.md |
 | Letters on the Direction of Prayer (Geometry & Sensors) | 25 | qibla.md |
 
-### Finance Wing (2 books, 83 letters)
+### Finance Wing (3 books, 127 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Sovereignty of Value (Bitcoin) | 48 | bitcoin.md |
 | Letters on the Architecture of Wealth (Finance) | 35 | wealth.md |
+| Letters on the Confluence of Value (OPay & Fintech) | 44 | opay.md |
 
 ### Building Wing (5 books, 160 letters)
 | Book | Letters | File |

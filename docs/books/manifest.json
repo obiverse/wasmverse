@@ -906,6 +906,21 @@
       "description": "Run a software shop on Payload the way agencies ran on WordPress and Django — but with far better margins. The config is the genome: one TypeScript file expresses the database, three APIs, the admin panel, and the types. From the first collection through fields, hooks, access control, media, deployment, plugins, and multi-tenancy — then the agency itself: productized starters, retainers, white-labelling, and the multi-million-dollar atelier. The builder finishes able to construct any modern app and run a sovereign agency, from 0 to archmage.",
       "category": "Technology",
       "next": ["mern", "enterprise"]
+    },
+    {
+      "id": "opay",
+      "title": "Letters on the Confluence of Value",
+      "subtitle": "A Treatise on OPay, Fintech, and the Bridge Between National Rails and Sovereign Money, from the First Kobo to the Archmage of Payments",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/opay.md",
+      "symbol": "funtun",
+      "accent": "#1dc863",
+      "letters": 44,
+      "parts": 10,
+      "topic": "OPay & Fintech",
+      "description": "At Lokoja the Niger meets the Benue and flows as one to the sea. So the modern fintech meets the national river of OPay's naira rails and the sovereign ocean of Bitcoin. From raising a sandbox account and signing your first request, through collection by transfer, card, USSD, wallet, and the agent's POS, through disbursement, ledgers, reconciliation, and compliance — to Saylor's digital capital, a Bitcoin treasury, Lightning cross-border settlement, and an AI intelligence layer. The builder finishes able to construct a pan-African payment system that moves value across borders in seconds, from zero to archmage.",
+      "category": "Finance",
+      "next": ["bitcoin", "lightning"]
     }
   ]
 }
