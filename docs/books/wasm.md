@@ -2648,7 +2648,7 @@ The same is true of the universe we are building.
 
 ---
 
-## Epilogue: On Noesis
+## Epilogue: On Noesis, and an Invitation
 
 Dear Reader,
 

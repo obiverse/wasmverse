@@ -112,19 +112,6 @@ All matter — the calcium carbite in limestone, the iron in a machete, the oxyg
 
 At the centre of every atom lies the nucleus, a dense knot of particles called protons and neutrons. The proton carries a positive electrical charge. The neutron carries no charge at all — it is electrically neutral, as its name suggests. Surrounding the nucleus, occupying a volume vastly larger than the nucleus itself, are the electrons. Each electron carries a negative charge exactly equal in magnitude to the proton's positive charge. In a neutral atom, the number of electrons equals the number of protons, and the charges cancel perfectly.
 
-<figure>` elements with their book and anchor text.
-
----
-
-## CHEMISTRY BOOK (chemistry.md) -- 6 Diagrams
-
----
-
-### Chemistry Diagram 1: Atomic Structure
-**Book:** chemistry.md
-**Insert after:** The paragraph ending with `"The outermost electrons — those in the highest shell — are called valence electrons, and they are the actors in the drama of chemistry. Virtually everything that happens when atoms meet — bonding, reacting, dissolving, combusting — is determined by what the valence electrons do."` (end of the third body paragraph of Letter 1, line 37)
-
-```html
 <figure style="text-align:center;margin:2em 0">
 <svg viewBox="0 0 400 400" width="100%" style="max-width:440px" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
   <!-- Shell circles -->

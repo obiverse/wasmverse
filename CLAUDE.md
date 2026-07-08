@@ -58,9 +58,9 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 - `### Letter N: On Title` — individual chapters
 - `## Epilogue: On Title` — closing chapter
 
-## Current Library (46 books, 1,517 letters)
+## Current Library (56 books, 1,811 letters)
 
-### Technology Wing (19 books, 576 letters)
+### Technology Wing (21 books, 649 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Universal Machine (WebAssembly) | 40 | wasm.md |
@@ -82,6 +82,8 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on Plain Speech (Go) | 22 | go.md |
 | Letters on the Memory of Data (PostgreSQL) | 22 | postgres.md |
 | Letters on the Living Database (Supabase & Full-Stack) | 46 | supabase.md |
+| Letters on the Word That Writes Words (Rust Macros) | 33 | macros.md |
+| Letters on the Sovereign Workshop (Payload CMS) | 40 | payload.md |
 
 ### Science Wing (9 books, 305 letters)
 | Book | Letters | File |
@@ -96,14 +98,16 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Warmth of Fire (Thermodynamics) | 30 | heat.md |
 | Letters on the Direction of Prayer (Geometry & Sensors) | 25 | qibla.md |
 
-### Finance Wing (3 books, 127 letters)
+### Finance Wing (5 books, 199 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Sovereignty of Value (Bitcoin) | 48 | bitcoin.md |
 | Letters on the Architecture of Wealth (Finance) | 35 | wealth.md |
 | Letters on the Confluence of Value (OPay & Fintech) | 44 | opay.md |
+| Letters on the Money in the Air (Mobile Money & MoMo, Cameroon) | 36 | momo.md |
+| Letters on the One Tongue of Trade (Flutterwave) | 36 | flutterwave.md |
 
-### Building Wing (5 books, 160 letters)
+### Building Wing (6 books, 168 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Sovereign Enterprise (Entrepreneurship) | 35 | enterprise.md |
@@ -111,6 +115,7 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Governance of the Commons (Leadership) | 30 | governance.md |
 | Letters on the Healing of the Body (Public Health) | 35 | health.md |
 | Letters on the Map of the Earth (Surveying & GIS) | 30 | earth.md |
+| oTrade — Market Price Intelligence (Product Vision) | 8 | otrade.md |
 
 ### Making Wing (5 books, 188 letters)
 | Book | Letters | File |
@@ -121,11 +126,12 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Nourishment of Nations (Agriculture) | 35 | agriculture.md |
 | Letters on the Flow of Water (Sanitation) | 35 | water.md |
 
-### Creative Wing (2 books, 60 letters)
+### Creative Wing (3 books, 100 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Generative Canvas (Creative Coding) | 30 | canvas.md |
 | Letters on the Language of Design | 30 | design.md |
+| Letters on the Animation of Worlds (Game Development) | 40 | games.md |
 
 ### Sovereignty Wing (5 books, 191 letters)
 | Book | Letters | File |
@@ -136,10 +142,11 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Invisible Cloak (Privacy) | 35 | cloak.md |
 | Letters on the Fortress of the Self (Infrastructure) | 36 | fortress.md |
 
-### Graphic Novel Wing (1 book, 5 chapters)
+### Graphic Novel Wing (2 books, 11 chapters)
 | Book | Chapters | File |
 |------|----------|------|
 | The Direction of Prayer (Graphic Novel) | 5 | qibla-graphic.md |
+| Oga Plastic (Manga — Water & Industry) | 6 | oga-plastic.md |
 
 ## Architecture
 

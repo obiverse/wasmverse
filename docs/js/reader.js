@@ -420,11 +420,13 @@ function makeSacredDivider(i) {
 function parseTreatise(md) {
   const lines = md.split('\n');
   const chs = [];
-  let cur = null, part = '';
+  let cur = null, part = '', inFence = false;
 
   for (const line of lines) {
-    if (/^## Part \w+:/.test(line)) part = line.replace(/^## /, '');
-    if (/^### Letter \d+/.test(line) || /^## Preface/.test(line) || /^## Epilogue/.test(line)) {
+    // Track fenced code blocks so example headings inside ``` are not parsed as chapters
+    if (/^\s*(```|~~~)/.test(line)) { inFence = !inFence; if (cur) cur.lines.push(line); continue; }
+    if (!inFence && /^## Part \w+:/.test(line)) part = line.replace(/^## /, '');
+    if (!inFence && (/^### Letter \d+/.test(line) || /^## Preface/.test(line) || /^## Epilogue/.test(line))) {
       if (cur) chs.push(cur);
       const title = line.replace(/^#{2,3}\s+/, '');
       const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
