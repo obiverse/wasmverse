@@ -936,6 +936,21 @@
       "description": "Supabase is a baobab: one root — PostgreSQL — from which every branch a modern application needs grows as one living thing. The auto-API, authentication, row-level security, realtime, storage, edge functions, and AI vectors, all fed by one tongue. The reader learns the database IS the application, then proves it by building the giants — X (the living square), Google (search by word then by meaning), and Amazon (catalogue, cart, order, marketplace) — as the same root pruned three ways. Then production and scale, and finally the trade: uniting Supabase with Payload CMS into one stack to run a sovereign software shop, from the first table to a thriving studio. From zero to hero.",
       "category": "Technology",
       "next": ["postgres", "payload"]
+    },
+    {
+      "id": "momo",
+      "title": "Letters on the Money in the Air",
+      "subtitle": "A Treatise on Mobile Money, from the Airtime Whisper to the MoMo API, through the Lens of Cameroon",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/momo.md",
+      "symbol": "nsoromma",
+      "accent": "#ffcc00",
+      "letters": 36,
+      "parts": 10,
+      "topic": "Mobile Money",
+      "description": "No one designed mobile money — it was discovered, when Africans found that airtime was already a currency. From that first whisper on the cheapest feature phone, through the njangi made programmable, the MoMo Open API's collect and disburse, the ledger that cannot lie, KYC, fraud, and the regulator, to the confluence where the national franc meets the sovereign ocean of Bitcoin over USSD. Grounded in Cameroon — MTN MoMo, Orange Money, the two kingdoms, the CFA franc, and the Port of Douala. The builder finishes able to move a nation's money in the air and bridge it across every border, from the first franc to the archmage.",
+      "category": "Finance",
+      "next": ["opay", "bitcoin"]
     }
   ]
 }
