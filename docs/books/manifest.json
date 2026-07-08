@@ -951,6 +951,21 @@
       "description": "No one designed mobile money — it was discovered, when Africans found that airtime was already a currency. From that first whisper on the cheapest feature phone, through the njangi made programmable, the MoMo Open API's collect and disburse, the ledger that cannot lie, KYC, fraud, and the regulator, to the confluence where the national franc meets the sovereign ocean of Bitcoin over USSD. Grounded in Cameroon — MTN MoMo, Orange Money, the two kingdoms, the CFA franc, and the Port of Douala. The builder finishes able to move a nation's money in the air and bridge it across every border, from the first franc to the archmage.",
       "category": "Finance",
       "next": ["opay", "bitcoin"]
+    },
+    {
+      "id": "flutterwave",
+      "title": "Letters on the One Tongue of Trade",
+      "subtitle": "A Treatise on Flutterwave, from the First Charge to the Pan-African Rail, through the Lens of the Market Interpreter",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/flutterwave.md",
+      "symbol": "ananse",
+      "accent": "#f5a623",
+      "letters": 36,
+      "parts": 10,
+      "topic": "Flutterwave & Payment Infrastructure",
+      "description": "Africa's payments are a Tower of Babel — every nation its own currency, its own method, its own rail. Flutterwave is the interpreter at the market gate: integrate once, and speak M-Pesa, MoMo, card, bank transfer, and USSD to every payer on the continent. From the dashboard and three keys, through the charge and the cardinal discipline of server-side verification, the many doors of payment, tokenized recurring billing, transfers and marketplace splits, multicurrency and remittance, to PCI, fraud, and the confluence where the pan-African rail meets the sovereign ocean. Built by Africans, for Africa. The builder finishes able to run a marketplace that moves a continent's value through one tongue, from the first charge to the archmage.",
+      "category": "Finance",
+      "next": ["opay", "momo"]
     }
   ]
 }
