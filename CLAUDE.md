@@ -58,7 +58,7 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 - `### Letter N: On Title` — individual chapters
 - `## Epilogue: On Title` — closing chapter
 
-## Current Library (56 books, 1,811 letters)
+## Current Library (57 books, 1,847 letters)
 
 ### Technology Wing (21 books, 649 letters)
 | Book | Letters | File |
@@ -85,7 +85,7 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Word That Writes Words (Rust Macros) | 33 | macros.md |
 | Letters on the Sovereign Workshop (Payload CMS) | 40 | payload.md |
 
-### Science Wing (9 books, 305 letters)
+### Science Wing (10 books, 341 letters)
 | Book | Letters | File |
 |------|---------|------|
 | Letters on the Mathematics of Reality | 35 | math.md |
@@ -97,6 +97,7 @@ The reader at `docs/read.html` parses markdown with these exact patterns:
 | Letters on the Chemistry of Matter | 35 | chemistry.md |
 | Letters on the Warmth of Fire (Thermodynamics) | 30 | heat.md |
 | Letters on the Direction of Prayer (Geometry & Sensors) | 25 | qibla.md |
+| Letters on the Kingdom of the Diagonal (Checkers & Draughts) | 36 | checkers.md |
 
 ### Finance Wing (5 books, 199 letters)
 | Book | Letters | File |

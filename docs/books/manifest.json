@@ -966,6 +966,21 @@
       "description": "Africa's payments are a Tower of Babel — every nation its own currency, its own method, its own rail. Flutterwave is the interpreter at the market gate: integrate once, and speak M-Pesa, MoMo, card, bank transfer, and USSD to every payer on the continent. From the dashboard and three keys, through the charge and the cardinal discipline of server-side verification, the many doors of payment, tokenized recurring billing, transfers and marketplace splits, multicurrency and remittance, to PCI, fraud, and the confluence where the pan-African rail meets the sovereign ocean. Built by Africans, for Africa. The builder finishes able to run a marketplace that moves a continent's value through one tongue, from the first charge to the archmage.",
       "category": "Finance",
       "next": ["opay", "momo"]
+    },
+    {
+      "id": "checkers",
+      "title": "Letters on the Kingdom of the Diagonal",
+      "subtitle": "A Treatise on Checkers, from the First Move to the Solved Game, through the Lens of the African Draughts Masters",
+      "manner": "In the manner of Euler's Letters to a German Princess",
+      "file": "books/checkers.md",
+      "symbol": "matemasie",
+      "accent": "#a63d40",
+      "letters": 36,
+      "parts": 10,
+      "topic": "Checkers & Draughts",
+      "description": "The largest game humans ever completely solved — proven in 2007 to be a draw with perfect play — taught from zero to archmage, like a mathematician, in the spirit of Euler. From the thirty-two dark squares and the tyranny of the forced capture, through material, the opposition, the tactical shot, positional wisdom, the three-move ballot of openings, the middlegame squeeze and the truth-bearing endgame, to the game tree, minimax, alpha-beta, endgame databases, and the human drama of Marion Tinsley and the machine Chinook. Grounded in the draughts culture of the mango tree and the motor park, and in Baba Sy of Senegal, the first African to reach the summit of the game. The reader crosses the whole board and is crowned.",
+      "category": "Science",
+      "next": ["algorithms", "math"]
     }
   ]
 }
